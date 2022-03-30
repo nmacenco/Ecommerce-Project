@@ -1,12 +1,12 @@
-export enum TYPES{
+export enum TYPES {
     CREATE_USER
 }
 
-export interface User{
-    name:string,
-    lastName:string,
-    password:string,
-    email:string
+export interface User {
+    name: string,
+    lastName: string,
+    password: string,
+    email: string
 }
 
 /**
@@ -14,11 +14,11 @@ export interface User{
  * 
  * 
  */
-export interface CREATE_USER{
-    type:TYPES.CREATE_USER,
-    payload:User
+export interface CREATE_USER {
+    type: TYPES.CREATE_USER,
+    payload: User
 }
 
 
-export type Actions=
- | CREATE_USER
+export type Actions =
+    | CREATE_USER

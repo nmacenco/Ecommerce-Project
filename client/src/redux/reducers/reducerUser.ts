@@ -4,19 +4,19 @@
  * 
  */
 
-import {Actions, User, TYPES} from '../interface';
+import { Actions, User, TYPES } from '../interface';
 
-type USER=null | User;
+type USER = null | User;
 
-const INITIAL_USER:USER=null;
+const INITIAL_USER: USER = null;
 
 
-export const userReducer = (state:USER=INITIAL_USER, action: Actions): USER => {
+export const userReducer = (state: USER = INITIAL_USER, action: Actions): USER => {
 
   switch (action.type) {
 
     case TYPES.CREATE_USER:
-        return action.payload
+      return action.payload
 
     default:
       return state;
