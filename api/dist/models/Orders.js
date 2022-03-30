@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { DataTypes } = require("sequelize");
 exports.default = (sequelize) => {
-    sequelize.define("order", {
+    sequelize.define("orders", {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
@@ -24,4 +24,4 @@ exports.default = (sequelize) => {
         },
     });
 };
-//# sourceMappingURL=Order.js.map
+//# sourceMappingURL=Orders.js.map

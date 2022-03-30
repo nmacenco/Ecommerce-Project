@@ -18,5 +18,5 @@ server.use(express_1.default.urlencoded({ extended: false }));
 server.use((0, morgan_1.default)("dev"));
 server.use(corsOrigin);
 //routes
-module.exports = server;
+exports.default = server;
 //# sourceMappingURL=server.js.map

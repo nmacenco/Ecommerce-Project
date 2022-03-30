@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 
 export default (sequelize: any) => {
-  sequelize.define("subcategory", {
+  sequelize.define("Subcategory", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,

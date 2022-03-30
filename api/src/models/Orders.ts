@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 export default (sequelize: any) => {
-  sequelize.define("order", {
+  sequelize.define("orders", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,

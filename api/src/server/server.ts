@@ -19,4 +19,4 @@ server.use(corsOrigin);
 //routes
 
 
-module.exports = server;
+export default server;

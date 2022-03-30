@@ -2,35 +2,41 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 exports.default = (sequelize) => {
-    sequelize.define("subcategory", {
+    sequelize.define("Users", {
         id: {
             type: sequelize_1.DataTypes.UUID,
             defaultValue: sequelize_1.DataTypes.UUIDV4,
             primaryKey: true,
             allowNull: false,
         },
-        //fk
-        product_id: {
+        name: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        surname: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        email: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        billing_address: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        default_shipping_address: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+        country_id: {
             type: sequelize_1.DataTypes.UUID,
             allowNull: false,
         },
-        //fk
-        user_id: {
+        role: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
-        },
-        title: {
-            type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
-        },
-        description: {
-            type: sequelize_1.DataTypes.TEXT,
-            allowNull: false,
-        },
-        stars: {
-            type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
     });
 };
-//# sourceMappingURL=Review.js.map
+//# sourceMappingURL=Users.js.map

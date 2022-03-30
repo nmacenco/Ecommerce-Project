@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 
-module.exports = (sequelize: any) => {
+export default   (sequelize: any) => {
   sequelize.define("product", {
     id: {
       type: DataTypes.UUID,
