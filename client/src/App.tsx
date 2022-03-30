@@ -1,24 +1,20 @@
 import React from 'react';
-import 'bootswatch/dist/slate/bootstrap.min.css'
-import logo from './logo.svg';
+import 'bootswatch/dist/lux/bootstrap.min.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./components/home/Home";
+import Detail from "./components/detail/Detail";
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/home" element={<Home/>} />
+          <Route path="/detail/:id" element={<Detail/>} />
+          <Route path="*" element={<Home/>}/>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
