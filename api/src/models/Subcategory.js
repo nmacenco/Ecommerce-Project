@@ -9,6 +9,7 @@ module.exports = (sequelize) => {
       primaryKey: true,
       allowNull: false,
     },
+    //fk
     category_id: {
       type: DataTypes.UUID,
       allowNull: false,

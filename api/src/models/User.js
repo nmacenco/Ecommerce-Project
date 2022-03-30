@@ -29,12 +29,17 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    //fk
     country_id: {
       type: DataTypes.UUID,
       allowNull: false,
     },
     role: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   });
