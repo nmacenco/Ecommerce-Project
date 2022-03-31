@@ -1,111 +1,69 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import validaciones from './validaciones'
+
+interface IProduct_Create {
+    subcategory_id?: string[];
+    name?: string;
+    brand?: string;
+    image?: string;
+    price?: number;
+    description?: string;
+    weight?: number;
+    stock?: number;
+}
+
 
 export default function FromCreate(): JSX.Element {
+    const dispatch = useDispatch()
+    const [product, setProduct] = useState<IProduct_Create | null>(null)
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setProduct({
+            ...product,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+        validaciones({ ...product })
+    }
 
     return (
         <div>
             <form>
                 <fieldset>
-                    <legend>Legend</legend>
+                    <legend>Create Product</legend>
                     <div className="form-group row">
-                        <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Email</label>
-                        <div className="col-sm-10">
-                            <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value="email@example.com" />
-                        </div>
+                        <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Name of product</label>
+                        <input type="text" className="form-control" id="staticEmail" name='name' placeholder="Enter name" onChange={(e) => handleChange(e)} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputEmail1" className="form-label mt-4">Email address</label>
-                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                        <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <label htmlFor="exampleInputEmail1" className="form-label mt-4">Brand</label>
+                        <input type="text" className="form-control" id="exampleInputEmail1" name="brand" placeholder="Enter brand" onChange={(e) => handleChange(e)} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputPassword1" className="form-label mt-4">Password</label>
-                        <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+                        <label htmlFor="exampleInputPassword1" className="form-label mt-4">Image</label>
+                        <input type="text" className="form-control" id="exampleInputPassword1" name="image" placeholder="Enter image" onChange={(e) => handleChange(e)} />
+                        <input className="form-control" type="file" id="formFile" name="image" onChange={(e) => handleChange(e)} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleSelect1" className="form-label mt-4">Example select</label>
-                        <select className="form-select" id="exampleSelect1">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                        <label htmlFor="exampleTextarea" className="form-label mt-4">Description</label>
+                        <input type="textarea" className="form-control" id="exampleTextarea" name="description" placeholder="Enter one description" onChange={(e) => handleChange(e)} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleSelect2" className="form-label mt-4">Example multiple select</label>
-                        <select className="form-select" id="exampleSelect2">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                        <label htmlFor="exampleTextarea" className="form-label mt-4">Price</label>
+                        <input type="number" className="form-control" id="exampleTextarea" name="price" placeholder="Enter price" onChange={(e) => handleChange(e)} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleTextarea" className="form-label mt-4">Example textarea</label>
-                        <textarea className="form-control" id="exampleTextarea" ></textarea>
+                        <label htmlFor="exampleTextarea" className="form-label mt-4">Weight</label>
+                        <input type="number" className="form-control" id="exampleTextarea" name="weight" placeholder="Enter weight" onChange={(e) => handleChange(e)} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="formFile" className="form-label mt-4">Default file input example</label>
-                        <input className="form-control" type="file" id="formFile" />
+                        <label htmlFor="exampleTextarea" className="form-label mt-4">Stock</label>
+                        <input type="number" className="form-control" id="exampleTextarea" name="stock" placeholder="Enter stock number" onChange={(e) => handleChange(e)} />
                     </div>
-                    <fieldset className="form-group">
-                        <legend className="mt-4">Radio buttons</legend>
-                        <div className="form-check">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked />
-                                Option one is this and that—be sure to include why it's great
-                            </label>
-                        </div>
-                        <div className="form-check">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2" />
-                                Option two can be something else and selecting it will deselect option one
-                            </label>
-                        </div>
-                        <div className="form-check disabled">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input" name="optionsRadios" id="optionsRadios3" value="option3" disabled />
-                                Option three is disabled
-                            </label>
-                        </div>
-                    </fieldset>
-                    <fieldset className="form-group">
-                        <legend className="mt-4">Checkboxes</legend>
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
-                                Default checkbox
-                            </label>
-                        </div>
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked />
-                            <label className="form-check-label" htmlFor="flexCheckChecked">
-                                Checked checkbox
-                            </label>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend className="mt-4">Switches</legend>
-                        <div className="form-check form-switch">
-                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Default switch checkbox input</label>
-                        </div>
-                        <div className="form-check form-switch">
-                            <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked />
-                            <label className="form-check-label" htmlFor="flexSwitchCheckChecked">Checked switch checkbox input</label>
-                        </div>
-                    </fieldset>
-                    <fieldset className="form-group">
-                        <legend className="mt-4">Ranges</legend>
-                        <label htmlFor="customRange1" className="form-label">Example range</label>
-                        <input type="range" className="form-range" id="customRange1" />
-                        <label htmlFor="disabledRange" className="form-label">Disabled range</label>
-                        <input type="range" className="form-range" id="disabledRange" disabled />
-                        <label htmlFor="customRange3" className="form-label">Example range</label>
-                        <input type="range" className="form-range" min="0" max="5" step="0.5" id="customRange3" />
-                    </fieldset>
+
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </fieldset>
             </form>
