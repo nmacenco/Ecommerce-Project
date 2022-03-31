@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FormCreate from './components/FormCreate/FormCreate';
 import "bootswatch/dist/lux/bootstrap.min.css";
 import Nav from "./components/nav/Nav";
 import Home from "./components/home/Home";
@@ -13,10 +14,11 @@ function App(): JSX.Element {
       <BrowserRouter>
         <Nav />
         <Routes>
-          <Route path="/home" element={<Home/>} />
-          <Route path="/detail/:id" element={<Detail/>} />
-          <Route path="/products" element={<Products />} />
           <Route path="*" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/createRecipe" element={<FormCreate />} />
+          <Route path="/products" element={<Products />} />
         </Routes>
       </BrowserRouter>
     </div>
