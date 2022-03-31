@@ -10,17 +10,6 @@ module.exports = (sequelize) => {
       allowNull: false,
       autoIncrement: true,
     },
-    //fk
-    order_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    //fk
-    product_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-
     amount: {
       type: DataTypes.FLOAT,
       allowNull: false,

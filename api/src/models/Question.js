@@ -9,16 +9,6 @@ module.exports = (sequelize) => {
       allowNull: false,
       autoIncrement: true,
     },
-    //fk
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    //fk
-    product_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
