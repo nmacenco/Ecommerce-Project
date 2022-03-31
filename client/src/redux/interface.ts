@@ -14,7 +14,7 @@ export interface User{
 
 export interface Product {
     id : number , 
-    subcategory_id : number , 
+    subcategory_id : string[] , 
     name : string , 
     brand : string , 
     image : string , 

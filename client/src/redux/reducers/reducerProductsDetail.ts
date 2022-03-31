@@ -3,9 +3,9 @@
 import {Actions, Product, TYPES} from '../interface';
 
 
-const INITIAL_PRODUCT:Product= {
+const INITIAL_PRODUCT = {
   id: 0,
-  subcategory_id: 0,
+  subcategory_id: [],
   name: '',
   brand: '',
   image: '',
