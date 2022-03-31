@@ -236,5 +236,4 @@ const Cards = (): JSX.Element => {
     </CardsContainer>
   );
 };
-// d-grid gap-2 col-9 mx-auto mt-3
 export default Cards;
