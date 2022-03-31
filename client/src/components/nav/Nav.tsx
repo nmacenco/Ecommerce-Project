@@ -2,8 +2,9 @@ import React from "react";
 import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
 import { SearchIcon, CartIcon } from "./NavStyles";
-import {Link} from 'react-router-dom';
-const Nav = () => {
+import { Link } from 'react-router-dom';
+import AdminDropdown from "./adminDropdown/AdminDropdown";
+const Nav = (): JSX.Element => {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary d-flex">
@@ -25,6 +26,7 @@ const Nav = () => {
                 </a>
               </li>
             </ul>
+
             <form className="nav-item d-flex">
               <input
                 className="form-control my-2"
@@ -42,6 +44,9 @@ const Nav = () => {
               Register
             </Link>
           </div>
+        </div>{'tercer div'}
+
+
           <div className="ms-auto">
             <a className="nav-item" href="/cart">
               <CartIcon src={cartIcon} />
@@ -54,14 +59,14 @@ const Nav = () => {
               aria-controls="navbarColor01"
               aria-expanded="false"
               aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
+            />
+            <span className="navbar-toggler-icon"></span>
+
+            <AdminDropdown />
           </div>
-        </div>
       </nav>
     </div>
   );
-};
+}
 
 export default Nav;
