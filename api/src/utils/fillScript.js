@@ -42,7 +42,7 @@ const bulkCreateSubcategories = async()=>{
       Subcategory.findOrCreate({
         where: {
           name: data[i].name,
-          category_id: data[i].category_id
+          CategoryId: data[i].category_id
         }
       })
     }
