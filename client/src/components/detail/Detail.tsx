@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import {getProductDetail} from '../../redux/actions/productDetail';
+import {State} from '../../redux/reducers/index'
 import {
   DetailContainer,
   Box,
@@ -12,26 +14,20 @@ import {
   MiniImages,
   DeleteEditButton,
   ImagesContainer
-
-
 } from "./DetailStyles";
-const product = {
-  id: 4,
-  subcategory_id: [{}],
-  name: "Teclado Mecanico",
-  brand: "Asus",
-  image:
-    "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17901_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_71684eb1-grn.jpg",
-  price: 48.33,
-  description: "Immobilization of Back using Brace",
-  weight: 40,
-  stock: 27,
-};
+
 export default function Detail() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const {id} = useParams<{id?: string}>()
+  const product = useSelector ((state : State) => state.productDetail)
+  console.log(product);
+  
   // const product = useSelector(state )
+
+  useEffect(()=> {
+    dispatch(getProductDetail(id))
+  }, [])
 
   return (
     <DetailContainer>
@@ -82,16 +78,6 @@ export default function Detail() {
   <li className="nav-item">
     <a className="nav-link " data-bs-toggle="tab" href="#questions">Questions</a>
   </li>
-  {/* <li className="nav-item dropdown">
-    <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-    <div className="dropdown-menu">
-      <a className="dropdown-item" href="#">Action</a>
-      <a className="dropdown-item" href="#">Another action</a>
-      <a className="dropdown-item" href="#">Something else here</a>
-      <div className="dropdown-divider"></div>
-      <a className="dropdown-item" href="#">Separated link</a>
-    </div>
-  </li> */}
 </ul>
 <div id="myTabContent" className="tab-content">
   <div className="tab-pane fade" id="home">
@@ -103,12 +89,7 @@ export default function Detail() {
   <div className="tab-pane fade active show" id="questions">
     <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork</p>
   </div>
-  {/* <div className="tab-pane fade" id="dropdown1">
-    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
-  </div>
-  <div className="tab-pane fade" id="dropdown2">
-    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
-  </div> */}
+
 </div>
       </ReviewComentsBox>
     </DetailContainer>
