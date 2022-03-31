@@ -2,6 +2,7 @@ import React from "react";
 import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
 import { SearchIcon, CartIcon } from "./NavStyles";
+import { NavLink } from "react-router-dom";
 
 const Nav = () => {
   return (
@@ -15,14 +16,18 @@ const Nav = () => {
           <div className="collapse navbar-collapse" id="navbarColor01">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                <a className="nav-link" href="/products">
-                  Products
-                </a>
+                  <NavLink className="nav-link" to={"/products"}>
+                  <a className="nav-link" href="">
+                    Products
+                  </a>
+                  </NavLink>
               </li>
               <li className="nav-item">
+              <NavLink className="nav-link" to={"/products"}>
                 <a className="nav-link" href="#">
                   About
                 </a>
+              </NavLink>
               </li>
             </ul>
             <form className="nav-item d-flex">
@@ -43,9 +48,11 @@ const Nav = () => {
             </button>
           </div>
           <div className="ms-auto">
-            <a className="nav-item" href="/cart">
-              <CartIcon src={cartIcon} />
-            </a>
+            <NavLink className="nav-item" to={"/cart"}>
+              <a className="nav-item" href="">
+                <CartIcon src={cartIcon} />
+              </a>
+            </NavLink>
             <button
               className="navbar-toggler"
               type="button"
