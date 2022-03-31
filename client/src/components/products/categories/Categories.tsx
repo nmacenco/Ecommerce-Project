@@ -1,7 +1,7 @@
 import React from "react";
 import { CategoriesContainer } from "./CategoriesStyles";
 
-const Categories = () => {
+const Categories = (): JSX.Element => {
   const data = [
     {
       name: "perifericos",
@@ -39,9 +39,9 @@ const Categories = () => {
           data-bs-parent="#accordionMain"
         >
           <div className="accordion-body">
-            {data.map((e) => {
+            {data.map((e, i) => {
               return (
-                <>
+                <div key={i}>
                   <h2 className="accordion-header" id={e.name + "label"}>
                     <button
                       className="accordion-button collapsed"
@@ -61,12 +61,12 @@ const Categories = () => {
                     data-bs-parent="#categories"
                   >
                     <div className="accordion-body">
-                      {e.subCategories.map((subcategory) => {
-                        return <p>{subcategory}</p>;
+                      {e.subCategories.map((subcategory, i) => {
+                        return <p key={i}>{subcategory}</p>;
                       })}
                     </div>
                   </div>
-                </>
+                </div>
               );
             })}
           </div>

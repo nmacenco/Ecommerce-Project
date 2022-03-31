@@ -1,6 +1,6 @@
 export enum TYPES {
     CREATE_USER,
-    PRODUCT_DETAIL
+    PRODUCT_DETAIL = 'PRODUCT_DETAIL'
 }
 
 export interface User {
