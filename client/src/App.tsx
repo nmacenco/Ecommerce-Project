@@ -6,6 +6,7 @@ import Nav from "./components/nav/Nav";
 import Home from "./components/home/Home";
 import Detail from "./components/detail/Detail";
 import Products from "./components/products/Products";
+import Loading from "./components/loading/Loading";
 
 function App(): JSX.Element {
   return (
@@ -19,6 +20,8 @@ function App(): JSX.Element {
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/createRecipe" element={<FormCreate />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/loading" element={<Loading />} />
+
         </Routes>
       </BrowserRouter>
     </div>
