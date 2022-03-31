@@ -1,22 +1,32 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
+import { postProduct } from '../../redux/actions/products';
 import validaciones from './validaciones'
 
-interface IProduct_Create {
-    subcategory_id?: string[];
-    name?: string;
-    brand?: string;
-    image?: string;
-    price?: number;
-    description?: string;
-    weight?: number;
-    stock?: number;
+export interface IProduct_Create {
+    subcategory_id: string[];
+    name: string;
+    brand: string;
+    image: string;
+    price: number;
+    description: string;
+    weigth: number;
+    stock: number;
 }
 
 
 export default function FromCreate(): JSX.Element {
     const dispatch = useDispatch()
-    const [product, setProduct] = useState<IProduct_Create | null>(null)
+    const [product, setProduct] = useState<IProduct_Create>({
+        name: "",
+        subcategory_id: [],
+        brand: "",
+        image: "",
+        price: 0,
+        description: "",
+        weigth: 0,
+        stock: 0
+    })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setProduct({
@@ -26,12 +36,15 @@ export default function FromCreate(): JSX.Element {
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-        validaciones({ ...product })
+        e.preventDefault()
+        validaciones(product)
+            ? dispatch(postProduct(product))
+            : alert('No se pudo crear la receta')
     }
 
     return (
         <div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Create Product</legend>
                     <div className="form-group row">
@@ -57,7 +70,7 @@ export default function FromCreate(): JSX.Element {
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleTextarea" className="form-label mt-4">Weight</label>
-                        <input type="number" className="form-control" id="exampleTextarea" name="weight" placeholder="Enter weight" onChange={(e) => handleChange(e)} />
+                        <input type="number" className="form-control" id="exampleTextarea" name="weigth" placeholder="Enter weigth" onChange={(e) => handleChange(e)} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleTextarea" className="form-label mt-4">Stock</label>
