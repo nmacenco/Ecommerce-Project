@@ -74,7 +74,7 @@ Order.hasMany(Order_detail, { as: "Order_Detail" });
 Product.hasMany(Order_detail, { as: "Product_Order_Detail" });
 Product.hasMany(Review, { as: "Product_Review" });
 Product.hasMany(Question, { as: "Product_Question" });
-Brand.hasMany(Product, { as:"Product_Brand" });
+Brand.hasMany(Product, { as:"Brand_Product" });
 Country.hasMany(User, { as: "Country_User" });
 Subcategory.hasMany(Product, { as: "Subcategory_Product" });
 Category.hasMany(Subcategory, { as: "Category_Subcategory" });
