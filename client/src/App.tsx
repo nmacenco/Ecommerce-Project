@@ -18,7 +18,7 @@ function App(): JSX.Element {
           <Route path="*" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/createRecipe" element={<FormCreate />} />
+          <Route path="/createProduct" element={<FormCreate />} />
           <Route path="/products" element={<Products />} />
           <Route path="/loading" element={<Loading />} />
 
