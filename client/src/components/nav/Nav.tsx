@@ -1,4 +1,7 @@
 import React from "react";
+import Login from '../Login/Login';
+import Register from "../Register/Register";
+// import Registro from "../Register/Register";
 
 const Nav = () => {
     return (
@@ -39,9 +42,10 @@ const Nav = () => {
                 </li>
                 
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    Login
-                  </a>
+                  <Login/>
+                </li>
+                <li className="nav-item">
+                  <Register/>
                 </li>
               </ul>
               <form className="d-flex">
