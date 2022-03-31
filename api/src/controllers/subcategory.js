@@ -20,7 +20,7 @@ const createSubCategory = async (req, res, next) => {
         res.status(400).send({errorMsg: 'Missing data'});
       } else {
         const newSubCategory = await Subcategory.create({ name,category_id });
-        res.status(200).send({successMsg: 'Subcategory successfully created.',data: newSubCategory});
+        res.status(201).send({successMsg: 'Subcategory successfully created.',data: newSubCategory});
       }
     } catch (error) {
       res.status(500).send({errorMsg: error})
