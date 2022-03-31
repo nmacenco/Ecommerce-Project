@@ -1,6 +1,6 @@
 const { Category } = require("../db");
 
-const getCategories = (req, res, next) => {
+const getCategories = async (req, res, next) => {
     try {
         let dataCategory = await Category.findAll({
         });
@@ -11,7 +11,7 @@ const getCategories = (req, res, next) => {
       }
 };
 
-const createCategory = (req, res, next) => {
+const createCategory = async (req, res, next) => {
         try {
       let { name } = req.body;
       if (!name) {
