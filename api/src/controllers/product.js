@@ -35,7 +35,8 @@ const createProduct = async (req, res, next) => {
         stock,
         soldCount
       });
-      productCreated ? res.status(200).json({ successMsg: "The Product has been created", data: productCreated })
+      productCreated
+        ? res.status(200).json({ successMsg: "The Product has been created", data: productCreated })
         : res.status(404).json({ errorMsg: "The Product can not be created" });
     }
   } catch (error) {
@@ -72,7 +73,8 @@ const updateProduct = async (req, res, next) => {
       },
       { where: { id: id } }
     );
-    productUpdated ? res.status(200).json({ successMsg: "The Product has been Updated", data: productUpdated })
+    productUpdated
+      ? res.status(200).json({ successMsg: "The Product has been Updated", data: productUpdated })
       : res.status(404).json({ errorMsg: "The Product can not be created" });
 
   } catch (error) {
@@ -84,46 +86,14 @@ const getProducts = async (req, res, next) => {
 
   try {
 
+    let dataProduct = await Product.findAll({ include: { all: true, nested: true } });
 
-    let dataProduct = await Product.findAll({
-      include: {
-        model: Subcategory,
-        on: {
-          col1: conn.where(conn.col("Product.category_id"), "=", conn.col("Subcategory.id"))},
-
-    }});
-
-
-    // let dataProduct = Product.findAll({
-    //   include: [
-    //     {
-    //       model: Product,
-    //       on: {
-    //         col1: sequelize.where(sequelize.col("Product.category_id"), "=", sequelize.col("Subcategory.id")),
-    //       },
-    //       attributes: []
-    //     },
-    //     {
-    //       model: Brand,
-    //       on: {
-    //         col2: sequelize.where(sequelize.col("Product.brand_id"), "=", sequelize.col("Brand.id"))
-    //       },
-    //       attributes: []
-    //     }
-    //   ]
-    // });
-
-
-      // let dataProduct = await Product.findAll({});
-
-
-
-    dataProduct ? res.status(200).json({ successMsg: "", data: dataProduct }) :
-      res.status(404).send({ errorMsg: "The product doesn't found" });
+    dataProduct
+      ? res.status(200).json({ successMsg: "", data: dataProduct })
+      : res.status(404).send({ errorMsg: "The product doesn't found" });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
-
 };
 
 const getSingleProduct = async (req, res, next) => {
@@ -144,6 +114,23 @@ const getSingleProduct = async (req, res, next) => {
   }
 
 };
+
+
+// const data = require("../models/data");
+const seedProducts = async (req, res, next) => {
+  await Product.deleteMany({});
+  const createdProducts = await Product.insertMany(data.products);
+
+  await User.deleteMany({});
+  const createdUsers = await User.insertMany(data.users);
+
+  // res.status(200).json({ createdUsers });
+  res.status(200).json({ createdProducts, createdUsers });
+  // res.status(200).json(data.users);
+};
+
+
+
 
 const deleteProduct = (req, res, next) => { };
 
