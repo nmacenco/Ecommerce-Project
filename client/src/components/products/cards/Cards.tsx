@@ -1,5 +1,7 @@
 import React from "react";
 import Card from "./card/Card";
+import Filter from "./filter/Filter";
+import { CardsGroup, CardsContainer } from "./CardsStyles";
 
 const data = [
   {
@@ -197,12 +199,19 @@ const data = [
 
 const Cards = () => {
   return (
-    <div className="d-grid gap-2 col-7 mx-auto mt-3">
-      {data.map((e) => {
-        return <Card key={e.id} name={e.name} image={e.image} price={e.price}/>;
-      })}
-    </div>
+    <CardsContainer className="mx-4">
+      <Filter />
+      <div className="mx-auto mt-3 row row-cols-1 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 g-2">
+        {data.map((e) => {
+          return (
+            <div className="col">
+              <Card key={e.id} name={e.name} image={e.image} price={e.price} />
+            </div>
+          );
+        })}
+      </div>
+    </CardsContainer>
   );
 };
-
+// d-grid gap-2 col-9 mx-auto mt-3
 export default Cards;
