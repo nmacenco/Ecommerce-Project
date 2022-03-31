@@ -1,4 +1,4 @@
-import { IProduct_Create } from "./Form";
+import { IProduct_Create } from "./FormCreate";
 
 export default function validaciones(props: IProduct_Create): boolean {
     let bool: boolean = false,
