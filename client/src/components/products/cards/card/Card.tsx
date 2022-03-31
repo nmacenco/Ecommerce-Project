@@ -1,5 +1,6 @@
 import React from "react";
-import { ProductIMG } from "./CardStyles";
+import { CardComponent, ProductIMG } from "./CardStyles";
+import cartIcon from "../../../../icons/cart-icon.png";
 
 interface props {
   name: string;
@@ -9,31 +10,16 @@ interface props {
 
 const Cards = ({ name, image, price }: props) => {
   return (
-    <>
-      <div className="card">
-        <div className="card-body">
-          <div className="m-1">
-            <ProductIMG
-              src={image}
-              alt={image}
-              className="rounded float-start"
-            ></ProductIMG>
-            <div>
-              <h4 className="card-title">{name}</h4>
-              <h5>${price}</h5>
-            </div>
-          </div>
-          <div className="d-grid d-md-flex justify-content-md-end">
-            <button
-              type="button"
-              className="d-grid d-md-flex justify-content-md-end btn btn-outline-primary"
-            >
-              Add to cart
-            </button>
-          </div>
-        </div>
+    <CardComponent className="card mx-auto">
+      <ProductIMG src={image} alt={image} className="card-img-top"></ProductIMG>
+      <p className="card-body">{name}</p>
+      <div className="d-flex justify-content-between">
+        <h5 className="m-2">${price}</h5>
+        <button type="button" className="btn btn-primary">
+          <img src={cartIcon} alt=""></img>
+        </button>
       </div>
-    </>
+    </CardComponent>
   );
 };
 

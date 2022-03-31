@@ -1,14 +1,16 @@
-const { Brand, Product_Brand } = require("../db");
+const { Brand } = require("../db");
 
 const getBrands = async (req, res, next) => {
   try {
-    let databrand = await Brand.findAll({
-      //find the game in the database and return
-    });
-    res.status(200).json(databrand);
+    let dataBrand = await Brand.findAll({});
+    if (!dataBrand.length) {
+      res.status(404).send({ errorMsg: "Products not found" });
+    }
+    res
+      .status(200)
+      .send({ successMsg: "Here are your brands.", data: dataBrand });
   } catch (error) {
-    res.status(500);
-    console.log(error);
+    res.status(500).send({ errorMsg: error });
   }
 };
 
@@ -16,14 +18,15 @@ const createBrand = async (req, res, next) => {
   try {
     let { name } = req.body;
     if (!name) {
-      res.status(404).send("Falta data");
+      res.status(404).send({ errorMsg: "Missing data" });
     } else {
-      const newbrand = await Brand.create({ name });
-      console.log(newbrand);
-      res.status(200).json(newbrand);
+      const newBrand = await Brand.create({ name });
+      res
+        .status(200)
+        .send({ successMsg: "Brand successfully created.", data: newBrand });
     }
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ errorMsg: error });
   }
 };
 

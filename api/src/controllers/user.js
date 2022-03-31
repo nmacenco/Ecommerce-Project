@@ -19,7 +19,7 @@ const createUser = async (req, res, next) => {
       !email ||
       !billing_address ||
       !default_shipping_address ||
-      // !country_id ||
+      !country_id ||
       !role
     ) {
       res.status(404).json({ "errorMsg": "missing data" });
@@ -30,7 +30,7 @@ const createUser = async (req, res, next) => {
         email,
         billing_address,
         default_shipping_address,
-        // country_id,
+        country_id,
         role,
         isActive,
       });

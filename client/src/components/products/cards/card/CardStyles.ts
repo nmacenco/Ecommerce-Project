@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 export const ProductIMG = styled.img`
-height:7em;
-margin-right:2em;
-`
+  max-height: 280px;
+  padding:1rem;
+`;
+
+export const CardComponent = styled.div`
+  max-width: 18em;
+  height:100%;
+`;

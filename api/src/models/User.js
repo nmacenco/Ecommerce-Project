@@ -4,9 +4,14 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   sequelize.define("User", {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
       primaryKey: true,
+      allowNull: false,
+      autoIncrement: true,
+    },
+    //fk
+    country_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     name: {
@@ -28,11 +33,6 @@ module.exports = (sequelize) => {
     default_shipping_address: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    //fk
-    country_id: {
-      type: DataTypes.UUID,
-      allowNull:false,
     },
     role: {
       type: DataTypes.STRING,
