@@ -45,6 +45,7 @@ module.exports = (sequelize) => {
     },
     soldCount: {
       type: DataTypes.INTEGER,
+      defaultValue:0,
       allowNull: false,
     },
   });
