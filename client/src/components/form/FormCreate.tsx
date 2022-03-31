@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { postProduct } from '../../redux/actions/products';
-import validaciones from './validaciones'
+import validaciones from './validations'
 
 export interface IProduct_Create {
     subcategory_id: string[];

@@ -3,7 +3,7 @@ import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
 import { SearchIcon, CartIcon } from "./NavStyles";
 import { NavLink } from "react-router-dom";
-
+import AdminDropdown from "./adminDropdown/AdminDropdown";
 const Nav = () => {
   return (
     <div>
@@ -16,18 +16,18 @@ const Nav = () => {
           <div className="collapse navbar-collapse" id="navbarColor01">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                  <NavLink className="nav-link" to={"/products"}>
+                <NavLink className="nav-link" to={"/products"}>
                   <a className="nav-link" href="">
                     Products
                   </a>
-                  </NavLink>
+                </NavLink>
               </li>
               <li className="nav-item">
-              <NavLink className="nav-link" to={"/products"}>
-                <a className="nav-link" href="#">
-                  About
-                </a>
-              </NavLink>
+                <NavLink className="nav-link" to={"/products"}>
+                  <a className="nav-link" href="#">
+                    About
+                  </a>
+                </NavLink>
               </li>
             </ul>
             <form className="nav-item d-flex">
@@ -46,6 +46,7 @@ const Nav = () => {
             >
               LOG IN
             </button>
+            <AdminDropdown />
           </div>
           <div className="ms-auto">
             <NavLink className="nav-item" to={"/cart"}>
