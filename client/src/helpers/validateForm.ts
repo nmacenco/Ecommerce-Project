@@ -4,6 +4,28 @@
  * 
  */
 
+export const validateForms=(errores:any,inputs:any):string=>{
+
+    let result:string='';
+
+    for(let index in errores){
+
+        if(errores[index]){
+            result='Existen errores';
+        }
+    }
+
+    for (let index in inputs){
+
+        if(!inputs[index]){
+            result='Existen campos vacios';
+
+        }
+    }
+    return result;
+}
+
+
 const validator=(errorState:any,input:HTMLInputElement)=>{
 
     const name:string=input.name;
@@ -11,8 +33,6 @@ const validator=(errorState:any,input:HTMLInputElement)=>{
     const value:string=input.value;
 
     let newErrors={}
-    console.log('El Stado del error es: ',errorState);
-    console.log('el input es de typo text: ',input );
 
     switch(type){
 

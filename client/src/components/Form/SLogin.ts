@@ -2,38 +2,22 @@ import styled from 'styled-components';
 
 
 export const ContainerLog=styled.div`
-    margin: auto;
-    span.spa-open{
-        border: none;
-        background-color: none;
-        text-transform: uppercase;
-        cursor:pointer;
-    }
-
-`
-
-
-export const LogModal = styled.section`
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #978c8c6e;
+    width: 100%;
+    height: calc(100% - 100px);
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    z-index: 10;
 
-`;
+
+`
 
 export const LogForm = styled.form`
-         width: 320px;
+         width: 340px;
          /* height: 80%; */
-         background-color: #556c85;
-         border-radius: 10px;
-         padding: 10px;
+         background-color: #43494e;
+         /* border-radius: 5px; */
+         padding: 10px 20px;
 
          header {
            margin: 20px 10px;
@@ -41,41 +25,44 @@ export const LogForm = styled.form`
            color: white;
            font-weight: bold;
            font-size: 1.2rem;
+           text-transform: uppercase;
          }
-         article {
-           width: 96%;
-           margin: 10px 2%;
-           height: 50px;
-           text-align: right;
-           button {
-             padding: 5px 10px;
-             border-radius: 2px;
+
+         .div-inputs {
+           display: flex;
+           div:nth-child(1) {
              margin-right: 10px;
            }
          }
-      .div-inputs{
-        display: flex;
-        input:nth-child(1){
-          margin-right: 10px;
-        }
-      }
+       `;
 
-`;
+export const Content = styled.div`
+         width: 96%;
+         margin: 10px 2%;
+         /* height: 300px; */
 
-export const Content=styled.div`
-    width: 96%;
-    margin: 10px 2%;
-    /* height: 300px; */
-
-    input{
-        border: none;
-        outline: none;
-        padding:20px 10px;
-        margin: 10px 0px;
-        width: 100%;
-        height: 30px;
-        border-radius: 5px;
-
-    }
-
-`
+         input {
+           width: 100%;
+           margin: 15px 0px;
+           background-clip: padding-box;
+           border: 0 solid #ced4da;
+           -webkit-appearance: none;
+           -moz-appearance: none;
+           appearance: none;
+           padding: 11px 15px;
+           outline: none;
+         }
+         input:focus {
+           box-shadow: 0 0 0 0.25rem rgb(206 198 198 / 25%);
+         }
+         article {
+           width: 96%;
+           margin: 20px 2% 10px 2%;
+           height: 50px;
+           text-align: right;
+           .button-links {
+             padding: 8px 10px;
+             margin-right: 10px;
+           }
+         }
+       `;

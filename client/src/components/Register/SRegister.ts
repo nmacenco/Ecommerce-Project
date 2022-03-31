@@ -5,7 +5,7 @@ export const Content = styled.div`
   margin: 10px 2%;
   /* height: 300px; */
 
-  input {
+  /* input {
     border: none;
     outline: none;
     padding: 20px 10px;
@@ -13,5 +13,5 @@ export const Content = styled.div`
     width: 100%;
     height: 30px;
     border-radius: 5px;
-  }
+  } */
 `;

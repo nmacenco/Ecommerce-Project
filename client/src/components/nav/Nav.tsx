@@ -2,7 +2,7 @@ import React from "react";
 import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
 import { SearchIcon, CartIcon } from "./NavStyles";
-
+import {Link} from 'react-router-dom';
 const Nav = () => {
   return (
     <div>
@@ -35,12 +35,12 @@ const Nav = () => {
                 <SearchIcon src={searchIcon} />
               </button>
             </form>
-            <button
-              className="nav-item btn btn-secondary my-sm-3"
-              type="submit"
-            >
-              LOG IN
-            </button>
+            <Link to='/login' className="nav-item btn btn-secondary my-sm-3 link-Router" >
+              Login
+            </Link>
+            <Link to='/register' className="nav-item btn btn-secondary my-sm-3 link-Router" >
+              Register
+            </Link>
           </div>
           <div className="ms-auto">
             <a className="nav-item" href="/cart">
