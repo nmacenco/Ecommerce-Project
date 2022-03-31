@@ -11,7 +11,7 @@ export const postProduct = (product: IProduct_Create) => {
 
     return async (dispatch: Dispatch) => {
         //Ponemos el dispatch para tener mayor control del dispatch
-        // await axios.post(URL)
+        await axios.post(URL)
         alert('Receta creada con exito')
     }
 }
