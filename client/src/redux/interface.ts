@@ -13,14 +13,14 @@ export interface User {
 
 
 export interface Product {
-    id: number,
+    id?: number,
     subcategory_id: string[],
     name: string,
     brand: string,
     image: string,
     price: number,
     description: string,
-    weight: number,
+    weigth: number,
     stock: number
 }
 
@@ -42,7 +42,6 @@ export interface DELETE_PRODUCT_DETAIL {
     type: TYPES.DELETE_PRODUCT_DETAIL,
     payload: Product
 }
-
 
 export type Actions =
     | CREATE_USER
