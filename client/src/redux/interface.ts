@@ -22,7 +22,6 @@ export interface User {
     token: string
 }
 
-
 export interface Product {
     id?: number,
     subcategory_id: string[],
@@ -64,8 +63,8 @@ export interface FIND_USER {
 //=====================
 //Products Actions
 export interface PRODUCT_DETAIL {
-    type: TYPES.PRODUCT_DETAIL,
-    payload: Product
+  type: TYPES.PRODUCT_DETAIL;
+  payload: Product;
 }
 export interface GET_PRODUCTS {
     type: TYPES_PRODUCT.GET_PRODUCTS,
@@ -76,6 +75,7 @@ export interface DELETE_PRODUCT_DETAIL {
     type: TYPES.DELETE_PRODUCT_DETAIL,
     payload: Product
 }
+
 
 export type Actions =
     | PRODUCT_DETAIL
