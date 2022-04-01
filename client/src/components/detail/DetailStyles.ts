@@ -7,6 +7,7 @@ export const DetailContainer = styled.div`
   justify-content: flex-start;
   width: 100%;
   height: 100vh;
+  margin-top:128px;
 `;
 
 export const Box = styled.div`
@@ -69,9 +70,9 @@ export const MiniImages = styled.img`
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
-    @media (min-width: 800px) {
+    @media (min-width: 600px) {
       
-      width: 40%;
+      width: 60%;
     }
 
   `;
