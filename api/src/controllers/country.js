@@ -6,7 +6,14 @@ const getCountries = async (req, res, next) => {
     if (!countries.length) {
       res.status(404).send({ errorMsg: "Countries not found." });
     }
-    res.status(200).send({ successMsg: "successfully", countries });
+    countries = countries.map((country) => {
+      return {
+        name: country.name,
+        code: country.code,
+        id: country.id,
+      };
+    });
+    res.status(200).send({ successMsg: "Here are your countries.", countries });
   } catch (error) {
     res.status(500).send({ errorMsg: error });
   }
@@ -15,12 +22,20 @@ const setCountries = async (req, res) => {
   try {
     let { name, code } = req.body;
     if (!name || !code) {
-      res.status(400).send({ errorMsg: "Missing data" });
+      res.status(400).send({ errorMsg: "Missing data." });
     } else {
-      const newCountry = await Country.create({ name, code });
-      res
-        .status(201)
-        .send({ successMsg: "Country successfully created.", data: newCountry });
+      const [newCountry, created] = await Country.findOrCreate({
+        where: {
+          name,
+          code,
+        },
+      });
+      created
+        ? res.status(201).send({
+            successMsg: "Country successfully created.",
+            data: newCountry,
+          })
+        : res.status(400).send({ errorMsg: "Country already exists." });
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error });
