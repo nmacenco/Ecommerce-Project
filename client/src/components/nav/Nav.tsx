@@ -2,10 +2,11 @@ import React from "react";
 import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
 import { SearchIcon, CartIcon } from "./NavStyles";
+import { NavLink } from "react-router-dom";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Link } from "react-router-dom";
 
-const Nav = () => {
+const Nav = (): JSX.Element => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary d-flex">
       <div className="container-fluid">
@@ -40,10 +41,14 @@ const Nav = () => {
           </button>
           <AdminDropdown />
         </div>
+        {/* {"tercer div"} */}
+        <AdminDropdown />
         <div className="ms-auto">
-          <a className="nav-item" href="/cart">
-            <CartIcon src={cartIcon} />
-          </a>
+          <NavLink className="nav-item" to={"/cart"}>
+            <a className="nav-item" href="/cart">
+              <CartIcon src={cartIcon} />
+            </a>
+          </NavLink>
           <button
             className="navbar-toggler"
             type="button"

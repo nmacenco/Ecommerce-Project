@@ -20,7 +20,22 @@ export const productDetailReducer = (
     case TYPES.PRODUCT_DETAIL:
       return action.payload;
 
+<<<<<<< HEAD
     default:
       return state;
   }
 };
+=======
+    switch (action.type) {
+  
+      case TYPES.PRODUCT_DETAIL:
+          return action.payload
+  
+      case TYPES.DELETE_PRODUCT_DETAIL:
+          return action.payload
+  
+      default:
+        return state;
+    }
+  };
+>>>>>>> adeb277297a4f01e49b75268e575704325308ae1
