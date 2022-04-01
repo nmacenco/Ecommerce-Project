@@ -4,9 +4,13 @@ import Categories from "./categories/Categories";
 
 const Products = () => {
   return (
-    <div className="d-flex">
-      <Categories />
-      <Cards />
+    <div className="row row-cols-lg-2 row-cols-md-1 mx-auto">
+      <div className="col-xl-2 col-lg-3 col-sm-12">
+        <Categories />
+      </div>
+      <div className=" col-lg-9 col-md-12">
+        <Cards />
+      </div>
     </div>
   );
 };

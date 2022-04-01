@@ -2,7 +2,7 @@ import React from "react";
 
 const Filter = () => {
   return (
-    <div className="card mx-auto mt-3">
+    <div className="card mt-3">
       <div className="card-body m-1 d-flex">
         <ul className="nav-item dropdown p-0 m-0">
           <a

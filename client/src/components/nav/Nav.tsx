@@ -3,20 +3,21 @@ import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
 import { SearchIcon, CartIcon } from "./NavStyles";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary d-flex">
       <div className="container-fluid">
-        <a className="navbar-brand" href="/home">
+        <Link className="navbar-brand" to="/home">
           ECOMMERCE
-        </a>
+        </Link>
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/products">
+              <Link className="nav-link" to="/products">
                 Products
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
