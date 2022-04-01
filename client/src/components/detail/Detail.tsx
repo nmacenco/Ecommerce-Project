@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
-import { getProductDetail } from '../../redux/actions/productDetail';
-import { State } from '../../redux/reducers/index'
+import { useParams, Link, useNavigate } from "react-router-dom";
+import {getProductDetail , deleteProductDetail} from '../../redux/actions/productDetail';
+import {State} from '../../redux/reducers/index'
+import Loading from "../loading/Loading";
 import {
   DetailContainer,
   Box,
@@ -19,20 +20,23 @@ import {
 export default function Detail() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useParams<{ id?: string }>()
-  const product = useSelector((state: State) => state.productDetail)
-
+  const {id} = useParams<{id?: string}>()
+  const product = useSelector ((state : State) => state.productDetail)
+  
   // const product = useSelector(state )
-
-  useEffect(() => {
+  
+  useEffect(()=> {
     dispatch(getProductDetail(id))
-    return () => {
-
+    return ()=> {
+      dispatch(deleteProductDetail())
     }
   }, [])
 
   return (
     <DetailContainer>
+      {
+        product.name.length > 0 ?
+
       <Box>
         <div>
           <h3>{product.name}</h3>
@@ -60,15 +64,19 @@ export default function Detail() {
                 </button>
                 <DeleteEditButton>
                   <button type="button" className="btn btn-danger btn-sm">Delete</button>
-                  <button type="button" className="btn btn-warning btn-sm">Edit</button>
+                  <Link to={`/editProduct/${product.id}`}>
+                    <button type="button" className="btn btn-warning btn-sm">Edit</button>
+                  </Link>
                 </DeleteEditButton>
-
               </Price>
             </ImgPriceContainer>
           </div>
         </div>
         <div></div>
-      </Box>
+      </Box> 
+      :
+      <Loading></Loading>
+      }
       <ReviewComentsBox>
         <ul className="nav nav-tabs">
           <li className="nav-item">
@@ -91,7 +99,6 @@ export default function Detail() {
           <div className="tab-pane fade active show" id="questions">
             <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork</p>
           </div>
-
         </div>
       </ReviewComentsBox>
     </DetailContainer>

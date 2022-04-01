@@ -69,9 +69,9 @@ export const MiniImages = styled.img`
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
-    @media (min-width: 800px) {
+    @media (min-width: 600px) {
       
-      width: 40%;
+      width: 60%;
     }
 
   `;
