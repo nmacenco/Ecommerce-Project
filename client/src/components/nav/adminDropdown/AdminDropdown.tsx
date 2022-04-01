@@ -1,5 +1,6 @@
 import React from "react";
 import { DropdownMenu } from "./AdminDropdownStyle";
+import { Link } from "react-router-dom";
 
 const AdminDropdown = () => {
   return (
@@ -16,9 +17,9 @@ const AdminDropdown = () => {
         Admin
       </a>
       <DropdownMenu className="dropdown-menu">
-        <a className="dropdown-item" href="#">
+        <Link className="dropdown-item" to="/createProduct">
           Create product
-        </a>
+        </Link>
         <a className="dropdown-item" href="#">
           Admin mode
         </a>

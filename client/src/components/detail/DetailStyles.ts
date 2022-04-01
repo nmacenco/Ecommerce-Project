@@ -7,6 +7,7 @@ export const DetailContainer = styled.div`
   justify-content: flex-start;
   width: 100%;
   height: 100vh;
+  margin-top:128px;
 `;
 
 export const Box = styled.div`

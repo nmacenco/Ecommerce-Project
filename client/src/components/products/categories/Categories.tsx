@@ -18,7 +18,7 @@ const Categories = () => {
   ];
 
   return (
-    <CategoriesContainer className="accordion ms-3 mt-3" id="accordionMain">
+    <CategoriesContainer className="accordion mx-3 mt-3" id="accordionMain">
       <div className="accordion-item">
         <h2 className="accordion-header" id="headingOne">
           <button
