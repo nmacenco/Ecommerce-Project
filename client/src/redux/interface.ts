@@ -11,7 +11,7 @@ export enum TYPES {
 }
 
 export enum TYPES_PRODUCT {
-    GET_PRODUCTS
+    GET_PRODUCTS = 'GET_PRODUCTS'
 }
 
 export interface User {
