@@ -1,18 +1,15 @@
-
-
 import { Actions, Product, TYPES } from '../interface';
-
 
 const INITIAL_PRODUCT = {
   id: 0,
   subcategory_id: [],
-  name: '',
-  brand: '',
-  image: '',
+  name: "",
+  brand: "",
+  image: "",
   price: 0,
-  description: '',
+  description: "",
   weigth: 0,
-  stock: 0
+  stock: 0,
 };
 
 export const productDetailReducer = (state: Product = INITIAL_PRODUCT, action: Actions): Product => {

@@ -8,7 +8,8 @@ import Products from "./components/products/Products";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import Loading from "./components/loading/Loading";
-import FromCreate from "./components/form/FormCreate";
+import Edit from "./components/detail/edit/EditProduct";
+import FormCreate from "./components/form/FormCreate";
 
 function App(): JSX.Element {
   return (
@@ -19,7 +20,8 @@ function App(): JSX.Element {
           <Route path="*" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/createProduct" element={<FromCreate />} />
+          <Route path="/createProduct" element={<FormCreate />} />
+          <Route path="/editProduct/:id" element={<Edit />} />
           <Route path="/products" element={<Products />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />

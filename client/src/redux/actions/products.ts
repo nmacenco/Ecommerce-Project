@@ -1,35 +1,34 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { GET_PRODUCTS, Product, TYPES_PRODUCT } from "../interface";
-// import interfaces from '....'
 
-const URL = "http://localhost:3001/api/products";
+import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
+// import interfaces from '....'
+const URL = "http://localhost:3001/api";
 
 export const postProduct = (product: Product) => {
-  return async (dispatch: Dispatch) => {
-    //Ponemos el dispatch para tener mayor control del dispatch
-    await axios.post(URL);
-    alert("Receta creada con exito");
-  };
+  try {
+
+    return async (dispatch: Dispatch) => {
+      //Ponemos el dispatch para tener mayor control del dispatch
+      await axios.post(`${URL}/products`, product);
+      alert("Product added successfully");
+    };
+  } catch (error) {
+    alert(error)
+  }
 };
 
-export const getProducts=()=>{
-    return async(dispatch:Dispatch)=>{
-
-      try{
-        const {data}=await axios.get(URL);
-        console.log(data.data);
-
-        dispatch<GET_PRODUCTS>({
-          type:TYPES_PRODUCT.GET_PRODUCTS,
-          payload:data.data
-        })
-
-      }catch(error){
-        console.log('Error en postProduct: ',error);
-      }
-
+export const getProducts = () => {
+  try {
+    return async (dispatch: Dispatch) => {
+      const allProducts = await axios.get<AXIOSDATA>(`${URL}/products`);
+      return dispatch({
+        type: TYPES_PRODUCT.GET_PRODUCTS,
+        payload: allProducts.data.data
+      })
     }
+  } catch (error) {
+    alert(error)
+  }
+};
 
-
-}
