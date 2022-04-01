@@ -1,4 +1,4 @@
-const { User, Order, OrderDetail } = require("../db");
+const { User, Order, OrderDetail, Country } = require("../db");
 
 const createUser = async (req, res, next) => {
   try {
@@ -10,6 +10,7 @@ const createUser = async (req, res, next) => {
       default_shipping_address,
       country_id,
       role,
+      password,
       isActive,
     } = req.body;
     console.log(req.body);
@@ -20,7 +21,8 @@ const createUser = async (req, res, next) => {
       !billing_address ||
       !default_shipping_address ||
       !country_id ||
-      !role
+      !role ||
+      !password
     ) {
       res.status(404).json({ errorMsg: "missing data" });
     } else {
@@ -28,34 +30,97 @@ const createUser = async (req, res, next) => {
         name,
         surname,
         email,
+        password,
         billing_address,
         default_shipping_address,
         country_id,
         role,
         isActive,
       });
-      res.status(200).json({ successfulMsg: "successful", newUser });
+      res.status(200).json({ successMsg: "successful", newUser });
     }
   } catch (error) {
     res.status(500).json({ errorMsg: "ERROR", error });
   }
 };
 
-const updateUser = (req, res, next) => {};
+const updateUser = async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const singleUser = await User.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (singleUser) {
+      await singleUser.update({
+        name: "Francisco2",
+        surname: "Lubo2",
+        password: "admin",
+        email: "franciscolubo2@hotmail.com",
+        billing_address: "Entre rios2",
+        default_shipping_address: "Entre rios2",
+        role: "admin",
+        isActive: false,
+        CountryId: 1,
+      });
+      res.status(200).send({ successfulMsg: "successful", singleUser });
+    } else {
+      res.status(404).json({ errorMsg: "user not found" });
+    }
+  } catch (error) {
+    res.status(404).send({ errorMsg: "ERROR", error });
+  }
+};
 
 const getUsers = async (req, res, next) => {
   try {
-    let users = await User.findAll({});
+    let users = await User.findAll({
+      // attributes: [
+      //   "id",
+      //   "name",
+      //   "surname",
+      //   "password",
+      //   "email",
+      //   "billing_address",
+      //   "default_shipping_address",
+      //   "role",
+      //   "isActive"
+      // ],
+      // include: [
+      //   {
+      //     model: Country,
+      //     attributes:["id"],
+      //   },
+      // ],
+    });
     res.status(200).send({ successfulMsg: "successful", users });
   } catch (error) {
     res.status(404).send({ errorMsg: "ERROR", error });
   }
 };
 
-const getSingleUser = (req, res, next) => {};
+const getSingleUser = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    if (!id) {
+      res.status(404).json({ errorMsg: "missing data" });
+    } else {
+      const siglesUser = await User.findByPk(id);
+      siglesUser
+        ? res.status(200).send({ successfulMsg: "successful", siglesUser })
+        : res.status(404).json({ errorMsg: "user not found" });
+    }
+  } catch (error) {
+    res.status(404).send({ errorMsg: "ERROR", error });
+  }
+};
 
-const getUserOrders = (req, res, next) => {};
+const getUserOrders = (req, res, next) => {
 
+  
+};
 
 const signIn = (req, res, next) => {};
 
