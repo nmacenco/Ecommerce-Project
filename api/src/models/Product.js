@@ -38,5 +38,10 @@ module.exports = (sequelize) => {
       defaultValue: 0,
       allowNull: false,
     },
+    BrandId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
   });
 };

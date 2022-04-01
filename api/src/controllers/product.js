@@ -82,65 +82,18 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
-const getProducts = async (req, res, next) => {
-
-  try {
-
-    let dataProduct = await Product.findAll({
-      attributes: ['id', 'name', 'image', 'price', 'description', 'weight',
-          'stock', 'soldCount', 'BrandId', 'SubcategoryId'],
-          // include: {
-          //       model: Subcategory,
-          //       attributes: ["name"],        }
-      });
-
-
-    //   include: [
-    //     { model: Brand, attributes: ['name'] },
-    //     { model: Subcategory, attributes: ['name'] },
-    //     { model: Category, attributes: ['name'] },
-    //   ],
-    //   where: {
-    //     Product.category_id: Subcategory.id,
-    //     Product.brand_id: Brand.id
-
-    //   }
-    // });
-
-
-
-
-
-
-
-    // { model: Brand, attributes: ['name'] },
-    // { model: Subcategory, attributes: ['name'] },
-    // { model: Category, attributes: ['name'] },
-    // ],
-    // where: {
-    // category_id: Subcategory.id,
-    // BrandId: 2 //Brand.Id
-    // }
-    // });
-
-
-    dataProduct
-      ? res.status(201).json({ successMsg: "Data found in Database", data: dataProduct })
-      : res.status(404).send({ errorMsg: "The product doesn't found" });
-  } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
-  }
-};
 
 const getSingleProduct = async (req, res, next) => {
   try {
     const id = req.params.id;
-
     let productSingle = await Product.findOne({
+      attributes: ['id', 'name', 'image', 'price', 'description', 'weight',
+        'stock', 'soldCount', 'BrandId', 'SubcategoryId'],
       where: {
         id,
       },
     });
+
     productSingle
       ? res.status(201).json({ successMsg: "Data found in Database", data: productSingle })
       : res.status(404).send({ errorMsg: "The product doesn't found" });
@@ -151,8 +104,56 @@ const getSingleProduct = async (req, res, next) => {
 
 };
 
-
 const deleteProduct = (req, res, next) => { };
+
+const getProducts = async (req, res, next) => {
+  try {
+    let dataProduct = await Product.findAll({
+      attributes: ['id', 'name', 'image', 'price', 'description', 'weight',
+        'stock', 'soldCount', 'BrandId', 'SubcategoryId'],
+      include: [
+        {
+          model: Brand,
+          attributes: ["name"],
+        },
+        {
+          model: Subcategory,
+          attributes: ["name"],
+          include: [
+            {
+              model: Category,
+              attributes: ["name"],
+            }
+          ]
+        },
+      ],
+    });
+  
+
+
+
+
+
+    
+  //   UserRate.findAll({
+  //     include: [{
+  //         model: User, as: 'userRate',
+  //         include: [{
+  //             model: Status, as: 'userStatus',
+  //         }],
+  //     }],
+  // });
+
+
+    dataProduct
+      ? res.status(201).json({ successMsg: "Data found in Database", data: dataProduct })
+      : res.status(404).send({ errorMsg: "The product doesn't found" });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+
 
 module.exports = {
   createProduct,
@@ -161,44 +162,4 @@ module.exports = {
   getSingleProduct,
   deleteProduct,
 };
-
-
-
-    // let dataProduct = await Product.findAll({
-    //   include: {
-    //     model: Brand,Subcategory,
-    //     attributes: ["name"],
-    //     through: {
-    //       attributes: [brand_id,subcategoy_id],
-    //     },
-    //   },
-    // });
-
-    // let dataProduct_1 = await Product.findAll({
-    //   include: [
-    //     { model: Brand, attributes: ['name'] },
-    //     { model: Subcategory, attributes: ['name'] },
-    //     { model: Category, attributes: ['name'] },
-    //   ],
-    //   where: {
-    //     Product.category_id: Subcategory.id,
-    //     Product.brand_id: Brand.id
-
-    //   }
-    // });
-
-    // Post.findAll({
-    //   where: {
-    //     authorId: 12,
-    //     status: 'active'
-    //   }
-    // });
-
-
-
-
-
-
-
-
 

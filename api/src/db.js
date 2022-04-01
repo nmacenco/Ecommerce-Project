@@ -67,24 +67,20 @@ const {
 } = sequelize.models;
 
 //Entity-relations
-User.hasMany(Order, { as: "User_Orders" });
-User.hasMany(Review, { as: "User_Review" });
-User.hasMany(Question, { as: "User_Question" });
-Order.hasMany(Order_detail, { as: "Order_Detail" });
-Product.hasMany(Order_detail, { as: "Product_Order_Detail" });
-Product.hasMany(Review, { as: "Product_Review" });
-Product.hasMany(Question, { as: "Product_Question" });
-Brand.hasMany(Product, { as:"Brand_Product" });
-Country.hasMany(User, { as: "Country_User" });
-Subcategory.hasMany(Product, { as: "Subcategory_Product" });
-Category.hasMany(Subcategory, { as: "Category_Subcategory"});// Funcionando
-// Category.hasMany(Subcategory, { as: "Category_Subcategory" ,onUpdate: 'RESTRICT'})
-// Subcategory.hasOne(Category, { as: "Category_Subcategory" });
-// Foo.hasOne(Bar, {
-//   onDelete: 'RESTRICT',
-//   onUpdate: 'RESTRICT'
-// });
-
+User.hasMany(Order);
+User.hasMany(Review);
+User.hasMany(Question);
+Order.hasMany(Order_detail);
+Product.hasMany(Order_detail);
+Product.hasMany(Review);
+Product.hasMany(Question);
+Product.belongsTo(Subcategory);
+Product.belongsTo(Brand);
+Brand.hasMany(Product);
+Country.hasMany(User);
+Subcategory.hasMany(Product);
+Subcategory.belongsTo(Category);
+Category.hasMany(Subcategory);
 
 module.exports = {
   ...sequelize.models,
