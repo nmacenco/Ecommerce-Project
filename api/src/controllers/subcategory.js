@@ -31,7 +31,7 @@ const createSubCategory = async (req, res, next) => {
       });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 

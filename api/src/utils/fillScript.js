@@ -51,7 +51,6 @@ const bulkCreateSubcategories = async()=>{
   }
 }
 
-
 module.exports = {
   bulkCreateCategories,
   bulkCreateBrands,
