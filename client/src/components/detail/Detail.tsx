@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import {getProductDetail} from '../../redux/actions/productDetail';
+import {getProductDetail , deleteProductDetail} from '../../redux/actions/productDetail';
 import {State} from '../../redux/reducers/index'
+import Loading from "../loading/Loading";
 import {
   DetailContainer,
   Box,
@@ -21,19 +22,21 @@ export default function Detail() {
   const dispatch = useDispatch();
   const {id} = useParams<{id?: string}>()
   const product = useSelector ((state : State) => state.productDetail)
-  console.log(product);
   
   // const product = useSelector(state )
-
+  
   useEffect(()=> {
     dispatch(getProductDetail(id))
     return ()=> {
-      
+      dispatch(deleteProductDetail())
     }
   }, [])
 
   return (
     <DetailContainer>
+      {
+        product.name.length > 0 ?
+
       <Box>
         <div>
           <h3>{product.name}</h3>
@@ -69,7 +72,10 @@ export default function Detail() {
           </div>
         </div>
         <div></div>
-      </Box>
+      </Box> 
+      :
+      <Loading></Loading>
+      }
       <ReviewComentsBox>
       <ul className="nav nav-tabs">
   <li className="nav-item">
