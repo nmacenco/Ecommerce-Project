@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import validator, { validateForms } from '../../helpers/validateForm';
-import Form from '../form/Form'
+import { GetUSer } from '../../redux/actions/user';
+import { State } from '../../redux/reducers';
+import Form from '../form/Form';
 
 interface Inputs {
     email: string,
@@ -10,9 +13,12 @@ interface Inputs {
 
 const Login = (): JSX.Element => {
 
-    const [inputs, setInputs] = useState<Inputs>({
-        email: '',
-        passUser: ''
+    const dispatch=useDispatch();
+    const user=useSelector((state:State)=>state.user);
+
+    const [inputs,setInputs]=useState<Inputs>({
+        email:'',
+        passUser:''
     });
     const [error, setErrores] = useState<Inputs>({
         email: '',
@@ -30,17 +36,23 @@ const Login = (): JSX.Element => {
     }
 
     const RegisterFetch = (event: any) => {
-
         event.preventDefault();
         const res = validateForms(error, inputs);
 
         if (res) {
             return alert(res);
         }
+        console.log('Envio de datos Registro');
 
         /**
          * dispatch
          */
+
+        if(!user){
+            
+            // dispatch(GetUSer(inputs.email,inputs.passUser))
+        }
+
 
     }
 
