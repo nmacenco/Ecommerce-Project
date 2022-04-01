@@ -68,19 +68,27 @@ const {
 
 //Entity-relations
 User.hasMany(Order);
+Order.belongsTo(User);
 User.hasMany(Review);
+Review.belongsTo(User);
 User.hasMany(Question);
+Question.belongsTo(User);
 Order.hasMany(Order_detail);
+Order_detail.belongsTo(Order);
 Product.hasMany(Order_detail);
+Order_detail.belongsTo(Product);
 Product.hasMany(Review);
+Review.belongsTo(Product);
 Product.hasMany(Question);
-Product.belongsTo(Subcategory);
-Product.belongsTo(Brand);
+Question.belongsTo(Product);
 Brand.hasMany(Product);
-Country.hasMany(User);
+Product.belongsTo(Brand);
 Subcategory.hasMany(Product);
-Subcategory.belongsTo(Category);
+Product.belongsTo(Subcategory);
 Category.hasMany(Subcategory);
+Subcategory.belongsTo(Category);
+Country.hasMany(User);
+User.belongsTo(Country);
 
 module.exports = {
   ...sequelize.models,
