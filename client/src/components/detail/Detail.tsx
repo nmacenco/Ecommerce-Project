@@ -45,9 +45,9 @@ export default function Detail() {
           <div className="card-body">
             <ImgPriceContainer>
               <ImagesContainer>
-              <DetailImg src={product.image} alt="product-image"></DetailImg>
+                <DetailImg src={product.image} alt="product-image"></DetailImg>
                 <MiniImagesBox>
-                {/* <div className="card">
+                  {/* <div className="card">
                   <div className="card-body"> */}
                   <MiniImages src={product.image} alt="product-image"></MiniImages>
                   <MiniImages src={product.image} alt="product-image"></MiniImages>
@@ -63,10 +63,11 @@ export default function Detail() {
                   Add to cart
                 </button>
                 <DeleteEditButton>
-                <button type="button" className="btn btn-danger btn-sm">Delete</button>
-                <button type="button" className="btn btn-warning btn-sm">Edit</button>
+                  <button type="button" className="btn btn-danger btn-sm">Delete</button>
+                  <Link to={`/editProduct/${product.id}`}>
+                    <button type="button" className="btn btn-warning btn-sm">Edit</button>
+                  </Link>
                 </DeleteEditButton>
-                
               </Price>
             </ImgPriceContainer>
           </div>
@@ -77,29 +78,28 @@ export default function Detail() {
       <Loading></Loading>
       }
       <ReviewComentsBox>
-      <ul className="nav nav-tabs">
-  <li className="nav-item">
-    <a className="nav-link" data-bs-toggle="tab" href="#home">Description</a>
-  </li>
-  <li className="nav-item">
-    <a className="nav-link active" data-bs-toggle="tab" href="#profile">Reviews</a>
-  </li>
-  <li className="nav-item">
-    <a className="nav-link " data-bs-toggle="tab" href="#questions">Questions</a>
-  </li>
-</ul>
-<div id="myTabContent" className="tab-content">
-  <div className="tab-pane fade" id="home">
-    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
-  </div>
-  <div className="tab-pane fade active show" id="profile">
-    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
-  </div>
-  <div className="tab-pane fade active show" id="questions">
-    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork</p>
-  </div>
-
-</div>
+        <ul className="nav nav-tabs">
+          <li className="nav-item">
+            <a className="nav-link" data-bs-toggle="tab" href="#home">Description</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link active" data-bs-toggle="tab" href="#profile">Reviews</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link " data-bs-toggle="tab" href="#questions">Questions</a>
+          </li>
+        </ul>
+        <div id="myTabContent" className="tab-content">
+          <div className="tab-pane fade" id="home">
+            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+          </div>
+          <div className="tab-pane fade active show" id="profile">
+            <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+          </div>
+          <div className="tab-pane fade active show" id="questions">
+            <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork</p>
+          </div>
+        </div>
       </ReviewComentsBox>
     </DetailContainer>
   );

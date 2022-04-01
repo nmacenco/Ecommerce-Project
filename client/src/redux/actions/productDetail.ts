@@ -1,13 +1,12 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import {TYPES} from '../interface' ;
+import { TYPES } from '../interface';
 
 const URL = "http://localhost:3001/api/products/";
 
 export const getProductDetail = (id : string | undefined ) => {
   return async (dispatch: Dispatch) => {
     const product = await axios.get(URL + id); 
-    console.log(product.data.data);
     
     return dispatch (
       {
@@ -21,8 +20,8 @@ export const getProductDetail = (id : string | undefined ) => {
 };
 export const deleteProductDetail = () => {
   return {
-    type : TYPES.DELETE_PRODUCT_DETAIL ,
-    payload : {
+    type: TYPES.DELETE_PRODUCT_DETAIL,
+    payload: {
       id: 0,
       subcategory_id: [],
       name: '',
@@ -30,7 +29,7 @@ export const deleteProductDetail = () => {
       image: '',
       price: 0,
       description: '',
-      weight: 0,
+      weigth: 0,
       stock: 0
     }
   }

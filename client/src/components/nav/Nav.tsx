@@ -1,6 +1,7 @@
 import React from "react";
-import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
+
+import Search from "../SearchBar/Search";
 import { SearchIcon, CartIcon } from "./NavStyles";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -32,16 +33,7 @@ const Nav = (): JSX.Element => {
                 </NavLink>
               </li>
             </ul>
-            <form className="nav-item d-flex">
-              <input
-                className="form-control my-2"
-                type="text"
-                placeholder="Search"
-              ></input>
-              <button className="btn btn-secondary my-2" type="submit">
-                <SearchIcon src={searchIcon} />
-              </button>
-            </form>
+            <Search/>
             <Link
               to="/login"
               className="nav-item btn btn-secondary my-sm-3 link-Router"

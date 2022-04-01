@@ -1,24 +1,14 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { postProduct } from '../../redux/actions/products';
-import validaciones from './validations'
+import { Product } from '../../redux/interface';
+import validations from './validations'
 import { FormContainer } from './FormCreateStyles';
-
-export interface IProduct_Create {
-    subcategory_id: string[];
-    name: string;
-    brand: string;
-    image: string;
-    price: number;
-    description: string;
-    weigth: number;
-    stock: number;
-}
 
 
 export default function FromCreate(): JSX.Element {
     const dispatch = useDispatch()
-    const [product, setProduct] = useState<IProduct_Create>({
+    const [product, setProduct] = useState<Product>({
         name: "",
         subcategory_id: [],
         brand: "",
@@ -38,12 +28,13 @@ export default function FromCreate(): JSX.Element {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
-        validaciones(product)
+        validations(product)
             ? dispatch(postProduct(product))
             : alert('No se pudo crear la receta')
     }
 
     return (
+
         <FormContainer>
             <form onSubmit={handleSubmit}>
                 <fieldset>

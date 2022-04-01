@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import validator, { validateForms } from '../../helpers/validateForm';
+import { CreateUser } from '../../redux/actions/user';
+import { State } from '../../redux/reducers';
 import Form from '../form/Form';
+
 
 interface Inputs{
     name:string,
@@ -12,6 +16,9 @@ interface Inputs{
 }
 
 const Register=():JSX.Element=>{
+
+    const dispatch=useDispatch();
+    const user= useSelector((state:State)=>state.user);
 
     const [inputs,setInputs] =useState<Inputs>({
         email:'',
@@ -41,7 +48,7 @@ const Register=():JSX.Element=>{
         return prop ? 'form-control is-invalid' : 'form-control'
     }
 
-    const LoginFetch=(event:any)=>{
+    const RegisterFetch=(event:any)=>{
         event.preventDefault();
 
         const res= validateForms(error,inputs);
@@ -50,6 +57,9 @@ const Register=():JSX.Element=>{
             return alert(res);
         }
 
+        if(!user){
+            dispatch(CreateUser(inputs));
+        }
         /**
          * Request
          */
@@ -87,7 +97,7 @@ const Register=():JSX.Element=>{
                             Submit
                         </button>
                         :
-                        <button className='btn btn-success button-links link-Router'>
+                        <button className='btn btn-success button-links link-Router' onClick={RegisterFetch}>
                             Submit
                         </button>
                 }

@@ -1,46 +1,58 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import validator, { validateForms } from '../../helpers/validateForm';
+import { GetUSer } from '../../redux/actions/user';
+import { State } from '../../redux/reducers';
 import Form from '../form/Form';
 
-interface Inputs{
-    email:string,
-    passUser:string
+interface Inputs {
+    email: string,
+    passUser: string
 }
 
-const Login=():JSX.Element=>{
+const Login = (): JSX.Element => {
+
+    const dispatch=useDispatch();
+    const user=useSelector((state:State)=>state.user);
 
     const [inputs,setInputs]=useState<Inputs>({
         email:'',
         passUser:''
     });
-    const [error,setErrores]=useState<Inputs>({
-        email:'',
-        passUser:''
+    const [error, setErrores] = useState<Inputs>({
+        email: '',
+        passUser: ''
     });
 
-    const RegisterChange=(event:any)=>{
+    const RegisterChange = (event: any) => {
         event.preventDefault();
         setInputs({
             ...inputs,
-            [event.target.name]:event.target.value
+            [event.target.name]: event.target.value
         })
-        setErrores(validator(error,event.target as HTMLInputElement) as Inputs);
+        setErrores(validator(error, event.target as HTMLInputElement) as Inputs);
 
     }
 
-    const RegisterFetch=(event:any)=>{
-
+    const RegisterFetch = (event: any) => {
         event.preventDefault();
-        const res=validateForms(error,inputs);
+        const res = validateForms(error, inputs);
 
-        if(res){
+        if (res) {
             return alert(res);
         }
+        console.log('Envio de datos Registro');
 
         /**
          * dispatch
          */
+
+        if(!user){
+            
+            // dispatch(GetUSer(inputs.email,inputs.passUser))
+        }
+
 
     }
 
@@ -49,7 +61,7 @@ const Login=():JSX.Element=>{
     let emailStyle = error.email ? 'form-control is-invalid' : 'form-control';
     let passStyle = error.passUser ? 'form-control is-invalid' : 'form-control';
 
-    return(
+    return (
         <Form title='Login'>
             <div>
                 <input type='email' placeholder='Email' id='email' name='email' className={emailStyle} onChange={RegisterChange} />
