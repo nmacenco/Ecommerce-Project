@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import validator, { validateForms } from '../../helpers/validateForm';
-import Form from '../Form/Form';
+import Form from '../form/Form';
 
 interface Inputs{
     email:string,

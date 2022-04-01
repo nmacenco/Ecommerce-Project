@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { IProduct_Create } from "../../components/form/Form";
+import { IProduct_Create } from "../../components/form/FormCreate";
 // import interfaces from '....'
 
 const URL = "expample.com";

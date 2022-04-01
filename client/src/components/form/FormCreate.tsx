@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { postProduct } from '../../redux/actions/products';
-import validaciones from './validations';
+import validaciones from './validations'
+import { FormContainer } from './FormCreateStyles';
 
 export interface IProduct_Create {
     subcategory_id: string[];
@@ -43,7 +44,7 @@ export default function FromCreate(): JSX.Element {
     }
 
     return (
-        <div>
+        <FormContainer>
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Create Product</legend>
@@ -80,6 +81,6 @@ export default function FromCreate(): JSX.Element {
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </fieldset>
             </form>
-        </div>
+        </FormContainer>
     )
 }

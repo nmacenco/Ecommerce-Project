@@ -22,6 +22,9 @@ export  const productDetailReducer = (state : Product = INITIAL_PRODUCT , action
       case TYPES.PRODUCT_DETAIL:
           return action.payload
   
+      case TYPES.DELETE_PRODUCT_DETAIL:
+          return action.payload
+  
       default:
         return state;
     }
