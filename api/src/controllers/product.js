@@ -130,21 +130,6 @@ const getProducts = async (req, res, next) => {
     });
   
 
-
-
-
-
-    
-  //   UserRate.findAll({
-  //     include: [{
-  //         model: User, as: 'userRate',
-  //         include: [{
-  //             model: Status, as: 'userStatus',
-  //         }],
-  //     }],
-  // });
-
-
     dataProduct
       ? res.status(201).json({ successMsg: "Data found in Database", data: dataProduct })
       : res.status(404).send({ errorMsg: "The product doesn't found" });
@@ -152,7 +137,6 @@ const getProducts = async (req, res, next) => {
     res.status(500).send({ errorMsg: error.message });
   }
 };
-
 
 
 module.exports = {
