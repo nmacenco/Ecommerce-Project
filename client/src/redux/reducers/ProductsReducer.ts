@@ -1,13 +1,28 @@
-import { Product, ProductActions } from "../interface";
+import { Product, ProductActions, TYPES_PRODUCT } from "../interface";
 
 
-interface PRODUCTS{
-    products:Product[],
-    productSearch:[]
-
+export interface PRODUCTS {
+    products: Product[],
+    productSearch: any
 }
 
+const INITIAL_STATE = {
+    products: [],
+    productSearch: []
+}
 
-const reducerProduct = (state: PRODUCTS, action: ProductActions) => {};
+export const reducerProduct = (state: PRODUCTS = INITIAL_STATE, action: ProductActions): PRODUCTS => {
+    switch (action.type) {
+        case TYPES_PRODUCT.GET_PRODUCTS:
+            return {
+                ...state,
+                products: action.payload
+            }
 
-export default reducerProduct;
+        default: {
+            return {
+                ...state
+            }
+        }
+    }
+};

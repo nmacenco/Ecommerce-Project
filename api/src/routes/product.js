@@ -13,7 +13,7 @@ const productRouter = express.Router();
 
 productRouter.get("/products", getProducts);
 
-productRouter.get("products/:id", getSingleProduct);
+productRouter.get("/products/:id", getSingleProduct);
 
 productRouter.put("/products/:id", updateProduct);
 
