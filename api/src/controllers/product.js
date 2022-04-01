@@ -127,11 +127,6 @@ const getProducts = async (req, res, next) => {
         },
       ],
     });
-<<<<<<< HEAD
-  
-=======
->>>>>>> 9a48a1d3a834dee10cc578164b760f5bb87f9518
-
     dataProduct
       ? res.status(201).json({ successMsg: "Data found in Database", data: dataProduct })
       : res.status(404).send({ errorMsg: "The product doesn't found" });
