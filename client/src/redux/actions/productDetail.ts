@@ -24,3 +24,19 @@ export const getProductDetail = (id: string | undefined) => {
 
   }
 };
+export const deleteProductDetail = () => {
+  return {
+    type : TYPES.DELETE_PRODUCT_DETAIL ,
+    payload : {
+      id: 0,
+      subcategory_id: [],
+      name: '',
+      brand: '',
+      image: '',
+      price: 0,
+      description: '',
+      weight: 0,
+      stock: 0
+    }
+  }
+};

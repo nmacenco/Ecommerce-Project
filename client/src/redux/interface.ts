@@ -1,6 +1,7 @@
 export enum TYPES {
     CREATE_USER,
-    PRODUCT_DETAIL = 'PRODUCT_DETAIL'
+    PRODUCT_DETAIL = 'PRODUCT_DETAIL',
+    DELETE_PRODUCT_DETAIL = 'DELETE_PRODUCT_DETAIL',
 }
 
 export interface User {
@@ -28,6 +29,7 @@ export interface Product {
  * 
  * 
  */
+
 export interface CREATE_USER {
     type: TYPES.CREATE_USER,
     payload: User
@@ -36,7 +38,12 @@ export interface PRODUCT_DETAIL {
     type: TYPES.PRODUCT_DETAIL,
     payload: Product
 }
+export interface DELETE_PRODUCT_DETAIL {
+    type: TYPES.DELETE_PRODUCT_DETAIL,
+    payload: Product
+}
 
 export type Actions =
     | CREATE_USER
     | PRODUCT_DETAIL
+    | DELETE_PRODUCT_DETAIL

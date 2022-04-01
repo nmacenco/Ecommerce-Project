@@ -18,11 +18,11 @@ const createCategory = async (req, res, next) => {
   try {
     let { name } = req.body;
     if (!name) {
-      res.status(404).send({ errorMsg: "Missing data." });
+      res.status(400).send({ errorMsg: "Missing data." });
     } else {
       const newCategory = await Category.create({ name });
       res
-        .status(200)
+        .status(201)
         .send({ successMsg: "Category successfully created.", data:newCategory });
     }
   } catch (error) {

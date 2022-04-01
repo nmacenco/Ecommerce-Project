@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getProductDetail } from '../../redux/actions/productDetail';
 import { State } from '../../redux/reducers/index'
 import {
@@ -26,6 +26,9 @@ export default function Detail() {
 
   useEffect(() => {
     dispatch(getProductDetail(id))
+    return () => {
+
+    }
   }, [])
 
   return (
