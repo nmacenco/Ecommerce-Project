@@ -1,4 +1,4 @@
-const { User, Order, OrderDetail } = require("../db");
+const { User,Country, Order, OrderDetail } = require("../db");
 
 const createUser = async (req, res, next) => {
   try {
@@ -43,10 +43,22 @@ const createUser = async (req, res, next) => {
 
 const updateUser = (req, res, next) => {};
 
+
+
 const getUsers = async (req, res, next) => {
   try {
-    let users = await User.findAll({});
-    res.status(200).send({ successfulMsg: "successful", users });
+    let users = await User.findAll({}
+      
+      // include: [
+      //   {
+      //     model: Country,
+      //     attributes: ["name"],
+      //   },
+      // ],
+    );
+    // res.status(200).send({ successMsg: "successful", users });
+    res.status(200).send({ successMsg: "successful", data:users });
+
   } catch (error) {
     res.status(404).send({ errorMsg: "ERROR", error });
   }

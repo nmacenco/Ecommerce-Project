@@ -169,9 +169,6 @@ try {
 
 };
 
-
-
-
 module.exports = {
   createProduct,
   updateProduct,
