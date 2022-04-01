@@ -1,9 +1,9 @@
 import React from "react";
-import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
-import { SearchIcon, CartIcon } from "./NavStyles";
+import {  CartIcon } from "./NavStyles";
 import { Link } from 'react-router-dom';
 import AdminDropdown from "./adminDropdown/AdminDropdown";
+import Search from "../SearchBar/Search";
 const Nav = (): JSX.Element => {
   return (
     <div>
@@ -26,17 +26,7 @@ const Nav = (): JSX.Element => {
                 </a>
               </li>
             </ul>
-
-            <form className="nav-item d-flex">
-              <input
-                className="form-control my-2"
-                type="text"
-                placeholder="Search"
-              ></input>
-              <button className="btn btn-secondary my-2" type="submit">
-                <SearchIcon src={searchIcon} />
-              </button>
-            </form>
+            <Search/>
             <Link to='/login' className="nav-item btn btn-secondary my-sm-3 link-Router" >
               Login
             </Link>
@@ -44,7 +34,7 @@ const Nav = (): JSX.Element => {
               Register
             </Link>
           </div>
-        </div>{'tercer div'}
+        </div>
 
 
           <div className="ms-auto">

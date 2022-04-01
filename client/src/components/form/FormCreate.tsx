@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { postProduct } from '../../redux/actions/products';
-import validaciones from './validations';
+// import { postProduct } from '../../redux/actions/products';
+// import validaciones from './validations';
 
 export interface IProduct_Create {
     subcategory_id: string[];
@@ -35,16 +35,16 @@ export default function FromCreate(): JSX.Element {
         })
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-        e.preventDefault()
-        validaciones(product)
-            ? dispatch(postProduct(product))
-            : alert('No se pudo crear la receta')
-    }
+    // const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    //     e.preventDefault()
+    //     validaciones(product)
+    //         ? dispatch(postProduct(product))
+    //         : alert('No se pudo crear la receta')
+    // }
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form >
                 <fieldset>
                     <legend>Create Product</legend>
                     <div className="form-group row">
