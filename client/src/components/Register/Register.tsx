@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import validator, { validateForms } from '../../helpers/validateForm';
 import { CreateUser } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
-import Form from '../Form/Form';
+import Form from '../form/Form';
 
 
 interface Inputs{
