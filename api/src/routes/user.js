@@ -18,6 +18,7 @@ userRouter.get("/admin/users", /* isAdmin */ getUsers);
 userRouter.get("/admin/users/:id", /* isAdmin */ getSingleUser);
 userRouter.put("/admin/users/:id", /* isAdmin */ updateUser);
 userRouter.get("/admin/users/:id/getOrders", /* isAdmin */ getUserOrders);
+userRouter.post("/admin/users",/* isAdmin */ createUser);
 
 //user
 userRouter.get("/auth/users/:id", /* isLoggedIn */ getSingleUser);

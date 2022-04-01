@@ -172,7 +172,7 @@ const getSingleProduct = async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
+    res.status(500).send({ errorMsg: error });
   }
 };
 
@@ -222,7 +222,7 @@ const getProducts = async (req, res) => {
         .send({ successMsg: "Here are your products.", data: dataProduct });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
+    res.status(500).send({ errorMsg: error});
   }
 };
 
