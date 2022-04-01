@@ -45,24 +45,27 @@ const updateUser = async (req, res, next) => {
   const { id } = req.params;
   console.log(id);
   try {
-    const siglesUser = await User.findOne({
+    const singleUser = await User.findOne({
       where: {
         id: id,
       },
     });
-    siglesUser
-      ? await siglesUser.update({
-          name: "Francisco2",
-          surname: "Lubo2",
-          password: "admin",
-          email: "franciscolubo2@hotmail.com",
-          billing_address: "Entre rios2",
-          default_shipping_address: "Entre rios2",
-          role: "admin",
-          isActive: false,
-          CountryId: 282,
-        })(res.status(200).send({ successfulMsg: "successful", siglesUser }))
-      : res.status(404).json({ errorMsg: "user not found" });
+    if (singleUser) {
+      await singleUser.update({
+        name: "Francisco2",
+        surname: "Lubo2",
+        password: "admin",
+        email: "franciscolubo2@hotmail.com",
+        billing_address: "Entre rios2",
+        default_shipping_address: "Entre rios2",
+        role: "admin",
+        isActive: false,
+        CountryId: 1,
+      });
+      res.status(200).send({ successfulMsg: "successful", singleUser });
+    } else {
+      res.status(404).json({ errorMsg: "user not found" });
+    }
   } catch (error) {
     res.status(404).send({ errorMsg: "ERROR", error });
   }
