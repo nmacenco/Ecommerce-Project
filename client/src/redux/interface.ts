@@ -8,6 +8,8 @@ export enum TYPES_USER{
 
 export enum TYPES {
     PRODUCT_DETAIL
+    PRODUCT_DETAIL = 'PRODUCT_DETAIL',
+    DELETE_PRODUCT_DETAIL = 'DELETE_PRODUCT_DETAIL',
 }
 
 export interface User {
@@ -34,6 +36,7 @@ export interface Product {
 /**
  * USER: 
  */
+
 export interface CREATE_USER {
     type: TYPES_USER.CREATE_USER,
     payload: User
@@ -56,10 +59,15 @@ export interface PRODUCT_DETAIL {
     type: TYPES.PRODUCT_DETAIL,
     payload: Product
 }
+export interface DELETE_PRODUCT_DETAIL {
+    type: TYPES.DELETE_PRODUCT_DETAIL,
+    payload: Product
+}
 
 
 export type Actions =
     | PRODUCT_DETAIL
+  | DELETE_PRODUCT_DETAIL
 
 
 export type UserActions=
@@ -67,3 +75,4 @@ export type UserActions=
 | GET_USER
 | LOGOUT_USER
 | FIND_USER
+    
