@@ -88,7 +88,7 @@ const bulkCreateCountries = async () => {
       return { name: country.name.common, code: country.cca3 };
     });
     for (let i = 0; i < countries.length; i++) {
-      Country.findOrCreate({
+      await Country.findOrCreate({
         where: {
           name: countries[i].name,
           code: countries[i].code,

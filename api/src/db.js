@@ -77,7 +77,7 @@ Product.hasMany(Question, { as: "Product_Question" });
 Brand.hasMany(Product, { as:"Brand_Product" });
 Country.hasMany(User, { as: "Country_User" });
 Subcategory.hasMany(Product, { as: "Subcategory_Product" });
-Category.hasMany(Subcategory, { as: "Category_Subcategory"});
+Category.hasMany(Subcategory, { as: "Category_Subcategory"});// Funcionando
 // Category.hasMany(Subcategory, { as: "Category_Subcategory" ,onUpdate: 'RESTRICT'})
 // Subcategory.hasOne(Category, { as: "Category_Subcategory" });
 // Foo.hasOne(Bar, {

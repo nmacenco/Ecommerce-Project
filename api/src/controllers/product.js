@@ -22,7 +22,7 @@ const createProduct = async (req, res, next) => {
       soldCount } = req.body;
 
     if (!name) {
-      res.status(404).json({ errorMsg: "Information isn't enough to create the product" });
+      res.status(400).json({ errorMsg: "Information isn't enough to create the product" });
     } else {
       let productCreated = await Product.create({
         subcategory_id,
@@ -36,7 +36,7 @@ const createProduct = async (req, res, next) => {
         soldCount
       });
       productCreated
-        ? res.status(200).json({ successMsg: "The Product has been created", data: productCreated })
+        ? res.status(201).json({ successMsg: "The Product has been created", data: productCreated })
         : res.status(404).json({ errorMsg: "The Product can not be created" });
     }
   } catch (error) {
@@ -74,7 +74,7 @@ const updateProduct = async (req, res, next) => {
       { where: { id: id } }
     );
     productUpdated
-      ? res.status(200).json({ successMsg: "The Product has been Updated", data: productUpdated })
+      ? res.status(201).json({ successMsg: "The Product has been Updated", data: productUpdated })
       : res.status(404).json({ errorMsg: "The Product can not be created" });
 
   } catch (error) {
@@ -86,10 +86,46 @@ const getProducts = async (req, res, next) => {
 
   try {
 
-    let dataProduct = await Product.findAll({ include: { all: true, nested: true } });
+    let dataProduct = await Product.findAll({
+      attributes: ['id', 'name', 'image', 'price', 'description', 'weight',
+          'stock', 'soldCount', 'BrandId', 'SubcategoryId'],
+          // include: {
+          //       model: Subcategory,
+          //       attributes: ["name"],        }
+      });
+
+
+    //   include: [
+    //     { model: Brand, attributes: ['name'] },
+    //     { model: Subcategory, attributes: ['name'] },
+    //     { model: Category, attributes: ['name'] },
+    //   ],
+    //   where: {
+    //     Product.category_id: Subcategory.id,
+    //     Product.brand_id: Brand.id
+
+    //   }
+    // });
+
+
+
+
+
+
+
+    // { model: Brand, attributes: ['name'] },
+    // { model: Subcategory, attributes: ['name'] },
+    // { model: Category, attributes: ['name'] },
+    // ],
+    // where: {
+    // category_id: Subcategory.id,
+    // BrandId: 2 //Brand.Id
+    // }
+    // });
+
 
     dataProduct
-      ? res.status(200).json({ successMsg: "", data: dataProduct })
+      ? res.status(201).json({ successMsg: "Data found in Database", data: dataProduct })
       : res.status(404).send({ errorMsg: "The product doesn't found" });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
@@ -106,7 +142,7 @@ const getSingleProduct = async (req, res, next) => {
       },
     });
     productSingle
-      ? res.status(200).json({ successMsg: "", data: productSingle })
+      ? res.status(201).json({ successMsg: "Data found in Database", data: productSingle })
       : res.status(404).send({ errorMsg: "The product doesn't found" });
   }
   catch (error) {
@@ -114,22 +150,6 @@ const getSingleProduct = async (req, res, next) => {
   }
 
 };
-
-
-// const data = require("../models/data");
-const seedProducts = async (req, res, next) => {
-  await Product.deleteMany({});
-  const createdProducts = await Product.insertMany(data.products);
-
-  await User.deleteMany({});
-  const createdUsers = await User.insertMany(data.users);
-
-  // res.status(200).json({ createdUsers });
-  res.status(200).json({ createdProducts, createdUsers });
-  // res.status(200).json(data.users);
-};
-
-
 
 
 const deleteProduct = (req, res, next) => { };
@@ -173,3 +193,12 @@ module.exports = {
     //     status: 'active'
     //   }
     // });
+
+
+
+
+
+
+
+
+
