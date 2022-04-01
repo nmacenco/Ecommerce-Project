@@ -41,7 +41,32 @@ const createUser = async (req, res, next) => {
   }
 };
 
-const updateUser = (req, res, next) => {};
+const updateUser = async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const siglesUser = await User.findOne({
+      where: {
+        id: id,
+      },
+    });
+    siglesUser
+      ? await siglesUser.update({
+          name: "Francisco2",
+          surname: "Lubo2",
+          password: "admin",
+          email: "franciscolubo2@hotmail.com",
+          billing_address: "Entre rios2",
+          default_shipping_address: "Entre rios2",
+          role: "admin",
+          isActive: false,
+          CountryId: 282,
+        })(res.status(200).send({ successfulMsg: "successful", siglesUser }))
+      : res.status(404).json({ errorMsg: "user not found" });
+  } catch (error) {
+    res.status(404).send({ errorMsg: "ERROR", error });
+  }
+};
 
 const getUsers = async (req, res, next) => {
   try {
@@ -52,10 +77,23 @@ const getUsers = async (req, res, next) => {
   }
 };
 
-const getSingleUser = (req, res, next) => {};
+const getSingleUser = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    if (!id) {
+      res.status(404).json({ errorMsg: "missing data" });
+    } else {
+      const siglesUser = await User.findByPk(id);
+      siglesUser
+        ? res.status(200).send({ successfulMsg: "successful", siglesUser })
+        : res.status(404).json({ errorMsg: "user not found" });
+    }
+  } catch (error) {
+    res.status(404).send({ errorMsg: "ERROR", error });
+  }
+};
 
 const getUserOrders = (req, res, next) => {};
-
 
 const signIn = (req, res, next) => {};
 
