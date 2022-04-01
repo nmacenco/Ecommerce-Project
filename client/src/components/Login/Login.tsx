@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import validator, { validateForms } from '../../helpers/validateForm';
+import { GetUSer } from '../../redux/actions/user';
+import { State } from '../../redux/reducers';
 import Form from '../Form/Form';
 
 interface Inputs{
@@ -9,6 +12,9 @@ interface Inputs{
 }
 
 const Login=():JSX.Element=>{
+
+    const dispatch=useDispatch();
+    const user=useSelector((state:State)=>state.user);
 
     const [inputs,setInputs]=useState<Inputs>({
         email:'',
@@ -29,7 +35,7 @@ const Login=():JSX.Element=>{
 
     }
 
-    const RegisterFetch=(event:any)=>{
+    const LoginFetch=(event:any)=>{
 
         event.preventDefault();
         const res=validateForms(error,inputs);
@@ -37,10 +43,17 @@ const Login=():JSX.Element=>{
         if(res){
             return alert(res);
         }
+        console.log('Envio de datos Registro');
 
         /**
          * dispatch
          */
+
+        if(!user){
+            
+            // dispatch(GetUSer(inputs.email,inputs.passUser))
+        }
+
 
     }
 
@@ -66,7 +79,7 @@ const Login=():JSX.Element=>{
                             Submit
                         </button>
                         :
-                        <button className='btn btn-success button-links link-Router' onClick={RegisterFetch}>
+                        <button className='btn btn-success button-links link-Router' onClick={LoginFetch}>
                             Submit
                         </button>
                 }
