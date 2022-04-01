@@ -3,8 +3,10 @@ import searchIcon from "../../icons/search-symbol.png";
 import cartIcon from "../../icons/cart-icon.png";
 import { SearchIcon, CartIcon } from "./NavStyles";
 import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
-const Nav = () => {
+
+const Nav = (): JSX.Element => {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary d-flex">
@@ -40,32 +42,39 @@ const Nav = () => {
                 <SearchIcon src={searchIcon} />
               </button>
             </form>
-            <button
-              className="nav-item btn btn-secondary my-sm-3"
-              type="submit"
+            <Link
+              to="/login"
+              className="nav-item btn btn-secondary my-sm-3 link-Router"
             >
-              LOG IN
-            </button>
-            <AdminDropdown />
-          </div>
-          <div className="ms-auto">
-            <NavLink className="nav-item" to={"/cart"}>
-              <a className="nav-item" href="">
-                <CartIcon src={cartIcon} />
-              </a>
-            </NavLink>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarColor01"
-              aria-controls="navbarColor01"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="nav-item btn btn-secondary my-sm-3 link-Router"
             >
-              <span className="navbar-toggler-icon"></span>
-            </button>
+              Register
+            </Link>
           </div>
+        </div>
+        {/* {"tercer div"} */}
+        <AdminDropdown />
+        <div className="ms-auto">
+          <NavLink className="nav-item" to={"/cart"}>
+            <a className="nav-item" href="/cart">
+              <CartIcon src={cartIcon} />
+            </a>
+          </NavLink>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarColor01"
+            aria-controls="navbarColor01"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
         </div>
       </nav>
     </div>
