@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+
 import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 // import interfaces from '....'
-
 const URL = "http://localhost:3001/api";
 
 export const postProduct = (product: Product) => {
@@ -31,3 +31,4 @@ export const getProducts = () => {
     alert(error)
   }
 };
+
