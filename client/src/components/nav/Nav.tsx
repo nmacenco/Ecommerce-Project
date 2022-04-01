@@ -11,7 +11,7 @@ const Nav = (): JSX.Element => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary d-flex">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/home">
-          ECOMMERCE
+          PC-SHOP
         </Link>
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
