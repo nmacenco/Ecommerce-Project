@@ -6,6 +6,7 @@ import { GetUSer } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
 import Form from '../Form/Form';
 
+
 interface Inputs{
     email:string,
     passUser:string

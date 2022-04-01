@@ -1,7 +1,7 @@
 import React from "react";
 import { CategoriesContainer } from "./CategoriesStyles";
 
-const Categories = (): JSX.Element => {
+const Categories = () => {
   const data = [
     {
       name: "perifericos",
@@ -39,9 +39,9 @@ const Categories = (): JSX.Element => {
           data-bs-parent="#accordionMain"
         >
           <div className="accordion-body">
-            {data.map((e, i) => {
+            {data.map((e) => {
               return (
-                <div key={i}>
+                <>
                   <h2 className="accordion-header" id={e.name + "label"}>
                     <button
                       className="accordion-button collapsed"
@@ -50,6 +50,7 @@ const Categories = (): JSX.Element => {
                       data-bs-target={"#" + e.name}
                       aria-expanded="false"
                       aria-controls={e.name}
+                      
                     >
                       {e.name}
                     </button>
@@ -59,14 +60,16 @@ const Categories = (): JSX.Element => {
                     className="accordion-collapse collapse"
                     aria-labelledby={e.name + "label"}
                     data-bs-parent="#categories"
-                  >
-                    <div className="accordion-body">
-                      {e.subCategories.map((subcategory, i) => {
-                        return <p key={i}>{subcategory}</p>;
+                    >
+                    <div className="accordion-body"
+                      
+                    >
+                      {e.subCategories.map((subcategory) => {
+                        return <p  onClick = {()=> console.log(subcategory)}>{subcategory}</p>;
                       })}
                     </div>
                   </div>
-                </div>
+                </>
               );
             })}
           </div>

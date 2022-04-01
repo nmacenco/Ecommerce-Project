@@ -1,18 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-// import { postProduct } from '../../redux/actions/products';
-// import validaciones from './validations';
-
-export interface IProduct_Create {
-    subcategory_id: string[];
-    name: string;
-    brand: string;
-    image: string;
-    price: number;
-    description: string;
-    weigth: number;
-    stock: number;
-}
+import { postProduct,IProduct_Create } from '../../redux/actions/products';
+import validaciones from './validations'
+import { FormContainer } from './FormCreateStyles';
 
 
 export default function FromCreate(): JSX.Element {
@@ -35,16 +25,17 @@ export default function FromCreate(): JSX.Element {
         })
     }
 
-    // const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    //     e.preventDefault()
-    //     validaciones(product)
-    //         ? dispatch(postProduct(product))
-    //         : alert('No se pudo crear la receta')
-    // }
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+        validaciones(product)
+            ? dispatch(postProduct(product))
+            : alert('No se pudo crear la receta')
+    }
 
     return (
-        <div>
-            <form >
+
+        <FormContainer>
+            <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Create Product</legend>
                     <div className="form-group row">
@@ -80,6 +71,6 @@ export default function FromCreate(): JSX.Element {
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </fieldset>
             </form>
-        </div>
+        </FormContainer>
     )
 }

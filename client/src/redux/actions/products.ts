@@ -5,10 +5,23 @@ import { Dispatch } from "redux";
 
 const URL = "expample.com";
 
-// export const postProduct = (product: IProduct_Create) => {
-//   return async (dispatch: Dispatch) => {
-//     //Ponemos el dispatch para tener mayor control del dispatch
-//     await axios.post(   URL);
-//     alert("Receta creada con exito");
-//   };
-// };
+export interface IProduct_Create {
+  subcategory_id: string[];
+  name: string;
+  brand: string;
+  image: string;
+  price: number;
+  description: string;
+  weigth: number;
+  stock: number;
+}
+
+
+
+export const postProduct = (product: IProduct_Create) => {
+  return async (dispatch: Dispatch) => {
+    //Ponemos el dispatch para tener mayor control del dispatch
+    await axios.post(   URL);
+    alert("Receta creada con exito");
+  };
+};

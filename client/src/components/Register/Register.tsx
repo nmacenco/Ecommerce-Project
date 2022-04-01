@@ -6,6 +6,7 @@ import { CreateUser } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
 import Form from '../Form/Form';
 
+
 interface Inputs{
     name:string,
     lastname:string,
