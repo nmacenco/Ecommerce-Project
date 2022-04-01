@@ -1,9 +1,8 @@
-export enum TYPES_USER{
+export enum TYPES_USER {
     CREATE_USER,
     GET_USER,
     LOGOUT_USER,
     FIND_USER,
-
 }
 
 export enum TYPES {
@@ -11,7 +10,7 @@ export enum TYPES {
     DELETE_PRODUCT_DETAIL = 'DELETE_PRODUCT_DETAIL',
 }
 
-export enum TYPES_PRODUCT{
+export enum TYPES_PRODUCT {
     GET_PRODUCTS
 }
 
@@ -20,7 +19,7 @@ export interface User {
     lastName: string,
     password: string,
     email: string,
-    token:string
+    token: string
 }
 
 
@@ -36,6 +35,11 @@ export interface Product {
     stock: number
 }
 
+export interface AXIOSDATA {
+    successMsg: string,
+    data: Product[]
+}
+
 /**
  * USER: 
  */
@@ -44,17 +48,17 @@ export interface CREATE_USER {
     type: TYPES_USER.CREATE_USER,
     payload: User
 }
-export interface GET_USER{
-    type:TYPES_USER.GET_USER,
-    payload:User
+export interface GET_USER {
+    type: TYPES_USER.GET_USER,
+    payload: User
 }
-export interface LOGOUT_USER{
-    type:TYPES_USER.LOGOUT_USER,
-    payload:null
+export interface LOGOUT_USER {
+    type: TYPES_USER.LOGOUT_USER,
+    payload: null
 }
-export interface FIND_USER{
-    type:TYPES_USER.FIND_USER,
-    payload:User
+export interface FIND_USER {
+    type: TYPES_USER.FIND_USER,
+    payload: User
 }
 
 //=====================
@@ -63,9 +67,9 @@ export interface PRODUCT_DETAIL {
     type: TYPES.PRODUCT_DETAIL,
     payload: Product
 }
-export interface GET_PRODUCTS{
-    type:TYPES_PRODUCT.GET_PRODUCTS,
-    payload:Product[]
+export interface GET_PRODUCTS {
+    type: TYPES_PRODUCT.GET_PRODUCTS,
+    payload: Product[]
 }
 
 export interface DELETE_PRODUCT_DETAIL {
@@ -75,15 +79,15 @@ export interface DELETE_PRODUCT_DETAIL {
 
 export type Actions =
     | PRODUCT_DETAIL
-  | DELETE_PRODUCT_DETAIL
+    | DELETE_PRODUCT_DETAIL
 
 
-export type UserActions=
-| CREATE_USER
-| GET_USER
-| LOGOUT_USER
-| FIND_USER
+export type UserActions =
+    | CREATE_USER
+    | GET_USER
+    | LOGOUT_USER
+    | FIND_USER
 
-export type ProductActions=
-| GET_PRODUCTS
+export type ProductActions =
+    | GET_PRODUCTS
 

@@ -4,16 +4,16 @@ import { TYPES } from '../interface';
 
 const URL = "http://localhost:3001/api/products/";
 
-export const getProductDetail = (id : string | undefined ) => {
+export const getProductDetail = (id: string | undefined) => {
   return async (dispatch: Dispatch) => {
-    const product = await axios.get(URL + id); 
-    
-    return dispatch (
+    const product = await axios.get(URL + id);
+
+    return dispatch(
       {
-        type : TYPES.PRODUCT_DETAIL ,
-        payload : product.data.data
+        type: TYPES.PRODUCT_DETAIL,
+        payload: product.data.data
       }
-    ) 
+    )
 
   };
 
