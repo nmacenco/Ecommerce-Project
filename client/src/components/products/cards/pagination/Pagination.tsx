@@ -2,10 +2,10 @@ import React from "react";
 import { IData } from "../Cards";
 
 export default function Pagination({ length, page }: IData): JSX.Element {
-  let arr: number[] = [];
-  for (let i = 1; i <= Math.ceil(length / 12); i++) {
-    arr.push(i);
-  }
+    let arr: number[] = [];
+    for (let i = 1; i <= Math.ceil(length / 32); i++) {
+        arr.push(i)
+    }
 
   return (
     <div className="d-flex justify-content-center">

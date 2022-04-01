@@ -1,6 +1,6 @@
-import { IProduct_Create } from "./FormCreate";
+import { Product } from "../../redux/interface";
 
-export default function validaciones(props: IProduct_Create): boolean {
+export default function validaciones(props: Product): boolean {
     let bool: boolean = false,
         name: boolean = false,
         brand: boolean = false,

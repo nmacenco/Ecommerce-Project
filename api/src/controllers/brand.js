@@ -4,7 +4,7 @@ const getBrands = async (req, res, next) => {
   try {
     let dataBrand = await Brand.findAll({});
     if (!dataBrand.length) {
-      res.status(404).send({ errorMsg: "Products not found" });
+      res.status(404).send({ errorMsg: "Brands not found" });
     }
     res
       .status(200)
@@ -18,11 +18,11 @@ const createBrand = async (req, res, next) => {
   try {
     let { name } = req.body;
     if (!name) {
-      res.status(404).send({ errorMsg: "Missing data" });
+      res.status(400).send({ errorMsg: "Missing data" });
     } else {
       const newBrand = await Brand.create({ name });
       res
-        .status(200)
+        .status(201)
         .send({ successMsg: "Brand successfully created.", data: newBrand });
     }
   } catch (error) {

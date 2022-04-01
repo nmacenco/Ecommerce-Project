@@ -1,18 +1,33 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-<<<<<<< HEAD
-import { IProduct_Create } from "../../components/formCreate/FormCreate";
-=======
-import { IProduct_Create } from "../../components/form/FormCreate";
->>>>>>> adeb277297a4f01e49b75268e575704325308ae1
+import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 // import interfaces from '....'
 
-const URL = "expample.com";
+const URL = "http://localhost:3001/api";
 
-export const postProduct = (product: IProduct_Create) => {
-  return async (dispatch: Dispatch) => {
-    //Ponemos el dispatch para tener mayor control del dispatch
-    await axios.post(   URL);
-    alert("Producto creado.");
-  };
+export const postProduct = (product: Product) => {
+  try {
+
+    return async (dispatch: Dispatch) => {
+      //Ponemos el dispatch para tener mayor control del dispatch
+      await axios.post(`${URL}/products`, product);
+      alert("Product added successfully");
+    };
+  } catch (error) {
+    alert(error)
+  }
+};
+
+export const getProducts = () => {
+  try {
+    return async (dispatch: Dispatch) => {
+      const allProducts = await axios.get<AXIOSDATA>(`${URL}/products`);
+      return dispatch({
+        type: TYPES_PRODUCT.GET_PRODUCTS,
+        payload: allProducts.data.data
+      })
+    }
+  } catch (error) {
+    alert(error)
+  }
 };
