@@ -117,7 +117,10 @@ const getSingleUser = async (req, res, next) => {
   }
 };
 
-const getUserOrders = (req, res, next) => {};
+const getUserOrders = (req, res, next) => {
+
+  
+};
 
 const signIn = (req, res, next) => {};
 
