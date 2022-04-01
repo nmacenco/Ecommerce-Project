@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { TYPES } from '../interface';
+import { TYPES_DETAIL } from '../interface';
 
 const URL = "http://localhost:3001/api/products/";
 
@@ -10,7 +10,7 @@ export const getProductDetail = (id: string | undefined) => {
 
     return dispatch(
       {
-        type: TYPES.PRODUCT_DETAIL,
+        type: TYPES_DETAIL.PRODUCT_DETAIL,
         payload: product.data.data
       }
     )
@@ -20,7 +20,7 @@ export const getProductDetail = (id: string | undefined) => {
 };
 export const deleteProductDetail = () => {
   return {
-    type: TYPES.DELETE_PRODUCT_DETAIL,
+    type: TYPES_DETAIL.DELETE_PRODUCT_DETAIL,
     payload: {
       id: 0,
       subcategory_id: [],

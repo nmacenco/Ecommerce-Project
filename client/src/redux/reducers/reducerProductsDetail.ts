@@ -1,4 +1,4 @@
-import { Actions, Product, TYPES } from '../interface';
+import { Actions, Product, TYPES_DETAIL } from '../interface';
 
 const INITIAL_PRODUCT = {
   id: 0,
@@ -16,10 +16,10 @@ export const productDetailReducer = (state: Product = INITIAL_PRODUCT, action: A
 
   switch (action.type) {
 
-    case TYPES.PRODUCT_DETAIL:
+    case TYPES_DETAIL.PRODUCT_DETAIL:
       return action.payload
 
-    case TYPES.DELETE_PRODUCT_DETAIL:
+    case TYPES_DETAIL.DELETE_PRODUCT_DETAIL:
       return action.payload
 
     default:

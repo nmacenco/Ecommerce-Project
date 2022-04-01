@@ -5,13 +5,17 @@ export enum TYPES_USER {
     FIND_USER,
 }
 
-export enum TYPES {
+export enum TYPES_DETAIL {
     PRODUCT_DETAIL = 'PRODUCT_DETAIL',
     DELETE_PRODUCT_DETAIL = 'DELETE_PRODUCT_DETAIL',
 }
 
 export enum TYPES_PRODUCT {
     GET_PRODUCTS
+}
+export enum TYPES_CATEGORIES {
+    GET_CATEGORIES = 'GET_CATEGORIES' ,
+    GET_SUBCATEGORIES = 'GET_SUBCATEGORIES' ,
 }
 
 export interface User {
@@ -32,6 +36,15 @@ export interface Product {
     description: string,
     weigth: number,
     stock: number
+}
+export interface Categories {
+    id?: number,
+    name: string,
+}
+export interface Subcategories {
+    id?: number,
+    name: string,
+    CategoryId :number
 }
 
 export interface AXIOSDATA {
@@ -59,11 +72,22 @@ export interface FIND_USER {
     type: TYPES_USER.FIND_USER,
     payload: User
 }
+//=======================
+// Categorie Actions 
+
+export interface GET_CATEGORIES {
+    type: TYPES_CATEGORIES.GET_CATEGORIES,
+    payload: Categories[]
+}
+export interface GET_SUBCATEGORIES {
+    type: TYPES_CATEGORIES.GET_SUBCATEGORIES,
+    payload: Subcategories[]
+}
 
 //=====================
 //Products Actions
 export interface PRODUCT_DETAIL {
-  type: TYPES.PRODUCT_DETAIL;
+  type: TYPES_DETAIL.PRODUCT_DETAIL;
   payload: Product;
 }
 export interface GET_PRODUCTS {
@@ -72,7 +96,7 @@ export interface GET_PRODUCTS {
 }
 
 export interface DELETE_PRODUCT_DETAIL {
-    type: TYPES.DELETE_PRODUCT_DETAIL,
+    type: TYPES_DETAIL.DELETE_PRODUCT_DETAIL,
     payload: Product
 }
 
@@ -90,4 +114,8 @@ export type UserActions =
 
 export type ProductActions =
     | GET_PRODUCTS
+
+export type CategoriesActions =
+    | GET_CATEGORIES
+    | GET_SUBCATEGORIES
 

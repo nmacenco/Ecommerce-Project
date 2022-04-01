@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { CategoriesContainer } from "./CategoriesStyles";
+import { State } from "../../../redux/reducers/index";
+import {
+  getCategories,
+  getSubcategories,
+} from "../../../redux/actions/categories";
+const Categories = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const categories = useSelector((state: State) => state.categories);
 
-const Categories = () => {
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getSubcategories());
+  }, []);
+
   const data = [
     {
       name: "perifericos",
@@ -16,7 +29,6 @@ const Categories = () => {
       subCategories: ["Playstation", "Xbox", "WII"],
     },
   ];
-
   return (
     <CategoriesContainer className="accordion mx-3 mt-3" id="accordionMain">
       <div className="accordion-item">
@@ -39,7 +51,7 @@ const Categories = () => {
           data-bs-parent="#accordionMain"
         >
           <div className="accordion-body">
-            {data.map((e, i) => {
+            {/* {data.map((e, i) => {
               return (
                 <div key={i}>
                   <h2 className="accordion-header" id={e.name + "label"}>
@@ -71,7 +83,42 @@ const Categories = () => {
                   </div>
                 </div>
               );
-            })}
+            })} */}
+            {categories.categories.length > 0 &&
+              categories.categories.map((e ) => {
+                
+                return (
+                  <div key={e.id}>
+                    <h2 className="accordion-header" id={e.name + "label"}>
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={"#" + e.name}
+                        aria-expanded="false"
+                        aria-controls={e.name}
+                      >
+                        {e.name}
+                      </button>
+                    </h2>
+                    <div
+                      id={e.name}
+                      className="accordion-collapse collapse"
+                      aria-labelledby={e.name + "label"}
+                      data-bs-parent="#categories"
+                    >
+                      <div className="accordion-body">
+                        {categories.subcategories.length > 0 &&
+                          categories.subcategories.map((subcategory, i) => {
+                            if (e.id === subcategory.CategoryId) {
+                              return <p key={i} onClick={() => console.log(subcategory.name)}>{subcategory.name}</p>;
+                            } 
+                          })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>

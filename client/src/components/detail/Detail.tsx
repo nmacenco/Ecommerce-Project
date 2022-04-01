@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {getProductDetail , deleteProductDetail} from '../../redux/actions/productDetail';
 import {State} from '../../redux/reducers/index'
 import Loading from "../loading/Loading";
@@ -18,7 +18,6 @@ import {
 } from "./DetailStyles";
 
 export default function Detail() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {id} = useParams<{id?: string}>()
   const product = useSelector ((state : State) => state.productDetail)
