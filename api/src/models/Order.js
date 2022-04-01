@@ -9,11 +9,6 @@ module.exports = (sequelize) => {
       allowNull: false,
       autoIncrement: true,
     },
-    //fk
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     total_amount: {
       type: DataTypes.FLOAT,
       allowNull: false,
