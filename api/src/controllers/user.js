@@ -1,4 +1,4 @@
-const { User, Order, OrderDetail } = require("../db");
+const { User, Order, OrderDetail, Country } = require("../db");
 
 const createUser = async (req, res, next) => {
   try {
@@ -10,6 +10,7 @@ const createUser = async (req, res, next) => {
       default_shipping_address,
       country_id,
       role,
+      password,
       isActive,
     } = req.body;
     console.log(req.body);
@@ -20,7 +21,8 @@ const createUser = async (req, res, next) => {
       !billing_address ||
       !default_shipping_address ||
       !country_id ||
-      !role
+      !role ||
+      !password
     ) {
       res.status(404).json({ errorMsg: "missing data" });
     } else {
@@ -28,13 +30,14 @@ const createUser = async (req, res, next) => {
         name,
         surname,
         email,
+        password,
         billing_address,
         default_shipping_address,
         country_id,
         role,
         isActive,
       });
-      res.status(200).json({ successfulMsg: "successful", newUser });
+      res.status(200).json({ successMsg: "successful", newUser });
     }
   } catch (error) {
     res.status(500).json({ errorMsg: "ERROR", error });
@@ -73,7 +76,25 @@ const updateUser = async (req, res, next) => {
 
 const getUsers = async (req, res, next) => {
   try {
-    let users = await User.findAll({});
+    let users = await User.findAll({
+      // attributes: [
+      //   "id",
+      //   "name",
+      //   "surname",
+      //   "password",
+      //   "email",
+      //   "billing_address",
+      //   "default_shipping_address",
+      //   "role",
+      //   "isActive"
+      // ],
+      // include: [
+      //   {
+      //     model: Country,
+      //     attributes:["id"],
+      //   },
+      // ],
+    });
     res.status(200).send({ successfulMsg: "successful", users });
   } catch (error) {
     res.status(404).send({ errorMsg: "ERROR", error });

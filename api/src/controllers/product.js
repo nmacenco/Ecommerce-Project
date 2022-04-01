@@ -82,28 +82,13 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
+
 const getSingleProduct = async (req, res, next) => {
   try {
     const id = req.params.id;
     let productSingle = await Product.findOne({
       attributes: ['id', 'name', 'image', 'price', 'description', 'weight',
         'stock', 'soldCount', 'BrandId', 'SubcategoryId'],
-      include: [
-        {
-          model: Brand,
-          attributes: ["name"],
-        },
-        {
-          model: Subcategory,
-          attributes: ["name"],
-          include: [
-            {
-              model: Category,
-              attributes: ["name"],
-            }
-          ]
-        },
-      ],
       where: {
         id,
       },
@@ -143,7 +128,7 @@ const getProducts = async (req, res, next) => {
         },
       ],
     });
-
+  
 
     dataProduct
       ? res.status(201).json({ successMsg: "Data found in Database", data: dataProduct })
