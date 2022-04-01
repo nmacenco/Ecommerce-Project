@@ -1,23 +1,12 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { postProduct } from '../../redux/actions/products';
+import { Product } from '../../redux/interface';
 import validaciones from './validations'
-
-export interface IProduct_Create {
-    subcategory_id: string[];
-    name: string;
-    brand: string;
-    image: string;
-    price: number;
-    description: string;
-    weigth: number;
-    stock: number;
-}
-
 
 export default function FromCreate(): JSX.Element {
     const dispatch = useDispatch()
-    const [product, setProduct] = useState<IProduct_Create>({
+    const [product, setProduct] = useState<Product>({
         name: "",
         subcategory_id: [],
         brand: "",
