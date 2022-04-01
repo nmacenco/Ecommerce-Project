@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Axel",
+    "surname": "Lois",
+    "password": "admin",
+    "email": "axel9034@hotmail.com",
+    "billing_address": "Montevideo",
+    "default_shipping_address": "Montevideo",
+    "role": "user",
+    "isActive": true,
+    "CountryId": 1
+  },
+  {
+    "name": "Jaider",
+    "surname": "Panqueva",
+    "password": "admin",
+    "email": "jaiderpanqueva@hotmail.com",
+    "billing_address": "Cali",
+    "default_shipping_address": "Cali",
+    "role": "user",
+    "isActive": true,
+    "CountryId": 244
+  },
+  {
+    "name": "Carlos",
+    "surname": "Espinosa",
+    "password": "admin",
+    "email": "carlosespinosa@hotmail.com",
+    "billing_address": "Medellin",
+    "default_shipping_address": "Medellin",
+    "role": "user",
+    "isActive": true,
+    "CountryId": 244
+  },
+  {
+    "name": "Julian",
+    "surname": "Gonzalez",
+    "password": "admin",
+    "email": "juliangonzalez@hotmail.com",
+    "billing_address": "Buenos aires",
+    "default_shipping_address": "Buenos aires",
+    "role": "admin",
+    "isActive": true,
+    "CountryId": 28
+  },
+  {
+    "name": "Nicolas",
+    "surname": "Macenco",
+    "password": "admin",
+    "email": "nicolasmacenco@hotmail.com",
+    "billing_address": "Mendoza",
+    "default_shipping_address": "Mendoza",
+    "role": "admin",
+    "isActive": true,
+    "CountryId": 28
+  },
+  {
+    "name": "Francisco",
+    "surname": "Lubo",
+    "password": "admin",
+    "email": "axel9034@hotmail.com",
+    "billing_address": "Entre rios",
+    "default_shipping_address": "Entre rios",
+    "role": "admin",
+    "isActive": true,
+    "CountryId": 28
+  },
+  {
+    "name": "Dikson",
+    "surname": "Aranda",
+    "password": "admin",
+    "email": "diksonaranda@hotmail.com",
+    "billing_address": "Lima",
+    "default_shipping_address": "Lima",
+    "role": "admin",
+    "isActive": true,
+    "CountryId": 149
+  }
+
+]
