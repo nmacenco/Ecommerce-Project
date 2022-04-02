@@ -25,7 +25,7 @@ export const reducerProduct = (state: PRODUCTS = INITIAL_STATE, action: ProductA
 
       return {
         ...state,
-         products: action.payload
+         products: action.payload,
         productSearch: newTable,
       };
 

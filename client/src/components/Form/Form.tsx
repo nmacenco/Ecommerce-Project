@@ -11,9 +11,11 @@ const Form = ({ title, children }: Prop): JSX.Element => {
     event.preventDefault();
   };
 
+  const width = (title === 'Register') ? { width: '600px' } : { width: '340px' }
+
   return (
-    <ContainerLog>
-      <LogForm onSubmit={sendLogin} autoComplete="off">
+    <ContainerLog >
+      <LogForm onSubmit={sendLogin} autoComplete="off" style={width}>
         <header>{title ? title : "FORM"}</header>
         <Content>{children}</Content>
       </LogForm>
