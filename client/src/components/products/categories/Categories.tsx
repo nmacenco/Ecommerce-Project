@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoriesContainer } from "./CategoriesStyles";
+import { CategoriesContainer , Select } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import {
   getCategories,
@@ -52,8 +52,7 @@ const Categories = (): JSX.Element => {
             {categories.categories.length > 0 &&
               categories.categories.map((categorie) => {
                 return (
-                  <div>
-                    <select
+                    <Select
                       onChange={(e) => handleFilter(e,allProducts)}
                       className="accordion-header"
                       defaultValue={`${categorie.name}`}
@@ -65,19 +64,21 @@ const Categories = (): JSX.Element => {
                         categories.subcategories.map((subcategory, i) => {
                           if (categorie.id === subcategory.CategoryId) {
                             return (
-                              <option value={`${subcategory.name}`}>
+                              <option 
+                              // className="accordion-header"
+                              className="accordion-body"
+                               value={`${subcategory.name}`}>
                                 {subcategory.name}
                               </option>
                             );
                           }
                         })}
-                    </select>
-                  </div>
+                    </Select>
                 );
               })}
           </div>
 
-          {/* <div className="accordion-body">
+           {/* <div className="accordion-body">
             {categories.categories.length > 0 &&
               categories.categories.map((e ) => {
                 return (
@@ -104,7 +105,7 @@ const Categories = (): JSX.Element => {
                         {categories.subcategories.length > 0 &&
                           categories.subcategories.map((subcategory, i) => {
                             if (e.id === subcategory.CategoryId) {
-                              return <p key={i} onClick={() => console.log(subcategory.name)}>{subcategory.name}</p>;
+                              return <p key={i} onClick={() => handleFilter( e ,allProducts)}>{subcategory.name}</p>;
                             } 
                           })}
                       </div>
@@ -112,7 +113,7 @@ const Categories = (): JSX.Element => {
                   </div>
                 );
               })}
-          </div> */}
+          </div>  */}
         </div>
       </div>
       <div className="accordion-item">
