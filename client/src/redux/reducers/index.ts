@@ -12,13 +12,13 @@ import { Product } from '../interface';
 import { userReducer } from './reducerUser';
 import { productDetailReducer } from './reducerProductsDetail';
 import { PRODUCTS, reducerProduct } from './ProductsReducer';
-import { OrderState, reducerOrderProducts } from './orderProductsReducer';
+import { ORDER_STATE, reducerOrderProducts } from './orderProductsReducer';
 
 interface GLOBAL_STATE {
   user: User | null;
   productDetail: Product;
   products: PRODUCTS;
-  orderedProducts: any;
+  orderedProducts: ORDER_STATE;
 }
 
 export const rootReducer = combineReducers<GLOBAL_STATE>({

@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, orderProducts } from "../../../../redux/actions/products";
+import { Product } from "../../../../redux/interface";
 import { State } from "../../../../redux/reducers";
+import { ORDER } from "../Cards";
 import { Select } from "./FilterStyles";
 
-const Filter = (): JSX.Element => {
-  const [order, setOrder] = useState<string>("");
+const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
-  const allProducts = useSelector((state: State) => state.products);
+  const allProducts = useSelector((state: State) => state.products.products);
 
   useEffect(() => {
     dispatch(getProducts());
-  }, [dispatch]);
+  }, []);
 
   function handleSort(
     e: React.ChangeEvent<HTMLSelectElement>,
     //es un objeto
-    allProducts: any
+    allProducts: Product[]
   ): void {
     e.preventDefault();
-    console.log(allProducts);
-    dispatch(orderProducts(e.target.value, allProducts.orderedProducts));
-    // setCurrentPage(1);
-    setOrder(`${e.target.value} order`);
+    page(1)
+    orders(`${e.target.value} order`);
+    dispatch(orderProducts(e.target.value, allProducts));
   }
 
   return (
@@ -46,6 +46,3 @@ const Filter = (): JSX.Element => {
 };
 
 export default Filter;
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}

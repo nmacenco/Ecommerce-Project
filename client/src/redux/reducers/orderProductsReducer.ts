@@ -1,21 +1,22 @@
 import { Product, ProductActions, TYPES_PRODUCT } from "../interface";
 
-export interface OrderState {
-  orderedProducts: any;
+export interface ORDER_STATE {
+  orderedProducts: Product[];
 }
 
-const INITIAL_STATE: OrderState = {
+const INITIAL_STATE: ORDER_STATE = {
   orderedProducts: [],
 };
 
 export const reducerOrderProducts = (
-  state = INITIAL_STATE,
+  state: ORDER_STATE = INITIAL_STATE,
   action: ProductActions
-): OrderState => {
+): ORDER_STATE => {
   switch (action.type) {
     case TYPES_PRODUCT.ORDER_PRODUCTS:
+      let order: Product[] = action.payload.products
       if (action.payload.value === "asc-name") {
-        action.payload.products.sort(function(
+        order.sort(function (
           a: Product,
           b: Product
         ) {
@@ -24,7 +25,7 @@ export const reducerOrderProducts = (
           return 0;
         });
       } else if (action.payload.value === "des-name") {
-        action.payload.products.sort(function(
+        order.sort(function (
           a: Product,
           b: Product
         ) {
@@ -33,7 +34,7 @@ export const reducerOrderProducts = (
           return 0;
         });
       } else if (action.payload.value === "asc-price") {
-        action.payload.products.sort(function(
+        order.sort(function (
           a: Product,
           b: Product
         ) {
@@ -42,7 +43,7 @@ export const reducerOrderProducts = (
           return 0;
         });
       } else if (action.payload.value === "des-price") {
-        action.payload.products.sort(function(
+        order.sort(function (
           a: Product,
           b: Product
         ) {
@@ -53,7 +54,7 @@ export const reducerOrderProducts = (
       }
       return {
         ...state,
-        orderedProducts: action.payload.products
+        orderedProducts: order
       };
 
     default: {

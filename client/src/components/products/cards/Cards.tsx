@@ -5,7 +5,7 @@ import { CardsContainer } from "./CardsStyles";
 import Pagination from "./pagination/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
-import { getProducts } from "../../../redux/actions/products";
+import { orderProducts } from "../../../redux/actions/products";
 import { Product } from "../../../redux/interface";
 
 export interface IData {
@@ -13,39 +13,33 @@ export interface IData {
   page: (numberOfPage: number) => void;
 }
 
+export interface ORDER {
+  page: (numberOfPage: number) => void;
+  orders: (typeorder: string) => void;
+}
+
 const Cards = (): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [loaded, setLoaded] = useState<boolean>(false);
-  const productsList = useSelector((state: State) => state.products.orderedProducts);
-
-  async function getData() {
-    await dispatch(getProducts());
-    setLoaded(true);
-  }
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  // useEffect(() => {
-  //   dispatch(getProducts());
-  // }, [dispatch]);
+  const [order, setOrder] = useState<string>("")
+  const productsList = useSelector((state: State) => state.products.products);
 
   const page = (numberOfPage: number): void => {
     setCurrentPage(numberOfPage);
-    console.log(currentPage);
   };
-
+  const orders = (typeorder: string): void => {
+    setOrder(typeorder)
+    console.log(typeorder)
+  }
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
-  // const newProductList = productsList.slice(firstProduct, finalProduct);
+  const newProductsList = productsList.slice(firstProduct, finalProduct);
 
-  return ( 
+  return (
     <CardsContainer className="w-100">
-      <Filter />
-      {loaded ? <><div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-        {productsList.map((e: Product) => {
+      <Filter page={page} orders={orders} />
+      {(newProductsList.length !== 0) ? <><div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+        {newProductsList.map((e: Product) => {
           return (
             <div className="col" key={e.id}>
               <Card name={e.name} image={e.image} price={e.price} id={e.id} />
@@ -54,8 +48,9 @@ const Cards = (): JSX.Element => {
         })}
       </div>
 
-      <Pagination length={productsList.length} page={page} /> </> : <h1>Loading</h1>}
-      
+        <Pagination length={productsList.length} page={page} /> </> : <h2>LOADING</h2>
+      }
+
     </CardsContainer>
   );
 };

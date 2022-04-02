@@ -36,8 +36,10 @@ export const orderProducts = (value: string, products: Product[]) => {
     return async (dispatch: Dispatch) => {
       return dispatch({
         type: TYPES_PRODUCT.ORDER_PRODUCTS,
-        payload: value,
-        products,
+        payload: {
+          value,
+          products
+        }
       });
     };
   } catch (error) {
