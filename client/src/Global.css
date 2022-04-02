@@ -9,6 +9,6 @@
     text-decoration: none;
 }
 .App{
-    min-height: 100vh;
-    height: 100vh;
+    min-height: calc(100vh - 130px);
+    height: calc(100vh - 130px);
 }

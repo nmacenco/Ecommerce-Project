@@ -11,7 +11,10 @@ interface Inputs{
     name:string,
     lastname:string,
     email:string,
-    passUser:string
+    passUser:string,
+    billing_address:string,
+    default_shipping_address:string,
+    countryId:string
 
 }
 
@@ -24,13 +27,19 @@ const Register=():JSX.Element=>{
         email:'',
         lastname:'',
         name:'',
-        passUser:''
+        passUser:'',
+        billing_address:'',
+        default_shipping_address:'',
+        countryId:''
     })
     const [error, setError] = useState<Inputs>({
         email: '',
         lastname: '',
         name: '',
-        passUser: ''
+        passUser: '',
+        billing_address:'',
+        default_shipping_address:'',
+        countryId:''
     })
 
     const FormChange=(event:any)=>{
@@ -56,9 +65,21 @@ const Register=():JSX.Element=>{
         if(res){
             return alert(res);
         }
-
+        console.log(inputs);
+        const newUser={
+            name:inputs.name,
+            surname:inputs.lastname,
+            email:inputs.email,
+            password:inputs.passUser,
+            billing_address:inputs.billing_address,
+            default_shipping_address:inputs.default_shipping_address,
+            countryId:Number(inputs.countryId),
+            // role:'user',
+            // isActive:true
+        }
+        console.log('USUARIO: ',user);
         if(!user){
-            dispatch(CreateUser(inputs));
+            dispatch(CreateUser(newUser));
         }
         /**
          * Request
@@ -69,26 +90,42 @@ const Register=():JSX.Element=>{
 
     return(
        <Form title='Register' >
-            <div className='div-inputs'>
-                {console.log('Register renderizado!')}
+            <div className='div-data'>
                 <div>
                     <input type='text' placeholder='Name...' name='name' onChange={FormChange} className={checkError(error.name)}/>
                     {error.name && <b className='invalid-feedback'>{error.name}</b>}
                 </div>
-                <br/>
+                {/* <br/> */}
                 <div>
                     <input type='text' placeholder='LastName...' name='lastname' onChange={FormChange} className={checkError(error.lastname)}/>
                     {error.lastname && <b className='invalid-feedback'>{error.lastname}</b>}
 
                 </div>
+                <div>
+                    <input type='text' placeholder='Country id' name='countryId' onChange={FormChange} className={checkError(error.countryId)} />
+                    {error.countryId && <b className='invalid-feedback'>{error.countryId}</b>}
+
+                </div>
+            </div>
+            <div className='div-inputs'>
+                <div>
+                    <input type='email' placeholder='Email...' name='email' onChange={FormChange} className={checkError(error.email)} />
+                    {error.email && <b className='invalid-feedback'>{error.email}</b>}
+                </div>
+                {/* <br /> */}
+                <div>
+                    <input type='password' placeholder='Password...' name='passUser' onChange={FormChange} className={checkError(error.passUser)} />
+                    {error.passUser && <b className='invalid-feedback'>{error.passUser}</b>}
+                </div>
+            </div>
+            
+            <div>
+                <input type='text' placeholder='Shipping Address...' name='billing_address' onChange={FormChange} className={checkError(error.billing_address)} />
+                {error.billing_address && <b className='invalid-feedback'>{error.billing_address}</b>}
             </div>
             <div>
-                <input type='email' placeholder='Email...' name='email' onChange={FormChange} className={checkError(error.email)}/>
-                {error.email && <b className='invalid-feedback'>{error.email}</b>}
-            </div>
-            <div>
-                <input type='password' placeholder='Password...' name='passUser' onChange={FormChange} className={checkError(error.passUser)}/>
-                {error.passUser && <b className='invalid-feedback'>{error.passUser}</b>}
+                <input type='text' placeholder='Default shipping address...' name='default_shipping_address' onChange={FormChange} className={checkError(error.default_shipping_address)} />
+                {error.default_shipping_address && <b className='invalid-feedback'>{error.default_shipping_address}</b>}
             </div>
             <article>
                 {
@@ -101,8 +138,8 @@ const Register=():JSX.Element=>{
                             Submit
                         </button>
                 }
-                <Link to='/' className='btn btn-secondary link-Router button-links'>
-                    Volver
+                <Link to='/login' className='btn btn-secondary link-Router button-links'>
+                    Login
                 </Link>
             </article>
        </Form> 

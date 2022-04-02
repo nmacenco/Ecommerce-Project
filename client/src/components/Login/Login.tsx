@@ -71,6 +71,7 @@ const Login = (): JSX.Element => {
                 <input type='password' placeholder='Password' name='passUser' className={passStyle} onChange={RegisterChange} />
                 {error.passUser && <b className='invalid-feedback'>{error.passUser}</b>}
             </div>
+            
             <article>
                 {
                     validateForms(error, inputs).length ?
@@ -82,10 +83,11 @@ const Login = (): JSX.Element => {
                             Submit
                         </button>
                 }
-                <Link to='/' className='btn btn-secondary link-Router button-links'>
-                    Volver
-                </Link>
+                <Link to='/register' className='btn btn-secondary link-Router button-links'>
+                    Register
+                </Link> 
             </article>
+            
         </Form>
     )
 }

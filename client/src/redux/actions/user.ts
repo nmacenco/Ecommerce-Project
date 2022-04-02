@@ -3,7 +3,7 @@ import { Dispatch } from "redux"
 import { TYPES_USER, User } from "../interface";
 
 
-const URL_USER='';
+const URL_USER = "http://localhost:3001/api/";
 const USER_STORAGE = "USER_LOGGED";
 
 export const CreateUser=(user:any)=>{
@@ -11,12 +11,13 @@ export const CreateUser=(user:any)=>{
     return async(dispatch:Dispatch)=>{
 
         try{
-            const {data}=await axios.post(URL_USER,user);
+            console.log(URL_USER+'users');
+            const {data}=await axios.post(URL_USER+'users',user);
 
             // if(data.error){
             //     throw new Error("Error "+data.error);
             // }
-
+            console.log('data: ',data)
             console.log('despachando el usuario')
             dispatch({
                 type:TYPES_USER.CREATE_USER,

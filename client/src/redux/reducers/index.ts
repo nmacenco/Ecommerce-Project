@@ -13,6 +13,7 @@ import { userReducer } from './reducerUser';
 import { productDetailReducer } from './reducerProductsDetail';
 import { PRODUCTS, reducerProduct } from './ProductsReducer';
 import { reducerCategories, CATEGORIES } from './categoriesReducer';
+import { ORDER_STATE, reducerOrderProducts } from './orderProductsReducer';
 
 interface GLOBAL_STATE {
   user: User | null;
@@ -20,6 +21,7 @@ interface GLOBAL_STATE {
   products: PRODUCTS;
   categories : CATEGORIES;
   // subcategories : CATEGORIES;
+  orderedProducts: ORDER_STATE;
 }
 
 
@@ -29,8 +31,7 @@ export const rootReducer = combineReducers<GLOBAL_STATE>({
   products: reducerProduct ,
   categories : reducerCategories,
   // subcategories : reducerCategories
-
-  // products: reducerProduct
+  orderedProducts: reducerOrderProducts
 });
 
 export type State = ReturnType<typeof rootReducer>

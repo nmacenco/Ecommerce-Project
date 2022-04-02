@@ -14,4 +14,7 @@ export const Content = styled.div`
     height: 30px;
     border-radius: 5px;
   } */
+  input{
+    color:red;
+  }
 `;

@@ -12,7 +12,7 @@ interface props {
 
 const Card = ({ name, image, price, id }: props) => {
   return (
-    <CardComponent className="card">
+    <CardComponent className="card d-flex flex-column justify-content-between">
       <div className="d-flex flex-column">
         <Link to={`/detail/${id}`} className="text-decoration-none">
           <ProductIMG
@@ -23,10 +23,9 @@ const Card = ({ name, image, price, id }: props) => {
           <p className="card-title m-2">{name}</p>
         </Link>
       </div>
-
       <CardFooter className="card-footer d-flex align-items-end justify-content-between">
-        <h5 className="m-2">${price}</h5>
-        <button type="button" className="btn btn-primary">
+        <h5 className="m-3">${price}</h5>
+        <button type="button" className="btn btn-primary h-100">
           <img src={cartIcon} alt=""></img>
         </button>
       </CardFooter>
