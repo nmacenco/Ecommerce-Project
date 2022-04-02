@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+
 import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 // import interfaces from '....'
-
 const URL = "http://localhost:3001/api";
 
 export const postProduct = (product: Product) => {
@@ -31,3 +31,16 @@ export const getProducts = () => {
     alert(error)
   }
 };
+
+
+export const putProducts = (editProduct: Product, id: string | undefined) => {
+  try {
+    return async (dispatch: Dispatch) => {
+      await axios.put(`${URL}/products/${id}`, editProduct)
+      alert('Product updated succesfully')
+    }
+  } catch (error) {
+    alert(error)
+  }
+}
+

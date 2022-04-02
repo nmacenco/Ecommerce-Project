@@ -11,7 +11,7 @@ export enum TYPES_DETAIL {
 }
 
 export enum TYPES_PRODUCT {
-    GET_PRODUCTS
+    GET_PRODUCTS = 'GET_PRODUCTS'
 }
 export enum TYPES_CATEGORIES {
     GET_CATEGORIES = 'GET_CATEGORIES' ,

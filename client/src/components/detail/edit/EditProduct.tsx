@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
+import { putProducts } from '../../../redux/actions/products'
 import { Product } from '../../../redux/interface'
+import { State } from '../../../redux/reducers'
 import editValidations from './editValidations'
 
 export default function EditProduct(): JSX.Element {
     const dispatch = useDispatch()
+    const productDetail = useSelector((state: State) => state.productDetail)
     const { id } = useParams<string>()
     const [editProduct, setEditProduct] = useState<Product>({
         name: "",
@@ -26,14 +29,17 @@ export default function EditProduct(): JSX.Element {
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-        editValidations(editProduct)
+        e.preventDefault();
+        editValidations(editProduct, productDetail)
+            ? dispatch(putProducts(editProduct, id))
+            : alert('Something is wrong')
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend>Create Product</legend>
+                    <legend>Edit Product - {productDetail.name}</legend>
                     <div className="form-group row">
                         <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Name of product</label>
                         <input type="text" className="form-control" id="staticEmail" name='name' placeholder="Enter name" onChange={(e) => handleChange(e)} />

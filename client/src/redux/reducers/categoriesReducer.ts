@@ -1,5 +1,5 @@
 
-import {TYPES_CATEGORIES, Categories, Subcategories , CategoriesActions } from "../interface";
+import {TYPES_CATEGORIES, Categories, Subcategories , CategoriesActions} from "../interface";
 
 export interface CATEGORIES {
     categories: Categories[],
