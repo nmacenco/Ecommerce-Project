@@ -26,8 +26,8 @@ export const orderProducts = (value: string, products: Product[]) => {
         type: TYPES_PRODUCT.ORDER_PRODUCTS,
         payload: {
           value,
-          products
-        }
+          products,
+        },
       });
     };
   } catch (error) {
@@ -35,3 +35,10 @@ export const orderProducts = (value: string, products: Product[]) => {
   }
 };
 
+export const selectProducts = (productName: string) => {
+  console.log("SELECT PRODUCTS DISPATCH");
+  return {
+    type: TYPES_PRODUCT.SEARCH_PRODUCTS,
+    payload: productName.toLowerCase(),
+  };
+};

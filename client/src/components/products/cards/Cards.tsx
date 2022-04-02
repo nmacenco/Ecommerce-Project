@@ -5,7 +5,7 @@ import { CardsContainer } from "./CardsStyles";
 import Pagination from "./pagination/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
-import { orderProducts } from "../../../redux/actions/products";
+import { getProducts } from "../../../redux/actions/products";
 import { Product } from "../../../redux/interface";
 
 export interface IData {
@@ -21,6 +21,13 @@ export interface ORDER {
 const Cards = (): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    if(!productsList.length){
+      console.log('GET OF PRODUCTSSSSS')
+      dispatch(getProducts());
+    }
+  }, [dispatch]);
   const [order, setOrder] = useState<string>("")
   const productsList = useSelector((state: State) => state.products.products);
 
