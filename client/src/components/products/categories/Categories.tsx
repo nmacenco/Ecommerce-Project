@@ -25,6 +25,8 @@ const Categories = (): JSX.Element => {
     allProducts: Product[]
   ) : void {
     dispatch(filterProducts(e.target.value, allProducts));
+    console.log(e.target.value);
+    
   }
 
   return (

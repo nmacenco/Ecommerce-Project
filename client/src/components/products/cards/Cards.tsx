@@ -3,6 +3,9 @@ import Card from "./card/Card";
 import Filter from "./filter/Filter";
 import { CardsContainer } from "./CardsStyles";
 import Pagination from "./pagination/Pagination";
+
+ import ReactPaginate from 'react-paginate';
+
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
 import { orderProducts } from "../../../redux/actions/products";
@@ -33,14 +36,21 @@ const Cards = (): JSX.Element => {
   }
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
-  // const newProductsList = productsList.slice(firstProduct, finalProduct);
   let newProductsList : Product[] = [] ;
   filteredProductList.length > 0 
     ?
       newProductsList = filteredProductList.slice(firstProduct, finalProduct) 
     :
       newProductsList = productsList.slice(firstProduct, finalProduct);
-      console.log(newProductsList)
+
+    /// implementing react paginate 
+
+    const [items , setItems] = useState ([])
+    const handlePageClick = (data : any) => {
+      setCurrentPage(data.selected + 1);
+    }
+
+    
   return (
     <CardsContainer className="w-100">
       <Filter page={page} orders={orders} />
@@ -61,7 +71,7 @@ const Cards = (): JSX.Element => {
       (filteredProductList.length !== 0) ? 
         <>
           <div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-            {filteredProductList.map((e: Product) => {
+            {newProductsList.map((e: Product) => {
               return (
                 <div className="col" key={e.id}>
                   <Card name={e.name} image={e.image} price={e.price} id={e.id} />
@@ -70,7 +80,23 @@ const Cards = (): JSX.Element => {
             })}
           </div>
 
-          <Pagination length={filteredProductList.length} page={page} /> 
+          <ReactPaginate 
+            pageCount={filteredProductList.length / 32}
+            nextLabel ={'>'}
+            previousLabel = {'<'}
+            marginPagesDisplayed = {6}
+            onPageChange ={ handlePageClick}
+            containerClassName ={'pagination justify-content-center'}
+            pageClassName ={'page-item'}
+            pageLinkClassName = {'page-link'}
+            previousClassName = {'page-item'}
+            previousLinkClassName = {'page-link'}
+            nextClassName = {'page-item'}
+            nextLinkClassName = {'page-link'}
+            breakClassName = {'page-item'}
+            breakLinkClassName = {'page-link'}
+            activeClassName = {'active'}
+          ></ReactPaginate>
         </> 
       :
       (newProductsList.length !== 0) ? 
@@ -84,8 +110,23 @@ const Cards = (): JSX.Element => {
               );
             })}
           </div>
-
-          <Pagination length={productsList.length} page={page} /> 
+          <ReactPaginate 
+            pageCount={productsList.length / 32}
+            nextLabel ={'>'}
+            previousLabel = {'<'}
+            marginPagesDisplayed = {6}
+            onPageChange ={ handlePageClick}
+            containerClassName ={'pagination justify-content-center'}
+            pageClassName ={'page-item'}
+            pageLinkClassName = {'page-link'}
+            previousClassName = {'page-item'}
+            previousLinkClassName = {'page-link'}
+            nextClassName = {'page-item'}
+            nextLinkClassName = {'page-link'}
+            breakClassName = {'page-item'}
+            breakLinkClassName = {'page-link'}
+            activeClassName = {'active'}
+          ></ReactPaginate>
         </> 
         : <Loading></Loading>
       }
