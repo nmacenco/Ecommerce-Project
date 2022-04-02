@@ -31,3 +31,17 @@ export const getProducts = () => {
     alert(error)
   }
 };
+
+export const orderProducts = (value: string, products: Product[]) => {
+  try {
+    return async (dispatch: Dispatch) => {
+      
+      return dispatch({
+        type: TYPES_PRODUCT.ORDER_PRODUCTS,
+        payload: value, products
+      })
+    }
+  } catch (error) {
+    alert(error)
+  }
+}

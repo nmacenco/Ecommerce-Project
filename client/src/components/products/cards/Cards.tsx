@@ -6,6 +6,7 @@ import Pagination from "./pagination/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
 import { getProducts } from "../../../redux/actions/products";
+import { Product } from "../../../redux/interface";
 
 export interface IData {
   length: number;
@@ -15,11 +16,21 @@ export interface IData {
 const Cards = (): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const productsList = useSelector((state: State) => state.products);
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const productsList = useSelector((state: State) => state.products.orderedProducts);
+
+  async function getData() {
+    await dispatch(getProducts());
+    setLoaded(true);
+  }
 
   useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+    getData();
+  }, []);
+
+  // useEffect(() => {
+  //   dispatch(getProducts());
+  // }, [dispatch]);
 
   const page = (numberOfPage: number): void => {
     setCurrentPage(numberOfPage);
@@ -28,16 +39,13 @@ const Cards = (): JSX.Element => {
 
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
-  const newProductList = productsList.products.slice(
-    firstProduct,
-    finalProduct
-  );
+  // const newProductList = productsList.slice(firstProduct, finalProduct);
 
-  return (
+  return ( 
     <CardsContainer className="w-100">
       <Filter />
-      <div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-        {newProductList.map((e) => {
+      {loaded ? <><div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+        {productsList.map((e: Product) => {
           return (
             <div className="col" key={e.id}>
               <Card name={e.name} image={e.image} price={e.price} id={e.id} />
@@ -46,7 +54,8 @@ const Cards = (): JSX.Element => {
         })}
       </div>
 
-      <Pagination length={productsList.products.length} page={page} />
+      <Pagination length={productsList.length} page={page} /> </> : <h1>Loading</h1>}
+      
     </CardsContainer>
   );
 };
