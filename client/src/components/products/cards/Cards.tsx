@@ -21,6 +21,13 @@ export interface ORDER {
 const Cards = (): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    if(!productsList.products.length){
+      console.log('GET OF PRODUCTSSSSS')
+      dispatch(getProducts());
+    }
+  }, [dispatch]);
   const [order, setOrder] = useState<string>("")
   const productsList = useSelector((state: State) => state.products.products);
 

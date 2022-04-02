@@ -11,6 +11,8 @@ export enum TYPES {
 }
 
 export enum TYPES_PRODUCT {
+    GET_PRODUCTS,
+    SEARCH_PRODUCTS
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
 }
@@ -79,6 +81,11 @@ export interface GET_PRODUCTS {
   payload: Product[];
 }
 
+export interface SEARCH_PRODUCTS{
+    type:TYPES_PRODUCT.SEARCH_PRODUCTS,
+    payload:string
+}
+
 export interface DELETE_PRODUCT_DETAIL {
   type: TYPES.DELETE_PRODUCT_DETAIL;
   payload: Product;
@@ -86,6 +93,7 @@ export interface DELETE_PRODUCT_DETAIL {
 
 export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
 
+
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
-export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS;
+export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS| SEARCH_PRODUCTS;

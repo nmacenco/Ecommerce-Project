@@ -47,6 +47,16 @@ export const orderProducts = (value: string, products: Product[]) => {
   }
 };
 
+
+export const selectProducts=(productName:string)=>{
+  console.log('SELECT PRODUCTS DISPATCH');
+  return {
+    type:TYPES_PRODUCT.SEARCH_PRODUCTS,
+    payload:productName.toLowerCase()
+    
+  }
+
+}
 export const putProducts = (editProduct: Product, id: string | undefined) => {
   try {
     return async (dispatch: Dispatch) => {
