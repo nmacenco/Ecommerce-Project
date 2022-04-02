@@ -229,6 +229,7 @@ const getProducts = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const id = req.params.id;
+    Number(id)
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {

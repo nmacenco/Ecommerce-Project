@@ -2,7 +2,6 @@ import React from "react";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Nav from "./components/nav/Nav";
-import Home from "./components/home/Home";
 import Detail from "./components/detail/Detail";
 import Products from "./components/products/Products";
 import Login from "./components/Login/Login";
@@ -10,6 +9,8 @@ import Register from "./components/Register/Register";
 import Loading from "./components/loading/Loading";
 import Edit from "./components/detail/edit/EditProduct";
 import FormCreate from "./components/form/FormCreate";
+import Home from "./components/home/Home";
+import Footer from "./components/footer/Footer";
 
 function App(): JSX.Element {
   return (
@@ -28,6 +29,7 @@ function App(): JSX.Element {
           <Route path="/loading" element={<Loading />} />
 
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </div>
   );
