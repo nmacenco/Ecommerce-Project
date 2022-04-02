@@ -14,14 +14,16 @@ import { productDetailReducer } from './reducerProductsDetail';
 import { PRODUCTS, reducerProduct } from './ProductsReducer';
 import { reducerCategories, CATEGORIES } from './categoriesReducer';
 import { ORDER_STATE, reducerOrderProducts } from './orderProductsReducer';
+import { FILTERED_STATE , reducerFilterProducts } from './filterByCategoryReducer';
 
 interface GLOBAL_STATE {
   user: User | null;
   productDetail: Product;
-  products: PRODUCTS;
+  products: PRODUCTS ;
   categories : CATEGORIES;
   // subcategories : CATEGORIES;
   orderedProducts: ORDER_STATE;
+  filteredProducts: FILTERED_STATE;
 }
 
 
@@ -31,7 +33,8 @@ export const rootReducer = combineReducers<GLOBAL_STATE>({
   products: reducerProduct ,
   categories : reducerCategories,
   // subcategories : reducerCategories
-  orderedProducts: reducerOrderProducts
+  orderedProducts: reducerOrderProducts ,
+  filteredProducts : reducerFilterProducts
 });
 
 export type State = ReturnType<typeof rootReducer>

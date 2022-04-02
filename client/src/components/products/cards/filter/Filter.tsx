@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, orderProducts } from "../../../../redux/actions/products";
+import { resetFilterProducts } from '../../../../redux/actions/filterByCategory';
 import { Product } from "../../../../redux/interface";
 import { State } from "../../../../redux/reducers";
 import { ORDER } from "../Cards";
@@ -20,6 +21,8 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
     allProducts: Product[]
   ): void {
     e.preventDefault();
+    dispatch(resetFilterProducts());
+
     page(1)
     orders(`${e.target.value} order`);
     dispatch(orderProducts(e.target.value, allProducts));

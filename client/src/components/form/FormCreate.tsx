@@ -8,14 +8,20 @@ import validations from "./validations";
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
   const [product, setProduct] = useState<Product>({
-    name: "",
-    subcategory_id: [],
-    brand: "",
-    image: "",
+    id: 0,
+    name: '',
+    image: '',
     price: 0,
-    description: "",
+    description: '',
     weigth: 0,
     stock: 0,
+    soldCount : 0 ,
+    BrandId : 0 ,
+    brand: '',
+    subcategory_id: 0,
+    subcategory : '' , 
+    CategoryId : 0 , 
+    category : 0 , 
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
 import { orderProducts } from "../../../redux/actions/products";
 import { Product } from "../../../redux/interface";
-
+import Loading from '../../loading/Loading'
 export interface IData {
   length: number;
   page: (numberOfPage: number) => void;
@@ -23,7 +23,7 @@ const Cards = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [order, setOrder] = useState<string>("")
   const productsList = useSelector((state: State) => state.products.products);
-
+  const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
   const page = (numberOfPage: number): void => {
     setCurrentPage(numberOfPage);
   };
@@ -33,12 +33,19 @@ const Cards = (): JSX.Element => {
   }
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
-  const newProductsList = productsList.slice(firstProduct, finalProduct);
-
+  // const newProductsList = productsList.slice(firstProduct, finalProduct);
+  let newProductsList : Product[] = [] ;
+  filteredProductList.length > 0 
+    ?
+      newProductsList = filteredProductList.slice(firstProduct, finalProduct) 
+    :
+      newProductsList = productsList.slice(firstProduct, finalProduct);
+      console.log(newProductsList)
   return (
     <CardsContainer className="w-100">
       <Filter page={page} orders={orders} />
-      {(newProductsList.length !== 0) ? <><div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+
+      {/* {(newProductsList.length !== 0) ? <><div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         {newProductsList.map((e: Product) => {
           return (
             <div className="col" key={e.id}>
@@ -49,6 +56,38 @@ const Cards = (): JSX.Element => {
       </div>
 
         <Pagination length={productsList.length} page={page} /> </> : <h2>LOADING</h2>
+      } */}
+      {
+      (filteredProductList.length !== 0) ? 
+        <>
+          <div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+            {filteredProductList.map((e: Product) => {
+              return (
+                <div className="col" key={e.id}>
+                  <Card name={e.name} image={e.image} price={e.price} id={e.id} />
+                </div>
+              );
+            })}
+          </div>
+
+          <Pagination length={filteredProductList.length} page={page} /> 
+        </> 
+      :
+      (newProductsList.length !== 0) ? 
+        <>
+          <div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+            {newProductsList.map((e: Product) => {
+              return (
+                <div className="col" key={e.id}>
+                  <Card name={e.name} image={e.image} price={e.price} id={e.id} />
+                </div>
+              );
+            })}
+          </div>
+
+          <Pagination length={productsList.length} page={page} /> 
+        </> 
+        : <Loading></Loading>
       }
 
     </CardsContainer>

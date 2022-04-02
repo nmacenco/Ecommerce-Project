@@ -5,27 +5,39 @@ import { Container } from "./FormCreateStyle";
 import validaciones from "./validations";
 
 export interface IProduct_Create {
-  subcategory_id: string[];
+  id?: number;
   name: string;
-  brand: string;
   image: string;
   price: number;
   description: string;
   weigth: number;
   stock: number;
+  soldCount : number ;
+  BrandId : number ;
+  brand: string;
+  subcategory_id: number;
+  subcategory : string ; 
+  CategoryId : number ; 
+  category : number ; 
 }
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
   const [product, setProduct] = useState<IProduct_Create>({
-    name: "",
-    subcategory_id: [],
-    brand: "",
-    image: "",
+    id: 0,
+    name: '',
+    image: '',
     price: 0,
-    description: "",
+    description: '',
     weigth: 0,
     stock: 0,
+    soldCount : 0 ,
+    BrandId : 0 ,
+    brand: '',
+    subcategory_id: 0,
+    subcategory : '' , 
+    CategoryId : 0 , 
+    category : 0 , 
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

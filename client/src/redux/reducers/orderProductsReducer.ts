@@ -38,8 +38,8 @@ export const reducerOrderProducts = (
           a: Product,
           b: Product
         ) {
-          if (a.price > b.price) return 1;
-          if (a.price < b.price) return -1;
+          if (a.price < b.price) return 1;
+          if (a.price > b.price) return -1;
           return 0;
         });
       } else if (action.payload.value === "des-price") {
@@ -47,8 +47,8 @@ export const reducerOrderProducts = (
           a: Product,
           b: Product
         ) {
-          if (a.price < b.price) return 1;
-          if (a.price > b.price) return -1;
+          if (a.price > b.price) return 1;
+          if (a.price < b.price) return -1;
           return 0;
         });
       }

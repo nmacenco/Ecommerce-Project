@@ -3,11 +3,13 @@ import { Product, ProductActions, TYPES_PRODUCT } from "../interface";
 
 export interface PRODUCTS {
   products: Product[];
+  copyProducts: Product[];
   productSearch: any;
 }
 
 const INITIAL_STATE = {
   products: [],
+  copyProducts : [],
   productSearch: [],
 };
 
@@ -26,6 +28,7 @@ export const reducerProduct = (
       return {
         ...state,
         products: action.payload,
+        copyProducts: action.payload,
         productSearch: newTable,
       };
 
