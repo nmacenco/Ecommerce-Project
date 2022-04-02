@@ -1,6 +1,6 @@
 import { Product } from "../../redux/interface";
 
-export default function validaciones(props: Product): boolean {
+export default function validations(props: Product): boolean {
     let bool: boolean = false,
         name: boolean = false,
         brand: boolean = false,

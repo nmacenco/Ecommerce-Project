@@ -1,29 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts, orderProducts } from "../../../../redux/actions/products";
+import { Product } from "../../../../redux/interface";
+import { State } from "../../../../redux/reducers";
+import { ORDER } from "../Cards";
+import { Select } from "./FilterStyles";
 
-const Filter = () => {
+const Filter = ({ page, orders }: ORDER): JSX.Element => {
+  const dispatch = useDispatch();
+  const allProducts = useSelector((state: State) => state.products.products);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, []);
+
+  function handleSort(
+    e: React.ChangeEvent<HTMLSelectElement>,
+    //es un objeto
+    allProducts: Product[]
+  ): void {
+    e.preventDefault();
+    page(1)
+    orders(`${e.target.value} order`);
+    dispatch(orderProducts(e.target.value, allProducts));
+  }
+
   return (
     <div className="card mt-3">
-      <div className="card-body m-1 d-flex">
-        <ul className="nav-item dropdown p-0 m-0">
-          <a
-            className="dropdown-toggle text-decoration-none"
-            data-bs-toggle="dropdown"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Order by
-          </a>
-          <div className="dropdown-menu">
-            <a className="dropdown-item">Higher price</a>
-            <a className="dropdown-item">Lower price</a>
-
-            <div className="dropdown-divider"></div>
-            <a className="dropdown-item">A - Z</a>
-            <a className="dropdown-item">Z - A</a>
-          </div>
-        </ul>
-        <p className="d-flex ms-auto m-0">100 products</p>
+      <div className=" d-flex">
+        <Select
+          className="form-select"
+          onChange={(e) => handleSort(e, allProducts)}
+        >
+          <option>Order by</option>
+          <option value="asc-price">Higher price</option>
+          <option value="des-price">Lower price</option>
+          <div className="dropdown-divider"></div>
+          <option value="asc-name">A - Z</option>
+          <option value="des-name">Z - A</option>
+        </Select>
+        <p className="ms-auto m-3">99 products</p>
       </div>
     </div>
   );

@@ -3,7 +3,6 @@ import cartIcon from "../../icons/cart-icon.png";
 
 import Search from "../SearchBar/Search";
 import { SearchIcon, CartIcon } from "./NavStyles";
-import { NavLink } from "react-router-dom";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Link } from "react-router-dom";
 
@@ -18,18 +17,14 @@ const Nav = (): JSX.Element => {
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <NavLink className="nav-link" to={"/products"}>
-                <a className="nav-link" href="">
-                  Products
-                </a>
-              </NavLink>
+              <Link className="nav-link" to={"/products"}>
+                Products
+              </Link>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to={"/products"}>
-                <a className="nav-link" href="#">
-                  About
-                </a>
-              </NavLink>
+              <Link className="nav-link" to={"/products"}>
+                About
+              </Link>
             </li>
           </ul>
           <Search />
@@ -44,11 +39,11 @@ const Nav = (): JSX.Element => {
       </div>
 
       <div className="ms-auto">
-        <NavLink className="nav-item" to={"/cart"}>
-          <a className="nav-item" href="/cart">
-            <CartIcon src={cartIcon} />
-          </a>
-        </NavLink>
+        <Link className="nav-item" to={"/cart"}>
+
+          <CartIcon src={cartIcon} />
+
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
