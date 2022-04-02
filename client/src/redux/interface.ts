@@ -10,6 +10,10 @@ export enum TYPES {
   DELETE_PRODUCT_DETAIL = "DELETE_PRODUCT_DETAIL",
 }
 
+export enum TYPES_ADMIN {
+  DELETE_PRODUCTS = "DELETE_PRODUCTS",
+}
+
 export enum TYPES_PRODUCT {
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
@@ -84,8 +88,16 @@ export interface DELETE_PRODUCT_DETAIL {
   payload: Product;
 }
 
+//Admin Actions
+export interface DELETE_PRODUCT {
+  type: TYPES_ADMIN.DELETE_PRODUCTS;
+  payload: number;
+}
+
 export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
 export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS;
+
+export type AdminActions = DELETE_PRODUCT;

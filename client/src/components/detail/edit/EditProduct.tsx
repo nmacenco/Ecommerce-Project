@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import { putProducts } from '../../../redux/actions/products'
+import { putProducts } from '../../../redux/actions/admin'
 import { Product } from '../../../redux/interface'
 import { State } from '../../../redux/reducers'
 import editValidations from './editValidations'
