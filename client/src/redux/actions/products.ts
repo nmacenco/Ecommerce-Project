@@ -32,3 +32,13 @@ export const getProducts = () => {
   }
 };
 
+
+export const selectProducts=(productName:string)=>{
+  console.log('SELECT PRODUCTS DISPATCH');
+  return {
+    type:TYPES_PRODUCT.SEARCH_PRODUCTS,
+    payload:productName.toLowerCase()
+    
+  }
+
+}

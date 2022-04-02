@@ -18,7 +18,10 @@ const Cards = (): JSX.Element => {
   const productsList = useSelector((state: State) => state.products);
 
   useEffect(() => {
-    dispatch(getProducts());
+    if(!productsList.products.length){
+      console.log('GET OF PRODUCTSSSSS')
+      dispatch(getProducts());
+    }
   }, [dispatch]);
 
   const page = (numberOfPage: number): void => {

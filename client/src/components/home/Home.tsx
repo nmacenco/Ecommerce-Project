@@ -10,10 +10,10 @@ const Home = () => {
 
     useEffect(()=>{
 
-        if(!products.length){
-            console.log('Se trane todos los productos');
-            dispatch(getProducts());
-        }
+        // if(!products.length){
+        //     console.log('Se trane todos los productos');
+        //     dispatch(getProducts());
+        // }
         
 
     },[])

@@ -60,13 +60,13 @@ class HashTable {
     let tenNames: string[] = []; //Maximo 4 palabras
 
     // if(typeof letter === 'string') return tenNames;
-    console.log('LA LETRA ES: ',letter,typeof letter)
+    // console.log('LA LETRA ES: ',letter,typeof letter)
 
     const firstLetter: string = letter[0].toLowerCase();
-    console.log('FIRSTNAME: ',firstLetter)
+    // console.log('FIRSTNAME: ',firstLetter)
     if (this.table[firstLetter]) {
       const names: string[] = this.table[firstLetter]; //Todos los nombres de array
-      console.log('LOS NOMBRES: ',names)
+      // console.log('LOS NOMBRES: ',names)
 
       //Si existe la letra debemos recorrer el array y ver que matchea mejor:
       let corte = 0;
@@ -78,8 +78,7 @@ class HashTable {
         }
         corte++;
       }
-
-      console.log("Los nombres que matchean son: ", tenNames);
+      // console.log("Los nombres que matchean son: ", tenNames);
     }
     return tenNames;
   }
