@@ -34,12 +34,6 @@ const Nav = (): JSX.Element => {
           >
             Login
           </Link>
-          <Link
-            to="/register"
-            className="nav-item btn btn-secondary my-sm-3 link-Router"
-          >
-            Register
-          </Link>
           <AdminDropdown />
         </div>
       </div>
