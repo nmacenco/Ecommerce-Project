@@ -1,6 +1,14 @@
-const { Category, Brand, Subcategory, Product, Country } = require("../db");
+const {
+  Category,
+  Brand,
+  Subcategory,
+  Product,
+  Country,
+  User,
+} = require("../db");
 const fs = require("fs");
 const axios = require("axios");
+const bcrypt = require("bcrypt");
 
 //Just to fill the db.
 const bulkCreateCategories = async () => {
@@ -100,10 +108,36 @@ const bulkCreateCountries = async () => {
   }
 };
 
+const bulkCreateUsers = async () => {
+  try {
+    let data = fs.readFileSync(__dirname + "/../json/users.json", "utf8");
+    data = JSON.parse(data);
+    for (let i = 0; i < data.length; i++) {
+      data[i].password = await bcrypt.hash(data[i].password, 8);
+      await User.findOrCreate({
+        where: {
+          name: data[i].name,
+          surname: data[i].surname,
+          password: data[i].password,
+          email: data[i].email,
+          billing_address: data[i].billing_address,
+          default_shipping_address: data[i].default_shipping_address,
+          role: data[i].role,
+          isActive: data[i].isActive,
+          CountryId: data[i].CountryId,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   bulkCreateCategories,
   bulkCreateBrands,
   bulkCreateSubcategories,
   bulkCreateProducts,
   bulkCreateCountries,
+  bulkCreateUsers,
 };

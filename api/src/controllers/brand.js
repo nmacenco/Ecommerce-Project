@@ -6,6 +6,12 @@ const getBrands = async (req, res, next) => {
     if (!dataBrand.length) {
       res.status(404).send({ errorMsg: "Brands not found" });
     }
+    dataBrand = dataBrand.map((brand) => {
+      return {
+        name: brand.name,
+        id: brand.id,
+      };
+    });
     res
       .status(200)
       .send({ successMsg: "Here are your brands.", data: dataBrand });
@@ -20,10 +26,16 @@ const createBrand = async (req, res, next) => {
     if (!name) {
       res.status(400).send({ errorMsg: "Missing data" });
     } else {
-      const newBrand = await Brand.create({ name });
-      res
-        .status(201)
-        .send({ successMsg: "Brand successfully created.", data: newBrand });
+      const [newBrand, created] = await Brand.findOrCreate({
+        where: {
+          name,
+        },
+      });
+      created
+        ? res
+            .status(201)
+            .send({ successMsg: "Brand successfully created.", data: newBrand })
+        : res.status(400).send({ errorMsg: "Brand already exists." });
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error });

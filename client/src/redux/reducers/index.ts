@@ -1,11 +1,13 @@
+
 import { combineReducers } from 'redux';
 import { User } from '../interface';
 import { Product } from '../interface';
+
 /**
- * 
+ *
  * import .... from 'userReducer'
  * import .... from 'productsReducer'
- * 
+ *
  */
 import { userReducer } from './reducerUser';
 import { productDetailReducer } from './reducerProductsDetail';
