@@ -39,7 +39,7 @@ const Filter = (): JSX.Element => {
           <option value="asc-name">A - Z</option>
           <option value="des-name">Z - A</option>
         </Select>
-        <p className="ms-auto m-3">100 products</p>
+        <p className="ms-auto m-3">99 products</p>
       </div>
     </div>
   );
