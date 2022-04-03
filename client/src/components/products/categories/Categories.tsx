@@ -8,7 +8,8 @@ import {
 } from "../../../redux/actions/categories";
 import {filterProducts} from '../../../redux/actions/filterByCategory'
 import { Product } from "../../../redux/interface";
-const Categories = (): JSX.Element => {
+import { ORDER } from "../cards/Cards";
+const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const categories = useSelector((state: State) => state.categories);
   const allProducts = useSelector(
@@ -21,12 +22,11 @@ const Categories = (): JSX.Element => {
 
   function handleFilter(
     e: React.ChangeEvent<HTMLSelectElement>,
-    //es un objeto
     allProducts: Product[]
   ) : void {
     dispatch(filterProducts(e.target.value, allProducts));
-    console.log(e.target.value);
-    
+    e.target.value = e.target[0].innerHTML
+    page(1)
   }
 
   return (
