@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { postProduct } from "../../redux/actions/products";
+import { postProduct } from "../../redux/actions/admin";
 import { Product } from "../../redux/interface";
 import { FormContainer } from "./FormCreateStyles";
 import validations from "./validations";

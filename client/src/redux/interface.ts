@@ -10,7 +10,12 @@ export enum TYPES_DETAIL {
     DELETE_PRODUCT_DETAIL = 'DELETE_PRODUCT_DETAIL',
 }
 
+export enum TYPES_ADMIN {
+  DELETE_PRODUCTS = "DELETE_PRODUCTS",
+}
+
 export enum TYPES_PRODUCT {
+    SEARCH_PRODUCTS,
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
   FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
@@ -131,12 +136,24 @@ export interface GET_PRODUCTS {
   payload: Product[];
 }
 
+export interface SEARCH_PRODUCTS{
+    type:TYPES_PRODUCT.SEARCH_PRODUCTS,
+    payload:string
+}
+
 export interface DELETE_PRODUCT_DETAIL {
     type: TYPES_DETAIL.DELETE_PRODUCT_DETAIL,
     payload: Product
 }
 
+//Admin Actions
+export interface DELETE_PRODUCT {
+  type: TYPES_ADMIN.DELETE_PRODUCTS;
+  payload: number;
+}
+
 export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
+
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
@@ -145,3 +162,5 @@ export type CategoriesActions =
     | GET_SUBCATEGORIES
 
 export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS;
+
+export type AdminActions = DELETE_PRODUCT;
