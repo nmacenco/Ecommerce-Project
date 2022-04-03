@@ -17,7 +17,7 @@ const INITIAL_PRODUCT = {
   image: '',
   price: 0,
   description: '',
-  weigth: 0,
+  weight: 0,
   stock: 0,
   soldCount : 0 ,
   BrandId : 0 ,
