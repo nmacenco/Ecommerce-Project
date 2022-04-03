@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { postProduct } from "../../redux/actions/admin";
 import { Product } from "../../redux/interface";
+import { State } from "../../redux/reducers";
 import { FormContainer } from "./FormCreateStyles";
 import validations from "./validations";
 
@@ -17,6 +18,11 @@ export default function FromCreate(): JSX.Element {
     weigth: 0,
     stock: 0,
   });
+  // const categoriesList = useSelector((state: State) => state.categories);
+
+  // useEffect(() => {
+  //   dispatch(getCategories())
+  // },[])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setProduct({
@@ -29,74 +35,81 @@ export default function FromCreate(): JSX.Element {
     e.preventDefault();
     validations(product)
       ? dispatch(postProduct(product))
-      : alert("No se pudo crear la receta");
+      : alert("Product not created.");
   };
 
   return (
     <FormContainer>
       <form onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>Create Product</legend>
-          <div className="form-group row">
-            <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
-              Name of product
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="staticEmail"
-              name="name"
-              placeholder="Enter name"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputEmail1" className="form-label mt-4">
-              Brand
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="exampleInputEmail1"
-              name="brand"
-              placeholder="Enter brand"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1" className="form-label mt-4">
-              Image
-            </label>
-            <input
+        <h3 className="text-center">Create Product</h3>
+        <div className="form-group">
+          <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="staticEmail"
+            name="name"
+            placeholder="Enter name"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="exampleInputEmail1" className="form-label mt-4">
+            Brand
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="exampleInputEmail1"
+            name="brand"
+            placeholder="Enter brand"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="exampleInputPassword1" className="form-label mt-4">
+            Image
+          </label>
+          {/* <input
               type="text"
               className="form-control"
               id="exampleInputPassword1"
               name="image"
               placeholder="Enter image"
               onChange={(e) => handleChange(e)}
-            />
-            <input
-              className="form-control"
-              type="file"
-              id="formFile"
-              name="image"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleTextarea" className="form-label mt-4">
-              Description
-            </label>
-            <input
-              type="textarea"
-              className="form-control"
-              id="exampleTextarea"
-              name="description"
-              placeholder="Enter one description"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="form-group">
+            /> */}
+          <input
+            className="form-control"
+            type="file"
+            id="formFile"
+            name="image"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="exampleTextarea" className="form-label mt-4">
+            Description
+          </label>
+          <input
+            type="textarea"
+            className="form-control"
+            id="exampleTextarea"
+            name="description"
+            placeholder="Enter description"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label mt-4">Categories</label>
+          <select className="form-select" id="exampleSelect1">
+            <option>Select category</option>
+            
+          </select>
+        </div>
+        <div className="d-flex justify-content-center">
+          <div className="form-group mr-1 mr-md-2">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
               Price
             </label>
@@ -105,11 +118,11 @@ export default function FromCreate(): JSX.Element {
               className="form-control"
               id="exampleTextarea"
               name="price"
-              placeholder="Enter price"
+              placeholder="Price"
               onChange={(e) => handleChange(e)}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group mx-2 mx-md-3">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
               Weight
             </label>
@@ -118,11 +131,11 @@ export default function FromCreate(): JSX.Element {
               className="form-control"
               id="exampleTextarea"
               name="weigth"
-              placeholder="Enter weigth"
+              placeholder="Weigth"
               onChange={(e) => handleChange(e)}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group ml-1 ml-md-2">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
               Stock
             </label>
@@ -131,15 +144,16 @@ export default function FromCreate(): JSX.Element {
               className="form-control"
               id="exampleTextarea"
               name="stock"
-              placeholder="Enter stock number"
+              placeholder="Stock"
               onChange={(e) => handleChange(e)}
             />
           </div>
-
-          <button type="submit" className="btn btn-primary">
+        </div>
+        <div className="text-center">
+          <button type="submit" className="btn btn-outline-primary mt-5 ">
             Submit
           </button>
-        </fieldset>
+        </div>
       </form>
     </FormContainer>
   );
