@@ -35,10 +35,10 @@ export const orderProducts = (value: string, products: Product[]) => {
   }
 };
 
-export const selectProducts = (productName: string) => {
+export const selectProducts = (products: Product[]) => {
   console.log("SELECT PRODUCTS DISPATCH");
   return {
     type: TYPES_PRODUCT.SEARCH_PRODUCTS,
-    payload: productName.toLowerCase(),
+    payload: products
   };
 };
