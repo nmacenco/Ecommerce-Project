@@ -1,12 +1,18 @@
 import React from "react";
 import cartIcon from "../../icons/cart-icon.png";
-
+import { useDispatch } from "react-redux";
 import Search from "../SearchBar/Search";
 import { SearchIcon, CartIcon } from "./NavStyles";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Link } from "react-router-dom";
+import { resetFilterProducts } from '../../redux/actions/filterByCategory';
+
 
 const Nav = (): JSX.Element => {
+  const dispatch = useDispatch();
+  function handleClickProducts () {
+    dispatch(resetFilterProducts())
+  }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary d-flex fixed-top">
       <div className="container-fluid">
@@ -17,7 +23,10 @@ const Nav = (): JSX.Element => {
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className="nav-link" to={"/products"}>
+              <Link 
+                onClick={() => {handleClickProducts()}}
+                className="nav-link" to={"/products"}
+              >
                 Products
               </Link>
             </li>

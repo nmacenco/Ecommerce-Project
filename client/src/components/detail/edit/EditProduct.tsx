@@ -11,14 +11,20 @@ export default function EditProduct(): JSX.Element {
     const productDetail = useSelector((state: State) => state.productDetail)
     const { id } = useParams<string>()
     const [editProduct, setEditProduct] = useState<Product>({
-        name: "",
-        subcategory_id: [],
-        brand: "",
-        image: "",
+        id: 0,
+        name: '',
+        image: '',
         price: 0,
-        description: "",
+        description: '',
         weigth: 0,
-        stock: 0
+        stock: 0,
+        soldCount : 0 ,
+        BrandId : 0 ,
+        brand: '',
+        subcategory_id: 0,
+        subcategory : '' , 
+        CategoryId : 0 , 
+        category : 0 , 
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
