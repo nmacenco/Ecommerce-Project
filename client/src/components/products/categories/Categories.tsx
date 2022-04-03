@@ -21,12 +21,10 @@ const Categories = (): JSX.Element => {
 
   function handleFilter(
     e: React.ChangeEvent<HTMLSelectElement>,
-    //es un objeto
     allProducts: Product[]
   ) : void {
     dispatch(filterProducts(e.target.value, allProducts));
-    console.log(e.target.value);
-    
+    e.target.value = e.target[0].innerHTML
   }
 
   return (

@@ -31,11 +31,13 @@ const Cards = (): JSX.Element => {
       dispatch(getProducts());
     }
   }, [dispatch]);
+
   const [order, setOrder] = useState<string>("")
   const productsList = useSelector((state: State) => state.products.products);
   const filteredProductList = useSelector(
     (state: State) => state.filteredProducts.filteredProducts
   );
+
   const page = (numberOfPage: number): void => {
     setCurrentPage(numberOfPage);
   };
@@ -43,6 +45,7 @@ const Cards = (): JSX.Element => {
     setOrder(typeorder);
     console.log(typeorder);
   };
+  
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
