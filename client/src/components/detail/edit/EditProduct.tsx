@@ -1,23 +1,13 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { postProduct } from '../../redux/actions/products';
-import validaciones from './validaciones'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
+import { Product } from '../../../redux/interface'
+import editValidations from './editValidations'
 
-export interface IProduct_Create {
-    subcategory_id: string[];
-    name: string;
-    brand: string;
-    image: string;
-    price: number;
-    description: string;
-    weigth: number;
-    stock: number;
-}
-
-
-export default function FromCreate(): JSX.Element {
+export default function EditProduct(): JSX.Element {
     const dispatch = useDispatch()
-    const [product, setProduct] = useState<IProduct_Create>({
+    const { id } = useParams<string>()
+    const [editProduct, setEditProduct] = useState<Product>({
         name: "",
         subcategory_id: [],
         brand: "",
@@ -29,17 +19,14 @@ export default function FromCreate(): JSX.Element {
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setProduct({
-            ...product,
+        setEditProduct({
+            ...editProduct,
             [e.target.name]: e.target.value
         })
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-        e.preventDefault()
-        validaciones(product)
-            ? dispatch(postProduct(product))
-            : alert('No se pudo crear la receta')
+        editValidations(editProduct)
     }
 
     return (
