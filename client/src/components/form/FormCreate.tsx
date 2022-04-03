@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postProduct } from "../../redux/actions/admin";
-import { Product } from "../../redux/interface";
+import {
+  getCategories,
+  getSubCategories,
+} from "../../redux/actions/categories";
+import { Category, Product, Subcategory } from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import { FormContainer } from "./FormCreateStyles";
 import validations from "./validations";
@@ -18,18 +22,34 @@ export default function FromCreate(): JSX.Element {
     weigth: 0,
     stock: 0,
   });
-  // const categoriesList = useSelector((state: State) => state.categories);
+  const categoriesList = useSelector((state: State) => state.categories);
+  const subcategoriesList = useSelector((state: State) => state.categories.subcategories);
+  const [subcategoriesLoaded, setSubcategoriesLoaded] = useState<Boolean>(
+    false
+  );
+  const [subcategoriesFiltered, setSubcategoriesFiltered ] = useState<Subcategory[]>([]);
 
-  // useEffect(() => {
-  //   dispatch(getCategories())
-  // },[])
-
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getSubCategories());
+  }, [dispatch]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setProduct({
       ...product,
       [e.target.name]: e.target.value,
     });
   };
+
+  function handleCategory(
+    e: React.ChangeEvent<HTMLSelectElement>
+  ): void {
+    e.preventDefault();
+    const subcategoriesFiltered = subcategoriesList.filter(
+      (s: Subcategory) => Number(s.CategoryId) == Number(e.target.value)
+    );
+    setSubcategoriesLoaded(true);
+    setSubcategoriesFiltered(subcategoriesFiltered)
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -101,12 +121,32 @@ export default function FromCreate(): JSX.Element {
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div className="form-group">
-          <label className="form-label mt-4">Categories</label>
-          <select className="form-select" id="exampleSelect1">
-            <option>Select category</option>
-            
-          </select>
+        <div className="d-flex justify-content-between">
+          <div className="form-group me-1">
+            <label className="form-label mt-4">Category</label>
+            <select
+              onChange={(e) => handleCategory(e)}
+              className="form-select"
+              id="exampleSelect1"
+            >
+              <option>Select category</option>
+              {categoriesList.categories.map((category: Category) => {
+                return <option value={category.id}>{category.name}</option>;
+              })}
+            </select>
+          </div>
+          <div className="form-group ms-1">
+            <label className="form-label mt-4">Subcategory</label>
+            <select className="form-select" id="exampleSelect1">
+              <option>Select subcategory</option>
+              {subcategoriesLoaded &&
+                subcategoriesFiltered.map((subcategory: Subcategory) => {
+                  return (
+                    <option value={subcategory.id}>{subcategory.name}</option>
+                  );
+                })}
+            </select>
+          </div>
         </div>
         <div className="d-flex justify-content-center">
           <div className="form-group mr-1 mr-md-2">
@@ -115,7 +155,7 @@ export default function FromCreate(): JSX.Element {
             </label>
             <input
               type="number"
-              className="form-control"
+              className="form-control "
               id="exampleTextarea"
               name="price"
               placeholder="Price"
