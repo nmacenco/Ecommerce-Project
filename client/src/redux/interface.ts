@@ -5,9 +5,9 @@ export enum TYPES_USER {
   FIND_USER,
 }
 
-export enum TYPES {
-  PRODUCT_DETAIL = "PRODUCT_DETAIL",
-  DELETE_PRODUCT_DETAIL = "DELETE_PRODUCT_DETAIL",
+export enum TYPES_DETAIL {
+    PRODUCT_DETAIL = 'PRODUCT_DETAIL',
+    DELETE_PRODUCT_DETAIL = 'DELETE_PRODUCT_DETAIL',
 }
 
 export enum TYPES_ADMIN {
@@ -23,6 +23,8 @@ export enum TYPES_PRODUCT {
   SEARCH_PRODUCTS,
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
+  FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
+  RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS"
 }
 
 export interface User {
@@ -33,27 +35,41 @@ export interface User {
   token: string;
 }
 
+// export interface Product {
+//   id?: number;
+//   subcategory_id: string[];
+//   name: string;
+//   brand: string;
+//   image: string;
+//   price: number;
+//   description: string;
+//   weigth: number;
+//   stock: number;
+// }
 export interface Product {
   id?: number;
-  subcategory_id: string[];
   name: string;
-  brand: string;
   image: string;
   price: number;
   description: string;
   weigth: number;
   stock: number;
+  soldCount : number ;
+  BrandId : number ;
+  brand: string;
+  subcategory_id: number;
+  subcategory : string ; 
+  CategoryId : number ; 
+  category : number ; 
 }
-
 export interface Category {
-  name: string;
-  id: number;
+    id?: number,
+    name: string,
 }
-
 export interface Subcategory {
-  name: string;
-  id: number;
-  CategoryId:number;
+    id?: number,
+    name: string,
+    CategoryId :number
 }
 
 export interface AXIOSDATA {
@@ -81,16 +97,37 @@ export interface FIND_USER {
   type: TYPES_USER.FIND_USER;
   payload: User;
 }
+//=======================
+// Categorie Actions 
+
+export interface GET_CATEGORIES {
+    type: TYPES_CATEGORIES.GET_CATEGORIES,
+    payload: Category[]
+}
+export interface GET_SUBCATEGORIES {
+    type: TYPES_CATEGORIES.GET_SUBCATEGORIES,
+    payload: Subcategory[]
+}
 
 //=====================
 //Products Actions
 export interface PRODUCT_DETAIL {
-  type: TYPES.PRODUCT_DETAIL;
+  type: TYPES_DETAIL.PRODUCT_DETAIL;
   payload: Product;
 }
 
 export interface ORDER_PRODUCTS {
   type: TYPES_PRODUCT.ORDER_PRODUCTS;
+  //aca deberia ir un objeto con value(strinfg) y products(array de productos)
+  payload: any;
+}
+export interface FILTER_PRODUCTS {
+  type: TYPES_PRODUCT.FILTERED_PRODUCTS;
+  //aca deberia ir un objeto con value(strinfg) y products(array de productos)
+  payload: any;
+}
+export interface RESET_FILTERED_PRODUCTS {
+  type: TYPES_PRODUCT.RESET_FILTERED_PRODUCTS;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
   payload: any;
 }
@@ -100,24 +137,14 @@ export interface GET_PRODUCTS {
   payload: Product[];
 }
 
-export interface GET_CATEGORIES {
-  type: TYPES_CATEGORIES.GET_CATEGORIES;
-  payload: Category[];
-}
-
-export interface GET_SUBCATEGORIES {
-  type: TYPES_CATEGORIES.GET_SUBCATEGORIES;
-  payload: Subcategory[];
-}
-
 export interface SEARCH_PRODUCTS {
   type: TYPES_PRODUCT.SEARCH_PRODUCTS;
   payload: string;
 }
 
 export interface DELETE_PRODUCT_DETAIL {
-  type: TYPES.DELETE_PRODUCT_DETAIL;
-  payload: Product;
+    type: TYPES_DETAIL.DELETE_PRODUCT_DETAIL,
+    payload: Product
 }
 
 //Admin Actions
@@ -130,7 +157,7 @@ export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
-export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | SEARCH_PRODUCTS;
+export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS;
 
 export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES;
 

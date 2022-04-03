@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { postProduct } from "../../redux/actions/admin";
 import {
   getCategories,
-  getSubCategories,
+  getSubcategories,
 } from "../../redux/actions/categories";
 import { Category, Product, Subcategory } from "../../redux/interface";
 import { State } from "../../redux/reducers";
@@ -13,14 +13,20 @@ import validations from "./validations";
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
   const [product, setProduct] = useState<Product>({
-    name: "",
-    subcategory_id: [],
-    brand: "",
-    image: "",
+    id: 0,
+    name: '',
+    image: '',
     price: 0,
-    description: "",
+    description: '',
     weigth: 0,
     stock: 0,
+    soldCount : 0 ,
+    BrandId : 0 ,
+    brand: '',
+    subcategory_id: 0,
+    subcategory : '' , 
+    CategoryId : 0 , 
+    category : 0 , 
   });
   const categoriesList = useSelector((state: State) => state.categories);
   const subcategoriesList = useSelector((state: State) => state.categories.subcategories);
@@ -31,7 +37,7 @@ export default function FromCreate(): JSX.Element {
 
   useEffect(() => {
     dispatch(getCategories());
-    dispatch(getSubCategories());
+    dispatch(getSubcategories());
   }, [dispatch]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setProduct({

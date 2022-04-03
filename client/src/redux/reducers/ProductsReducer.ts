@@ -3,11 +3,13 @@ import { Product, ProductActions, TYPES_PRODUCT } from "../interface";
 
 export interface PRODUCTS {
   products: Product[];
+  copyProducts: Product[];
   productSearch: any;
 }
 
 const INITIAL_STATE = {
   products: [],
+  copyProducts : [],
   productSearch: [],
 };
 
@@ -25,23 +27,25 @@ export const reducerProduct = (
           });
           console.log("La hastable es: ", newTable);
 
+
             return {
                 ...state,
                 products: action.payload,
+                copyProducts: action.payload,
                 productSearch: newTable,
             };
-        case TYPES_PRODUCT.SEARCH_PRODUCTS:
+        // case TYPES_PRODUCT.SEARCH_PRODUCTS:
 
-            let selectProducts= state.products.filter(product=>{
+        //     let selectProducts= state.products.filter(product=>{
 
-                if(product.name.toLowerCase().startsWith(action.payload.toLowerCase())){
-                    return product;
-                }
+        //         if(product.name.toLowerCase().startsWith(action.payload.toLowerCase())){
+        //             return product;
+        //         }
 
-            })
-            console.log('PRODUCTOS QUE MATCHEAN: ',selectProducts);
+        //     })
+        //     console.log('PRODUCTOS QUE MATCHEAN: ',selectProducts);
 
-            return state;
+        //     return state;
             
 
     default: {
