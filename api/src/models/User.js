@@ -29,11 +29,11 @@ module.exports = (sequelize) => {
     },
     billing_address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     default_shipping_address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     role: {
       type: DataTypes.STRING,

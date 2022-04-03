@@ -145,6 +145,14 @@ const getSingleProduct = async (req, res) => {
               },
             ],
           },
+          {
+            model: Question,
+            attributes: ["title", "description", "answer", "id"],
+          },
+          {
+            model: Review,
+            attributes: ["title", "description", "stars", "id"],
+          },
         ],
       });
       if (!singleProduct) {
@@ -165,14 +173,19 @@ const getSingleProduct = async (req, res) => {
           subcategory: singleProduct.Subcategory.name,
           CategoryId: singleProduct.Subcategory.Category.id,
           category: singleProduct.Subcategory.Category.name,
-        };
+          isindiscount: singleProduct.isindiscount,
+          discountpercent: singleProduct.discountpercent,
+          discountqty: singleProduct.discountqty,
+          questions: singleProduct.Questions.length >0 ? singleProduct.Questions.map((question) => {return { question }}) : [],
+          reviews: singleProduct.Reviews.length >0 ? singleProduct.Reviews.map((review) => {return { review }}) : [],
+       };
         res
           .status(200)
           .send({ successMsg: "Here is your product.", data: singleProduct });
       }
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
+    res.status(500).send({ errorMsg: error });
   }
 };
 
@@ -194,11 +207,20 @@ const getProducts = async (req, res) => {
             },
           ],
         },
+        {
+          model: Question,
+          attributes: ["title", "description", "answer", "id"],
+        },
+        {
+          model: Review,
+          attributes: ["title", "description", "stars", "id"],
+        },
       ],
     });
     if (!dataProduct) {
       res.status(404).send({ errorMsg: "There are no products available." });
     } else {
+      // totalreviews = dataProduct[0].reviews.length >0 ? dataProduct[0].reviews.map((review) => {return { review }}) : [],
       dataProduct = dataProduct.map((product) => {
         return {
           id: product.id,
@@ -215,14 +237,23 @@ const getProducts = async (req, res) => {
           subcategory: product.Subcategory.name,
           CategoryId: product.Subcategory.Category.id,
           category: product.Subcategory.Category.name,
+          isindiscount: product.isindiscount,
+          discountpercent: product.discountpercent,
+          discountqty: product.discountqty,
+          questions: product.Questions.length >0 ? product.Questions.map((question) => {return { question }}) : [],
+          reviews: product.Reviews.length >0 ? product.Reviews.map((review) => {return { review }}) : [],
         };
       });
+
+
+
+
       res
         .status(200)
         .send({ successMsg: "Here are your products.", data: dataProduct });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
+    res.status(500).send({ errorMsg: error });
   }
 };
 

@@ -42,7 +42,7 @@ const createSubCategory = async (req, res, next) => {
         : res.status(400).send({ errorMsg: "Subcategory already exists." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
+    res.status(500).send({ errorMsg: error});
   }
 };
 
