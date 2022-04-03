@@ -52,7 +52,7 @@ const Search = (): JSX.Element => {
     // console.log('TABLA: ',table);
 
     return (
-        <SearchForm className="nav-item d-flex" autoComplete='off' onSubmit={SearchRequest} >
+        <SearchForm className="d-flex me-lg-4" autoComplete='off' onSubmit={SearchRequest} >
             <div className='desplegable'>
                 <input
                     onChange={SearchChange}

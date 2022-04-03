@@ -6,7 +6,7 @@ export const SearchForm = styled.form`
            height: 1em;
          }
          input {
-           margin: 0px !important;
+           width: 250px;
          }
          position: relative;
          article {

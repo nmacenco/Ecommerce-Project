@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./card/Card";
 import Filter from "./filter/Filter";
 import { CardsContainer, ReactPaginateContainer } from "./CardsStyles";
-import Pagination from "./pagination/Pagination";
+// import Pagination from "./pagination/Pagination";
 
 import ReactPaginate from "react-paginate";
 
@@ -29,11 +29,9 @@ const Cards = (): JSX.Element => {
 
   useEffect(() => {
     if (!productsList.length) {
-      console.log("GET OF PRODUCTSSSSS");
       dispatch(getProducts());
     }
   }, [dispatch]);
-
   const [order, setOrder] = useState<string>("");
   const productsList = useSelector((state: State) => state.products.products);
   const filteredProductList = useSelector(

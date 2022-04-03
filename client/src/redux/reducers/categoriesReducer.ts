@@ -1,17 +1,14 @@
-
-import {TYPES_CATEGORIES, Categories, Subcategories , CategoriesActions} from "../interface";
+import {TYPES_CATEGORIES, Category, Subcategory , CategoriesActions} from "../interface";
 
 export interface CATEGORIES {
-    categories: Categories[],
-    subcategories: Subcategories[]
+    categories: Category[],
+    subcategories: Subcategory[]
 }
-
 
 const INITIAL_STATE = {
     categories: [],
     subcategories: []
 }
-
 
 export const reducerCategories = (state: CATEGORIES = INITIAL_STATE, action: CategoriesActions): CATEGORIES => {
     switch (action.type) {

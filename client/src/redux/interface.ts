@@ -14,16 +14,17 @@ export enum TYPES_ADMIN {
   DELETE_PRODUCTS = "DELETE_PRODUCTS",
 }
 
+export enum TYPES_CATEGORIES {
+  GET_CATEGORIES = "GET_CATEGORIES",
+  GET_SUBCATEGORIES = "GET_SUBCATEGORIES",
+}
+
 export enum TYPES_PRODUCT {
-    SEARCH_PRODUCTS,
+  SEARCH_PRODUCTS,
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
   FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
   RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS"
-}
-export enum TYPES_CATEGORIES {
-    GET_CATEGORIES = 'GET_CATEGORIES' ,
-    GET_SUBCATEGORIES = 'GET_SUBCATEGORIES' ,
 }
 
 export interface User {
@@ -61,11 +62,11 @@ export interface Product {
   CategoryId : number ; 
   category : number ; 
 }
-export interface Categories {
+export interface Category {
     id?: number,
     name: string,
 }
-export interface Subcategories {
+export interface Subcategory {
     id?: number,
     name: string,
     CategoryId :number
@@ -101,11 +102,11 @@ export interface FIND_USER {
 
 export interface GET_CATEGORIES {
     type: TYPES_CATEGORIES.GET_CATEGORIES,
-    payload: Categories[]
+    payload: Category[]
 }
 export interface GET_SUBCATEGORIES {
     type: TYPES_CATEGORIES.GET_SUBCATEGORIES,
-    payload: Subcategories[]
+    payload: Subcategory[]
 }
 
 //=====================
@@ -136,9 +137,9 @@ export interface GET_PRODUCTS {
   payload: Product[];
 }
 
-export interface SEARCH_PRODUCTS{
-    type:TYPES_PRODUCT.SEARCH_PRODUCTS,
-    payload:string
+export interface SEARCH_PRODUCTS {
+  type: TYPES_PRODUCT.SEARCH_PRODUCTS;
+  payload: string;
 }
 
 export interface DELETE_PRODUCT_DETAIL {
@@ -154,13 +155,10 @@ export interface DELETE_PRODUCT {
 
 export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
 
-
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
-export type CategoriesActions =
-    | GET_CATEGORIES
-    | GET_SUBCATEGORIES
-
 export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS;
+
+export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES;
 
 export type AdminActions = DELETE_PRODUCT;

@@ -8,7 +8,6 @@ const URL = "http://localhost:3001/api";
 export function getCategories() {
   return async function(dispatch: Dispatch) {
     const categories = await axios.get(URL + "/categories");
-    //   console.log(categories.data.data);
 
     return dispatch({
       type: TYPES_CATEGORIES.GET_CATEGORIES,
@@ -19,7 +18,6 @@ export function getCategories() {
 export function getSubcategories() {
   return async function(dispatch: Dispatch) {
     const subcategories = await axios.get(URL + "/subcategories");
-    //   console.log(categories.data.data);
 
     return dispatch({
       type: TYPES_CATEGORIES.GET_SUBCATEGORIES,
