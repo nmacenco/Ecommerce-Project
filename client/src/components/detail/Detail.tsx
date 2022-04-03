@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getProductDetail , deleteProductDetail} from '../../redux/actions/productDetail';
-import {State} from '../../redux/reducers/index'
+import {
+  getProductDetail,
+  deleteProductDetail,
+} from "../../redux/actions/productDetail";
+import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../redux/actions/admin";
 
@@ -22,7 +25,7 @@ import {
 export default function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams<{ id?: string }>();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const product = useSelector((state: State) => state.productDetail);
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function Detail() {
                 <Price>
                   <h3>$ {product.price}</h3>
                   <p> We have {product.stock} in stock </p>
-                  <button type="button" className="btn btn-primary btn-sm">
+                  <button type="button" className="btn btn-primary btn">
                     Add to cart
                   </button>
                   <DeleteEditButton>
@@ -101,12 +104,12 @@ export default function Detail() {
       <ReviewComentsBox>
         <ul className="nav nav-tabs">
           <li className="nav-item">
-            <a className="nav-link" data-bs-toggle="tab" href="#home">
+            <a className="nav-link  active" data-bs-toggle="tab" href="#home">
               Description
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link active" data-bs-toggle="tab" href="#profile">
+            <a className="nav-link" data-bs-toggle="tab" href="#profile">
               Reviews
             </a>
           </li>
@@ -117,31 +120,14 @@ export default function Detail() {
           </li>
         </ul>
         <div id="myTabContent" className="tab-content">
-          <div className="tab-pane fade" id="home">
-            <p>
-              {product.description}
-            </p>
+          <div className="tab-pane fade active show m-2" id="home">
+            <p>{product.description}</p>
           </div>
-          <div className="tab-pane fade active show" id="profile">
-            <p>
-              Food truck fixie locavore, accusamus mcsweeney's marfa nulla
-              single-origin coffee squid. Exercitation +1 labore velit, blog
-              sartorial PBR leggings next level wes anderson artisan four loko
-              farm-to-table craft beer twee. Qui photo booth letterpress,
-              commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
-              vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic
-              magna delectus mollit.
-            </p>
+          <div className="tab-pane fade m-2" id="profile">
+            <p>PRODUCT REVIEWS...</p>
           </div>
-          <div className="tab-pane fade active show" id="questions">
-            <p>
-              {/* Etsy mixtape wayfarers, ethical wes anderson tofu before they sold
-              out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table
-              readymade. Messenger bag gentrify pitchfork tattooed craft beer,
-              iphone skateboard locavore carles etsy salvia banksy hoodie
-              helvetica. DIY synth PBR banksy irony. Leggings gentrify squid
-              8-bit cred pitchfork */}
-            </p>
+          <div className="tab-pane fade m-2" id="questions">
+            <p>PRODUCT QUESTIONS...</p>
           </div>
         </div>
       </ReviewComentsBox>

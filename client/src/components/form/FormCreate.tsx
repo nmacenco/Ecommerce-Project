@@ -1,67 +1,81 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { postProduct } from "../../redux/actions/admin";
+import { getBrands } from "../../redux/actions/brands";
 import {
   getCategories,
   getSubcategories,
 } from "../../redux/actions/categories";
-import { Category, Product, Subcategory } from "../../redux/interface";
+import {
+  Brand,
+  Category,
+  ProductForm,
+  Subcategory,
+} from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import { FormContainer } from "./FormCreateStyles";
 import validations from "./validations";
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
-  const [product, setProduct] = useState<Product>({
-    id: 0,
-    name: '',
-    image: '',
+  const navigate = useNavigate();
+  const [product, setProduct] = useState<ProductForm>({
+    name: "",
+    image: "",
     price: 0,
-    description: '',
-    weigth: 0,
+    description: "",
+    weight: 0,
     stock: 0,
-    soldCount : 0 ,
-    BrandId : 0 ,
-    brand: '',
-    subcategory_id: 0,
-    subcategory : '' , 
-    CategoryId : 0 , 
-    category : 0 , 
+    soldCount: 0,
+    BrandId: 0,
+    SubcategoryId: 0,
   });
   const categoriesList = useSelector((state: State) => state.categories);
-  const subcategoriesList = useSelector((state: State) => state.categories.subcategories);
+  const brandsList = useSelector((state: State) => state.brands);
+  const subcategoriesList = useSelector(
+    (state: State) => state.categories.subcategories
+  );
   const [subcategoriesLoaded, setSubcategoriesLoaded] = useState<Boolean>(
     false
   );
-  const [subcategoriesFiltered, setSubcategoriesFiltered ] = useState<Subcategory[]>([]);
+  const [subcategoriesFiltered, setSubcategoriesFiltered] = useState<
+    Subcategory[]
+  >([]);
 
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getSubcategories());
+    dispatch(getBrands());
   }, [dispatch]);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+
+  const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    e.preventDefault();
+    const subcategoriesFiltered = subcategoriesList.filter(
+      (s: Subcategory) => Number(s.CategoryId) == Number(e.target.value)
+    );
+    setSubcategoriesLoaded(true);
+    setSubcategoriesFiltered(subcategoriesFiltered);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ): void => {
     setProduct({
       ...product,
       [e.target.name]: e.target.value,
     });
   };
 
-  function handleCategory(
-    e: React.ChangeEvent<HTMLSelectElement>
-  ): void {
-    e.preventDefault();
-    const subcategoriesFiltered = subcategoriesList.filter(
-      (s: Subcategory) => Number(s.CategoryId) == Number(e.target.value)
-    );
-    setSubcategoriesLoaded(true);
-    setSubcategoriesFiltered(subcategoriesFiltered)
-  }
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    validations(product)
-      ? dispatch(postProduct(product))
-      : alert("Product not created.");
+    if (validations(product) === true) {
+      dispatch(postProduct(product));
+      alert("Product created successfully.");
+      navigate("/products");
+    } else {
+      alert("Form not completed.");
+    }
   };
 
   return (
@@ -77,40 +91,36 @@ export default function FromCreate(): JSX.Element {
             className="form-control"
             id="staticEmail"
             name="name"
+            value={product.name}
             placeholder="Enter name"
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="exampleInputEmail1" className="form-label mt-4">
-            Brand
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="exampleInputEmail1"
-            name="brand"
-            placeholder="Enter brand"
+        <div className="form-group me-1">
+          <label className="form-label mt-4">Brand</label>
+          <select
             onChange={(e) => handleChange(e)}
-          />
+            className="form-select"
+            id="exampleSelect1"
+            name="BrandId"
+          >
+            <option>Select brand</option>
+            {brandsList.brands.map((brand: Brand) => {
+              return <option value={brand.id}>{brand.name}</option>;
+            })}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="exampleInputPassword1" className="form-label mt-4">
             Image
           </label>
-          {/* <input
-              type="text"
-              className="form-control"
-              id="exampleInputPassword1"
-              name="image"
-              placeholder="Enter image"
-              onChange={(e) => handleChange(e)}
-            /> */}
           <input
             className="form-control"
-            type="file"
+            type="text"
             id="formFile"
             name="image"
+            placeholder="Enter image URL"
+            value={product.image}
             onChange={(e) => handleChange(e)}
           />
         </div>
@@ -124,6 +134,7 @@ export default function FromCreate(): JSX.Element {
             id="exampleTextarea"
             name="description"
             placeholder="Enter description"
+            value={product.description}
             onChange={(e) => handleChange(e)}
           />
         </div>
@@ -143,7 +154,12 @@ export default function FromCreate(): JSX.Element {
           </div>
           <div className="form-group ms-1">
             <label className="form-label mt-4">Subcategory</label>
-            <select className="form-select" id="exampleSelect1">
+            <select
+              className="form-select"
+              id="exampleSelect1"
+              name="SubcategoryId"
+              onChange={(e) => handleChange(e)}
+            >
               <option>Select subcategory</option>
               {subcategoriesLoaded &&
                 subcategoriesFiltered.map((subcategory: Subcategory) => {
@@ -165,6 +181,7 @@ export default function FromCreate(): JSX.Element {
               id="exampleTextarea"
               name="price"
               placeholder="Price"
+              value={product.price}
               onChange={(e) => handleChange(e)}
             />
           </div>
@@ -176,8 +193,9 @@ export default function FromCreate(): JSX.Element {
               type="number"
               className="form-control"
               id="exampleTextarea"
-              name="weigth"
-              placeholder="Weigth"
+              name="weight"
+              placeholder="Weight"
+              value={product.weight}
               onChange={(e) => handleChange(e)}
             />
           </div>
@@ -191,6 +209,7 @@ export default function FromCreate(): JSX.Element {
               id="exampleTextarea"
               name="stock"
               placeholder="Stock"
+              value={product.stock}
               onChange={(e) => handleChange(e)}
             />
           </div>

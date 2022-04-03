@@ -6,8 +6,8 @@ export enum TYPES_USER {
 }
 
 export enum TYPES_DETAIL {
-    PRODUCT_DETAIL = 'PRODUCT_DETAIL',
-    DELETE_PRODUCT_DETAIL = 'DELETE_PRODUCT_DETAIL',
+  PRODUCT_DETAIL = "PRODUCT_DETAIL",
+  DELETE_PRODUCT_DETAIL = "DELETE_PRODUCT_DETAIL",
 }
 
 export enum TYPES_ADMIN {
@@ -19,13 +19,20 @@ export enum TYPES_CATEGORIES {
   GET_SUBCATEGORIES = "GET_SUBCATEGORIES",
 }
 
+export enum TYPES_BRANDS {
+  GET_BRANDS = "GET_BRANDS",
+}
+
 export enum TYPES_PRODUCT {
   SEARCH_PRODUCTS,
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
   FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
-  RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS"
+  RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS",
 }
+
+//=======================
+// Objects Interfaces
 
 export interface User {
   name: string;
@@ -35,51 +42,53 @@ export interface User {
   token: string;
 }
 
-// export interface Product {
-//   id?: number;
-//   subcategory_id: string[];
-//   name: string;
-//   brand: string;
-//   image: string;
-//   price: number;
-//   description: string;
-//   weigth: number;
-//   stock: number;
-// }
+export interface ProductForm {
+  id?: number;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+  weight: number;
+  stock: number;
+  soldCount: number;
+  SubcategoryId: number;
+  BrandId: number;
+}
+
+export interface Brand {
+  name: string;
+  id: number;
+}
+
 export interface Product {
   id?: number;
   name: string;
   image: string;
   price: number;
   description: string;
-  weigth: number;
+  weight: number;
   stock: number;
-  soldCount : number ;
-  BrandId : number ;
+  soldCount: number;
+  BrandId: number;
   brand: string;
   subcategory_id: number;
-  subcategory : string ; 
-  CategoryId : number ; 
-  category : number ; 
+  subcategory: string;
+  CategoryId: number;
+  category: number;
 }
+
 export interface Category {
-    id?: number,
-    name: string,
+  id?: number;
+  name: string;
 }
 export interface Subcategory {
-    id?: number,
-    name: string,
-    CategoryId :number
+  id?: number;
+  name: string;
+  CategoryId: number;
 }
 
-export interface AXIOSDATA {
-  successMsg: string;
-  data: Product[];
-}
-
-/**
- * USER:
- */
+//=======================
+// User Actions
 
 export interface CREATE_USER {
   type: TYPES_USER.CREATE_USER;
@@ -97,16 +106,25 @@ export interface FIND_USER {
   type: TYPES_USER.FIND_USER;
   payload: User;
 }
+
 //=======================
-// Categorie Actions 
+// Category Actions
 
 export interface GET_CATEGORIES {
-    type: TYPES_CATEGORIES.GET_CATEGORIES,
-    payload: Category[]
+  type: TYPES_CATEGORIES.GET_CATEGORIES;
+  payload: Category[];
 }
 export interface GET_SUBCATEGORIES {
-    type: TYPES_CATEGORIES.GET_SUBCATEGORIES,
-    payload: Subcategory[]
+  type: TYPES_CATEGORIES.GET_SUBCATEGORIES;
+  payload: Subcategory[];
+}
+
+//======================
+//Brands Actions
+
+export interface GET_BRANDS {
+  type: TYPES_BRANDS.GET_BRANDS;
+  payload: Brand[];
 }
 
 //=====================
@@ -143,14 +161,19 @@ export interface SEARCH_PRODUCTS {
 }
 
 export interface DELETE_PRODUCT_DETAIL {
-    type: TYPES_DETAIL.DELETE_PRODUCT_DETAIL,
-    payload: Product
+  type: TYPES_DETAIL.DELETE_PRODUCT_DETAIL;
+  payload: Product;
 }
-
+//======================
 //Admin Actions
 export interface DELETE_PRODUCT {
   type: TYPES_ADMIN.DELETE_PRODUCTS;
   payload: number;
+}
+
+export interface AXIOSDATA {
+  successMsg: string;
+  data: Product[];
 }
 
 export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
@@ -160,5 +183,7 @@ export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS;
 
 export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES;
+
+export type BrandsActions = GET_BRANDS;
 
 export type AdminActions = DELETE_PRODUCT;
