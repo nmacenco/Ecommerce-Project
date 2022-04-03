@@ -1,9 +1,9 @@
-import { Product } from "../../../redux/interface";
+import { Product, ProductForm } from "../../../redux/interface";
 
-export default function editValidations(props: Product, props2: Product): boolean {
+export default function editValidations(props: ProductForm, props2: Product): boolean {
     let bool: boolean = false,
         name: boolean = false,
-        brand: boolean = false,
+        BrandId: boolean = false,
         image: boolean = false,
         price: boolean = false,
         description: boolean = false,
@@ -13,9 +13,9 @@ export default function editValidations(props: Product, props2: Product): boolea
         props.name = props2.name;
         name = true;
     }
-    if (props.brand !== "") {
-        props.brand = props2.brand;
-        brand = true;
+    if (props.BrandId > 0) {
+        props.BrandId = props2.BrandId;
+        BrandId = true;
     }
     if (props.image !== "") {
         props.image = props2.image;
@@ -25,8 +25,8 @@ export default function editValidations(props: Product, props2: Product): boolea
         props.description = props2.description;
         description = true;
     }
-    if (props.weigth > 0) {
-        props.weigth = props2.weigth;
+    if (props.weight > 0) {
+        props.weight = props2.weight;
         weight = true;
     }
     if (props.price > 0) {
@@ -34,7 +34,7 @@ export default function editValidations(props: Product, props2: Product): boolea
         price = true;
     }
 
-    if (name && brand && description && image && price && weight) bool = true;
+    if (name && BrandId && description && image && price && weight) bool = true;
 
     return bool
 }

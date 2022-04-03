@@ -10,7 +10,6 @@ import Loading from "./components/loading/Loading";
 import Edit from "./components/detail/edit/EditProduct";
 import FormCreate from "./components/form/FormCreate";
 import Home from "./components/home/Home";
-import Footer from "./components/footer/Footer";
 
 function App(): JSX.Element {
   return (
@@ -24,12 +23,10 @@ function App(): JSX.Element {
           <Route path="/createProduct" element={<FormCreate />} />
           <Route path="/editProduct/:id" element={<Edit />} />
           <Route path="/products" element={<Products />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/loading" element={<Loading />} />
-
         </Routes>
-        <Footer/>
       </BrowserRouter>
     </div>
   );
