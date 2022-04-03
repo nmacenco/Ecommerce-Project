@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./card/Card";
 import Filter from "./filter/Filter";
 import { CardsContainer, ReactPaginateContainer } from "./CardsStyles";
-import Pagination from "./pagination/Pagination";
+// import Pagination from "./pagination/Pagination";
 
 import ReactPaginate from "react-paginate";
 
@@ -26,12 +26,11 @@ const Cards = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
-    if(!productsList.length){
-      console.log('GET OF PRODUCTSSSSS')
+    if (!productsList.length) {
       dispatch(getProducts());
     }
   }, [dispatch]);
-  const [order, setOrder] = useState<string>("")
+  const [order, setOrder] = useState<string>("");
   const productsList = useSelector((state: State) => state.products.products);
   const filteredProductList = useSelector(
     (state: State) => state.filteredProducts.filteredProducts
@@ -93,7 +92,7 @@ const Cards = (): JSX.Element => {
               pageCount={filteredProductList.length / 32}
               nextLabel={">"}
               previousLabel={"<"}
-              marginPagesDisplayed={6}
+              marginPagesDisplayed={2}
               onPageChange={handlePageClick}
               containerClassName={"pagination justify-content-center"}
               pageClassName={"page-item"}
@@ -129,7 +128,7 @@ const Cards = (): JSX.Element => {
               pageCount={productsList.length / 32}
               nextLabel={">"}
               previousLabel={"<"}
-              marginPagesDisplayed={6}
+              marginPagesDisplayed={2}
               onPageChange={handlePageClick}
               containerClassName={"pagination justify-content-center"}
               pageClassName={"page-item"}

@@ -1,13 +1,9 @@
-
-import { combineReducers } from 'redux';
-import { User } from '../interface';
-import { Product } from '../interface';
-
+import { combineReducers } from "redux";
+import { Category, User } from "../interface";
+import { Product } from "../interface";
 /**
- *
  * import .... from 'userReducer'
  * import .... from 'productsReducer'
- *
  */
 import { userReducer } from './reducerUser';
 import { productDetailReducer } from './reducerProductsDetail';
@@ -21,20 +17,17 @@ interface GLOBAL_STATE {
   productDetail: Product;
   products: PRODUCTS ;
   categories : CATEGORIES;
-  // subcategories : CATEGORIES;
   orderedProducts: ORDER_STATE;
   filteredProducts: FILTERED_STATE;
 }
-
 
 export const rootReducer = combineReducers<GLOBAL_STATE>({
   user: userReducer,
   productDetail: productDetailReducer,
   products: reducerProduct ,
   categories : reducerCategories,
-  // subcategories : reducerCategories
   orderedProducts: reducerOrderProducts ,
   filteredProducts : reducerFilterProducts
 });
 
-export type State = ReturnType<typeof rootReducer>
+export type State = ReturnType<typeof rootReducer>;

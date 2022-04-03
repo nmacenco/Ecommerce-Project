@@ -14,47 +14,41 @@ const Nav = (): JSX.Element => {
     dispatch(resetFilterProducts())
   }
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary d-flex fixed-top">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="/home">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
+      <div className="flex-grow-1 d-lg-flex">
+        <Link className="navbar-brand pt-3" to="/home">
           ECOMMERCE
-        </a>
-
+        </Link>
         <div className="collapse navbar-collapse" id="navbarColor01">
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <Link 
-                onClick={() => {handleClickProducts()}}
-                className="nav-link" to={"/products"}
-              >
+          <div className="navbar-nav me-auto">
+            <div className="nav-item">
+              <Link onClick={() => {handleClickProducts()}} className="nav-link" to={"/products"}>
                 Products
               </Link>
-            </li>
-            <li className="nav-item">
+            </div>
+            <div className="nav-item">
               <Link className="nav-link" to={"/products"}>
                 About
               </Link>
-            </li>
-          </ul>
-          <Search />
+            </div>
+          </div>
+          <AdminDropdown />
           <Link
             to="/login"
-            className="nav-item btn btn-secondary my-sm-3 link-Router"
+            className="nav-item btn btn-secondary my-2 link-Router"
           >
             Login
           </Link>
-          <AdminDropdown />
+          <Search />
         </div>
       </div>
 
-      <div className="ms-auto">
+      <div className="ms-auto mb-auto py-lg-3">
         <Link className="nav-item" to={"/cart"}>
-
           <CartIcon src={cartIcon} />
-
         </Link>
         <button
-          className="navbar-toggler"
+          className="navbar-toggler nav-item"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarColor01"
