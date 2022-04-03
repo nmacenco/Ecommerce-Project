@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import searchIcon from "../../icons/search-symbol.png";
 import { selectProducts } from '../../redux/actions/products';
@@ -19,7 +19,6 @@ const Search = (): JSX.Element => {
     const SearchRequest = (event: any) => {
 
         event.preventDefault();
-        console.log('Envio de la busqueda de los productos');
         console.log('valor del input:  ',realValue);
         setProducts([]);
         // let selectArtefacts=[];
@@ -33,6 +32,7 @@ const Search = (): JSX.Element => {
         })
 
         dispatch(selectProducts(selectArtefacts));
+        event.target.search.value='';
     }
 
     const SearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,19 +51,10 @@ const Search = (): JSX.Element => {
 
     }
 
-    const SelectName = (event: any) => {
-        event.preventDefault();
-        setValue(event.target.innerHTML.trim());
-        setRealValue(event.target.id);
-        setProducts([]);
-    }
-    const closeSelect = () => {
-        setProducts([]);
-    }
-    // console.log('TABLA: ',table);
 
     return (
         <SearchForm className="d-flex me-lg-4" autoComplete='off' onSubmit={SearchRequest} >
+            {console.log('Search renderizado!')}
             <div className='desplegable'>
                 <input
                     onChange={SearchChange}
@@ -72,21 +63,24 @@ const Search = (): JSX.Element => {
                     placeholder="Search..."
                     name='search'
                     value={value}
+                    list='products'
                 />
-
+                
             </div>
             <button className="btn btn-secondary my-2" type="submit">
                 <img src={searchIcon} />
             </button>
-                <article onBlur={closeSelect}>
+                <datalist id='products' >
                     {
                         products.map((product, i) => {
                             return (
-                                <span key={i} id={product} onClick={SelectName}>{product.slice(0,30)}</span>
+                                <option key={i} id={product} value={product} />
                             )
                         })
                     }
-                </article>
+                </datalist>
+                
+
         </SearchForm>
     )
 }
