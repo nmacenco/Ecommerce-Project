@@ -9,6 +9,7 @@ const Search = (): JSX.Element => {
 
     const dispatch=useDispatch();
     const table = useSelector((state: State) => state.products.productSearch);
+    const artefacts=useSelector((state:State)=>state.products.products);
 
     const [products, setProducts] = useState<string[]>([]);
     const [value, setValue] = useState<string>('');
@@ -21,7 +22,17 @@ const Search = (): JSX.Element => {
         console.log('Envio de la busqueda de los productos');
         console.log('valor del input:  ',realValue);
         setProducts([]);
-        dispatch(selectProducts(realValue));
+        // let selectArtefacts=[];
+        let selectArtefacts=artefacts.filter(product=>{
+            // if(product.name.toLowerCase().startsWith(realValue.toLowerCase())){
+            //     return product;
+            // }
+            if (product.name.toLowerCase().includes(realValue.toLowerCase())){
+                return product;
+            }
+        })
+
+        dispatch(selectProducts(selectArtefacts));
     }
 
     const SearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {

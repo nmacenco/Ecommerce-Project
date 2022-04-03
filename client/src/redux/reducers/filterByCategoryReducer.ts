@@ -29,6 +29,14 @@ export const reducerFilterProducts = (
             ...state,
             filteredProducts: []
         }
+    case TYPES_PRODUCT.SEARCH_PRODUCTS:
+
+        return {
+          ...state,
+          filteredProducts: action.payload,
+        };
+
+
     default: {
       return { ...state };
     }
