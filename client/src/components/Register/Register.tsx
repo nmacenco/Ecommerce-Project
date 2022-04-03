@@ -5,6 +5,7 @@ import validator, { validateForms } from '../../helpers/validateForm';
 import { CreateUser } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
 import Form from '../form/Form';
+import  {useNavigate} from 'react-router';
 
 
 interface Inputs{
@@ -22,6 +23,7 @@ const Register=():JSX.Element=>{
 
     const dispatch=useDispatch();
     const user= useSelector((state:State)=>state.user);
+    const navigate=useNavigate();
 
     const [inputs,setInputs] =useState<Inputs>({
         email:'',
@@ -73,13 +75,15 @@ const Register=():JSX.Element=>{
             password:inputs.passUser,
             billing_address:inputs.billing_address,
             default_shipping_address:inputs.default_shipping_address,
-            countryId:Number(inputs.countryId),
+            CountryId:Number(inputs.countryId),
             // role:'user',
             // isActive:true
         }
         console.log('USUARIO: ',user);
         if(!user){
-            dispatch(CreateUser(newUser));
+            dispatch(CreateUser(newUser,()=>{
+                navigate('/products')
+            }));
         }
         /**
          * Request
