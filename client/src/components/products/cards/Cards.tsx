@@ -101,7 +101,7 @@ const Cards = (): JSX.Element => {
                   pageCount={filteredProductList.length / 32}
                   nextLabel={">"}
                   previousLabel={"<"}
-                  marginPagesDisplayed={6}
+                  marginPagesDisplayed={2}
                   onPageChange={handlePageClick}
                   containerClassName={"pagination justify-content-center"}
                   pageClassName={"page-item"}
@@ -137,7 +137,7 @@ const Cards = (): JSX.Element => {
                   pageCount={productsList.length / 32}
                   nextLabel={">"}
                   previousLabel={"<"}
-                  marginPagesDisplayed={6}
+                  marginPagesDisplayed={2}
                   onPageChange={handlePageClick}
                   containerClassName={"pagination justify-content-center"}
                   pageClassName={"page-item"}
