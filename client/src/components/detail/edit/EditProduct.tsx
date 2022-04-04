@@ -6,6 +6,7 @@ import { getBrands } from "../../../redux/actions/brands";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
 import { ProductForm, Subcategory } from "../../../redux/interface";
 import { State } from "../../../redux/reducers";
+import { EditContainer } from "./EditProductStyles";
 import editValidations from "./editValidations";
 
 export default function EditProduct(): JSX.Element {
@@ -64,7 +65,7 @@ export default function EditProduct(): JSX.Element {
   };
 
   return (
-    <div>
+    <EditContainer>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>Edit Product - {productDetail.name}</legend>
@@ -201,6 +202,6 @@ export default function EditProduct(): JSX.Element {
           </button>
         </fieldset>
       </form>
-    </div>
+    </EditContainer>
   );
 }
