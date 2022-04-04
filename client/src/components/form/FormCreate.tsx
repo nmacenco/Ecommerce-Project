@@ -104,7 +104,7 @@ export default function FromCreate(): JSX.Element {
             id="exampleSelect1"
             name="BrandId"
           >
-            <option>Select brand</option>
+            <option hidden>Select brand</option>
             {brandsList.brands.map((brand: Brand) => {
               return <option value={brand.id}>{brand.name}</option>;
             })}
@@ -138,21 +138,21 @@ export default function FromCreate(): JSX.Element {
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div className="d-flex justify-content-between">
-          <div className="form-group me-1">
+        <div className="d-flex">
+          <div className="form-group flex-fill">
             <label className="form-label mt-4">Category</label>
             <select
               onChange={(e) => handleCategory(e)}
               className="form-select"
               id="exampleSelect1"
             >
-              <option>Select category</option>
+              <option hidden>Select category</option>
               {categoriesList.categories.map((category: Category) => {
                 return <option value={category.id}>{category.name}</option>;
               })}
             </select>
           </div>
-          <div className="form-group ms-1">
+          <div className="form-group flex-fill ms-2">
             <label className="form-label mt-4">Subcategory</label>
             <select
               className="form-select"
@@ -160,7 +160,7 @@ export default function FromCreate(): JSX.Element {
               name="SubcategoryId"
               onChange={(e) => handleChange(e)}
             >
-              <option>Select subcategory</option>
+              <option hidden>Select subcategory</option>
               {subcategoriesLoaded &&
                 subcategoriesFiltered.map((subcategory: Subcategory) => {
                   return (

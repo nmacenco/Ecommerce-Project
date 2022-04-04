@@ -53,7 +53,7 @@ const Cards = (): JSX.Element => {
     ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
     : (newProductsList = productsList.slice(firstProduct, finalProduct));
 
-  /// implementing react paginate
+  // implementing react paginate
 
   const handlePageClick = (data: any) => {
     setCurrentPage(data.selected + 1);
