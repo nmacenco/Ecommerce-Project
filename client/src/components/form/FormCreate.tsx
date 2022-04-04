@@ -69,6 +69,7 @@ export default function FromCreate(): JSX.Element {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    console.log(product)
     if (validations(product) === true) {
       dispatch(postProduct(product));
       alert("Product created successfully.");
@@ -105,8 +106,8 @@ export default function FromCreate(): JSX.Element {
             name="BrandId"
           >
             <option>Select brand</option>
-            {brandsList.brands.map((brand: Brand) => {
-              return <option value={brand.id}>{brand.name}</option>;
+            {brandsList.brands.map((brand: Brand, i: number) => {
+              return <option key={i}value={brand.id}>{brand.name}</option>;
             })}
           </select>
         </div>
