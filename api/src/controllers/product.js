@@ -52,9 +52,9 @@ const createProduct = async (req, res) => {
       });
       created
         ? res.status(201).json({
-            successMsg: "The Product has been created.",
-            data: newProduct,
-          })
+          successMsg: "The Product has been created.",
+          data: newProduct,
+        })
         : res.status(400).json({ errorMsg: "Product already exists." });
     }
   } catch (error) {
@@ -65,29 +65,8 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const id = req.params.id;
-    let {
-      name,
-      description,
-      price,
-      image,
-      weight,
-      stock,
-      soldCount,
-      BrandId,
-      SubcategoryId,
-    } = req.body;
-    if (
-      !name ||
-      !description ||
-      !price ||
-      !image ||
-      !weight ||
-      !stock ||
-      !soldCount ||
-      !BrandId ||
-      !SubcategoryId ||
-      !id
-    ) {
+    let { name, description, price, image, weight, stock, soldCount, BrandId, SubcategoryId, } = req.body;
+    if (!name || !description || !price || !image || !weight || !stock || !soldCount || !BrandId || !SubcategoryId || !id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
       let productToUpdate = await Product.findOne({
@@ -99,15 +78,7 @@ const updateProduct = async (req, res) => {
         res.status(404).send({ errorMsg: "Product not found." });
       } else {
         let productUpdated = await productToUpdate.update({
-          name,
-          price,
-          description,
-          image,
-          weight,
-          stock,
-          soldCount,
-          BrandId,
-          SubcategoryId,
+          name, price, description, image, weight, stock, soldCount, BrandId, SubcategoryId,
         });
         res.status(200).send({
           successMsg: "Product successfully updated.",
@@ -145,6 +116,14 @@ const getSingleProduct = async (req, res) => {
               },
             ],
           },
+          {
+            model: Question,
+            attributes: ["title", "description", "answer", "id"],
+          },
+          {
+            model: Review,
+            attributes: ["title", "description", "stars", "id"],
+          },
         ],
       });
       if (!singleProduct) {
@@ -165,6 +144,11 @@ const getSingleProduct = async (req, res) => {
           subcategory: singleProduct.Subcategory.name,
           CategoryId: singleProduct.Subcategory.Category.id,
           category: singleProduct.Subcategory.Category.name,
+          isInDiscount: singleProduct.isInDiscount,
+          discountPercent: singleProduct.discountPercent,
+          discountQty: singleProduct.discountQty,
+          questions: singleProduct.Questions.length > 0 ? singleProduct.Questions.map((question) => { return { question }; }) : [],
+          reviews: singleProduct.Reviews.length > 0 ? singleProduct.Reviews.map((review) => { return { review }; }) : [],
         };
         res
           .status(200)
@@ -194,11 +178,20 @@ const getProducts = async (req, res) => {
             },
           ],
         },
+        {
+          model: Question,
+          attributes: ["title", "description", "answer", "id"],
+        },
+        {
+          model: Review,
+          attributes: ["title", "description", "stars", "id"],
+        },
       ],
     });
     if (!dataProduct) {
       res.status(404).send({ errorMsg: "There are no products available." });
     } else {
+      // totalreviews = dataProduct[0].reviews.length >0 ? dataProduct[0].reviews.map((review) => {return { review }}) : [],
       dataProduct = dataProduct.map((product) => {
         return {
           id: product.id,
@@ -215,14 +208,23 @@ const getProducts = async (req, res) => {
           subcategory: product.Subcategory.name,
           CategoryId: product.Subcategory.Category.id,
           category: product.Subcategory.Category.name,
+          isInDiscount: product.isInDiscount,
+          discountPercent: product.discountPercent,
+          discountQty: product.discountQty,
+          questions: product.Questions.length > 0 ? product.Questions.map((question) => { return { question }; }) : [],
+          reviews: product.Reviews.length > 0 ? product.Reviews.map((review) => { return { review }; }) : [],
         };
       });
+
+
+
+
       res
         .status(200)
         .send({ successMsg: "Here are your products.", data: dataProduct });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error});
+    res.status(500).send({ errorMsg: error });
   }
 };
 
