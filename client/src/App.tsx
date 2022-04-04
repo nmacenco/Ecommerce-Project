@@ -25,13 +25,12 @@ function App(): JSX.Element {
           <Route path="/createProduct" element={<FormCreate />} />
           <Route path="/editProduct/:id" element={<Edit />} />
           <Route path="/products" element={<Products />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/loading" element={<Loading />} />
           <Route path="/adminMode" element={<AdminModeCards />} />
 
         </Routes>
-        <Footer/>
       </BrowserRouter>
     </div>
   );

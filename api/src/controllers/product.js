@@ -23,19 +23,23 @@ const createProduct = async (req, res) => {
       SubcategoryId,
       BrandId,
     } = req.body;
+    Number(price)
+    Number(weight)
+    Number(SubcategoryId)
+    Number(BrandId)
+    Number(stock)
+    Number(soldCount)
     if (
       !name ||
       !SubcategoryId ||
       !BrandId ||
-      !name ||
       !image ||
       !price ||
       !description ||
       !weight ||
-      !stock ||
-      !soldCount
+      !stock
     ) {
-      res.status(400).send({ errorMsg: "Missing data." });
+      res.status(402).send({ errorMsg: "Missing data." });
     } else {
       let [newProduct, created] = await Product.findOrCreate({
         where: {
@@ -55,7 +59,7 @@ const createProduct = async (req, res) => {
             successMsg: "The Product has been created.",
             data: newProduct,
           })
-        : res.status(400).json({ errorMsg: "Product already exists." });
+        : res.status(401).json({ errorMsg: "Product already exists." });
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error });

@@ -21,30 +21,34 @@ export interface IData {
 export interface ORDER {
   page: (numberOfPage: number) => void;
   orders: (typeorder: string) => void;
+  AdmOrders : (typeorder: string) => void;
 }
 
 const AdminModeCards = (): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  useEffect(() => {
-    if (!productsList.length) {
-      dispatch(getProducts());
-    }
-  }, [dispatch]);
   const [order, setOrder] = useState<string>("");
+  const [Admorders, setAdmOrders] = useState<string>("");
   const productsList = useSelector((state: State) => state.products.products);
   const filteredProductList = useSelector(
     (state: State) => state.filteredProducts.filteredProducts
-  );
-
-  const page = (numberOfPage: number): void => {
-    setCurrentPage(numberOfPage);
-  };
-  const orders = (typeorder: string): void => {
-    setOrder(typeorder);
-    console.log(typeorder);
-  };
+    );
+    
+    const page = (numberOfPage: number): void => {
+      setCurrentPage(numberOfPage);
+    };
+    const orders = (typeorder: string): void => {
+      setOrder(typeorder);
+    };
+    const AdmOrders = (typeorder: string): void => {
+      setAdmOrders(typeorder);
+    };
+    useEffect(() => {
+      // if (!productsList.length) {
+        dispatch(getProducts());
+      // }
+    }, []);
 
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
@@ -62,26 +66,38 @@ const AdminModeCards = (): JSX.Element => {
   return (
     <ProductsContainer className="row row-cols-lg-2 row-cols-md-1 mx-auto">
       <div className="col-xl-2 col-lg-3 col-sm-12">
-        <Categories page={page} orders={orders} />
+        <Categories page={page} orders={orders}  />
       </div>
       <div className="col-lg-9 col-md-12">
         <CardsContainer className="w-100 ">
-          <Filter page={page} orders={orders} />
+          <Filter page={page} orders={orders}    />
           {filteredProductList.length !== 0 ? (
             <>
-              <div className="">
-                {newProductsList.map((e: Product) => {
-                  return (
-                    <div className="" key={e.id}>
+
+                <div className="" >
+                <table className="table table-hover ">
+                  <thead>
+                    <tr>
+                      <th scope="col">Image</th>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Delete</th>
+                      <th scope="col">Edit </th>
+                    </tr>
+                  </thead>
+                  {newProductsList.map((e: Product) => {
+                    return (
                       <AdminModeCard
                         name={e.name}
                         image={e.image}
                         price={e.price}
                         id={e.id}
+                        AdmOrders = {AdmOrders}
                       />
-                    </div>
+                    );
+                  })}
+                </table>
                   );
-                })}
               </div>
               <ReactPaginateContainer>
                 <ReactPaginate
@@ -106,13 +122,14 @@ const AdminModeCards = (): JSX.Element => {
           ) : newProductsList.length !== 0 ? (
             <>
               <div className="">
-                <table className="table table-hover">
+                <table className="table table-hover ">
                   <thead>
                     <tr>
                       <th scope="col">Image</th>
                       <th scope="col">Product Name</th>
                       <th scope="col">Price</th>
-                      <th scope="col">Edit - Delete</th>
+                      <th scope="col">Delete</th>
+                      <th scope="col">Edit </th>
                     </tr>
                   </thead>
                   {newProductsList.map((e: Product) => {
@@ -122,6 +139,7 @@ const AdminModeCards = (): JSX.Element => {
                         image={e.image}
                         price={e.price}
                         id={e.id}
+                        AdmOrders = {AdmOrders}
                       />
                     );
                   })}

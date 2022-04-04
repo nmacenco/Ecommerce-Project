@@ -25,3 +25,12 @@ export const resetFilterProducts = () => {
       alert(error);
     }
 };
+
+export const searchProducts=(productName:string)=>{
+
+  return {
+    type:TYPES_PRODUCT.SEARCH_PRODUCTS,
+    payload:productName
+  }
+
+}

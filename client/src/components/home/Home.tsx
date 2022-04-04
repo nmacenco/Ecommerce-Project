@@ -2,6 +2,7 @@ import React from "react";
 import { HomeContainer } from "./HomeStyles";
 import img2 from "../../images/carrusel2.jpg";
 import img3 from "../../images/carrusel3.jpg";
+import Footer from "../footer/Footer";
 
 const Home = (): JSX.Element => {
   return (
@@ -88,6 +89,7 @@ const Home = (): JSX.Element => {
           <span className="visually-hidden">Next</span>
         </button>
       </HomeContainer>
+      <Footer/>
     </div>
   );
 };
