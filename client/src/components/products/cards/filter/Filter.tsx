@@ -11,7 +11,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const allProducts = useSelector((state: State) => state.products.products);
   const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
-  console.log(filteredProducts)
+  // console.log(filteredProducts)
 
   useEffect(() => {
     dispatch(getProducts());

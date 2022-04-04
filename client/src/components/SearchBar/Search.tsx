@@ -19,7 +19,7 @@ const Search = (): JSX.Element => {
     const SearchRequest = (event: any) => {
 
         event.preventDefault();
-        console.log('valor del input:  ',realValue);
+        // console.log('valor del input:  ',realValue);
         setProducts([]);
         // let selectArtefacts=[];
         let selectArtefacts=artefacts.filter(product=>{
@@ -27,12 +27,14 @@ const Search = (): JSX.Element => {
             //     return product;
             // }
             if (product.name.toLowerCase().includes(realValue.toLowerCase())){
+                
                 return product;
             }
         })
-
+        
         dispatch(selectProducts(selectArtefacts));
-        event.target.search.value='';
+        setValue('')
+        
     }
 
     const SearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,13 +50,13 @@ const Search = (): JSX.Element => {
         }
         setValue(event.target.value)
 
-
+        
     }
 
 
     return (
         <SearchForm className="d-flex me-lg-4" autoComplete='off' onSubmit={SearchRequest} >
-            {console.log('Search renderizado!')}
+            {/* {console.log('Search renderizado!')} */}
             <div className='desplegable'>
                 <input
                     onChange={SearchChange}

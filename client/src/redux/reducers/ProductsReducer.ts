@@ -25,7 +25,7 @@ export const reducerProduct = (
         // console.log("ADD ITEM",product.name);
         newTable.addItem(product.name);
       });
-      console.log("La hastable es: ", newTable);
+      // console.log("La hastable es: ", newTable);
 
       return {
         ...state,

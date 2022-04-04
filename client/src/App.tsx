@@ -19,7 +19,7 @@ function App(): JSX.Element {
   useEffect(()=>{
 
     dispatch(FindUSer());
-    console.log('find user!')
+    // console.log('find user!')
 
   },[])
 
