@@ -33,17 +33,17 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    discountpercent: {
+    discountPercent: {
       type: DataTypes.FLOAT,
       defaultValue: 0,
       allowNull: true,
     },
-    isindiscount: {
+    isInDiscount: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       allowNull: true,
     },
-    discountqty: {
+    discountQty: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
       allowNull: true,
