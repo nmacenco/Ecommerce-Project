@@ -50,7 +50,6 @@ export default function FromCreate(): JSX.Element {
   }, [dispatch]);
 
   const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    e.preventDefault();
     const subcategoriesFiltered = subcategoriesList.filter(
       (s: Subcategory) => Number(s.CategoryId) == Number(e.target.value)
     );
