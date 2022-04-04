@@ -9,7 +9,7 @@ export default function editValidations(props: ProductForm, props2: Product): bo
         description: boolean = false,
         weight: boolean = false
 
-    if (props.name === "") {
+    if (props.name !== "") {
         props.name = props2.name;
         name = true;
     }
