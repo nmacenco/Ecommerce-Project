@@ -7,6 +7,7 @@ import {
 import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../redux/actions/admin";
+import { resetPoducts } from "../../redux/actions/products";
 
 import Loading from "../loading/Loading";
 import {
@@ -21,6 +22,7 @@ import {
   DeleteEditButton,
   ImagesContainer,
 } from "./DetailStyles";
+import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -31,13 +33,15 @@ export default function Detail() {
   useEffect(() => {
     dispatch(getProductDetail(id));
     return () => {
-      dispatch(deleteProductDetail());
+      // dispatch(deleteProductDetail());
+      dispatch(resetFilterProducts())
     };
   }, []);
 
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
     dispatch(deleteProduct(id));
+    dispatch(resetPoducts())
     alert("Product deleted.");
     navigate("/products");
   }
