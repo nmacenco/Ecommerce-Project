@@ -1,5 +1,7 @@
 const { User, Order, OrderDetail, Country } = require("../db");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
+require("../auth/passport-setup");
 
 const createUser = async (req, res, next) => {
   try {
@@ -165,12 +167,10 @@ const getSingleUser = async (req, res) => {
     } else {
       const singleUser = await User.findByPk(id);
       singleUser
-        ? res
-            .status(200)
-            .send({
-              successfulMsg: "Here is your user data.",
-              data: singleUser,
-            })
+        ? res.status(200).send({
+            successfulMsg: "Here is your user data.",
+            data: singleUser,
+          })
         : res.status(404).send({ errorMsg: "User not found." });
     }
   } catch (error) {

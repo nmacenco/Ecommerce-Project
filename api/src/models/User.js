@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -29,11 +29,17 @@ module.exports = (sequelize) => {
     },
     billing_address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: "",
     },
     default_shipping_address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: "",
+    },
+    tokens: {
+      type: DataTypes.ARRAY(DataTypes.TEXT),
+      defaultValue: [],
     },
     role: {
       type: DataTypes.STRING,
