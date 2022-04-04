@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { putProducts } from "../../../redux/actions/admin";
-import { ProductForm } from "../../../redux/interface";
+import { getBrands } from "../../../redux/actions/brands";
+import { getCategories, getSubcategories } from "../../../redux/actions/categories";
+import { ProductForm, Subcategory } from "../../../redux/interface";
 import { State } from "../../../redux/reducers";
 import editValidations from "./editValidations";
 
 export default function EditProduct(): JSX.Element {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const productDetail = useSelector((state: State) => state.productDetail);
+  const brands = useSelector((state: State) => state.brands.brands)
+  const categories = useSelector((state: State) => state.categories.categories)
+  const subcategories = useSelector((state: State) => state.categories.subcategories)
   const { id } = useParams<string>();
+  const [subcategoriesLoad, setSubcategoriesLoad] = useState<Boolean>(false)
+  const [subcategoriesFiltered, setSubcategoriesFiltered] = useState<Subcategory[]>([])
   const [editProduct, setEditProduct] = useState<ProductForm>({
     name: "",
     image: "",
@@ -22,18 +30,37 @@ export default function EditProduct(): JSX.Element {
     SubcategoryId: 0,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setEditProduct({
-      ...editProduct,
-      [e.target.name]: e.target.value,
-    });
+  useEffect(() => {
+    dispatch(getBrands())
+    dispatch(getCategories())
+    dispatch(getSubcategories())
+  }, [])
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>): void => {
+      setEditProduct({
+        ...editProduct,
+        [e.target.name]: e.target.value,
+      })
+  };
+
+  const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    e.preventDefault();
+    const subcategoriesFiltered = subcategories.filter(
+      (s: Subcategory) => Number(s.CategoryId) == Number(e.target.value)
+    );
+    setSubcategoriesLoad(true);
+    setSubcategoriesFiltered(subcategoriesFiltered);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    editValidations(editProduct, productDetail)
-      ? dispatch(putProducts(editProduct, id))
-      : alert("Something is wrong");
+    console.log(editProduct)
+    if (editValidations(editProduct, productDetail)) {
+       dispatch(putProducts(editProduct, id))
+       navigate("/products");
+       alert("Product edit successfully")
+    } else {
+       alert("Something is wrong");
+    }
   };
 
   return (
@@ -58,14 +85,16 @@ export default function EditProduct(): JSX.Element {
             <label htmlFor="exampleInputEmail1" className="form-label mt-4">
               Brand
             </label>
-            <input
-              type="text"
-              className="form-control"
-              id="exampleInputEmail1"
-              name="brand"
-              placeholder="Enter brand"
-              onChange={(e) => handleChange(e)}
-            />
+            <select name="BrandId" onChange={(e) => handleChange(e)}>
+              <option>Select brand</option>
+              {
+                (brands.length !== 0) 
+                  ? brands.map(e => {
+                    return <option key={e.id} value={e.name}>{e.name}</option>
+                  })
+                  : <p>No se han cargado las marcas aun</p>
+              }
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1" className="form-label mt-4">
@@ -100,6 +129,33 @@ export default function EditProduct(): JSX.Element {
               onChange={(e) => handleChange(e)}
             />
           </div>
+          <div className="form-group">
+              <select onChange={(e) => handleCategory(e)}>
+              <option>Select categorie</option>
+              {
+                (categories.length !== 0)
+                ? categories.map(e => {
+                  return <option key={e.id} value={e.id}>{e.name}</option>
+                })
+                : <p>Wait, chargin the categories</p>
+              }
+              </select>
+            </div>
+            
+            <div>
+              <select onChange={(e) => handleChange(e)} name="SubcategoryId">
+                <option>Select subcategorie</option>
+                {
+                  (subcategoriesLoad === true)
+                    ? subcategoriesFiltered.map(e => {
+                      return <option key={e.id} value={e.name}>{e.name}</option>
+                    })
+                    : <p>Dont select one categorie</p>
+                }
+              </select>
+
+            </div>
+              
           <div className="form-group">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
               Price
