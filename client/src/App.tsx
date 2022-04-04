@@ -19,7 +19,7 @@ function App(): JSX.Element {
   useEffect(()=>{
 
     dispatch(FindUSer());
-    console.log('find user!')
+    // console.log('find user!')
 
   },[])
 
@@ -32,7 +32,7 @@ function App(): JSX.Element {
           <Route path="/home" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/createProduct" element={<FormCreate />} />
-          <Route path="/editProduct/:id" element={<Edit />} />
+          {/* <Route path="/editProduct/:id" element={<Edit />} /> */}
           <Route path="/products" element={<Products />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

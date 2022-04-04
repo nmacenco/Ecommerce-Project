@@ -17,11 +17,11 @@ export default function editValidations(props: ProductForm, props2: Product): bo
         props.BrandId = props2.BrandId;
         BrandId = true;
     }
-    if (props.image !== "") {
+    if (props.image === "") {
         props.image = props2.image;
         image = true;
     }
-    if (props.description !== "") {
+    if (props.description === "") {
         props.description = props2.description;
         description = true;
     }

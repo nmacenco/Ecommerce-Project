@@ -43,7 +43,7 @@ const Cards = (): JSX.Element => {
   };
   const orders = (typeorder: string): void => {
     setOrder(typeorder);
-    console.log(typeorder);
+    // console.log(typeorder);
   };
 
   const finalProduct = currentPage * 32;
