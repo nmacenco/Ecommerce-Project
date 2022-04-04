@@ -68,6 +68,7 @@ export default function FromCreate(): JSX.Element {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    console.log(product)
     if (validations(product) === true) {
       dispatch(postProduct(product));
       alert("Product created successfully.");
