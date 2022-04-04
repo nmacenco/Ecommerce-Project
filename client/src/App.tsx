@@ -32,7 +32,7 @@ function App(): JSX.Element {
           <Route path="/home" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/createProduct" element={<FormCreate />} />
-          <Route path="/editProduct/:id" element={<Edit />} />
+          {/* <Route path="/editProduct/:id" element={<Edit />} /> */}
           <Route path="/products" element={<Products />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

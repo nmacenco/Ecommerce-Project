@@ -33,7 +33,7 @@ export default function Detail() {
   useEffect(() => {
     dispatch(getProductDetail(id));
     return () => {
-      dispatch(deleteProductDetail());
+      // dispatch(deleteProductDetail());
       dispatch(resetFilterProducts())
     };
   }, []);
