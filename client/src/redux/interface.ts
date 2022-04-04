@@ -22,6 +22,9 @@ export enum TYPES_CATEGORIES {
 export enum TYPES_BRANDS {
   GET_BRANDS = "GET_BRANDS",
 }
+export enum TYPES_PAGE {
+  SET_PAGE = "SET_PAGE" , 
+}
 
 export enum TYPES_PRODUCT {
   SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
@@ -34,6 +37,8 @@ export enum TYPES_PRODUCT {
 
 //=======================
 // Objects Interfaces
+
+export type Page = number ; 
 
 export interface User {
   name: string;
@@ -127,6 +132,13 @@ export interface GET_BRANDS {
   type: TYPES_BRANDS.GET_BRANDS;
   payload: Brand[];
 }
+//======================
+//Page Actions
+
+export interface SET_PAGE {
+  type: TYPES_PAGE.SET_PAGE;
+  payload: Page;
+}
 
 //=====================
 //Products Actions
@@ -192,3 +204,5 @@ export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES;
 export type BrandsActions = GET_BRANDS;
 
 export type AdminActions = DELETE_PRODUCT;
+
+export type SetPage = SET_PAGE;

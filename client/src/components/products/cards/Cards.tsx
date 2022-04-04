@@ -34,18 +34,17 @@ const Cards = (): JSX.Element => {
   }, [dispatch]);
   const [order, setOrder] = useState<string>("");
   const productsList = useSelector((state: State) => state.products.products);
-  const filteredProductList = useSelector(
-    (state: State) => state.filteredProducts.filteredProducts
-  );
+  const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
+  const statePage = useSelector((state: State) => state.page);
 
   const page = (numberOfPage: number): void => {
     setCurrentPage(numberOfPage);
   };
   const orders = (typeorder: string): void => {
     setOrder(typeorder);
-    // console.log(typeorder);
   };
 
+  
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
@@ -53,6 +52,9 @@ const Cards = (): JSX.Element => {
     ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
     : (newProductsList = productsList.slice(firstProduct, finalProduct));
 
+    console.log(filteredProductList);
+    console.log(newProductsList);
+    
   // implementing react paginate
 
   const handlePageClick = (data: any) => {
@@ -67,20 +69,11 @@ const Cards = (): JSX.Element => {
       <div className="col-xl-9 col-md-12">
         <CardsContainer className="w-100 ">
           <Filter page={page} orders={orders} />
-
-          {/* {(newProductsList.length !== 0) ? <><div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-            {newProductsList.map((e: Product) => {
-              return (
-                <div className="col" key={e.id}>
-                  <Card name={e.name} image={e.image} price={e.price} id={e.id} />
-                </div>
-              );
-            })}
-          </div>
-
-            <Pagination length={productsList.length} page={page} /> </> : <h2>LOADING</h2>
-          } */}
-          {filteredProductList.length !== 0 ? (
+          
+          {
+          !filteredProductList ? 
+          <h1> No se encontro el producto</h1> :
+          filteredProductList.length !== 0 ? (
             <>
               <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 d-flex justify-content-center">
                 {newProductsList.map((e: Product) => {
@@ -98,7 +91,7 @@ const Cards = (): JSX.Element => {
               </div>
               <ReactPaginateContainer>
                 <ReactPaginate
-                  pageCount={filteredProductList.length / 32}
+                  pageCount={Math.ceil(filteredProductList.length / 32)}
                   nextLabel={">"}
                   previousLabel={"<"}
                   marginPagesDisplayed={2}
@@ -134,7 +127,7 @@ const Cards = (): JSX.Element => {
               </div>
               <ReactPaginateContainer>
                 <ReactPaginate
-                  pageCount={productsList.length / 32}
+                  pageCount={Math.ceil(productsList.length / 32)}
                   nextLabel={">"}
                   previousLabel={"<"}
                   marginPagesDisplayed={2}

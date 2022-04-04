@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import searchIcon from "../../icons/search-symbol.png";
 import { selectProducts } from "../../redux/actions/products";
+import { setPage } from "../../redux/actions/setPage";
 import { State } from "../../redux/reducers";
 import { SearchForm } from "./SBar";
 
@@ -16,18 +17,13 @@ const Search = (): JSX.Element => {
 
   const SearchRequest = (event: any) => {
     event.preventDefault();
-    // console.log('valor del input:  ',realValue);
     setProducts([]);
-    // let selectArtefacts=[];
     let selectArtefacts = artefacts.filter((product) => {
-      // if(product.name.toLowerCase().startsWith(realValue.toLowerCase())){
-      //     return product;
-      // }
       if (product.name.toLowerCase().includes(realValue.toLowerCase())) {
         return product;
       }
     });
-
+    dispatch(setPage(1))
     dispatch(selectProducts(selectArtefacts));
     setValue("");
     
@@ -35,7 +31,6 @@ const Search = (): JSX.Element => {
 
   const SearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    // console.log(table.autocomplete(event.target.value.trim()));
     if (event.target.value.trim()) {
       setProducts(table.autocomplete(event.target.value.trim()));
       setRealValue(event.target.value);
@@ -51,7 +46,6 @@ const Search = (): JSX.Element => {
       autoComplete="off"
       onSubmit={SearchRequest}
     >
-      {/* {console.log('Search renderizado!')} */}
       <div className="desplegable">
         <input
           onChange={SearchChange}
