@@ -20,7 +20,7 @@ const Card = ({ name, image, price, id }: props) => {
             alt={image}
             className="card-img-top"
           ></ProductIMG>
-          <p className="card-title m-2">{name}</p>
+          {name.length > 40 ? <p className="card-title m-2">{name.slice(0,40)}...</p> : <p className="card-title m-2">{name}</p>}
         </Link>
       </div>
       <CardFooter className="card-footer d-flex align-items-end justify-content-between">

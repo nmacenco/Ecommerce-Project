@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, orderProducts } from "../../../../redux/actions/products";
+import { resetFilterProducts } from '../../../../redux/actions/filterByCategory';
+import { Product } from "../../../../redux/interface";
 import { State } from "../../../../redux/reducers";
+import { ORDER } from "../Cards";
 import { Select } from "./FilterStyles";
 
-const Filter = (): JSX.Element => {
-  const [order, setOrder] = useState<string>("");
+const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
-  const allProducts = useSelector((state: State) => state.products);
+  const allProducts = useSelector((state: State) => state.products.products);
+  const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
 
   useEffect(() => {
     dispatch(getProducts());
-  }, [dispatch]);
+  }, []);
 
   function handleSort(
     e: React.ChangeEvent<HTMLSelectElement>,
     //es un objeto
-    allProducts: any
+    allProducts: Product[]
   ): void {
     e.preventDefault();
-    console.log(allProducts);
-    dispatch(orderProducts(e.target.value, allProducts.orderedProducts));
-    // setCurrentPage(1);
-    setOrder(`${e.target.value} order`);
+    // dispatch(resetFilterProducts());
+
+    page(1)
+    orders(`${e.target.value} order`);
+    filteredProducts.length > 0 ? 
+    dispatch(orderProducts(e.target.value, filteredProducts)) :
+    dispatch(orderProducts(e.target.value, allProducts));
   }
 
   return (
@@ -39,13 +45,10 @@ const Filter = (): JSX.Element => {
           <option value="asc-name">A - Z</option>
           <option value="des-name">Z - A</option>
         </Select>
-        <p className="ms-auto m-3">99 products</p>
+        <p className="ms-auto m-3">{!filteredProducts.length ? allProducts.length : filteredProducts.length} products</p>
       </div>
     </div>
   );
 };
 
 export default Filter;
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}

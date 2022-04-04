@@ -5,18 +5,6 @@ import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 // import interfaces from '....'
 const URL = "http://localhost:3001/api";
 
-export const postProduct = (product: Product) => {
-  try {
-    return async (dispatch: Dispatch) => {
-      //Ponemos el dispatch para tener mayor control del dispatch
-      await axios.post(`${URL}/products`, product);
-      alert("Product added successfully");
-    };
-  } catch (error) {
-    alert(error);
-  }
-};
-
 export const getProducts = () => {
   try {
     return async (dispatch: Dispatch) => {
@@ -36,8 +24,10 @@ export const orderProducts = (value: string, products: Product[]) => {
     return async (dispatch: Dispatch) => {
       return dispatch({
         type: TYPES_PRODUCT.ORDER_PRODUCTS,
-        payload: value,
-        products,
+        payload: {
+          value,
+          products,
+        },
       });
     };
   } catch (error) {
@@ -45,13 +35,16 @@ export const orderProducts = (value: string, products: Product[]) => {
   }
 };
 
-export const putProducts = (editProduct: Product, id: string | undefined) => {
-  try {
-    return async (dispatch: Dispatch) => {
-      await axios.put(`${URL}/products/${id}`, editProduct);
-      alert("Product updated succesfully");
-    };
-  } catch (error) {
-    alert(error);
-  }
+export const selectProducts = (products: Product[]) => {
+  // console.log("SELECT PRODUCTS DISPATCH");
+  return {
+    type: TYPES_PRODUCT.SEARCH_PRODUCTS,
+    payload: products
+  };
+};
+export const resetPoducts = () => {
+  return {
+    type: TYPES_PRODUCT.RESET_PRODUCTS,
+    payload: []
+  };
 };

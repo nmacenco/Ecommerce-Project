@@ -3,13 +3,13 @@ import { Product, ProductActions, TYPES_PRODUCT } from "../interface";
 
 export interface PRODUCTS {
   products: Product[];
-  orderedProducts: Product[];
+  copyProducts: Product[];
   productSearch: any;
 }
 
 const INITIAL_STATE = {
   products: [],
-  orderedProducts: [],
+  copyProducts: [],
   productSearch: [],
 };
 
@@ -22,17 +22,23 @@ export const reducerProduct = (
       const newTable = new HashTable();
 
       action.payload.forEach((product) => {
-        console.log("ADD ITEM", product.name);
+        // console.log("ADD ITEM",product.name);
         newTable.addItem(product.name);
       });
-      console.log("La hastable es: ", newTable);
+      // console.log("La hastable es: ", newTable);
 
       return {
         ...state,
         products: action.payload,
-        orderedProducts: action.payload,
+        copyProducts: action.payload,
         productSearch: newTable,
       };
+    case TYPES_PRODUCT.RESET_PRODUCTS :
+      return {
+        ...state , 
+        products : action.payload , 
+        copyProducts : action.payload , 
+      }
 
     default: {
       return {
