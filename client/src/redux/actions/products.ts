@@ -36,9 +36,15 @@ export const orderProducts = (value: string, products: Product[]) => {
 };
 
 export const selectProducts = (products: Product[]) => {
-  console.log("SELECT PRODUCTS DISPATCH");
+  // console.log("SELECT PRODUCTS DISPATCH");
   return {
     type: TYPES_PRODUCT.SEARCH_PRODUCTS,
     payload: products
+  };
+};
+export const resetPoducts = () => {
+  return {
+    type: TYPES_PRODUCT.RESET_PRODUCTS,
+    payload: []
   };
 };
