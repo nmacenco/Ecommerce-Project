@@ -11,7 +11,6 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const allProducts = useSelector((state: State) => state.products.products);
   const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
-  // console.log(filteredProducts)
 
   useEffect(() => {
     dispatch(getProducts());
@@ -23,10 +22,12 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
     allProducts: Product[]
   ): void {
     e.preventDefault();
-    dispatch(resetFilterProducts());
+    // dispatch(resetFilterProducts());
 
     page(1)
     orders(`${e.target.value} order`);
+    filteredProducts.length > 0 ? 
+    dispatch(orderProducts(e.target.value, filteredProducts)) :
     dispatch(orderProducts(e.target.value, allProducts));
   }
 
