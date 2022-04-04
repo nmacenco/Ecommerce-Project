@@ -104,15 +104,9 @@ export default function FromCreate(): JSX.Element {
             id="exampleSelect1"
             name="BrandId"
           >
-<<<<<<< HEAD
-            <option>Select brand</option>
-            {brandsList.brands.map((brand: Brand, i: number) => {
-              return <option key={i}value={brand.id}>{brand.name}</option>;
-=======
             <option hidden>Select brand</option>
             {brandsList.brands.map((brand: Brand) => {
               return <option value={brand.id}>{brand.name}</option>;
->>>>>>> c0c23f822a43b2f6eefe9e3865539cbe8177d3ad
             })}
           </select>
         </div>

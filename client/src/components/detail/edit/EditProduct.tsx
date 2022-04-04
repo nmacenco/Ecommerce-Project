@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { putProducts } from "../../../redux/actions/admin";
 import { getBrands } from "../../../redux/actions/brands";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
@@ -10,6 +10,7 @@ import editValidations from "./editValidations";
 
 export default function EditProduct(): JSX.Element {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const productDetail = useSelector((state: State) => state.productDetail);
   const brands = useSelector((state: State) => state.brands.brands)
   const categories = useSelector((state: State) => state.categories.categories)
@@ -53,9 +54,13 @@ export default function EditProduct(): JSX.Element {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.log(editProduct)
-    editValidations(editProduct, productDetail)
-      ? dispatch(putProducts(editProduct, id))
-      : alert("Something is wrong");
+    if (editValidations(editProduct, productDetail)) {
+       dispatch(putProducts(editProduct, id))
+       navigate("/products");
+       alert("Product edit successfully")
+    } else {
+       alert("Something is wrong");
+    }
   };
 
   return (

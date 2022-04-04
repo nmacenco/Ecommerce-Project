@@ -54,23 +54,6 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
         >
           <div className="accordion-body">
             {categories.categories.length > 0 &&
-<<<<<<< HEAD
-              categories.categories.map((categorie, i) => {
-                return (
-                    <Select key={i}
-                      onChange={(e) => handleFilter(e,allProducts)}
-                      className="accordion-header"
-                      defaultValue={`${categorie.name}`}
-                    >
-                      <option disabled hidden>
-                        {`${categorie.name}`}
-                      </option>
-                      {categories.subcategories.length > 0 &&
-                        categories.subcategories.map((subcategory, i) => {
-                          if (categorie.id === subcategory.CategoryId) {
-                            return (
-                              <option key={i}
-=======
               categories.categories.map((category) => {
                 return (
                   <Select
@@ -86,7 +69,6 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                         if (category.id === subcategory.CategoryId) {
                           return (
                             <option
->>>>>>> c0c23f822a43b2f6eefe9e3865539cbe8177d3ad
                               // className="accordion-header"
                               className="accordion-body"
                               value={`${subcategory.name}`}
