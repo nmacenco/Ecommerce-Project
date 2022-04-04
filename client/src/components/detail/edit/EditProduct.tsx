@@ -78,7 +78,7 @@ export default function EditProduct(): JSX.Element {
               className="form-control"
               id="staticEmail"
               name="name"
-              placeholder="Enter name"
+              placeholder={productDetail.name}
               onChange={(e) => handleChange(e)}
               value = {editProduct.name}
             />
