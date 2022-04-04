@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { resetFilterProducts } from '../../redux/actions/filterByCategory';
 import { State } from "../../redux/reducers";
 import { LogoutUser } from "../../redux/actions/user";
+import { getProducts, resetPoducts } from "../../redux/actions/products";
 
 
 const Nav = (): JSX.Element => {
@@ -22,6 +23,8 @@ const Nav = (): JSX.Element => {
 
   function handleClickProducts () {
     dispatch(resetFilterProducts())
+    dispatch(resetPoducts())
+    dispatch(getProducts())
   }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
