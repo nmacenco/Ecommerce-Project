@@ -7,6 +7,8 @@ import {
   getCategories,
   getSubcategories,
 } from "../../redux/actions/categories";
+import { resetFilterProducts } from "../../redux/actions/filterByCategory";
+import { resetPoducts } from "../../redux/actions/products";
 import {
   Brand,
   Category,
@@ -16,6 +18,7 @@ import {
 import { State } from "../../redux/reducers";
 import { FormContainer } from "./FormCreateStyles";
 import validations from "./validations";
+
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
@@ -71,6 +74,8 @@ export default function FromCreate(): JSX.Element {
     console.log(product)
     if (validations(product) === true) {
       dispatch(postProduct(product));
+      dispatch(resetFilterProducts())
+      dispatch(resetPoducts())
       alert("Product created successfully.");
       navigate("/products");
     } else {
