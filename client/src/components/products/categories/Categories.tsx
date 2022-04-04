@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoriesContainer , Select } from "./CategoriesStyles";
+import { CategoriesContainer, Select } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import {
   getCategories,
   getSubcategories,
 } from "../../../redux/actions/categories";
-import {filterProducts} from '../../../redux/actions/filterByCategory'
+import { filterProducts } from "../../../redux/actions/filterByCategory";
 import { Product } from "../../../redux/interface";
 import { ORDER } from "../cards/Cards";
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
@@ -20,13 +20,12 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
     dispatch(getSubcategories());
   }, []);
 
-  function handleFilter(
-    e: React.ChangeEvent<HTMLSelectElement>,
-    allProducts: Product[]
-  ) : void {
+  function handleFilter(e: any, allProducts: Product[]): void {
+    console.log(e);
+    // e.target.value = e.target[0].innerHTML;
     dispatch(filterProducts(e.target.value, allProducts));
-    e.target.value = e.target[0].innerHTML
-    page(1)
+
+    page(1);
   }
 
   return (
@@ -44,7 +43,10 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
             Categories
           </button>
         </h2>
-        <div
+
+        {/* //VIEJO */}
+
+        {/* <div
           id="collapseOne"
           className="accordion-collapse collapse"
           aria-labelledby="headingOne"
@@ -52,6 +54,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
         >
           <div className="accordion-body">
             {categories.categories.length > 0 &&
+<<<<<<< HEAD
               categories.categories.map((categorie, i) => {
                 return (
                     <Select key={i}
@@ -67,57 +70,93 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                           if (categorie.id === subcategory.CategoryId) {
                             return (
                               <option key={i}
+=======
+              categories.categories.map((category) => {
+                return (
+                  <Select
+                    onChange={(e) => handleFilter(e, allProducts)}
+                    className=""
+                    defaultValue={`${category.name}`}
+                  >
+                    <option disabled hidden>
+                      {`${category.name}`}
+                    </option>
+                    {categories.subcategories.length > 0 &&
+                      categories.subcategories.map((subcategory, i) => {
+                        if (category.id === subcategory.CategoryId) {
+                          return (
+                            <option
+>>>>>>> c0c23f822a43b2f6eefe9e3865539cbe8177d3ad
                               // className="accordion-header"
                               className="accordion-body"
-                               value={`${subcategory.name}`}>
-                                {subcategory.name}
-                              </option>
-                            );
-                          }
-                        })}
-                    </Select>
+                              value={`${subcategory.name}`}
+                            >
+                              {subcategory.name}
+                            </option>
+                          );
+                        }
+                      })}
+                  </Select>
                 );
               })}
           </div>
-
-           {/* <div className="accordion-body">
-            {categories.categories.length > 0 &&
-              categories.categories.map((e ) => {
-                return (
-                  <div key={e.id}>
-                    <h2 className="accordion-header" id={e.name + "label"}>
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target={"#" + e.name}
-                        aria-expanded="false"
-                        aria-controls={e.name}
-                      >
-                        {e.name}
-                      </button>
-                    </h2>
-                    <div
-                      id={e.name}
-                      className="accordion-collapse collapse"
-                      aria-labelledby={e.name + "label"}
-                      data-bs-parent="#categories"
+        </div>
+        </div> */}  
+        <div
+          id="collapseOne"
+          className="accordion-collapse collapse"
+          aria-labelledby="headingOne"
+          data-bs-parent="#accordionMain"
+        >
+          <div className="accordion-body">
+            {categories.categories.map((category, i) => {
+              return (
+                <div key={i}>
+                  <h2
+                    className="accordion-header"
+                    id={category.name.replace(/ /g, "") + "label"}
+                  >
+                    <button
+                      className="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target={"#" + category.name.replace(/ /g, "")}
+                      aria-expanded="false"
+                      aria-controls={category.name.replace(/ /g, "")}
                     >
-                      <div className="accordion-body">
-                        {categories.subcategories.length > 0 &&
-                          categories.subcategories.map((subcategory, i) => {
-                            if (e.id === subcategory.CategoryId) {
-                              return <p key={i} onClick={() => handleFilter( e ,allProducts)}>{subcategory.name}</p>;
-                            } 
-                          })}
-                      </div>
+                      {category.name}
+                    </button>
+                  </h2>
+                  <div
+                    id={category.name.replace(/ /g, "")}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={category.id + "label"}
+                    data-bs-parent="#categories"
+                  >
+                    <div className="accordion-body btn-group-vertical">
+                      {categories.subcategories.map((subcategory, i) => {
+                        if (category.id === subcategory.CategoryId) {
+                          return (
+                            <button
+                              className="btn p-1 text-start"
+                              key={i}
+                              value={subcategory.name}
+                              onClick={(e) => handleFilter(e, allProducts)}
+                            >
+                              {subcategory.name}
+                            </button>
+                          );
+                        }
+                      })}
                     </div>
                   </div>
-                );
-              })}
-          </div>  */}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
+
       <div className="accordion-item">
         <h2 className="accordion-header" id="headingTwo">
           <button

@@ -50,7 +50,6 @@ export default function FromCreate(): JSX.Element {
   }, [dispatch]);
 
   const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    e.preventDefault();
     const subcategoriesFiltered = subcategoriesList.filter(
       (s: Subcategory) => Number(s.CategoryId) == Number(e.target.value)
     );
@@ -105,9 +104,15 @@ export default function FromCreate(): JSX.Element {
             id="exampleSelect1"
             name="BrandId"
           >
+<<<<<<< HEAD
             <option>Select brand</option>
             {brandsList.brands.map((brand: Brand, i: number) => {
               return <option key={i}value={brand.id}>{brand.name}</option>;
+=======
+            <option hidden>Select brand</option>
+            {brandsList.brands.map((brand: Brand) => {
+              return <option value={brand.id}>{brand.name}</option>;
+>>>>>>> c0c23f822a43b2f6eefe9e3865539cbe8177d3ad
             })}
           </select>
         </div>
@@ -139,21 +144,21 @@ export default function FromCreate(): JSX.Element {
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div className="d-flex justify-content-between">
-          <div className="form-group me-1">
+        <div className="d-flex">
+          <div className="form-group flex-fill">
             <label className="form-label mt-4">Category</label>
             <select
               onChange={(e) => handleCategory(e)}
               className="form-select"
               id="exampleSelect1"
             >
-              <option>Select category</option>
+              <option hidden>Select category</option>
               {categoriesList.categories.map((category: Category) => {
                 return <option value={category.id}>{category.name}</option>;
               })}
             </select>
           </div>
-          <div className="form-group ms-1">
+          <div className="form-group flex-fill ms-2">
             <label className="form-label mt-4">Subcategory</label>
             <select
               className="form-select"
@@ -161,7 +166,7 @@ export default function FromCreate(): JSX.Element {
               name="SubcategoryId"
               onChange={(e) => handleChange(e)}
             >
-              <option>Select subcategory</option>
+              <option hidden>Select subcategory</option>
               {subcategoriesLoaded &&
                 subcategoriesFiltered.map((subcategory: Subcategory) => {
                   return (
