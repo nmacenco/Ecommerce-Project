@@ -1,17 +1,33 @@
 import React from "react";
 import cartIcon from "../../icons/cart-icon.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Search from "../SearchBar/Search";
 import { SearchIcon, CartIcon } from "./NavStyles";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Link } from "react-router-dom";
 import { resetFilterProducts } from '../../redux/actions/filterByCategory';
+import { State } from "../../redux/reducers";
+import { LogoutUser } from "../../redux/actions/user";
+import { getProducts, resetPoducts } from "../../redux/actions/products";
+import { deleteProductDetail } from "../../redux/actions/productDetail";
 
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
+  const user=useSelector((state:State)=>state.user);
+
+  const logout=(event:React.MouseEvent<HTMLSpanElement>)=>{
+    event.preventDefault();
+    dispatch(LogoutUser());
+
+  }
+
   function handleClickProducts () {
     dispatch(resetFilterProducts())
+    dispatch(resetPoducts())
+    dispatch(deleteProductDetail());
+    dispatch(getProducts())
+
   }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
@@ -33,12 +49,19 @@ const Nav = (): JSX.Element => {
             </div>
           </div>
           <AdminDropdown />
-          <Link
-            to="/login"
-            className="nav-item btn btn-secondary my-2 link-Router"
-          >
-            Login
-          </Link>
+          {
+            user ?
+              <span className="nav-item btn btn-secondary my-2 link-Router" onClick={logout}>
+                  Logout
+                </span>
+                :
+                <Link
+                  to="/login"
+                className="nav-item btn btn-secondary my-2 link-Router"
+                >
+                  Login
+                </Link>
+          }
           <Search />
         </div>
       </div>

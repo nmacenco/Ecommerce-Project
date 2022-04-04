@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Nav from "./components/nav/Nav";
@@ -12,8 +12,19 @@ import FormCreate from "./components/form/FormCreate";
 import Home from "./components/home/Home";
 import Footer from "./components/footer/Footer";
 import AdminModeCards from "./components/products/cards/AdminModeCards";
+import { useDispatch } from "react-redux";
+import { FindUSer } from "./redux/actions/user";
 
 function App(): JSX.Element {
+
+  const dispatch=useDispatch();
+  useEffect(()=>{
+
+    dispatch(FindUSer());
+    console.log('find user!')
+
+  },[])
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -23,7 +34,7 @@ function App(): JSX.Element {
           <Route path="/home" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/createProduct" element={<FormCreate />} />
-          <Route path="/editProduct/:id" element={<Edit />} />
+          {/* <Route path="/editProduct/:id" element={<Edit />} /> */}
           <Route path="/products" element={<Products />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

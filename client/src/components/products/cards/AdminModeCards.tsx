@@ -48,7 +48,7 @@ const AdminModeCards = (): JSX.Element => {
       // if (!productsList.length) {
         dispatch(getProducts());
       // }
-    }, []);
+    }, [Admorders]);
 
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
@@ -93,6 +93,7 @@ const AdminModeCards = (): JSX.Element => {
                         price={e.price}
                         id={e.id}
                         AdmOrders = {AdmOrders}
+                        page={page}
                       />
                     );
                   })}
@@ -140,6 +141,7 @@ const AdminModeCards = (): JSX.Element => {
                         price={e.price}
                         id={e.id}
                         AdmOrders = {AdmOrders}
+                        page={page}
                       />
                     );
                   })}

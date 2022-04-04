@@ -4,8 +4,9 @@ import cartIcon from "../../../../icons/cart-icon.png";
 import { Link } from "react-router-dom";
 import { deleteProduct } from "../../../../redux/actions/admin";
 import { useDispatch } from "react-redux";
-import { getProducts } from "../../../../redux/actions/products";
+import { getProducts, resetPoducts } from "../../../../redux/actions/products";
 import { ORDER } from "../Cards";
+import { resetFilterProducts } from "../../../../redux/actions/filterByCategory";
 
 interface props {
   name: string;
@@ -13,9 +14,10 @@ interface props {
   price: number;
   id?: number;
   AdmOrders: (typeorder: string) => void;
+  page: (typeorder: number) => void;
 }
 
-const AdminModeCard = ({ name, image, price, id ,  AdmOrders }: props ) => {
+const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) => {
   const dispatch = useDispatch();
   const stringID = String(id);
 
@@ -23,6 +25,10 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders }: props ) => {
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
     dispatch(deleteProduct(stringID));
+    dispatch(resetPoducts())
+    dispatch(resetFilterProducts())
+    dispatch(getProducts())
+    page(1)
     AdmOrders(stringID)
   }
 

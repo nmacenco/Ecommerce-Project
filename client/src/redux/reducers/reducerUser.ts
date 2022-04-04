@@ -16,8 +16,10 @@ export const userReducer = (state: USER = INITIAL_USER, action: UserActions): US
   switch (action.type) {
 
     case TYPES_USER.CREATE_USER:
+      console.log('USEr: ',action.payload);
       return action.payload;
     case TYPES_USER.FIND_USER:
+      console.log('user encountered: ',action.payload);
       return action.payload;
 
     case TYPES_USER.GET_USER:

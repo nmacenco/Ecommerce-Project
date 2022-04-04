@@ -10,6 +10,7 @@ import { Select } from "./FilterStyles";
 const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const allProducts = useSelector((state: State) => state.products.products);
+  const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -21,10 +22,12 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
     allProducts: Product[]
   ): void {
     e.preventDefault();
-    dispatch(resetFilterProducts());
+    // dispatch(resetFilterProducts());
 
     page(1)
     orders(`${e.target.value} order`);
+    filteredProducts.length > 0 ? 
+    dispatch(orderProducts(e.target.value, filteredProducts)) :
     dispatch(orderProducts(e.target.value, allProducts));
   }
 
@@ -42,7 +45,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
           <option value="asc-name">A - Z</option>
           <option value="des-name">Z - A</option>
         </Select>
-        <p className="ms-auto m-3">{allProducts.length} products</p>
+        <p className="ms-auto m-3">{!filteredProducts.length ? allProducts.length : filteredProducts.length} products</p>
       </div>
     </div>
   );

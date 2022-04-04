@@ -43,7 +43,7 @@ const Cards = (): JSX.Element => {
   };
   const orders = (typeorder: string): void => {
     setOrder(typeorder);
-    console.log(typeorder);
+    // console.log(typeorder);
   };
 
   const finalProduct = currentPage * 32;
@@ -53,36 +53,36 @@ const Cards = (): JSX.Element => {
     ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
     : (newProductsList = productsList.slice(firstProduct, finalProduct));
 
-  /// implementing react paginate
+  // implementing react paginate
 
   const handlePageClick = (data: any) => {
     setCurrentPage(data.selected + 1);
   };
 
   return (
-    <ProductsContainer className="row row-cols-lg-2 row-cols-md-1 mx-auto">
-      <div className="col-xl-2 col-lg-3 col-sm-12">
+    <ProductsContainer className="row row-cols-xl-2 row-cols-md-1 mx-auto">
+      <div className="col-xl-3 col-sm-12">
         <Categories page={page} orders={orders} />
       </div>
-      <div className="col-lg-9 col-md-12">
+      <div className="col-xl-9 col-md-12">
         <CardsContainer className="w-100 ">
           <Filter page={page} orders={orders} />
 
           {/* {(newProductsList.length !== 0) ? <><div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-        {newProductsList.map((e: Product) => {
-          return (
-            <div className="col" key={e.id}>
-              <Card name={e.name} image={e.image} price={e.price} id={e.id} />
-            </div>
-          );
-        })}
-      </div>
+            {newProductsList.map((e: Product) => {
+              return (
+                <div className="col" key={e.id}>
+                  <Card name={e.name} image={e.image} price={e.price} id={e.id} />
+                </div>
+              );
+            })}
+          </div>
 
-        <Pagination length={productsList.length} page={page} /> </> : <h2>LOADING</h2>
-      } */}
+            <Pagination length={productsList.length} page={page} /> </> : <h2>LOADING</h2>
+          } */}
           {filteredProductList.length !== 0 ? (
             <>
-              <div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+              <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 d-flex justify-content-center">
                 {newProductsList.map((e: Product) => {
                   return (
                     <div className="col" key={e.id}>
@@ -118,7 +118,7 @@ const Cards = (): JSX.Element => {
             </>
           ) : newProductsList.length !== 0 ? (
             <>
-              <div className="mx-auto mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+              <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
                 {newProductsList.map((e: Product) => {
                   return (
                     <div className="col" key={e.id}>
