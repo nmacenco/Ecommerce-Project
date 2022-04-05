@@ -13,6 +13,7 @@ import { ORDER_STATE, reducerOrderProducts } from './orderProductsReducer';
 import { FILTERED_STATE , reducerFilterProducts } from './filterByCategoryReducer';
 import { BRANDS, reducerBrands } from "./brandsReducer";
 import setPageReducer, { PAGE } from "./setPageReducer";
+import adminUsersReducer, { ADMIN_USERS } from "./adminReducerUser";
 
 interface GLOBAL_STATE {
   user: User | null;
@@ -23,6 +24,7 @@ interface GLOBAL_STATE {
   filteredProducts: FILTERED_STATE;
   brands:BRANDS;
   page : PAGE ; 
+  adminUsers : ADMIN_USERS
 }
 
 export const rootReducer = combineReducers<GLOBAL_STATE>({
@@ -34,6 +36,7 @@ export const rootReducer = combineReducers<GLOBAL_STATE>({
   filteredProducts : reducerFilterProducts,
   brands: reducerBrands ,
   page : setPageReducer, 
+  adminUsers : adminUsersReducer,
 });
 
 export type State = ReturnType<typeof rootReducer>;

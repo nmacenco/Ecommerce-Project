@@ -4,6 +4,9 @@ export enum TYPES_USER {
   LOGOUT_USER,
   FIND_USER,
 }
+export enum TYPES_ADMIN_USER {
+  GET_USERS = 'GET_USERS'
+}
 
 export enum TYPES_DETAIL {
   PRODUCT_DETAIL = "PRODUCT_DETAIL",
@@ -33,7 +36,7 @@ export enum TYPES_PRODUCT {
   FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
   RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS",
   RESET_PRODUCTS = "RESET_PRODUCTS",
-  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND' ,
+  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND',
   FILTER_BY_BRAND = "FILTER_BY_BRAND",
 }
 
@@ -42,12 +45,25 @@ export enum TYPES_PRODUCT {
 
 export type Page = number ; 
 
+// dicson fijate si este User te sirve si no borralo por fa, se usa en una action por eso no lo borro 
+
 export interface User {
   name: string;
   lastName: string;
   password: string;
   email: string;
   token: string;
+}
+
+export interface Users {
+  id: number;
+  name: string;
+  surname: string;
+  password: string;
+  billing_address: string;
+  default_shipping_address: string;
+  role: string;
+  isActive: string;
 }
 
 export interface ProductForm {
@@ -116,6 +132,13 @@ export interface FIND_USER {
 }
 
 //=======================
+// Admin User Actions
+
+export interface ADMIN_USER {
+  type : TYPES_ADMIN_USER.GET_USERS,
+  payload: Users[]
+}
+//=======================
 // Category Actions
 
 export interface GET_CATEGORIES {
@@ -159,17 +182,16 @@ export interface FILTER_PRODUCTS {
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
   payload: any;
 }
-export interface FILTER_BY_BRAND {
-  type: TYPES_PRODUCT.FILTER_BY_BRAND;
-  //aca deberia ir un objeto con value(strinfg) y products(array de productos)
-  payload: any;
-}
 export interface RESET_FILTERED_PRODUCTS {
   type: TYPES_PRODUCT.RESET_FILTERED_PRODUCTS;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
   payload: any;
 }
-
+export interface FILTER_BY_BRAND {
+  type: TYPES_PRODUCT.FILTER_BY_BRAND;
+  //aca deberia ir un objeto con value(strinfg) y products(array de productos)
+  payload: any;
+}
 export interface GET_PRODUCTS {
   type: TYPES_PRODUCT.GET_PRODUCTS;
   payload: Product[];
@@ -203,12 +225,18 @@ export interface AXIOSDATA {
   successMsg: string;
   data: Product[];
 }
+export interface USERSAXIOSDATA {
+  successMsg: string;
+  data: Users[];
+}
 
 export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
-export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND ;
+export type AdminUserActions = ADMIN_USER
+
+export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
 
 export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES;
 
