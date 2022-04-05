@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./card/Card";
 import Filter from "./filter/Filter";
 import { CardsContainer, ReactPaginateContainer } from "./CardsStyles";
-// import Pagination from "./pagination/Pagination";
+import Pagination from "./pagination/Pagination";
 
 import ReactPaginate from "react-paginate";
 
@@ -95,6 +95,7 @@ const Cards = (): JSX.Element => {
             :
             newProductsList.length > 0 ?
             <>
+              <span><button onClick={(e) => resetFilter(e)} className="btn btn-primary mt-2">{filterBox ? filterBox : ""}</button></span>
               <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
                 {newProductsList.map((e: Product) => {
                   return (
@@ -110,7 +111,11 @@ const Cards = (): JSX.Element => {
                 })}
               </div>
               <ReactPaginateContainer>
-                <ReactPaginate
+                <Pagination 
+                  productList={productsList.length}
+                  handlePageClick = {handlePageClick}
+                ></Pagination>
+                {/* <ReactPaginate
                   pageCount={Math.ceil(productsList.length / 32)}
                   nextLabel={">"}
                   previousLabel={"<"}
@@ -126,7 +131,7 @@ const Cards = (): JSX.Element => {
                   breakClassName={"page-item"}
                   breakLinkClassName={"page-link"}
                   activeClassName={"active"}
-                ></ReactPaginate>
+                ></ReactPaginate> */}
               </ReactPaginateContainer>
             </> : (
             <Loading></Loading>

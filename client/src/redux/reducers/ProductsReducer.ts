@@ -45,11 +45,22 @@ export const reducerProduct = (
         let allProducts : Product[] = state.copyProducts
         const filteredProducts = allProducts.filter(
           (product) =>
-            product.subcategory === action.payload.value 
+            product.subcategory === action.payload 
         );
         return {
           ...state,
           products: filteredProducts
+        };
+      case TYPES_PRODUCT.FILTER_BY_BRAND:
+        let allProduct : Product[] = state.copyProducts
+        
+        const filteredByBrand = allProduct.filter(
+          (product) =>
+            product.brand === action.payload
+        );
+        return {
+          ...state,
+          products: filteredByBrand
         };
         case TYPES_PRODUCT.SEARCH_PRODUCTS:
 
