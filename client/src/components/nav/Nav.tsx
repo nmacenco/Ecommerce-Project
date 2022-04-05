@@ -1,62 +1,77 @@
 import React from "react";
 import cartIcon from "../../icons/cart-icon.png";
-
+import { useDispatch, useSelector } from "react-redux";
 import Search from "../SearchBar/Search";
 import { SearchIcon, CartIcon } from "./NavStyles";
-import { NavLink } from "react-router-dom";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Link } from "react-router-dom";
+import { resetFilterProducts } from '../../redux/actions/filterByCategory';
+import { State } from "../../redux/reducers";
+import { LogoutUser } from "../../redux/actions/user";
+import { getProducts, resetPoducts } from "../../redux/actions/products";
+import { deleteProductDetail } from "../../redux/actions/productDetail";
+
 
 const Nav = (): JSX.Element => {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary d-flex fixed-top">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="/home">
-          ECOMMERCE
-        </a>
+  const dispatch = useDispatch();
+  const user=useSelector((state:State)=>state.user);
 
+  const logout=(event:React.MouseEvent<HTMLSpanElement>)=>{
+    event.preventDefault();
+    dispatch(LogoutUser());
+
+  }
+
+  function handleClickProducts () {
+    dispatch(resetFilterProducts())
+    dispatch(resetPoducts())
+    dispatch(deleteProductDetail());
+    dispatch(getProducts())
+
+  }
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
+      <div className="flex-grow-1 d-lg-flex">
+        <Link className="navbar-brand pt-3" to="/home">
+          ECOMMERCE
+        </Link>
         <div className="collapse navbar-collapse" id="navbarColor01">
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <NavLink className="nav-link" to={"/products"}>
-                <a className="nav-link" href="">
-                  Products
-                </a>
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to={"/products"}>
-                <a className="nav-link" href="#">
-                  About
-                </a>
-              </NavLink>
-            </li>
-          </ul>
-          <Search />
-          <Link
-            to="/login"
-            className="nav-item btn btn-secondary my-sm-3 link-Router"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="nav-item btn btn-secondary my-sm-3 link-Router"
-          >
-            Register
-          </Link>
+          <div className="navbar-nav me-auto">
+            <div className="nav-item">
+              <Link onClick={() => {handleClickProducts()}} className="nav-link" to={"/products"}>
+                Products
+              </Link>
+            </div>
+            <div className="nav-item">
+              <Link className="nav-link" to={"/products"}>
+                About
+              </Link>
+            </div>
+          </div>
           <AdminDropdown />
+          {
+            user ?
+              <span className="nav-item btn btn-secondary my-2 link-Router" onClick={logout}>
+                  Logout
+                </span>
+                :
+                <Link
+                  to="/login"
+                className="nav-item btn btn-secondary my-2 link-Router"
+                >
+                  Login
+                </Link>
+          }
+          <Search />
         </div>
       </div>
 
-      <div className="ms-auto">
-        <NavLink className="nav-item" to={"/cart"}>
-          <a className="nav-item" href="/cart">
-            <CartIcon src={cartIcon} />
-          </a>
-        </NavLink>
+      <div className="ms-auto mb-auto py-lg-3">
+        <Link className="nav-item" to={"/cart"}>
+          <CartIcon src={cartIcon} />
+        </Link>
         <button
-          className="navbar-toggler"
+          className="navbar-toggler nav-item"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarColor01"

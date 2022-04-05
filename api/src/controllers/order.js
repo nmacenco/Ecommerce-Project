@@ -28,7 +28,46 @@ const getOrders = async (req, res, next) => {
     res.status(500).send({ errorMsg: error });
   }
 };
-const setOrder = async (req, res, next) => {};
+
+const setOrder = async (req, res, next) => {
+  try {
+    let { name, total_amount, email_address, billing_address, status, UserId } =
+      req.body;
+    console.log(req.body);
+    if (
+      !name ||
+      !total_amount ||
+      !email_address ||
+      !billing_address ||
+      !status
+    ) {
+      res.status(402).send({ errorMsg: "Missing data." });
+    } else {
+      // let [newOrder, created] = await Order.findOrCreate({
+      //   where: { name, total_amount, email_address, billing_address, status },
+      // });
+      // console.log(newOrder);
+      // created
+      //   ? res.status(201).json({
+      //       successMsg: "The Order has been created.",
+      //       data: newOrder,
+      //     })
+      //   : res.status(401).json({ errorMsg: "Order already exists." });
+
+      let neworder = await Order.create({
+        name,
+        total_amount,
+        email_address,
+        billing_address,
+        UserId,
+        status,
+      });
+      res.status(201).json(neworder);
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 
 module.exports = {
   getOrders,

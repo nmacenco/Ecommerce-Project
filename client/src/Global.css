@@ -1,3 +1,9 @@
+body{
+    margin-top:128px;
+    position: relative;
+    min-height: 100vh;
+    padding-bottom:100px;
+}
 
 *{
     padding: 0;
@@ -8,7 +14,8 @@
 .link-Router{
     text-decoration: none;
 }
-.App{
-    min-height: 100vh;
-    height: 100vh;
-}
+
+/* .App{
+    min-height: calc(100vh - 130px); 
+     height: calc(100vh - 130px);
+} */

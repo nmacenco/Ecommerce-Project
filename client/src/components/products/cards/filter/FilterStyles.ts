@@ -1,5 +1,5 @@
 import styled from "styled-components";
 
-export const DropdownItems = styled.div`
-text-decoration: none;
+export const Select = styled.select`
+max-width:200px;
 `

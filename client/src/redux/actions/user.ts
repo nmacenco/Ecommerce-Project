@@ -3,26 +3,36 @@ import { Dispatch } from "redux"
 import { TYPES_USER, User } from "../interface";
 
 
-const URL_USER='';
+const URL_USER = "http://localhost:3001/api/";
 const USER_STORAGE = "USER_LOGGED";
 
-export const CreateUser=(user:any)=>{
+export const CreateUser=(user:any,cb:any)=>{
 
     return async(dispatch:Dispatch)=>{
 
         try{
-            const {data}=await axios.post(URL_USER,user);
+            console.log(URL_USER+'users');
+            const {data}=await axios.post(URL_USER+'users',user);
 
             // if(data.error){
             //     throw new Error("Error "+data.error);
             // }
 
-            console.log('despachando el usuario')
+            console.log('data: ',data);
+            if(data.errorMsg){
+                alert('ALgo paso!');
+            }else{
+
+            }
+
             dispatch({
                 type:TYPES_USER.CREATE_USER,
-                payload:data
+                payload:data.newUser
             })
-            window.localStorage.setItem(USER_STORAGE,data);// Cambiar cuando exista un usuario
+            console.log('despachando el usuario');
+            cb();
+
+            window.localStorage.setItem(USER_STORAGE,JSON.stringify(data.newUser));// Cambiar cuando exista un usuario
 
 
         }catch(error){
@@ -65,6 +75,7 @@ export const FindUSer=()=>{
 
 export const LogoutUser=()=>{
 
+    console.log(window.localStorage.getItem(USER_STORAGE));
     window.localStorage.removeItem(USER_STORAGE);
 
     return {
