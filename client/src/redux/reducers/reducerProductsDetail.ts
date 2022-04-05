@@ -1,16 +1,5 @@
 import { Actions, Product, TYPES_DETAIL } from '../interface';
 
-// const INITIAL_PRODUCT = {
-//   id: 0,
-//   subcategory_id: [],
-//   name: "",
-//   brand: "",
-//   image: "",
-//   price: 0,
-//   description: "",
-//   weigth: 0,
-//   stock: 0,
-// };
 const INITIAL_PRODUCT = {
   id: 0,
   name: '',
@@ -22,7 +11,7 @@ const INITIAL_PRODUCT = {
   soldCount : 0 ,
   BrandId : 0 ,
   brand: '',
-  subcategory_id: 0,
+  SubcategoryId: 0,
   subcategory : '' , 
   CategoryId : 0 , 
   category : 0 , 

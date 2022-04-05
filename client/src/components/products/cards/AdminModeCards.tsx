@@ -57,8 +57,6 @@ const AdminModeCards = (): JSX.Element => {
     ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
     : (newProductsList = productsList.slice(firstProduct, finalProduct));
 
-  /// implementing react paginate
-
   const handlePageClick = (data: any) => {
     setCurrentPage(data.selected + 1);
   };
@@ -73,8 +71,7 @@ const AdminModeCards = (): JSX.Element => {
           <Filter page={page} orders={orders} />
           {filteredProductList.length !== 0 ? (
             <>
-
-              <div className="" >
+              <div className="">
                 <table className="table table-hover ">
                   <thead>
                     <tr>

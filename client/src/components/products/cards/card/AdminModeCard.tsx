@@ -1,10 +1,9 @@
 import React, {useState , useEffect} from "react";
 import { AdminProductIMG } from "./AdminModeCardStyles";
-import cartIcon from "../../../../icons/cart-icon.png";
 import { Link } from "react-router-dom";
 import { deleteProduct } from "../../../../redux/actions/admin";
 import { useDispatch } from "react-redux";
-import { getProducts, resetPoducts } from "../../../../redux/actions/products";
+import { getProducts} from "../../../../redux/actions/products";
 import { ORDER } from "../Cards";
 import { resetFilterProducts } from "../../../../redux/actions/filterByCategory";
 
@@ -25,18 +24,16 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
     dispatch(deleteProduct(stringID));
-    dispatch(resetPoducts())
+    // dispatch(resetPoducts())
     dispatch(resetFilterProducts())
     dispatch(getProducts())
     page(1)
     AdmOrders(stringID)
   }
 
-  // useEffect(()=> {
-  // }, [render])
   return (
     <tbody >
-      <tr className="table-light   ">
+      <tr className="table-light">
         <th scope="row">
           <AdminProductIMG
             src={image}
@@ -45,10 +42,10 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
           ></AdminProductIMG>
         </th>
         <td >
-          {name.length > 20 ? (
-              <p className=""><Link to={`/detail/${id}`}>{name.slice(0, 20)}...</Link></p> 
+          {name.length > 30 ? (
+              <p className=""><Link to={`/detail/${id}`}>{name.slice(0, 30)}...</Link></p> 
           ) : (
-            <p className="card-title m-2"><Link to={`/detail/${id}`}>{name}</Link></p>
+            <p className="card-title m-2"><Link to={`s/detail/${id}`}>{name}</Link></p>
           )}
         </td>
         <td > $ {price} </td>

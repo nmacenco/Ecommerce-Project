@@ -10,20 +10,17 @@ import Loading from "./components/loading/Loading";
 import Edit from "./components/detail/edit/EditProduct";
 import FormCreate from "./components/form/FormCreate";
 import Home from "./components/home/Home";
-import Footer from "./components/footer/Footer";
 import AdminModeCards from "./components/products/cards/AdminModeCards";
 import { useDispatch } from "react-redux";
 import { FindUSer } from "./redux/actions/user";
+import Cart from "./components/cart/Cart";
 
 function App(): JSX.Element {
-
   const dispatch = useDispatch();
   useEffect(() => {
-
     dispatch(FindUSer());
-    console.log('find user!')
-
-  }, [])
+    console.log("find user!");
+  }, []);
 
   return (
     <div className="App">
@@ -39,8 +36,8 @@ function App(): JSX.Element {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/loading" element={<Loading />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/adminMode" element={<AdminModeCards />} />
-
         </Routes>
       </BrowserRouter>
     </div>
