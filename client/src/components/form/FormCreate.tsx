@@ -8,7 +8,6 @@ import {
   getSubcategories,
 } from "../../redux/actions/categories";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
-import { resetPoducts } from "../../redux/actions/products";
 import {
   Brand,
   Category,
@@ -16,9 +15,9 @@ import {
   Subcategory,
 } from "../../redux/interface";
 import { State } from "../../redux/reducers";
+import { Textarea } from "../detail/edit/EditProductStyles";
 import { FormContainer } from "./FormCreateStyles";
 import validations from "./validations";
-
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
@@ -61,7 +60,9 @@ export default function FromCreate(): JSX.Element {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ): void => {
     setProduct({
       ...product,
@@ -71,11 +72,9 @@ export default function FromCreate(): JSX.Element {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log(product)
     if (validations(product) === true) {
       dispatch(postProduct(product));
-      dispatch(resetFilterProducts())
-      dispatch(resetPoducts())
+      dispatch(resetFilterProducts());
       alert("Product created successfully.");
       navigate("/products");
     } else {
@@ -133,8 +132,8 @@ export default function FromCreate(): JSX.Element {
           <label htmlFor="exampleTextarea" className="form-label mt-4">
             Description
           </label>
-          <input
-            type="textarea"
+          <Textarea
+            // type="textarea"
             className="form-control"
             id="exampleTextarea"
             name="description"

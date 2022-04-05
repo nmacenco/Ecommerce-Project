@@ -62,6 +62,7 @@ export interface Brand {
 }
 
 export interface Product {
+  SubcategoryId: number;
   id?: number;
   name: string;
   image: string;
@@ -72,7 +73,6 @@ export interface Product {
   soldCount: number;
   BrandId: number;
   brand: string;
-  subcategory_id: number;
   subcategory: string;
   CategoryId: number;
   category: number;

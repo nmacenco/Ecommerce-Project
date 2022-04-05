@@ -7,18 +7,13 @@ import {
 import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../redux/actions/admin";
-import { resetPoducts } from "../../redux/actions/products";
 
 import Loading from "../loading/Loading";
 import {
   DetailContainer,
   Box,
-  DetailImg,
   ImgPriceContainer,
   Price,
-  ReviewComentsBox,
-  MiniImagesBox,
-  MiniImages,
   DeleteEditButton,
   ImagesContainer,
 } from "./DetailStyles";
@@ -34,14 +29,13 @@ export default function Detail() {
     dispatch(getProductDetail(id));
     return () => {
       dispatch(deleteProductDetail());
-      dispatch(resetFilterProducts())
+      dispatch(resetFilterProducts());
     };
   }, []);
 
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
     dispatch(deleteProduct(id));
-    dispatch(resetPoducts())
     alert("Product deleted.");
     navigate("/products");
   }
@@ -57,28 +51,15 @@ export default function Detail() {
             <div className="card-body">
               <ImgPriceContainer>
                 <ImagesContainer>
-                  <DetailImg
+                  <img
                     src={product.image}
                     alt="product-image"
-                  ></DetailImg>
-                  <MiniImagesBox>
-                    {/* <div className="card">
-                  <div className="card-body"> */}
-                    <MiniImages
-                      src={product.image}
-                      alt="product-image"
-                    ></MiniImages>
-                    <MiniImages
-                      src={product.image}
-                      alt="product-image"
-                    ></MiniImages>
-                    {/* </div>
-                  </div> */}
-                  </MiniImagesBox>
+                    className="w-75"
+                  ></img>
                 </ImagesContainer>
                 <Price>
                   <h3>$ {product.price}</h3>
-                  <p> We have {product.stock} in stock </p>
+                  <p>Current stock: {product.stock}</p>
                   <button type="button" className="btn btn-primary btn">
                     Add to cart
                   </button>
@@ -105,10 +86,10 @@ export default function Detail() {
       ) : (
         <Loading></Loading>
       )}
-      <ReviewComentsBox>
+      <Box className="mt-4">
         <ul className="nav nav-tabs">
           <li className="nav-item">
-            <a className="nav-link  active" data-bs-toggle="tab" href="#home">
+            <a className="nav-link active" data-bs-toggle="tab" href="#home">
               Description
             </a>
           </li>
@@ -134,7 +115,10 @@ export default function Detail() {
             <p>PRODUCT QUESTIONS...</p>
           </div>
         </div>
-      </ReviewComentsBox>
+      </Box>
     </DetailContainer>
   );
+}
+function resetPoducts(): any {
+  throw new Error("Function not implemented.");
 }

@@ -12,6 +12,7 @@ import FormCreate from "./components/form/FormCreate";
 import Home from "./components/home/Home";
 import { useDispatch } from "react-redux";
 import { FindUSer } from "./redux/actions/user";
+import Cart from "./components/cart/Cart";
 
 function App(): JSX.Element {
 
@@ -32,11 +33,12 @@ function App(): JSX.Element {
           <Route path="/home" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/createProduct" element={<FormCreate />} />
-          {/* <Route path="/editProduct/:id" element={<Edit />} /> */}
+          <Route path="/editProduct/:id" element={<Edit />} />
           <Route path="/products" element={<Products />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/loading" element={<Loading />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </BrowserRouter>
     </div>
