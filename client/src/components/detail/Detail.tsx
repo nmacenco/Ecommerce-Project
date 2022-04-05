@@ -23,6 +23,8 @@ import {
   ImagesContainer,
 } from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
+import swal from "sweetalert";
+import { isConditionalExpression } from "typescript";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -40,10 +42,32 @@ export default function Detail() {
 
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
-    dispatch(deleteProduct(id));
-    dispatch(resetPoducts())
-    alert("Product deleted.");
-    navigate("/products");
+    // alert("Product deleted.");
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this product!",
+      icon: "warning",
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: true
+      }
+    }).then((value) => {
+      if (value) {
+        dispatch(deleteProduct(id));
+        navigate("/products");
+        dispatch(resetPoducts())
+        swal({
+          text: "Product deleted",
+          icon: "success"
+        })
+      } else {
+        swal({
+          text: "Product delete canceled",
+          icon: "error"
+        })
+      }
+    })
   }
 
   return (

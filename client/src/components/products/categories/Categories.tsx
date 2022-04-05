@@ -9,6 +9,7 @@ import {
 import { filterProducts } from "../../../redux/actions/filterByCategory";
 import { Product } from "../../../redux/interface";
 import { ORDER } from "../cards/Cards";
+
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const categories = useSelector((state: State) => state.categories);
@@ -21,10 +22,10 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
   }, []);
 
   function handleFilter(e: any, allProducts: Product[]): void {
-    console.log(e);
+    // console.log(e);
     // e.target.value = e.target[0].innerHTML;
     dispatch(filterProducts(e.target.value, allProducts));
-
+    orders(e.target.value)
     page(1);
   }
 
@@ -83,7 +84,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
               })}
           </div>
         </div>
-        </div> */}  
+        </div> */}
         <div
           id="collapseOne"
           className="accordion-collapse collapse"
