@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
+import swal from "sweetalert";
 import { displayPartsToString } from "typescript";
 import { putProducts } from "../../../redux/actions/admin";
 import { getBrands } from "../../../redux/actions/brands";
@@ -76,10 +77,19 @@ export default function EditProduct(): JSX.Element {
     console.log(editProduct);
     if (editValidations(editProduct, productDetail)) {
       dispatch(putProducts(editProduct, id));
-      alert("Product edit successfully");
+      // alert("Product edit successfully");
+      swal({
+        title: "Product edit successfully",
+        icon: "success"
+      })
       navigate("/products");
     } else {
-      alert("Something is wrong");
+      // alert("Something is wrong");
+      swal({
+        title: "Product edit error",
+        text: "Fields missing",
+        icon: "error"
+      })
     }
   };
 
