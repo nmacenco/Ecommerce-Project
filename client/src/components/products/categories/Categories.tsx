@@ -1,21 +1,32 @@
-import React from "react";
-import { CategoriesContainer } from "./CategoriesStyles";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CategoriesContainer, Select } from "./CategoriesStyles";
+import { State } from "../../../redux/reducers/index";
+import {
+  getCategories,
+  getSubcategories,
+} from "../../../redux/actions/categories";
+import { filterProducts } from "../../../redux/actions/filterByCategory";
+import { Product } from "../../../redux/interface";
+import { ORDER } from "../cards/Cards";
+const Categories = ({ page, orders }: ORDER): JSX.Element => {
+  const dispatch = useDispatch();
+  const categories = useSelector((state: State) => state.categories);
+  const allProducts = useSelector(
+    (state: State) => state.products.copyProducts
+  );
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getSubcategories());
+  }, []);
 
-const Categories = () => {
-  const data = [
-    {
-      name: "perifericos",
-      subCategories: ["Mouse", "Teclados", "Auriculares"],
-    },
-    {
-      name: "memorias",
-      subCategories: ["RAM", "ROM", "SSD"],
-    },
-    {
-      name: "consolas",
-      subCategories: ["Playstation", "Xbox", "WII"],
-    },
-  ];
+  function handleFilter(e: any, allProducts: Product[]): void {
+    console.log(e);
+    // e.target.value = e.target[0].innerHTML;
+    dispatch(filterProducts(e.target.value, allProducts));
+
+    page(1);
+  }
 
   return (
     <CategoriesContainer className="accordion mx-3 mt-3" id="accordionMain">
@@ -32,6 +43,47 @@ const Categories = () => {
             Categories
           </button>
         </h2>
+
+        {/* //VIEJO */}
+
+        {/* <div
+          id="collapseOne"
+          className="accordion-collapse collapse"
+          aria-labelledby="headingOne"
+          data-bs-parent="#accordionMain"
+        >
+          <div className="accordion-body">
+            {categories.categories.length > 0 &&
+              categories.categories.map((category) => {
+                return (
+                  <Select
+                    onChange={(e) => handleFilter(e, allProducts)}
+                    className=""
+                    defaultValue={`${category.name}`}
+                  >
+                    <option disabled hidden>
+                      {`${category.name}`}
+                    </option>
+                    {categories.subcategories.length > 0 &&
+                      categories.subcategories.map((subcategory, i) => {
+                        if (category.id === subcategory.CategoryId) {
+                          return (
+                            <option
+                              // className="accordion-header"
+                              className="accordion-body"
+                              value={`${subcategory.name}`}
+                            >
+                              {subcategory.name}
+                            </option>
+                          );
+                        }
+                      })}
+                  </Select>
+                );
+              })}
+          </div>
+        </div>
+        </div> */}  
         <div
           id="collapseOne"
           className="accordion-collapse collapse"
@@ -39,33 +91,44 @@ const Categories = () => {
           data-bs-parent="#accordionMain"
         >
           <div className="accordion-body">
-            {data.map((e, i) => {
+            {categories.categories.map((category, i) => {
               return (
                 <div key={i}>
-                  <h2 className="accordion-header" id={e.name + "label"}>
+                  <h2
+                    className="accordion-header"
+                    id={category.name.replace(/ /g, "") + "label"}
+                  >
                     <button
                       className="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
-                      data-bs-target={"#" + e.name}
+                      data-bs-target={"#" + category.name.replace(/ /g, "")}
                       aria-expanded="false"
-                      aria-controls={e.name}
-
+                      aria-controls={category.name.replace(/ /g, "")}
                     >
-                      {e.name}
+                      {category.name}
                     </button>
                   </h2>
                   <div
-                    id={e.name}
+                    id={category.name.replace(/ /g, "")}
                     className="accordion-collapse collapse"
-                    aria-labelledby={e.name + "label"}
+                    aria-labelledby={category.id + "label"}
                     data-bs-parent="#categories"
                   >
-                    <div className="accordion-body"
-
-                    >
-                      {e.subCategories.map((subcategory, i) => {
-                        return <p key={i} onClick={() => console.log(subcategory)}>{subcategory}</p>;
+                    <div className="accordion-body btn-group-vertical">
+                      {categories.subcategories.map((subcategory, i) => {
+                        if (category.id === subcategory.CategoryId) {
+                          return (
+                            <button
+                              className="btn p-1 text-start"
+                              key={i}
+                              value={subcategory.name}
+                              onClick={(e) => handleFilter(e, allProducts)}
+                            >
+                              {subcategory.name}
+                            </button>
+                          );
+                        }
                       })}
                     </div>
                   </div>
@@ -75,6 +138,7 @@ const Categories = () => {
           </div>
         </div>
       </div>
+
       <div className="accordion-item">
         <h2 className="accordion-header" id="headingTwo">
           <button

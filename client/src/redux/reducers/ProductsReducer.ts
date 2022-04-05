@@ -1,28 +1,49 @@
+import HashTable from "../../helpers/hashTable";
 import { Product, ProductActions, TYPES_PRODUCT } from "../interface";
 
-
 export interface PRODUCTS {
-    products: Product[],
-    productSearch: any
+  products: Product[];
+  copyProducts: Product[];
+  productSearch: any;
 }
 
 const INITIAL_STATE = {
-    products: [],
-    productSearch: []
-}
+  products: [],
+  copyProducts: [],
+  productSearch: [],
+};
 
-export const reducerProduct = (state: PRODUCTS = INITIAL_STATE, action: ProductActions): PRODUCTS => {
-    switch (action.type) {
-        case TYPES_PRODUCT.GET_PRODUCTS:
-            return {
-                ...state,
-                products: action.payload
-            }
+export const reducerProduct = (
+  state: PRODUCTS = INITIAL_STATE,
+  action: ProductActions
+): PRODUCTS => {
+  switch (action.type) {
+    case TYPES_PRODUCT.GET_PRODUCTS:
+      const newTable = new HashTable();
 
-        default: {
-            return {
-                ...state
-            }
-        }
+      action.payload.forEach((product) => {
+        // console.log("ADD ITEM",product.name);
+        newTable.addItem(product.name);
+      });
+      // console.log("La hastable es: ", newTable);
+
+      return {
+        ...state,
+        products: action.payload,
+        copyProducts: action.payload,
+        productSearch: newTable,
+      };
+    case TYPES_PRODUCT.RESET_PRODUCTS :
+      return {
+        ...state , 
+        products : action.payload , 
+        copyProducts : action.payload , 
+      }
+
+    default: {
+      return {
+        ...state,
+      };
     }
+  }
 };

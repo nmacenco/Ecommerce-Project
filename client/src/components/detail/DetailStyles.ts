@@ -66,7 +66,6 @@ export const MiniImages = styled.img`
   `;
 
   export const DeleteEditButton = styled.div`
-    width: 100%;
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
