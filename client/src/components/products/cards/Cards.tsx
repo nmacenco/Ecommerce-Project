@@ -80,7 +80,6 @@ const Cards = (): JSX.Element => {
 
   const LoadCharge = (bool: boolean): void => {
     setLoad(bool)
-    console.log(load)
   }
 
   useEffect(() => {
@@ -106,14 +105,11 @@ const Cards = (): JSX.Element => {
 
   const resetFilter = (e: any): void => {
     e.preventDefault()
-    console.log(filterBox)
-    console.log(e.target.value)
     if (filterBox.subcategory.length === 0 || filterBox.brand.length === 0) {
       dispatch(chargeFilter(copyProductsList))
     } else if (filterBox.subcategory === e.target.value) dispatch(removeFilter(filterBox.brand))
     else dispatch(removeFilter(filterBox.subcategory))
     let existCat = allSubcategories.filter((s: any) => s.name === e.target.value)
-    console.log("existe ", existCat)
     if (existCat.length === 0) setFilterBox({ ...filterBox, brand: "" })
     else setFilterBox({ ...filterBox, subcategory: "" })
   }

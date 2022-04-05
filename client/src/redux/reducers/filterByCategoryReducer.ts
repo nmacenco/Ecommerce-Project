@@ -16,7 +16,6 @@ export const reducerFilterProducts = (
 ): FILTERED_STATE => {
   switch (action.type) {
     case TYPES_PRODUCT.CHARGE_FILTERS:
-      console.log("cargamos", action.payload)
       return {
         ...state,
         filteredProducts: action.payload,
@@ -24,12 +23,10 @@ export const reducerFilterProducts = (
       }
 
     case TYPES_PRODUCT.REMOVE_FILTER:
-      console.log(action.payload)
       let removed: Product[] = []
       let removedCatFilter = state.copyFilteredProducts.filter((e: any) => e.subcategory === action.payload.toString())
       if (removedCatFilter.length !== 0) { removed = removedCatFilter }
       else { removed = state.copyFilteredProducts.filter((e: any) => e.brand === action.payload.toString()) }
-      console.log(removed)
       return {
         ...state,
         filteredProducts: removed
