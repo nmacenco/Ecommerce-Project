@@ -52,18 +52,18 @@ const Cards = (): JSX.Element => {
     setOrder(typeorder);
   };
 
-  
-  
+
+
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
-     (newProductsList = productsList.slice(firstProduct, finalProduct));
+  (newProductsList = productsList.slice(firstProduct, finalProduct));
   // let newProductsList: Product[] = [];
   // filteredProductList.length > 0
   //   ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
   //   : (newProductsList = productsList.slice(firstProduct, finalProduct));
 
-    
+
   // implementing react paginate
 
   const handlePageClick = (data: any) => {
@@ -76,7 +76,7 @@ const Cards = (): JSX.Element => {
 
   const resetFilter = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
-    filteredProductList.length = 0
+    newProductsList.length = 0
     setFilterBox("")
   }
 
@@ -88,49 +88,50 @@ const Cards = (): JSX.Element => {
       <div className="col-xl-9 col-md-12">
         <CardsContainer className="w-100 ">
           <Filter page={page} orders={orders} />
-          
+
           {
-            notFound ? 
-            <NotFound></NotFound>
-            :
-            newProductsList.length > 0 ?
-            <>
-              <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
-                {newProductsList.map((e: Product) => {
-                  return (
-                    <div className="col" key={e.id}>
-                      <Card
-                        name={e.name}
-                        image={e.image}
-                        price={e.price}
-                        id={e.id}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <ReactPaginateContainer>
-                <ReactPaginate
-                  pageCount={Math.ceil(productsList.length / 32)}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                ></ReactPaginate>
-              </ReactPaginateContainer>
-            </> : (
-            <Loading></Loading>
-          )
+            notFound ?
+              <NotFound></NotFound>
+              :
+              newProductsList.length > 0 ?
+                <>
+                  <span><button onClick={(e) => resetFilter(e)} className="btn btn-primary mt-2">{filterBox ? filterBox : ""}</button></span>
+                  <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
+                    {newProductsList.map((e: Product) => {
+                      return (
+                        <div className="col" key={e.id}>
+                          <Card
+                            name={e.name}
+                            image={e.image}
+                            price={e.price}
+                            id={e.id}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <ReactPaginateContainer>
+                    <ReactPaginate
+                      pageCount={Math.ceil(productsList.length / 32)}
+                      nextLabel={">"}
+                      previousLabel={"<"}
+                      marginPagesDisplayed={2}
+                      onPageChange={handlePageClick}
+                      containerClassName={"pagination justify-content-center"}
+                      pageClassName={"page-item"}
+                      pageLinkClassName={"page-link"}
+                      previousClassName={"page-item"}
+                      previousLinkClassName={"page-link"}
+                      nextClassName={"page-item"}
+                      nextLinkClassName={"page-link"}
+                      breakClassName={"page-item"}
+                      breakLinkClassName={"page-link"}
+                      activeClassName={"active"}
+                    ></ReactPaginate>
+                  </ReactPaginateContainer>
+                </> : (
+                  <Loading></Loading>
+                )
 
           }
           {/* {
