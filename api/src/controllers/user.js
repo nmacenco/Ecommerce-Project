@@ -125,7 +125,8 @@ const updateUser = async (req, res) => {
 
 const getSingleUser = async (req, res) => {
   try {
-    let id = req.userID;
+    // let id = req.userID;
+    let id = req.params;
     if (!id) {
       res.status(400).json({ errorMsg: "Missing data." });
     } else {
@@ -241,7 +242,26 @@ const logOut = async (req, res) => {
   }
 };
 
-const getUserOrders = (req, res) => {};
+const getUserOrders = async(req, res) => {
+  const id = req.userID;
+  try {
+    let dataOrders = await User.findB({});
+    if (!dataOrders.length) {
+      res.status(404).send({ errorMsg: "Oders not found" });
+    }
+    dataOrders = dataOrders.map((Order) => {
+      return {
+        name: Order.name,
+        id: Order.id,
+      };
+    });
+    res
+      .status(200)
+      .send({ successMsg: "Here are your Ordes.", data: dataOrders});
+  } catch (error) {
+    res.status(500).send({ errorMsg: error });
+  }
+};
 
 module.exports = {
   createUser,
