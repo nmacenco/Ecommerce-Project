@@ -20,6 +20,7 @@ module.exports = (sequelize) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 'SignedInWithGoogle'
     },
     email: {
       type: DataTypes.STRING,
@@ -29,19 +30,32 @@ module.exports = (sequelize) => {
     },
     billing_address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: "",
     },
     default_shipping_address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: "",
     },
     role: {
       type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "user",
+    },
+    tokens: {
+      type: DataTypes.ARRAY(DataTypes.TEXT),
+      defaultValue: [],
+    },
+    signedInWithGoogle: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
       allowNull: false,
     },
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: true,
     },
   });
 };
