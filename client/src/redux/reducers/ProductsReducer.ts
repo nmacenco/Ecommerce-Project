@@ -45,7 +45,7 @@ export const reducerProduct = (
         let allProducts : Product[] = state.copyProducts
         const filteredProducts = allProducts.filter(
           (product) =>
-            product.subcategory === action.payload.value 
+            product.subcategory === action.payload 
         );
         return {
           ...state,

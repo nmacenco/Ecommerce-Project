@@ -22,9 +22,9 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
     dispatch(getBrands());
   }, []);
 
-  function handleFilter(e: any, allProducts: Product[]): void {
+  function handleFilter(e: any): void {
     dispatch(productNotFound(false))
-    dispatch(filterProducts(e.target.value, allProducts));
+    dispatch(filterProducts(e.target.value));
     orders(e.target.value)
     page(1);
   }
@@ -90,7 +90,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                               className="btn p-1 text-start"
                               key={i}
                               value={subcategory.name}
-                              onClick={(e) => handleFilter(e, allProducts)}
+                              onClick={(e) => handleFilter(e)}
                             >
                               {subcategory.name}
                             </button>
