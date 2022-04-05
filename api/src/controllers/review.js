@@ -4,52 +4,41 @@ const {
 
 const createReview = async (req, res) => {
     try {
-        let { productid, title, description } = req.body;
-
-        if (!productid || !title || !description) {
+        let { ProductId, UserId, title, description, stars } = req.body;
+        if (!ProductId || !UserId || !title || !description) {
             res.status(402).send({ errorMsg: "Missing data." });
         } else {
-            let [newReview, created] = await Review.Create({
-                productid,
-                title,
-                description
+            let newReview = await Review.create({
+                ProductId: ProductId,
+                UserId: UserId,
+                title: title,
+                description: description,
+                stars: 0
             });
+            newReview
+                ? res.status(201).json({ successMsg: "The Review has been added to the product.", data: newReview })
+                : res.status(401).json({ errorMsg: "An error happend adding the question" });
         };
-        created
-            ? res.status(201).json({ successMsg: "The question has been added to the product.", data: newReview })
-            : res.status(401).json({ errorMsg: "An error happend adding the question" });
     } catch (error) {
         res.status(500).send({ errorMsg: error.message });
     }
-}
-    ;
+};
 
-const updateReview = async (req, res) => {
+const getReviews = async (req, res) => {
     try {
-        let reviewToUpdate = await Review.findOne({
-            where: {
-                name: id,
-                code: productid,
-            },
-        });
-        if (!reviewToUpdate) {
-            res.status(404).send({ errorMsg: "Question not found." });
+        let dataReviews = await Review.findAll({ attributes: ["id", "ProductId", "UserId", "title", "description", "stars"] });
+        if (!dataReviews) {
+            res.status(404).send({ errorMsg: "There are no reviews available." });
         } else {
-            let updatedReview = await reviewToUpdate.Update({
-                productid,
-                title,
-                description
-            });
-
-            res.status(200).send({
-                successMsg: "Question successfully updated.",
-                data: updatedReview,
-            });
+            res
+                .status(200)
+                .send({ successMsg: "Here are your reviews.", data: dataReviews });
         }
     } catch (error) {
         res.status(500).send({ errorMsg: error.message });
     }
 };
+
 
 const getSingleReview = async (req, res) => {
     try {
@@ -64,11 +53,11 @@ const getSingleReview = async (req, res) => {
                 },
             });
             if (!singleReview) {
-                res.status(404).send({ errorMsg: "Product not found." });
+                res.status(404).send({ errorMsg: "Review not found." });
             } else {
                 res
                     .status(200)
-                    .send({ successMsg: "Here is your product.", data: singleReview });
+                    .send({ successMsg: "Here is your Review.", data: singleReview });
             }
         }
     } catch (error) {
@@ -76,15 +65,30 @@ const getSingleReview = async (req, res) => {
     }
 };
 
-const getReviews = async (req, res) => {
+
+
+const updateReview = async (req, res) => {
+    let { id, ProductId, UserId, title, description, stars } = req.body;
     try {
-        let dataReviews = await Review.findAll({ attributes: ["id", "ProductId", "UserId", "title", "description", "stars"] });
-        if (!dataReviews) {
-            res.status(404).send({ errorMsg: "There are no questions available." });
+        let reviewToUpdate = await Review.findOne({
+            where: {
+                id: id,
+                ProductId: ProductId,
+            },
+        });
+        if (!reviewToUpdate) {
+            res.status(404).send({ errorMsg: "Review not found." });
         } else {
-            res
-                .status(200)
-                .send({ successMsg: "Here are your questions.", data: dataReviews });
+            let updatedReview = await reviewToUpdate.update({
+                title: title,
+                description: description,
+                stars: stars
+            });
+
+            res.status(200).send({
+                successMsg: "Review successfully updated.",
+                data: updatedReview,
+            });
         }
     } catch (error) {
         res.status(500).send({ errorMsg: error.message });
@@ -103,13 +107,15 @@ const deleteReview = async (req, res) => {
                     id,
                 },
             });
-            res.status(200).send({
-                successMsg: "Review has been deleted in Database",
-                data: `Review id: ${deletedReview}`,
-            });
+            deletedReview ?
+                res.status(200).send({
+                    successMsg: "Review has been deleted in Database",
+                    data: `Review id: ${deletedReview}`
+                })
+                : res.status(401).json({ errorMsg: "Review hasn't exists in the database." });
         }
     } catch (error) {
-        res.status(500).send({ errorMsg: error });
+        res.status(500).send({ errorMsg: error.message });
     }
 };
 
