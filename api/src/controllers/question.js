@@ -4,49 +4,38 @@ const {
 
 const createQuestion = async (req, res) => {
     try {
-        let { productid, title, description } = req.body;
+        let { ProductId, title, description } = req.body;
 
-        if (!productid || !title || !description) {
+        if (!ProductId || !title || !description) {
             res.status(402).send({ errorMsg: "Missing data." });
         } else {
-            let [newQuestion, created] = await Question.Create({
-                productid,
+            let newQuestion = await Question.Create({
+                ProductId,
                 title,
                 description
             });
+            newQuestion
+                ? res.status(201).json({ successMsg: "The question has been added to the product.", data: newQuestion })
+                : res.status(401).json({ errorMsg: "An error happend adding the question" });
         };
-        created
-            ? res.status(201).json({ successMsg: "The question has been added to the product.", data: newQuestion })
-            : res.status(401).json({ errorMsg: "An error happend adding the question" });
     } catch (error) {
-        res.status(500).send({ errorMsg: error });
+        res.status(500).send({ errorMsg: error.message });
     }
 };
 
-const updateQuestion = async (req, res) => {
+const getQuestions = async (req, res) => {
     try {
-        let questionToUpdate = await Question.findOne({
-            where: {
-                name: id,
-                code: productid,
-            },
-        });
-        if (!questionToUpdate) {
-            res.status(404).send({ errorMsg: "Question not found." });
+        let dataQuestions = await Question.findAll({ attributes: ["id", "ProductId", "title", "description"] });
+        
+        if (!dataQuestions) {
+            res.status(404).send({ errorMsg: "There are no questions available." });
         } else {
-            let updatedQuestion = await questionToUpdate.Update({
-                productid,
-                title,
-                description
-            });
-
-            res.status(200).send({
-                successMsg: "Question successfully updated.",
-                data: updatedQuestion,
-            });
+            res
+                .status(200)
+                .send({ successMsg: "Here are your questions.", data: dataQuestions });
         }
     } catch (error) {
-        res.status(500).send({ errorMsg: error });
+        res.status(500).send({ errorMsg: error.message });
     }
 };
 
@@ -63,7 +52,7 @@ const getSingleQuestion = async (req, res) => {
                 },
             });
             if (!singleQuestion) {
-                res.status(404).send({ errorMsg: "Product not found." });
+                res.status(404).send({ errorMsg: "Question not found in the database." });
             } else {
                 res
                     .status(200)
@@ -71,25 +60,40 @@ const getSingleQuestion = async (req, res) => {
             }
         }
     } catch (error) {
-        res.status(500).send({ errorMsg: error });
+        res.status(500).send({ errorMsg: error.message });
     }
 };
 
-const getQuestions = async (req, res) => {
+
+const updateQuestion = async (req, res) => {
+
     try {
-        let dataQuestions = await Question.findAll({ attributes: ["id", "ProductId", "title", "description"] });
-        
-        if (!dataQuestions) {
-            res.status(404).send({ errorMsg: "There are no questions available." });
+        let questionToUpdate = await Question.findOne({
+            where: {
+                id: id,
+                ProductId: ProductId,
+            },
+        });
+        if (!questionToUpdate) {
+            res.status(404).send({ errorMsg: "Question not found." });
         } else {
-            res
-                .status(200)
-                .send({ successMsg: "Here are your questions.", data: dataQuestions });
+            let updatedQuestion = await questionToUpdate.update({
+                ProductId,
+                title,
+                description
+            });
+            updatedQuestion ?
+                res.status(200).send({
+                    successMsg: "Question has been updated in Database",
+                    data: `Question id: ${updatedQuestion}`
+                })
+                : res.status(401).json({ errorMsg: "Question hasn't exists in the database." });
         }
     } catch (error) {
-        res.status(500).send({ errorMsg: error });
+        res.status(500).send({ errorMsg: error.message });
     }
 };
+
 
 const deleteQuestion = async (req, res) => {
     try {
@@ -103,13 +107,16 @@ const deleteQuestion = async (req, res) => {
                     id,
                 },
             });
-            res.status(200).send({
-                successMsg: "Question has been deleted in Database",
-                data: `Question id: ${deletedQuestion}`,
-            });
+            deletedQuestion ?
+                res.status(200).send({
+                    successMsg: "Question has been deleted from Database",
+                    data: `Question id: ${deletedQuestion}`
+                })
+                : res.status(401).json({ errorMsg: "Question hasn't exists in the database." });
+
         }
     } catch (error) {
-        res.status(500).send({ errorMsg: error });
+        res.status(500).send({ errorMsg: error.message });
     }
 };
 
