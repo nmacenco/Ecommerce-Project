@@ -7,20 +7,8 @@ require("../auth/passport-setup");
 
 const createUser = async (req, res, next) => {
   try {
-    let {
-      name,
-      surname,
-      email,
-      password,
-      CountryId,
-    } = req.body;
-    if (
-      !name ||
-      !surname ||
-      !email ||
-      !CountryId ||
-      !password
-    ) {
+    let { name, surname, email, password, CountryId } = req.body;
+    if (!name || !surname || !email || !CountryId || !password) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
       const isUserCreated = await User.findOne({
@@ -124,9 +112,11 @@ const updateUser = async (req, res) => {
 };
 
 const getSingleUser = async (req, res) => {
+  let { id } = req.params;
+
   try {
     // let id = req.userID;
-    let id = req.params;
+
     if (!id) {
       res.status(400).json({ errorMsg: "Missing data." });
     } else {
@@ -242,10 +232,14 @@ const logOut = async (req, res) => {
   }
 };
 
-const getUserOrders = async(req, res) => {
-  const id = req.userID;
+const getUserOrders = async (req, res) => {
+  const { id } = req.params;
   try {
-    let dataOrders = await User.findB({});
+    let dataOrders = await Order.findAll({
+      where: {
+        id,
+      }
+    });
     if (!dataOrders.length) {
       res.status(404).send({ errorMsg: "Oders not found" });
     }
@@ -257,7 +251,7 @@ const getUserOrders = async(req, res) => {
     });
     res
       .status(200)
-      .send({ successMsg: "Here are your Ordes.", data: dataOrders});
+      .send({ successMsg: "Here are your Ordes.", data: dataOrders });
   } catch (error) {
     res.status(500).send({ errorMsg: error });
   }
