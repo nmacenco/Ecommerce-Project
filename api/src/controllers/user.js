@@ -1,6 +1,8 @@
 const { User, Order, OrderDetail, Country } = require("../db");
 const bcrypt = require("bcrypt");
-const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const sequelize = require("sequelize");
+require("dotenv").config();
 require("../auth/passport-setup");
 
 const createUser = async (req, res, next) => {
@@ -10,20 +12,13 @@ const createUser = async (req, res, next) => {
       surname,
       email,
       password,
-      billing_address,
-      default_shipping_address,
       CountryId,
-      role = "user", //predefined value, as guest cannot be other than user. only admin can provide another role
-      isActive = true,
     } = req.body;
     if (
       !name ||
       !surname ||
       !email ||
-      !billing_address ||
-      !default_shipping_address ||
       !CountryId ||
-      !role ||
       !password
     ) {
       res.status(400).send({ errorMsg: "Missing data." });
@@ -42,24 +37,32 @@ const createUser = async (req, res, next) => {
           surname,
           email,
           password,
-          billing_address,
-          default_shipping_address,
           CountryId,
-          role,
-          isActive,
         });
+        const token = jwt.sign({ id: newUser.id }, process.env.SECRET_KEY);
+        await User.update(
+          {
+            tokens: sequelize.fn(
+              "array_append",
+              sequelize.col("tokens"),
+              token
+            ),
+          },
+          { where: { id: newUser.id } }
+        );
         res
           .status(201)
-          .send({ successMsg: "User successfully created.", newUser });
+          .header("auth-token", token)
+          .send({ successMsg: "User successfully created." });
       }
     }
   } catch (error) {
-    res.status(500).json({ errorMsg: error });
+    res.status(500).json({ errorMsg: error.message });
   }
 };
 
 const updateUser = async (req, res) => {
-  const { id } = req.params;
+  const id = req.userID;
   let {
     name,
     surname,
@@ -67,8 +70,6 @@ const updateUser = async (req, res) => {
     email,
     billing_address,
     default_shipping_address,
-    isActive = true,
-    role = "user",
     CountryId,
   } = req.body;
   try {
@@ -108,8 +109,6 @@ const updateUser = async (req, res) => {
             email,
             billing_address,
             default_shipping_address,
-            isActive,
-            role,
             CountryId,
           });
           res.status(200).send({
@@ -120,76 +119,137 @@ const updateUser = async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
-  }
-};
-
-const getUsers = async (req, res) => {
-  try {
-    let users = await User.findAll({
-      include: [
-        {
-          model: Country,
-          attributes: ["id", "name", "code"],
-        },
-      ],
-    });
-    if (!users.length) {
-      res.status(400).send({ errorMsg: "There are no users." });
-    } else {
-      users = users.map((user) => {
-        return {
-          id: user.id,
-          name: user.name,
-          password: user.password,
-          email: user.email,
-          billing_address: user.billing_address,
-          default_shipping_address: user.default_shipping_address,
-          role: user.role,
-          isActive: user.isActive,
-          country: user.Country.name,
-          countryCode: user.Country.code,
-          CountryId: user.Country.id,
-        };
-      });
-      res.status(200).send({ successMsg: "Here are your users.", users });
-    }
-  } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
 const getSingleUser = async (req, res) => {
-  const { id } = req.params;
   try {
+    let id = req.userID;
     if (!id) {
       res.status(400).json({ errorMsg: "Missing data." });
     } else {
-      const singleUser = await User.findByPk(id);
-      singleUser
-        ? res.status(200).send({
-            successfulMsg: "Here is your user data.",
-            data: singleUser,
-          })
-        : res.status(404).send({ errorMsg: "User not found." });
+      let user = await User.findOne({
+        where: { id },
+        include: [
+          {
+            model: Country,
+            attributes: ["id", "name", "code"],
+          },
+        ],
+      });
+      if (user) {
+        user = {
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          billing_address: user.billing_address,
+          default_shipping_address: user.default_shipping_address,
+          country: user.Country.name,
+          countryCode: user.Country.code,
+        };
+        return res
+          .status(200)
+          .send({ successfulMsg: "Here is your user data.", data: user });
+      }
+      res.status(404).send({ errorMsg: "User not found." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
-const getUserOrders = (req, res, next) => {};
+const googleLogIn = (req, res) => {
+  try {
+    const data = req.user.dataValues;
+    const tokens = data.tokens;
+    const token = tokens[tokens.length - 1];
+    res
+      .header("auth-token", token)
+      .send({ successMsg: "User authenticated with google.", data: data });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 
-const signIn = (req, res, next) => {};
+const googleLogOut = async (req, res) => {
+  try {
+    req.session = null;
+    let user = req.user;
+    await User.destroy({
+      where: {
+        id: user.id,
+      },
+    });
+    req.logout();
+    res.send({ successMsg: "You have been logged out." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 
-const logOut = (req, res, next) => {};
+const signIn = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      return res.status(404).send({ errorMsg: "Email or password is wrong." });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).send({ errorMsg: "Invalid password." });
+    }
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+    await User.update(
+      { tokens: sequelize.fn("array_append", sequelize.col("tokens"), token) },
+      { where: { id: user.id } }
+    );
+    res
+      .header("auth-token", token)
+      .send({ successMsg: "You signed in successfully." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+const logOut = async (req, res) => {
+  try {
+    let id = req.userID;
+    let token = req.token;
+    let loggedOutUser = await User.findOne({ where: { id } });
+    let tokens = loggedOutUser.tokens;
+    tokens = tokens.filter((tok) => tok !== token);
+    await User.update(
+      {
+        tokens,
+      },
+      {
+        where: {
+          id: loggedOutUser.id,
+        },
+      }
+    );
+    res
+      .status(200)
+      .send({ successMsg: "User has been logged out", data: loggedOutUser });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+const getUserOrders = (req, res) => {};
 
 module.exports = {
   createUser,
   updateUser,
-  getUsers,
   getSingleUser,
   getUserOrders,
   signIn,
   logOut,
+  googleLogIn,
+  googleLogOut,
 };

@@ -19,7 +19,8 @@ module.exports = (sequelize) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
+      defaultValue: 'SignedInWithGoogle'
     },
     email: {
       type: DataTypes.STRING,
@@ -30,34 +31,31 @@ module.exports = (sequelize) => {
     billing_address: {
       type: DataTypes.STRING,
       allowNull: true,
-<<<<<<< HEAD
       defaultValue: "",
-=======
->>>>>>> 429270e707e5c43d403ea7580f2600d53bb1deae
     },
     default_shipping_address: {
       type: DataTypes.STRING,
       allowNull: true,
-<<<<<<< HEAD
       defaultValue: "",
-    },
-    tokens: {
-      type: DataTypes.ARRAY(DataTypes.TEXT),
-      defaultValue: [],
-=======
->>>>>>> 429270e707e5c43d403ea7580f2600d53bb1deae
     },
     role: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "user",
     },
     tokens: {
       type: DataTypes.ARRAY(DataTypes.TEXT),
       defaultValue: [],
-    },    
+    },
+    signedInWithGoogle: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+    },
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: true,
     },
   });
 };

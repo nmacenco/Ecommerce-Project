@@ -3,6 +3,7 @@ const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const { User } = require("../db");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const sequelize = require("sequelize");
 dotenv.config();
 
 passport.serializeUser(function (user, done) {
@@ -37,8 +38,8 @@ passport.use(
       let surname = family_name.split(" ")[0];
       let isActive = true;
       let role = "user";
-      let tokens = [];
       let CountryId = 1;
+      let signedInWithGoogle = true;
       let [user, created] = await User.findOrCreate({
         where: {
           name,
@@ -46,14 +47,24 @@ passport.use(
           email,
           isActive,
           role,
-          tokens,
           CountryId,
+          signedInWithGoogle,
         },
       });
-      console.log(user.tokens);
+
       const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
-      // user.tokens.push(token);
-      await user.save();
+      let userTokens = user.tokens;
+      userTokens.push(token);
+      await User.update(
+        {
+          tokens: userTokens,
+        },
+        {
+          where: {
+            id: user.id,
+          },
+        }
+      );
       return done(null, user);
     }
   )
