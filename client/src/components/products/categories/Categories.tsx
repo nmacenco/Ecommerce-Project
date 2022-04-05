@@ -2,31 +2,39 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoriesContainer, Select } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
-import {getCategories,getSubcategories} from "../../../redux/actions/categories";
+import { getCategories, getSubcategories } from "../../../redux/actions/categories";
 import { filterProducts } from "../../../redux/actions/filterByCategory";
 import { Product } from "../../../redux/interface";
 import { ORDER } from "../cards/Cards";
 import { productNotFound } from "../../../redux/actions/products";
+import { getBrands } from "../../../redux/actions/brands";
+import { filterByBrand } from "../../../redux/actions/filterByBrand";
 
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const categories = useSelector((state: State) => state.categories);
-  const allProducts = useSelector(
-    (state: State) => state.products.copyProducts
-  );
+  const allProducts = useSelector((state: State) => state.products.copyProducts);
+  const brands = useSelector((state: State) => state.brands.brands);
+
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getSubcategories());
+    dispatch(getBrands());
   }, []);
 
-  function handleFilter(e: any, allProducts: Product[]): void {
+  function handleFilter(e: any): void {
     dispatch(productNotFound(false))
-    // console.log(e);
-    // e.target.value = e.target[0].innerHTML;
-    dispatch(filterProducts(e.target.value, allProducts));
+    dispatch(filterProducts(e.target.value));
     orders(e.target.value)
     page(1);
   }
+  function handlerFIlterByBrand(e: any): void {
+    dispatch(productNotFound(false))
+    dispatch(filterByBrand(e.target.innerHTML));
+    orders(e.target.value)
+    page(1);
+  }
+
 
   return (
     <CategoriesContainer className="accordion mx-3 mt-3" id="accordionMain">
@@ -43,47 +51,6 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
             Categories
           </button>
         </h2>
-
-        {/* //VIEJO */}
-
-        {/* <div
-          id="collapseOne"
-          className="accordion-collapse collapse"
-          aria-labelledby="headingOne"
-          data-bs-parent="#accordionMain"
-        >
-          <div className="accordion-body">
-            {categories.categories.length > 0 &&
-              categories.categories.map((category) => {
-                return (
-                  <Select
-                    onChange={(e) => handleFilter(e, allProducts)}
-                    className=""
-                    defaultValue={`${category.name}`}
-                  >
-                    <option disabled hidden>
-                      {`${category.name}`}
-                    </option>
-                    {categories.subcategories.length > 0 &&
-                      categories.subcategories.map((subcategory, i) => {
-                        if (category.id === subcategory.CategoryId) {
-                          return (
-                            <option
-                              // className="accordion-header"
-                              className="accordion-body"
-                              value={`${subcategory.name}`}
-                            >
-                              {subcategory.name}
-                            </option>
-                          );
-                        }
-                      })}
-                  </Select>
-                );
-              })}
-          </div>
-        </div>
-        </div> */}
         <div
           id="collapseOne"
           className="accordion-collapse collapse"
@@ -123,7 +90,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                               className="btn p-1 text-start"
                               key={i}
                               value={subcategory.name}
-                              onClick={(e) => handleFilter(e, allProducts)}
+                              onClick={(e) => handleFilter(e)}
                             >
                               {subcategory.name}
                             </button>
@@ -180,7 +147,39 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
           aria-labelledby="headingThree"
           data-bs-parent="#accordionMain"
         >
-          <div className="accordion-body"></div>
+
+          <div className="accordion-body">
+            {brands.map((brand, i) => {
+              return (
+                <div key={i}>
+                  <h2
+                    className="accordion-header"
+                    id={brand.name.replace(/ /g, "") + "label"}
+                  >
+                    <button
+                      type="button"
+                      data-bs-target={"#" + brand.name.replace(/ /g, "")}
+                      aria-expanded="false"
+                      className="btn p-1 text-start"
+                      key={i}
+                      aria-controls={brand.name.replace(/ /g, "")}
+                      value={brand.name}
+                      onClick={(e) => handlerFIlterByBrand(e)}
+                    >
+                      {brand.name}
+                    </button>
+                  </h2>
+                  <div
+                    id={brand.name.replace(/ /g, "")}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={brand.id + "label"}
+                    data-bs-parent="#categories"
+                  >
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </CategoriesContainer>

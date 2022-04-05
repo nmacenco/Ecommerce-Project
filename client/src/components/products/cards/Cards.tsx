@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./card/Card";
 import Filter from "./filter/Filter";
 import { CardsContainer, ReactPaginateContainer } from "./CardsStyles";
-// import Pagination from "./pagination/Pagination";
+import Pagination from "./pagination/Pagination";
 
 import ReactPaginate from "react-paginate";
 
@@ -38,7 +38,8 @@ const Cards = (): JSX.Element => {
   const [order, setOrder] = useState<string>("");
   const [filterBox, setFilterBox] = useState<string>("")
   const productsList = useSelector((state: State) => state.products.products);
-  const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
+  const copyProductsList = useSelector((state: State) => state.products.copyProducts)
+  // const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
   const notFound = useSelector((state: State) => state.products.not_found);
   const pageState = useSelector((state: State) => state.page);
 
@@ -76,7 +77,7 @@ const Cards = (): JSX.Element => {
 
   const resetFilter = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
-    newProductsList.length = 0
+    dispatch(getProducts())
     setFilterBox("")
   }
 
@@ -95,7 +96,7 @@ const Cards = (): JSX.Element => {
               :
               newProductsList.length > 0 ?
                 <>
-                  <span><button onClick={(e) => resetFilter(e)} className="btn btn-primary mt-2">{filterBox ? filterBox : ""}</button></span>
+                  {filterBox ? <span><button onClick={(e) => resetFilter(e)} className="btn btn-primary mt-2">{filterBox}</button></span> : ""}
                   <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
                     {newProductsList.map((e: Product) => {
                       return (
@@ -111,23 +112,27 @@ const Cards = (): JSX.Element => {
                     })}
                   </div>
                   <ReactPaginateContainer>
-                    <ReactPaginate
-                      pageCount={Math.ceil(productsList.length / 32)}
-                      nextLabel={">"}
-                      previousLabel={"<"}
-                      marginPagesDisplayed={2}
-                      onPageChange={handlePageClick}
-                      containerClassName={"pagination justify-content-center"}
-                      pageClassName={"page-item"}
-                      pageLinkClassName={"page-link"}
-                      previousClassName={"page-item"}
-                      previousLinkClassName={"page-link"}
-                      nextClassName={"page-item"}
-                      nextLinkClassName={"page-link"}
-                      breakClassName={"page-item"}
-                      breakLinkClassName={"page-link"}
-                      activeClassName={"active"}
-                    ></ReactPaginate>
+                    <Pagination
+                      productList={productsList.length}
+                      handlePageClick={handlePageClick}
+                    ></Pagination>
+                    {/* <ReactPaginate
+                  pageCount={Math.ceil(productsList.length / 32)}
+                  nextLabel={">"}
+                  previousLabel={"<"}
+                  marginPagesDisplayed={2}
+                  onPageChange={handlePageClick}
+                  containerClassName={"pagination justify-content-center"}
+                  pageClassName={"page-item"}
+                  pageLinkClassName={"page-link"}
+                  previousClassName={"page-item"}
+                  previousLinkClassName={"page-link"}
+                  nextClassName={"page-item"}
+                  nextLinkClassName={"page-link"}
+                  breakClassName={"page-item"}
+                  breakLinkClassName={"page-link"}
+                  activeClassName={"active"}
+                ></ReactPaginate> */}
                   </ReactPaginateContainer>
                 </> : (
                   <Loading></Loading>
