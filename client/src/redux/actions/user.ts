@@ -80,6 +80,6 @@ export const LogoutUser=()=>{
 
     return {
       type: TYPES_USER.LOGOUT_USER,
-      payaload: null,
+      payload: null,
     };
 }
