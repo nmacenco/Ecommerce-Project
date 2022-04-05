@@ -14,6 +14,7 @@ import Categories from "../categories/Categories";
 import { ProductsContainer } from "../ProductsStyles";
 import AdminModeCard from "./card/AdminModeCard";
 import NotFound from "../../notFound/NotFound";
+import Pagination from "./pagination/Pagination";
 export interface IData {
   length: number;
   page: (numberOfPage: number) => void;
@@ -105,7 +106,11 @@ const AdminModeCards = (): JSX.Element => {
                   );
               </div>
               <ReactPaginateContainer>
-                <ReactPaginate
+              <Pagination 
+                  productList={productsList.length}
+                  handlePageClick = {handlePageClick}
+                ></Pagination>
+                {/* <ReactPaginate
                   pageCount={productsList.length / 32}
                   nextLabel={">"}
                   previousLabel={"<"}
@@ -121,7 +126,7 @@ const AdminModeCards = (): JSX.Element => {
                   breakClassName={"page-item"}
                   breakLinkClassName={"page-link"}
                   activeClassName={"active"}
-                ></ReactPaginate>
+                ></ReactPaginate> */}
               </ReactPaginateContainer>
             </>
           ) : (
