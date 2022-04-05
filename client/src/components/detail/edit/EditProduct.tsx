@@ -20,15 +20,15 @@ export default function EditProduct(): JSX.Element {
   const [subcategoriesLoad, setSubcategoriesLoad] = useState<Boolean>(false)
   const [subcategoriesFiltered, setSubcategoriesFiltered] = useState<Subcategory[]>([])
   const [editProduct, setEditProduct] = useState<ProductForm>({
-    name: productDetail.name ,
-    image: productDetail.image ,
+    name: productDetail.name,
+    image: productDetail.image,
     price: productDetail.price,
-    description: productDetail.description ,
+    description: productDetail.description,
     weight: productDetail.weight,
-    stock:productDetail.stock ,
+    stock: productDetail.stock,
     soldCount: productDetail.soldCount,
-    BrandId:productDetail.BrandId ,
-    SubcategoryId:productDetail.subcategory_id ,
+    BrandId: productDetail.BrandId,
+    SubcategoryId: productDetail.subcategory_id,
   });
 
   useEffect(() => {
@@ -36,11 +36,11 @@ export default function EditProduct(): JSX.Element {
     dispatch(getCategories())
     dispatch(getSubcategories())
   }, [])
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>): void => {
-      setEditProduct({
-        ...editProduct,
-        [e.target.name]: e.target.value,
-      })
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLTextAreaElement>): void => {
+    setEditProduct({
+      ...editProduct,
+      [e.target.name]: e.target.value,
+    })
   };
 
   const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -56,11 +56,11 @@ export default function EditProduct(): JSX.Element {
     e.preventDefault();
     console.log(editProduct)
     if (editValidations(editProduct, productDetail)) {
-       dispatch(putProducts(editProduct, id))
-       navigate("/products");
-       alert("Product edit successfully")
+      dispatch(putProducts(editProduct, id))
+      navigate("/products");
+      alert("Product edit successfully")
     } else {
-       alert("Something is wrong");
+      alert("Something is wrong");
     }
   };
 
@@ -80,7 +80,7 @@ export default function EditProduct(): JSX.Element {
               name="name"
               placeholder={productDetail.name}
               onChange={(e) => handleChange(e)}
-              value = {editProduct.name}
+              value={editProduct.name}
             />
           </div>
           <div className="form-group">
@@ -88,11 +88,11 @@ export default function EditProduct(): JSX.Element {
               Brand
             </label>
             <select
-             className="form-select"
-             name="BrandId" onChange={(e) => handleChange(e)}>
+              className="form-select"
+              name="BrandId" onChange={(e) => handleChange(e)}>
               <option>Select brand</option>
               {
-                (brands.length !== 0) 
+                (brands.length !== 0)
                   ? brands.map(e => {
                     return <option key={e.id} value={e.name}>{e.name}</option>
                   })
@@ -111,7 +111,7 @@ export default function EditProduct(): JSX.Element {
               name="image"
               placeholder="Enter image"
               onChange={(e) => handleChange(e)}
-              value = {editProduct.image}
+              value={editProduct.image}
             />
             {/* <input
               className="form-control"
@@ -125,33 +125,32 @@ export default function EditProduct(): JSX.Element {
             <label htmlFor="exampleTextarea" className="form-label mt-4">
               Description
             </label>
-            <input
-              type="textarea"
+            <textarea
               className="form-control"
               id="exampleTextarea"
               name="description"
               placeholder="Enter one description"
               onChange={(e) => handleChange(e)}
-              value = {editProduct.description}
+              value={editProduct.description}
             />
           </div>
           <div className="d-flex">
-          <div className="form-group flex-fill">
-            <label className="form-label mt-4">Category</label>
+            <div className="form-group flex-fill">
+              <label className="form-label mt-4">Category</label>
               <select className="form-select" onChange={(e) => handleCategory(e)}>
-              <option>Select categorie</option>
-              {
-                (categories.length !== 0)
-                ? categories.map(e => {
-                  return <option key={e.id} value={e.id}>{e.name}</option>
-                })
-                : <p>Wait, chargin the categories</p>
-              }
+                <option>Select categorie</option>
+                {
+                  (categories.length !== 0)
+                    ? categories.map(e => {
+                      return <option key={e.id} value={e.id}>{e.name}</option>
+                    })
+                    : <p>Wait, chargin the categories</p>
+                }
               </select>
             </div>
-            
+
             <div className="form-group flex-fill ms-2">
-            <label className="form-label mt-4">Subcategory</label>
+              <label className="form-label mt-4">Subcategory</label>
               <select className="form-select" onChange={(e) => handleChange(e)} name="SubcategoryId">
                 <option>Select subcategorie</option>
                 {
@@ -166,7 +165,7 @@ export default function EditProduct(): JSX.Element {
             </div>
 
           </div>
-              
+
           <div className="form-group">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
               Price
@@ -178,7 +177,7 @@ export default function EditProduct(): JSX.Element {
               name="price"
               placeholder="Enter price"
               onChange={(e) => handleChange(e)}
-              value = {editProduct.price}
+              value={editProduct.price}
             />
           </div>
           <div className="form-group">
@@ -192,7 +191,7 @@ export default function EditProduct(): JSX.Element {
               name="weigth"
               placeholder="Enter weigth"
               onChange={(e) => handleChange(e)}
-              value = {editProduct.weight}
+              value={editProduct.weight}
             />
           </div>
           <div className="form-group">
@@ -206,7 +205,7 @@ export default function EditProduct(): JSX.Element {
               name="stock"
               placeholder="Enter stock number"
               onChange={(e) => handleChange(e)}
-              value = {editProduct.stock}
+              value={editProduct.stock}
             />
           </div>
 

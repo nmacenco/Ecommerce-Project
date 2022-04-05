@@ -21,7 +21,7 @@ export interface IData {
 export interface ORDER {
   page: (numberOfPage: number) => void;
   orders: (typeorder: string) => void;
-  AdmOrders : (typeorder: string) => void;
+  AdmOrders: (typeorder: string) => void;
 }
 
 const AdminModeCards = (): JSX.Element => {
@@ -33,22 +33,22 @@ const AdminModeCards = (): JSX.Element => {
   const productsList = useSelector((state: State) => state.products.products);
   const filteredProductList = useSelector(
     (state: State) => state.filteredProducts.filteredProducts
-    );
-    
-    const page = (numberOfPage: number): void => {
-      setCurrentPage(numberOfPage);
-    };
-    const orders = (typeorder: string): void => {
-      setOrder(typeorder);
-    };
-    const AdmOrders = (typeorder: string): void => {
-      setAdmOrders(typeorder);
-    };
-    useEffect(() => {
-      // if (!productsList.length) {
-        dispatch(getProducts());
-      // }
-    }, [Admorders]);
+  );
+
+  const page = (numberOfPage: number): void => {
+    setCurrentPage(numberOfPage);
+  };
+  const orders = (typeorder: string): void => {
+    setOrder(typeorder);
+  };
+  const AdmOrders = (typeorder: string): void => {
+    setAdmOrders(typeorder);
+  };
+  useEffect(() => {
+    // if (!productsList.length) {
+    dispatch(getProducts());
+    // }
+  }, [Admorders]);
 
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
@@ -66,15 +66,15 @@ const AdminModeCards = (): JSX.Element => {
   return (
     <ProductsContainer className="row row-cols-lg-2 row-cols-md-1 mx-auto">
       <div className="col-xl-2 col-lg-3 col-sm-12">
-        <Categories page={page} orders={orders}  />
+        <Categories page={page} orders={orders} />
       </div>
       <div className="col-lg-9 col-md-12">
         <CardsContainer className="w-100 ">
-          <Filter page={page} orders={orders}    />
+          <Filter page={page} orders={orders} />
           {filteredProductList.length !== 0 ? (
             <>
 
-                <div className="" >
+              <div className="" >
                 <table className="table table-hover ">
                   <thead>
                     <tr>
@@ -92,13 +92,13 @@ const AdminModeCards = (): JSX.Element => {
                         image={e.image}
                         price={e.price}
                         id={e.id}
-                        AdmOrders = {AdmOrders}
+                        AdmOrders={AdmOrders}
                         page={page}
                       />
                     );
                   })}
                 </table>
-                  );
+                );
               </div>
               <ReactPaginateContainer>
                 <ReactPaginate
@@ -140,7 +140,7 @@ const AdminModeCards = (): JSX.Element => {
                         image={e.image}
                         price={e.price}
                         id={e.id}
-                        AdmOrders = {AdmOrders}
+                        AdmOrders={AdmOrders}
                         page={page}
                       />
                     );

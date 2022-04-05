@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import swal from "sweetalert";
 import { postProduct } from "../../redux/actions/admin";
 import { getBrands } from "../../redux/actions/brands";
 import {
@@ -76,10 +77,16 @@ export default function FromCreate(): JSX.Element {
       dispatch(postProduct(product));
       dispatch(resetFilterProducts())
       dispatch(resetPoducts())
-      alert("Product created successfully.");
-      navigate("/products");
+      swal({
+        title: "Product created successfully",
+        icon: "success"
+      })
+      navigate("/products")
     } else {
-      alert("Form not completed.");
+      swal({
+        title: "Form is incomplete",
+        icon: "error"
+      })
     }
   };
 
