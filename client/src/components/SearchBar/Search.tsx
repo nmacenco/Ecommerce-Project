@@ -30,7 +30,7 @@ const Search = (): JSX.Element => {
         dispatch(productNotFound(true))
         setTimeout(function(){
             dispatch(productNotFound(false))
-        }, 2000);
+        }, 3000);
     }
     // selectArtefacts.length > 0 ? dispatch(selectProducts(selectArtefacts)) : dispatch(productNotFound(true))
     

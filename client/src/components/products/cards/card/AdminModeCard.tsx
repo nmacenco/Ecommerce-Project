@@ -1,11 +1,12 @@
 import React, {useState , useEffect} from "react";
 import { AdminProductIMG } from "./AdminModeCardStyles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../../../redux/actions/admin";
 import { useDispatch } from "react-redux";
 import { getProducts} from "../../../../redux/actions/products";
 import { ORDER } from "../Cards";
 import { resetFilterProducts } from "../../../../redux/actions/filterByCategory";
+import { getProductDetail } from "../../../../redux/actions/productDetail";
 
 interface props {
   name: string;
@@ -19,7 +20,7 @@ interface props {
 const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) => {
   const dispatch = useDispatch();
   const stringID = String(id);
-
+  const navigate = useNavigate()
 
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
@@ -29,6 +30,13 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
     dispatch(getProducts())
     page(1)
     AdmOrders(stringID)
+  }
+
+  function handleClickEdit (e: React.MouseEvent<HTMLButtonElement>) : void {
+    dispatch(getProductDetail(stringID)) ;
+    setTimeout(function(){
+      navigate(`/editProduct/${id}`)
+    }, 500);
   }
 
   return (
@@ -59,11 +67,9 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
           </button>
         </td>
         <td >
-          <Link to={`/editProduct/${id}`}>
-            <button type="button" className="btn btn-warning btn-sm">
+            <button onClick={(e)=> handleClickEdit(e)} type="button" className="btn btn-warning btn-sm">
               Edit
             </button>
-          </Link>
         </td>
       </tr>
     </tbody>

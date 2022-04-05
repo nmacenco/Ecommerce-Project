@@ -8,7 +8,7 @@ import {
   getCategories,
   getSubcategories,
 } from "../../../redux/actions/categories";
-import { getProductDetail } from "../../../redux/actions/productDetail";
+import { deleteProductDetail, getProductDetail } from "../../../redux/actions/productDetail";
 import { Brand, ProductForm, Subcategory } from "../../../redux/interface";
 import { State } from "../../../redux/reducers";
 import { EditContainer, Textarea } from "./EditProductStyles";
@@ -48,6 +48,10 @@ export default function EditProduct(): JSX.Element {
     dispatch(getBrands());
     dispatch(getCategories());
     dispatch(getSubcategories());
+
+    return(()=> {
+      dispatch(deleteProductDetail())
+    })
   }, []);
 
   const handleChange = (
