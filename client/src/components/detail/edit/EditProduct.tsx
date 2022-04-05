@@ -178,7 +178,7 @@ export default function EditProduct(): JSX.Element {
               <option>Select subcategory</option>
               {subcategoriesFiltered.map((e) => {
                 return (
-                  <option key={e.id} value={e.name}>
+                  <option key={e.id} value={e.id}>
                     {e.name}
                   </option>
                 );
