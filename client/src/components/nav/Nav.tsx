@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Search from "../SearchBar/Search";
 import { CartIcon } from "./NavStyles";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
 import { LogoutUser } from "../../redux/actions/user";
 import { getProducts, productNotFound, resetPoducts } from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
+import { Routes } from "react-router-dom";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -20,9 +21,9 @@ const Nav = (): JSX.Element => {
     dispatch(LogoutUser());
   };
 
-  
 
-  function handleClickProducts () {
+
+  function handleClickProducts() {
     dispatch(productNotFound(false))
     dispatch(resetFilterProducts())
     dispatch(resetPoducts())
@@ -71,7 +72,9 @@ const Nav = (): JSX.Element => {
               Login
             </Link>
           )}
-          <Search />
+          <Routes>
+            <Route path="/products" element={<Search />} />
+          </Routes>
         </div>
       </div>
 
