@@ -34,6 +34,7 @@ const AdminModeCards = (): JSX.Element => {
   const productsList = useSelector((state: State) => state.products.products);
   const notFound = useSelector((state: State) => state.products.not_found);
   // const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
+  const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
 
   const page = (numberOfPage: number): void => {
     setCurrentPage(numberOfPage);
@@ -58,8 +59,6 @@ const AdminModeCards = (): JSX.Element => {
   // filteredProductList.length > 0
   //   ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
   //   : (newProductsList = productsList.slice(firstProduct, finalProduct));
-
-  /// implementing react paginate
 
   const handlePageClick = (data: any) => {
     setCurrentPage(data.selected + 1);
@@ -131,8 +130,7 @@ const AdminModeCards = (): JSX.Element => {
 
           {/* {filteredProductList.length !== 0 ? (
             <>
-
-                <div className="" >
+              <div className="">
                 <table className="table table-hover ">
                   <thead>
                     <tr>
@@ -150,13 +148,13 @@ const AdminModeCards = (): JSX.Element => {
                         image={e.image}
                         price={e.price}
                         id={e.id}
-                        AdmOrders = {AdmOrders}
+                        AdmOrders={AdmOrders}
                         page={page}
                       />
                     );
                   })}
                 </table>
-                  );
+                );
               </div>
               <ReactPaginateContainer>
                 <ReactPaginate
@@ -198,7 +196,7 @@ const AdminModeCards = (): JSX.Element => {
                         image={e.image}
                         price={e.price}
                         id={e.id}
-                        AdmOrders = {AdmOrders}
+                        AdmOrders={AdmOrders}
                         page={page}
                       />
                     );

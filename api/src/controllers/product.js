@@ -23,12 +23,6 @@ const createProduct = async (req, res) => {
       SubcategoryId,
       BrandId,
     } = req.body;
-    Number(price)
-    Number(weight)
-    Number(SubcategoryId)
-    Number(BrandId)
-    Number(stock)
-    Number(soldCount)
     if (
       !name ||
       !SubcategoryId ||
@@ -92,7 +86,7 @@ const updateProduct = async (req, res) => {
       !SubcategoryId ||
       !id
     ) {
-      res.status(400).send({ errorMsg: "Missing data." });
+      res.status(402).send({ errorMsg: "Missing data." });
     } else {
       let productToUpdate = await Product.findOne({
         where: {
@@ -100,7 +94,7 @@ const updateProduct = async (req, res) => {
         },
       });
       if (!productToUpdate) {
-        res.status(404).send({ errorMsg: "Product not found." });
+        res.status(401).send({ errorMsg: "Product not found." });
       } else {
         let productUpdated = await productToUpdate.update({
           name,
@@ -226,14 +220,14 @@ const getProducts = async (req, res) => {
         .send({ successMsg: "Here are your products.", data: dataProduct });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error});
+    res.status(500).send({ errorMsg: error });
   }
 };
 
 const deleteProduct = async (req, res) => {
   try {
     const id = req.params.id;
-    Number(id)
+    Number(id);
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {

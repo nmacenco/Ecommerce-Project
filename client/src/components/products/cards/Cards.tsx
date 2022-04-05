@@ -14,6 +14,8 @@ import Loading from "../../loading/Loading";
 import Categories from "../categories/Categories";
 import { ProductsContainer } from "../ProductsStyles";
 import NotFound from "../../notFound/NotFound";
+import { resetFilterProducts } from "../../../redux/actions/filterByCategory";
+import { execPath } from "process";
 export interface IData {
   length: number;
   page: (numberOfPage: number) => void;
@@ -34,6 +36,7 @@ const Cards = (): JSX.Element => {
     }
   }, [dispatch]);
   const [order, setOrder] = useState<string>("");
+  const [filterBox, setFilterBox] = useState<string>("")
   const productsList = useSelector((state: State) => state.products.products);
   const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
   const notFound = useSelector((state: State) => state.products.not_found);
@@ -43,6 +46,9 @@ const Cards = (): JSX.Element => {
     setCurrentPage(numberOfPage);
   };
   const orders = (typeorder: string): void => {
+    if (typeorder !== 'asc-price order' && typeorder !== 'des-price order' && typeorder !== 'des-name order' && typeorder !== 'asc-name order' && typeorder !== 'Order by order') {
+      checkFilterBox(typeorder)
+    }
     setOrder(typeorder);
   };
 
@@ -63,6 +69,16 @@ const Cards = (): JSX.Element => {
   const handlePageClick = (data: any) => {
     setCurrentPage(data.selected + 1);
   };
+
+  const checkFilterBox = (check: string): void => {
+    setFilterBox(check)
+  }
+
+  const resetFilter = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault()
+    filteredProductList.length = 0
+    setFilterBox("")
+  }
 
   return (
     <ProductsContainer className="row row-cols-xl-2 row-cols-md-1 mx-auto">
@@ -120,6 +136,7 @@ const Cards = (): JSX.Element => {
           {/* {
           filteredProductList.length !== 0 ? (
             <>
+              <span><button onClick={(e) => resetFilter(e)} className="btn btn-primary mt-2">{filterBox ? filterBox : ""}</button></span>
               <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 d-flex justify-content-center">
                 {newProductsList.map((e: Product) => {
                   return (
@@ -151,6 +168,7 @@ const Cards = (): JSX.Element => {
                   breakClassName={"page-item"}
                   breakLinkClassName={"page-link"}
                   activeClassName={"active"}
+                  pageRangeDisplayed={2}
                 ></ReactPaginate>
               </ReactPaginateContainer>
             </>
@@ -187,6 +205,7 @@ const Cards = (): JSX.Element => {
                   breakClassName={"page-item"}
                   breakLinkClassName={"page-link"}
                   activeClassName={"active"}
+                  pageRangeDisplayed={2}
                 ></ReactPaginate>
               </ReactPaginateContainer>
             </>

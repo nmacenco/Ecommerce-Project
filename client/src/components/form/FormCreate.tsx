@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import swal from "sweetalert";
 import { postProduct } from "../../redux/actions/admin";
 import { getBrands } from "../../redux/actions/brands";
 import {
@@ -8,7 +9,6 @@ import {
   getSubcategories,
 } from "../../redux/actions/categories";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
-import { resetPoducts } from "../../redux/actions/products";
 import {
   Brand,
   Category,
@@ -16,9 +16,9 @@ import {
   Subcategory,
 } from "../../redux/interface";
 import { State } from "../../redux/reducers";
+import { Textarea } from "../detail/edit/EditProductStyles";
 import { FormContainer } from "./FormCreateStyles";
 import validations from "./validations";
-
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
@@ -61,7 +61,9 @@ export default function FromCreate(): JSX.Element {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ): void => {
     setProduct({
       ...product,
@@ -71,15 +73,20 @@ export default function FromCreate(): JSX.Element {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log(product)
     if (validations(product) === true) {
       dispatch(postProduct(product));
       dispatch(resetFilterProducts())
-      dispatch(resetPoducts())
-      alert("Product created successfully.");
-      navigate("/products");
+      // dispatch(resetPoducts())
+      swal({
+        title: "Product created successfully",
+        icon: "success"
+      })
+      navigate("/products")
     } else {
-      alert("Form not completed.");
+      swal({
+        title: "Form is incomplete",
+        icon: "error"
+      })
     }
   };
 
@@ -133,8 +140,8 @@ export default function FromCreate(): JSX.Element {
           <label htmlFor="exampleTextarea" className="form-label mt-4">
             Description
           </label>
-          <input
-            type="textarea"
+          <Textarea
+            // type="textarea"
             className="form-control"
             id="exampleTextarea"
             name="description"

@@ -89,7 +89,7 @@ const Home = (): JSX.Element => {
           <span className="visually-hidden">Next</span>
         </button>
       </HomeContainer>
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 };
