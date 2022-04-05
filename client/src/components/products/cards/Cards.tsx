@@ -129,6 +129,7 @@ const Cards = (): JSX.Element => {
                   breakClassName={"page-item"}
                   breakLinkClassName={"page-link"}
                   activeClassName={"active"}
+                  pageRangeDisplayed={2}
                 ></ReactPaginate>
               </ReactPaginateContainer>
             </>
@@ -165,6 +166,7 @@ const Cards = (): JSX.Element => {
                   breakClassName={"page-item"}
                   breakLinkClassName={"page-link"}
                   activeClassName={"active"}
+                  pageRangeDisplayed={2}
                 ></ReactPaginate>
               </ReactPaginateContainer>
             </>
