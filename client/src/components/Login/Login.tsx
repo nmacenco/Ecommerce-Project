@@ -49,7 +49,7 @@ const Login = (): JSX.Element => {
          */
 
         if(!user){
-            
+            console.log('user: ',inputs);
             // dispatch(GetUSer(inputs.email,inputs.passUser))
         }
 
