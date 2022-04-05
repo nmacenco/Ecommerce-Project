@@ -5,12 +5,14 @@ export interface PRODUCTS {
   products: Product[];
   copyProducts: Product[];
   productSearch: any;
+  not_found : boolean
 }
 
 const INITIAL_STATE = {
   products: [],
   copyProducts: [],
   productSearch: [],
+  not_found: false , 
 };
 
 export const reducerProduct = (
@@ -39,7 +41,28 @@ export const reducerProduct = (
         products : action.payload , 
         copyProducts : action.payload , 
       }
+      case TYPES_PRODUCT.FILTERED_PRODUCTS:
+        let allProducts : Product[] = state.copyProducts
+        const filteredProducts = allProducts.filter(
+          (product) =>
+            product.subcategory === action.payload.value 
+        );
+        return {
+          ...state,
+          products: filteredProducts
+        };
+        case TYPES_PRODUCT.SEARCH_PRODUCTS:
 
+          return {
+            ...state,
+            products: action.payload,
+          };
+        case TYPES_PRODUCT.PRODUCT_NOT_FOUND:
+
+          return {
+            ...state,
+            not_found: action.payload,
+          };
     default: {
       return {
         ...state,

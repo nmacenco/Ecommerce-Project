@@ -2,13 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoriesContainer, Select } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
-import {
-  getCategories,
-  getSubcategories,
-} from "../../../redux/actions/categories";
+import {getCategories,getSubcategories} from "../../../redux/actions/categories";
 import { filterProducts } from "../../../redux/actions/filterByCategory";
 import { Product } from "../../../redux/interface";
 import { ORDER } from "../cards/Cards";
+import { productNotFound } from "../../../redux/actions/products";
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const categories = useSelector((state: State) => state.categories);
@@ -21,8 +19,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
   }, []);
 
   function handleFilter(e: any, allProducts: Product[]): void {
-    console.log(e);
-    // e.target.value = e.target[0].innerHTML;
+    dispatch(productNotFound(false))
     dispatch(filterProducts(e.target.value, allProducts));
 
     page(1);

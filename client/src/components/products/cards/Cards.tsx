@@ -13,6 +13,7 @@ import { Product } from "../../../redux/interface";
 import Loading from "../../loading/Loading";
 import Categories from "../categories/Categories";
 import { ProductsContainer } from "../ProductsStyles";
+import NotFound from "../../notFound/NotFound";
 export interface IData {
   length: number;
   page: (numberOfPage: number) => void;
@@ -35,7 +36,8 @@ const Cards = (): JSX.Element => {
   const [order, setOrder] = useState<string>("");
   const productsList = useSelector((state: State) => state.products.products);
   const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
-  const statePage = useSelector((state: State) => state.page);
+  const notFound = useSelector((state: State) => state.products.not_found);
+  const pageState = useSelector((state: State) => state.page);
 
   const page = (numberOfPage: number): void => {
     setCurrentPage(numberOfPage);
@@ -45,15 +47,16 @@ const Cards = (): JSX.Element => {
   };
 
   
+  
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
-  filteredProductList.length > 0
-    ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
-    : (newProductsList = productsList.slice(firstProduct, finalProduct));
+     (newProductsList = productsList.slice(firstProduct, finalProduct));
+  // let newProductsList: Product[] = [];
+  // filteredProductList.length > 0
+  //   ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
+  //   : (newProductsList = productsList.slice(firstProduct, finalProduct));
 
-    console.log(filteredProductList);
-    console.log(newProductsList);
     
   // implementing react paginate
 
@@ -71,8 +74,50 @@ const Cards = (): JSX.Element => {
           <Filter page={page} orders={orders} />
           
           {
-          !filteredProductList ? 
-          <h1> No se encontro el producto</h1> :
+            notFound ? 
+            <NotFound></NotFound>
+            :
+            newProductsList.length > 0 ?
+            <>
+              <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
+                {newProductsList.map((e: Product) => {
+                  return (
+                    <div className="col" key={e.id}>
+                      <Card
+                        name={e.name}
+                        image={e.image}
+                        price={e.price}
+                        id={e.id}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+              <ReactPaginateContainer>
+                <ReactPaginate
+                  pageCount={Math.ceil(productsList.length / 32)}
+                  nextLabel={">"}
+                  previousLabel={"<"}
+                  marginPagesDisplayed={2}
+                  onPageChange={handlePageClick}
+                  containerClassName={"pagination justify-content-center"}
+                  pageClassName={"page-item"}
+                  pageLinkClassName={"page-link"}
+                  previousClassName={"page-item"}
+                  previousLinkClassName={"page-link"}
+                  nextClassName={"page-item"}
+                  nextLinkClassName={"page-link"}
+                  breakClassName={"page-item"}
+                  breakLinkClassName={"page-link"}
+                  activeClassName={"active"}
+                ></ReactPaginate>
+              </ReactPaginateContainer>
+            </> : (
+            <Loading></Loading>
+          )
+
+          }
+          {/* {
           filteredProductList.length !== 0 ? (
             <>
               <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 d-flex justify-content-center">
@@ -147,7 +192,7 @@ const Cards = (): JSX.Element => {
             </>
           ) : (
             <Loading></Loading>
-          )}
+          )} */}
         </CardsContainer>
       </div>
     </ProductsContainer>

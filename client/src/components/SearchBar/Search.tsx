@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import searchIcon from "../../icons/search-symbol.png";
-import { selectProducts } from "../../redux/actions/products";
+import { productNotFound, selectProducts } from "../../redux/actions/products";
 import { setPage } from "../../redux/actions/setPage";
 import { State } from "../../redux/reducers";
 import { SearchForm } from "./SBar";
@@ -9,7 +9,7 @@ import { SearchForm } from "./SBar";
 const Search = (): JSX.Element => {
   const dispatch = useDispatch();
   const table = useSelector((state: State) => state.products.productSearch);
-  const artefacts = useSelector((state: State) => state.products.products);
+  const artefacts = useSelector((state: State) => state.products.copyProducts);
 
   const [products, setProducts] = useState<string[]>([]);
   const [value, setValue] = useState<string>("");
@@ -24,7 +24,16 @@ const Search = (): JSX.Element => {
       }
     });
     dispatch(setPage(1))
-    dispatch(selectProducts(selectArtefacts));
+    if (selectArtefacts.length > 0 ) {
+        dispatch(selectProducts(selectArtefacts))
+    } else {
+        dispatch(productNotFound(true))
+        setTimeout(function(){
+            dispatch(productNotFound(false))
+        }, 2000);
+    }
+    // selectArtefacts.length > 0 ? dispatch(selectProducts(selectArtefacts)) : dispatch(productNotFound(true))
+    
     setValue("");
     
   };
