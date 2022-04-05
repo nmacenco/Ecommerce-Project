@@ -51,6 +51,17 @@ export const reducerProduct = (
           ...state,
           products: filteredProducts
         };
+      case TYPES_PRODUCT.FILTER_BY_BRAND:
+        let allProduct : Product[] = state.copyProducts
+        
+        const filteredByBrand = allProduct.filter(
+          (product) =>
+            product.brand === action.payload
+        );
+        return {
+          ...state,
+          products: filteredByBrand
+        };
         case TYPES_PRODUCT.SEARCH_PRODUCTS:
 
           return {
