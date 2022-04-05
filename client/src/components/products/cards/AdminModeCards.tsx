@@ -65,6 +65,9 @@ const AdminModeCards = (): JSX.Element => {
     setCurrentPage(data.selected + 1);
   };
 
+  const eliminateFilters = (): void => {
+    let aux = "Correction error"
+  }
   return (
     <ProductsContainer className="row row-cols-lg-2 row-cols-md-1 mx-auto">
       <div className="col-xl-2 col-lg-3 col-sm-12">
@@ -75,11 +78,11 @@ const AdminModeCards = (): JSX.Element => {
           <Filter page={page} orders={orders} />
 
           {notFound ? (
-            <NotFound></NotFound>
+            <NotFound eliminateFilters={eliminateFilters}></NotFound>
           ) : newProductsList.length > 0 ? (
             <>
 
-                <div className="" >
+              <div className="" >
                 <table className="table table-hover ">
                   <thead>
                     <tr>
@@ -97,18 +100,18 @@ const AdminModeCards = (): JSX.Element => {
                         image={e.image}
                         price={e.price}
                         id={e.id}
-                        AdmOrders = {AdmOrders}
+                        AdmOrders={AdmOrders}
                         page={page}
                       />
                     );
                   })}
                 </table>
-                  );
+                );
               </div>
               <ReactPaginateContainer>
-              <Pagination 
+                <Pagination
                   productList={productsList.length}
-                  handlePageClick = {handlePageClick}
+                  handlePageClick={handlePageClick}
                 ></Pagination>
                 {/* <ReactPaginate
                   pageCount={productsList.length / 32}

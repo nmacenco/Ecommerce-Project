@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { productNotFound } from "../../redux/actions/products";
 import { NotFoundContainer } from "./NotFoundStyles";
-const NotFound = () => {
+export interface NOT_FOUND {
+    eliminateFilters: () => void;
+}
+
+const NotFound = (props: NOT_FOUND) => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+
+        dispatch(productNotFound(true))
+        setTimeout(function () {
+            props.eliminateFilters()
+            dispatch(productNotFound(false))
+        }, 3000);
+    }, [])
 
     return (
         <NotFoundContainer>
@@ -10,4 +25,4 @@ const NotFound = () => {
 }
 
 
-export default NotFound ; 
+export default NotFound; 

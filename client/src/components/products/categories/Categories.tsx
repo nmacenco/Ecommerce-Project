@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { CategoriesContainer, Select } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
-import { filterProducts } from "../../../redux/actions/filterByCategory";
+import { chargeFilter, filterProducts } from "../../../redux/actions/filterByCategory";
 import { Product } from "../../../redux/interface";
 import { ORDER } from "../cards/Cards";
-import { productNotFound } from "../../../redux/actions/products";
+import { getProducts, productNotFound } from "../../../redux/actions/products";
 import { getBrands } from "../../../redux/actions/brands";
 import { filterByBrand } from "../../../redux/actions/filterByBrand";
 
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
+  const allProducts = useSelector((state: State) => state.products.products)
   const categories = useSelector((state: State) => state.categories);
-  const allProducts = useSelector((state: State) => state.products.copyProducts);
   const brands = useSelector((state: State) => state.brands.brands);
 
   useEffect(() => {
@@ -22,15 +22,19 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
     dispatch(getBrands());
   }, []);
 
+  useEffect(() => {
+    dispatch(chargeFilter(allProducts))
+  }, [allProducts.length > 0])
+
   function handleFilter(e: any): void {
-    dispatch(productNotFound(false))
-    dispatch(filterProducts(e.target.value));
+    // dispatch(productNotFound(false))
+    // dispatch(filterProducts(e.target.value));
     orders(e.target.value)
     page(1);
   }
   function handlerFIlterByBrand(e: any): void {
-    dispatch(productNotFound(false))
-    dispatch(filterByBrand(e.target.innerHTML));
+    // dispatch(productNotFound(false))
+    // dispatch(filterByBrand(e.target.value));
     orders(e.target.value)
     page(1);
   }
