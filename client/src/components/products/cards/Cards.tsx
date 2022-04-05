@@ -159,7 +159,7 @@ const Cards = (): JSX.Element => {
                   </div>
                   <ReactPaginateContainer>
                     <Pagination
-                      productList={newProductsList.length}
+                      productList={filteredProductList.length}
                       handlePageClick={handlePageClick}
                     ></Pagination>
                     {/* <ReactPaginate

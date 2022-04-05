@@ -27,14 +27,10 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
   }, [allProducts.length > 0])
 
   function handleFilter(e: any): void {
-    // dispatch(productNotFound(false))
-    // dispatch(filterProducts(e.target.value));
     orders(e.target.value)
     page(1);
   }
   function handlerFIlterByBrand(e: any): void {
-    // dispatch(productNotFound(false))
-    // dispatch(filterByBrand(e.target.value));
     orders(e.target.value)
     page(1);
   }
