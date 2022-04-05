@@ -22,6 +22,9 @@ export enum TYPES_CATEGORIES {
 export enum TYPES_BRANDS {
   GET_BRANDS = "GET_BRANDS",
 }
+export enum TYPES_PAGE {
+  SET_PAGE = "SET_PAGE" , 
+}
 
 export enum TYPES_PRODUCT {
   SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
@@ -30,10 +33,13 @@ export enum TYPES_PRODUCT {
   FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
   RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS",
   RESET_PRODUCTS = "RESET_PRODUCTS",
+  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND'
 }
 
 //=======================
 // Objects Interfaces
+
+export type Page = number ; 
 
 export interface User {
   name: string;
@@ -127,6 +133,13 @@ export interface GET_BRANDS {
   type: TYPES_BRANDS.GET_BRANDS;
   payload: Brand[];
 }
+//======================
+//Page Actions
+
+export interface SET_PAGE {
+  type: TYPES_PAGE.SET_PAGE;
+  payload: Page;
+}
 
 //=====================
 //Products Actions
@@ -159,6 +172,10 @@ export interface RESET_PRODUCTS {
   type: TYPES_PRODUCT.RESET_PRODUCTS;
   payload: [];
 }
+export interface PRODUCT_NOT_FOUND {
+  type: TYPES_PRODUCT.PRODUCT_NOT_FOUND;
+  payload: boolean ;
+}
 
 export interface SEARCH_PRODUCTS {
   type: TYPES_PRODUCT.SEARCH_PRODUCTS;
@@ -185,10 +202,12 @@ export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
-export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS;
+export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND;
 
 export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES;
 
 export type BrandsActions = GET_BRANDS;
 
 export type AdminActions = DELETE_PRODUCT;
+
+export type SetPage = SET_PAGE;

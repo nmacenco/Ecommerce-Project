@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, orderProducts } from "../../../../redux/actions/products";
+import { getProducts, orderProducts, productNotFound } from "../../../../redux/actions/products";
 import { resetFilterProducts } from '../../../../redux/actions/filterByCategory';
 import { Product } from "../../../../redux/interface";
 import { State } from "../../../../redux/reducers";
@@ -16,14 +16,9 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
     dispatch(getProducts());
   }, []);
 
-  function handleSort(
-    e: React.ChangeEvent<HTMLSelectElement>,
-    //es un objeto
-    allProducts: Product[]
-  ): void {
+  function handleSort(e: React.ChangeEvent<HTMLSelectElement>,allProducts: Product[]): void {
     e.preventDefault();
-    // dispatch(resetFilterProducts());
-
+    dispatch(productNotFound(false))
     page(1)
     orders(`${e.target.value} order`);
     filteredProducts.length > 0 ? 

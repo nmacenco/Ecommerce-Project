@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
 import { LogoutUser } from "../../redux/actions/user";
-import { getProducts } from "../../redux/actions/products";
+import { getProducts, productNotFound, resetPoducts } from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
 
 const Nav = (): JSX.Element => {
@@ -20,8 +20,12 @@ const Nav = (): JSX.Element => {
     dispatch(LogoutUser());
   };
 
-  function handleClickProducts() {
-    dispatch(resetFilterProducts());
+  
+
+  function handleClickProducts () {
+    dispatch(productNotFound(false))
+    dispatch(resetFilterProducts())
+    dispatch(resetPoducts())
     // dispatch(resetPoducts())
     dispatch(deleteProductDetail());
     dispatch(getProducts());
