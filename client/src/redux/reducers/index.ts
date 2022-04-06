@@ -24,7 +24,7 @@ interface GLOBAL_STATE {
   filteredProducts: FILTERED_STATE;
   brands:BRANDS;
   page : PAGE ; 
-  adminUsers : ADMIN_USERS
+  adminUsers : ADMIN_USERS ;
 }
 
 export const rootReducer = combineReducers<GLOBAL_STATE>({

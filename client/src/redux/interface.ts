@@ -63,7 +63,7 @@ export interface Users {
   billing_address: string;
   default_shipping_address: string;
   role: string;
-  isActive: string;
+  isActive: boolean;
 }
 
 export interface ProductForm {

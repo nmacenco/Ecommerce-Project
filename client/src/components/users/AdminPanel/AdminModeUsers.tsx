@@ -3,25 +3,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { adminGetUsers } from "../../../redux/actions/adminUser";
 import { AdminUsersContainer } from "./AdminModeUsersStyles";
 import { State } from "../../../redux/reducers/index";
+import { Users } from "../../../redux/interface";
+import UserDetail from "./userDetail/UserDetail";
 
 
 
 const AdminUserMode = (): JSX.Element => {
     const dispatch = useDispatch()
-    const users = useSelector((state: State) => state.adminUsers);
+    const users = useSelector((state: State) => state.adminUsers.users);
     useEffect ( ()=> {
         console.log('se despacha');
         
         dispatch(adminGetUsers())
     }, [])
+    
 
     console.log(users);
     
     return(
         <AdminUsersContainer>
-
-            <h1>Estamos en el user Controller</h1>
-                {/* div className="" >
+            <div>
+             <h1>Estamos en el user Controller</h1>
+                <div className="" >
                 <table className="table table-hover ">
                   <thead>
                     <tr>
@@ -32,21 +35,22 @@ const AdminUserMode = (): JSX.Element => {
                       <th scope="col">Edit </th>
                     </tr>
                   </thead>
-                  {newProductsList.map((e: Product) => {
+                  {users.map( user  => {
                     return (
-                      <AdminModeCard
-                        name={e.name}
-                        image={e.image}
-                        price={e.price}
-                        id={e.id}
-                        AdmOrders = {AdmOrders}
-                        page={page}
+                      <UserDetail
+                      
+                        name={user.name}
+                        isActive={user.isActive}
+                        id={user.id}
+                        role = {user.role}
                       />
                     );
                   })}
                 </table>
                   );
-              </div> */}
+              </div> 
+
+            </div>
             
         </AdminUsersContainer>
     )
