@@ -56,6 +56,10 @@ export interface User {
 }
 
 export interface Users {
+  CountryId : number
+  countryCode: string;
+  country: string;
+  email: string;
   id: number;
   name: string;
   surname: string;
