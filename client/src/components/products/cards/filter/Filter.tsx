@@ -17,12 +17,12 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
 
   function handleSort(e: React.ChangeEvent<HTMLSelectElement>, allProducts: Product[]): void {
     e.preventDefault();
-    dispatch(productNotFound(false))
+    // dispatch(productNotFound(false))
     page(1)
     orders(`${e.target.value} order`);
     filteredProducts.length > 0 ?
       dispatch(orderProducts(e.target.value, filteredProducts)) :
-      dispatch(orderProducts(e.target.value, allProducts));
+      dispatch(orderProducts(e.target.value, filteredProducts));
   }
 
   return (

@@ -14,7 +14,9 @@ const INITIAL_PRODUCT = {
   SubcategoryId: 0,
   subcategory : '' , 
   CategoryId : 0 , 
-  category : 0 , 
+  category : 0 ,
+  questions:[],
+  rewies:[] 
 };
 
 export const productDetailReducer = (state: Product = INITIAL_PRODUCT, action: Actions): Product => {

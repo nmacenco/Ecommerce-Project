@@ -7,7 +7,7 @@ import {
 import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../redux/actions/admin";
-
+import Rewies from "./reviews/Review";
 import Loading from "../loading/Loading";
 import {
   DetailContainer,
@@ -19,6 +19,8 @@ import {
 } from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
+import Question from "./questions/Question";
+import NewQ from "./questions/NewQ";
 // import { isConditionalExpression } from "typescript";
 
 export default function Detail() {
@@ -26,6 +28,7 @@ export default function Detail() {
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const product = useSelector((state: State) => state.productDetail);
+  const user=useSelector((state:State)=>state.user);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -128,10 +131,13 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            <p>PRODUCT REVIEWS...</p>
+            <Rewies/>
           </div>
           <div className="tab-pane fade m-2" id="questions">
-            <p>PRODUCT QUESTIONS...</p>
+            {user ? <NewQ />: null}
+            <Question/>
+            <Question />
+            <Question />
           </div>
         </div>
       </Box>
