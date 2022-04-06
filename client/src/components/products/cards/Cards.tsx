@@ -14,9 +14,8 @@ import Loading from "../../loading/Loading";
 import Categories from "../categories/Categories";
 import { ProductsContainer } from "../ProductsStyles";
 import NotFound from "../../notFound/NotFound";
-import { chargeFilter, filterProducts, removeFilter, resetFilterProducts } from "../../../redux/actions/filterByCategory";
+import { chargeFilter, filterByBrand, filterProducts, removeFilter, resetFilterProducts } from "../../../redux/actions/filterByCategory";
 import { execPath } from "process";
-import { filterByBrand } from "../../../redux/actions/filterByBrand";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;

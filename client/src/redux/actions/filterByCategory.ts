@@ -33,6 +33,18 @@ export const filterProducts = (event: string) => {
     alert(error);
   }
 };
+
+export const filterByBrand = (event: string) => {
+  try {
+    return ({
+      type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS,
+      payload: event
+    });
+  } catch (error) {
+    alert(error);
+  }
+};
+
 export const resetFilterProducts = () => {
   try {
     return ({

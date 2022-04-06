@@ -13,8 +13,7 @@ import { ProductsContainer } from "../ProductsStyles";
 import AdminModeCard from "./card/AdminModeCard";
 import NotFound from "../../notFound/NotFound";
 import Pagination from "./pagination/Pagination";
-import { chargeFilter, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
-import { filterByBrand } from "../../../redux/actions/filterByBrand";
+import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;

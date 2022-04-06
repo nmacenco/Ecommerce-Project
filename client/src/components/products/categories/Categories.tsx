@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoriesContainer, Select } from "./CategoriesStyles";
+import { CategoriesContainer } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
-import { chargeFilter, filterProducts } from "../../../redux/actions/filterByCategory";
-import { Product } from "../../../redux/interface";
+import { chargeFilter } from "../../../redux/actions/filterByCategory";
 import { ORDER } from "../cards/Cards";
-import { getProducts, productNotFound } from "../../../redux/actions/products";
 import { getBrands } from "../../../redux/actions/brands";
-import { filterByBrand } from "../../../redux/actions/filterByBrand";
 
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
