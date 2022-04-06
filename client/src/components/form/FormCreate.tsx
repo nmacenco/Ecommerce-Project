@@ -85,6 +85,7 @@ export default function FromCreate(): JSX.Element {
     } else {
       swal({
         title: "Form is incomplete",
+        text: "Fields missing",
         icon: "error"
       })
     }
