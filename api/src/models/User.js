@@ -26,7 +26,6 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
       isEmail: true,
-      unique: true,
     },
     billing_address: {
       type: DataTypes.STRING,

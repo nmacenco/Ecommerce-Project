@@ -5,7 +5,7 @@ const sequelize = require("sequelize");
 require("dotenv").config();
 require("../auth/passport-setup");
 
-const createUser = async (req, res, next) => {
+const createUser = async (req, res) => {
   try {
     let { name, surname, email, password, CountryId } = req.body;
     if (!name || !surname || !email || !CountryId || !password) {
@@ -14,6 +14,7 @@ const createUser = async (req, res, next) => {
       const isUserCreated = await User.findOne({
         where: {
           email,
+          signedInWithGoogle: false,
         },
       });
       if (isUserCreated) {
@@ -51,6 +52,18 @@ const createUser = async (req, res, next) => {
 
 const updateUser = async (req, res) => {
   const id = req.userID;
+  if (!id) {
+    return res.status(400).send({ errorMsg: "Id not provided." });
+  }
+  let user = await User.findOne({ where: { id } });
+  if (!user) {
+    return res.status(404).send({ errorMsg: "User not found." });
+  }
+  if (user.signedInWithGoogle) {
+    return res.status(400).send({
+      errorMsg: "You cannot modify all your data, please try other route.",
+    });
+  }
   let {
     name,
     surname,
@@ -62,50 +75,42 @@ const updateUser = async (req, res) => {
   } = req.body;
   try {
     if (
-      !id ||
       !name ||
       !surname ||
-      !password ||
       !email ||
       !billing_address ||
       !default_shipping_address ||
       !CountryId
     ) {
-      res.status(400).send({ errorMsg: "Missing data." });
-    } else {
-      let userToUpdate = await User.findOne({
+      return res.status(400).send({ errorMsg: "Missing data." });
+    }
+    if (email !== user.email) {
+      let doesEmailExist = await User.findOne({
         where: {
-          id,
+          email,
+          signedInWithGoogle: false,
         },
       });
-      if (!userToUpdate) {
-        res.status(404).send({ errorMsg: "User not found." });
-      } else {
-        let doesEmailExist = await User.findOne({
-          where: {
-            email,
-          },
-        });
-        if (doesEmailExist) {
-          res.status(400).send({ errorMsg: "Email is already in use." });
-        } else {
-          password = await bcrypt.hash(password, 8);
-          let updatedUser = await userToUpdate.update({
-            name,
-            surname,
-            password,
-            email,
-            billing_address,
-            default_shipping_address,
-            CountryId,
-          });
-          res.status(200).send({
-            successMsg: "User successfully updated.",
-            data: updatedUser,
-          });
-        }
+      if (doesEmailExist) {
+        return res.status(400).send({ errorMsg: "Email is already in use." });
       }
     }
+    !password
+      ? (password = user.password)
+      : (password = await bcrypt.hash(password, 8));
+    let updatedUser = await user.update({
+      name,
+      surname,
+      password,
+      email,
+      billing_address,
+      default_shipping_address,
+      CountryId,
+    });
+    res.status(200).send({
+      successMsg: "User successfully updated.",
+      data: updatedUser,
+    });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -118,7 +123,7 @@ const getSingleUser = async (req, res) => {
     // let id = req.userID;
 
     if (!id) {
-      res.status(400).json({ errorMsg: "Missing data." });
+      res.status(400).send({ errorMsg: "Missing data." });
     } else {
       let user = await User.findOne({
         where: { id },
@@ -166,14 +171,40 @@ const googleLogIn = (req, res) => {
 const googleLogOut = async (req, res) => {
   try {
     req.session = null;
-    let user = req.user;
-    await User.destroy({
-      where: {
-        id: user.id,
-      },
+    let id = req.userID;
+    let token = req.token;
+    let loggedOutUser = await User.findOne({
+      where: { id, signedInWithGoogle: true },
     });
+    let tokens = loggedOutUser.tokens;
+    tokens = tokens.filter((tok) => tok !== token);
+    await User.update(
+      {
+        tokens,
+      },
+      {
+        where: {
+          id: loggedOutUser.id,
+        },
+      }
+    );
     req.logout();
     res.send({ successMsg: "You have been logged out." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+const googleUpdateProfile = async (req, res) => {
+  try {
+    let { billing_address, default_shipping_address, CountryId } = req.body;
+    let user = await User.findOne({ where: { id: req.userID } });
+    await user.update({
+      billing_address,
+      default_shipping_address,
+      CountryId,
+    });
+    res.status(200).send({successMsg: "Google user updated successfully."})
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -185,6 +216,7 @@ const signIn = async (req, res) => {
     const user = await User.findOne({
       where: {
         email,
+        signedInWithGoogle: false,
       },
     });
     if (!user) {
@@ -224,9 +256,7 @@ const logOut = async (req, res) => {
         },
       }
     );
-    res
-      .status(200)
-      .send({ successMsg: "User has been logged out", data: loggedOutUser });
+    res.status(200).send({ successMsg: "User has been logged out" });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -266,4 +296,5 @@ module.exports = {
   logOut,
   googleLogIn,
   googleLogOut,
+  googleUpdateProfile,
 };
