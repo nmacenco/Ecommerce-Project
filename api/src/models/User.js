@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'SignedInWithGoogle'
+      defaultValue: "SignedInWithGoogle",
     },
     email: {
       type: DataTypes.STRING,
@@ -55,6 +55,11 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
+    },
+    needsPasswordReset: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   });
 };
