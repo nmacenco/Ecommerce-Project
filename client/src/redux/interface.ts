@@ -23,24 +23,27 @@ export enum TYPES_BRANDS {
   GET_BRANDS = "GET_BRANDS",
 }
 export enum TYPES_PAGE {
-  SET_PAGE = "SET_PAGE" , 
+  SET_PAGE = "SET_PAGE",
 }
 
 export enum TYPES_PRODUCT {
   SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
-  FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
+  CHARGE_FILTERS = "CHARGE_FILTERS",
+  REMOVE_FILTER = "REMOVE_FILTER",
+  FILTERED_CAT_PRODUCTS = "FILTERED_CAT_PRODUCTS",
+  FILTERED_BRAND_PRODUCTS = "FILTERED_BRAND_PRODUCTS",
   RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS",
   RESET_PRODUCTS = "RESET_PRODUCTS",
-  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND' ,
+  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND',
   FILTER_BY_BRAND = "FILTER_BY_BRAND",
 }
 
 //=======================
 // Objects Interfaces
 
-export type Page = number ; 
+export type Page = number;
 
 export interface User {
   name: string;
@@ -94,6 +97,21 @@ export interface Subcategory {
   name: string;
   CategoryId: number;
 }
+
+export interface Data_Paginate {
+  selected: number
+}
+
+export interface FILTER_BOX {
+  subcategory: string,
+  brand: string
+}
+
+export interface IData {
+  length: number;
+  page: (numberOfPage: number) => void;
+}
+
 
 //=======================
 // User Actions
@@ -154,15 +172,27 @@ export interface ORDER_PRODUCTS {
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
   payload: any;
 }
-export interface FILTER_PRODUCTS {
-  type: TYPES_PRODUCT.FILTERED_PRODUCTS;
+export interface CHARGE_FILTERS {
+  type: TYPES_PRODUCT.CHARGE_FILTERS;
+  payload: Product[];
+}
+export interface REMOVE_FILTER {
+  type: TYPES_PRODUCT.REMOVE_FILTER;
+  payload: Product[];
+}
+export interface FILTERED_CAT_PRODUCTS {
+  type: TYPES_PRODUCT.FILTERED_CAT_PRODUCTS;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
-  payload: any;
+  payload: Product[];
+}
+export interface FILTERED_BRAND_PRODUCTS {
+  type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS;
+  payload: Product[];
 }
 export interface FILTER_BY_BRAND {
   type: TYPES_PRODUCT.FILTER_BY_BRAND;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
-  payload: any;
+  payload: Product[];
 }
 export interface RESET_FILTERED_PRODUCTS {
   type: TYPES_PRODUCT.RESET_FILTERED_PRODUCTS;
@@ -180,7 +210,7 @@ export interface RESET_PRODUCTS {
 }
 export interface PRODUCT_NOT_FOUND {
   type: TYPES_PRODUCT.PRODUCT_NOT_FOUND;
-  payload: boolean ;
+  payload: boolean;
 }
 
 export interface SEARCH_PRODUCTS {
@@ -208,7 +238,7 @@ export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
-export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND ;
+export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | CHARGE_FILTERS | REMOVE_FILTER | FILTERED_CAT_PRODUCTS | FILTERED_BRAND_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
 
 export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES;
 
