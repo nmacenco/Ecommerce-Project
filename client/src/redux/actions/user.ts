@@ -83,3 +83,30 @@ export const LogoutUser=()=>{
       payload: null,
     };
 }
+
+let url = "/signInWithGoogle";
+export const IdentGoogle=(url:string)=>{
+
+    return async(dispatch:Dispatch)=>{
+        try {
+          const response = await axios.get(URL_USER+url);
+
+          if(response.data.errorMsg){
+              throw new Error("Error in google: ",response.data.errorMsg);
+          } 
+
+          const TOKEN=response.headers["auth-token"];
+          console.log('TOKEN HEADERS: ',TOKEN);
+          console.log('Data: ',response.data);
+
+          dispatch({
+            type:TYPES_USER.GET_USER,
+            payload:response.data.data
+          })
+
+        } catch (error) {
+          console.log("Error en sig in google: ", error);
+        }
+
+    }
+}
