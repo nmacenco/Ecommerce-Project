@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Switch } from "./UserDetailStyles";
-
+import swal from "sweetalert";
 interface props {
   id: number;
   name: string;
@@ -39,26 +38,54 @@ const UserDetail = ({
     CountryId,
   });
 
-    // console.log(userUpdate);
-    
-  function isActiveOnChange(e: any): void {
-    e.preventDefault();
-    
-    if (e.target.value === 'true' ) {
-      setUserUpdate({...userUpdate , isActive: false})
-    }else if (e.target.value === 'false' ) {
-      setUserUpdate({...userUpdate , isActive: true})
+    function roleOnChange (e:any) : void {
+      e.preventDefault()
+      swal({
+        title: "Are you sure?",
+        text: "Do you want to change this user role?",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          cancel: true,
+          confirm: true
+        }
+      }).then((value) => {
+        if (value) {
+          setUserUpdate({...userUpdate , role: e.target.value})
+          // aca tengo que despachar la accion para updeitear jaja 
+          swal({
+            text: "Role changed",
+            icon: "success"
+          })
+        }
+      })
     }
-  }
-  console.log(userUpdate.isActive);
+    console.log(userUpdate);
+    function isActiveOnChange(e: any): void {
+      e.preventDefault();
+      if (e.target.value === 'true' ) {
+        setUserUpdate({...userUpdate , isActive: false})
+      }else if (e.target.value === 'false' ) {
+        setUserUpdate({...userUpdate , isActive: true})
+      }
+    }
+    
+    function handleClickReset(e:any) : void {
+      /// aca deberia despachar otra accion 
+    }
+
+
   return (
     <tbody>
       <tr className="table-light">
         <th scope="row">{name}</th>
         <td className="form-group">
-          <select className="form-select" id="exampleSelect1">
-            <option>User</option>
-            <option>Admin</option>
+          <select onChange={(e)=> roleOnChange(e)} defaultValue={userUpdate.role} className="form-select" id="exampleSelect1">
+            <option disabled hidden>
+              {userUpdate.role}
+            </option>
+            <option value = {'admin'}>Admin</option>
+            <option value = {'user'}>User</option>
           </select>
         </td>
         <td>
@@ -80,7 +107,7 @@ const UserDetail = ({
 
         <td>
           <button
-            //   onClick={(e)=> handleClickEdit(e)}
+              onClick={(e)=> handleClickReset(e)}
             type="button"
             className="btn btn-warning btn-sm"
           >

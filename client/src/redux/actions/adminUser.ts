@@ -23,3 +23,22 @@ export const adminGetUsers = () => {
     alert(error);
   }
 };
+export const adminEditUser = () => {
+  try {
+    return async (dispatch: Dispatch) => {
+      const allUsers = await axios.get(`${URL}`, {
+        headers: {
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5Mjc0Njk0fQ.XcZ_B6SXT3sLRQn-lHPwdQr-FbQMu9pmDzbMnZvtsNI",
+        },
+      });
+
+      return dispatch({
+        type: TYPES_ADMIN_USER.GET_USERS,
+        payload: allUsers.data.users,
+      });
+    };
+  } catch (error) {
+    alert(error);
+  }
+};
