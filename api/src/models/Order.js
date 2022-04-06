@@ -13,6 +13,15 @@ module.exports = (sequelize) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    email_address: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      isEmail: true,
+    },
+    billing_address: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },    
     status: {
       type: DataTypes.STRING,
       allowNull: false,

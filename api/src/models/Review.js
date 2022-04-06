@@ -19,7 +19,6 @@ module.exports = (sequelize) => {
     },
     stars: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
   });
 };
