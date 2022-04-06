@@ -51,21 +51,11 @@ const Cards = (): JSX.Element => {
     }
     setOrder(typeorder);
   };
-
-  
   
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
      (newProductsList = productsList.slice(firstProduct, finalProduct));
-  // let newProductsList: Product[] = [];
-  // filteredProductList.length > 0
-  //   ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
-  //   : (newProductsList = productsList.slice(firstProduct, finalProduct));
-
-    
-  // implementing react paginate
-
   const handlePageClick = (data: any) => {
     setCurrentPage(data.selected + 1);
   };
@@ -115,108 +105,11 @@ const Cards = (): JSX.Element => {
                   productList={productsList.length}
                   handlePageClick = {handlePageClick}
                 ></Pagination>
-                {/* <ReactPaginate
-                  pageCount={Math.ceil(productsList.length / 32)}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                ></ReactPaginate> */}
               </ReactPaginateContainer>
             </> : (
             <Loading></Loading>
           )
-
           }
-          {/* {
-          filteredProductList.length !== 0 ? (
-            <>
-              <span><button onClick={(e) => resetFilter(e)} className="btn btn-primary mt-2">{filterBox ? filterBox : ""}</button></span>
-              <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 d-flex justify-content-center">
-                {newProductsList.map((e: Product) => {
-                  return (
-                    <div className="col" key={e.id}>
-                      <Card
-                        name={e.name}
-                        image={e.image}
-                        price={e.price}
-                        id={e.id}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <ReactPaginateContainer>
-                <ReactPaginate
-                  pageCount={Math.ceil(filteredProductList.length / 32)}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                  pageRangeDisplayed={2}
-                ></ReactPaginate>
-              </ReactPaginateContainer>
-            </>
-          ) : newProductsList.length !== 0 ? (
-            <>
-              <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
-                {newProductsList.map((e: Product) => {
-                  return (
-                    <div className="col" key={e.id}>
-                      <Card
-                        name={e.name}
-                        image={e.image}
-                        price={e.price}
-                        id={e.id}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <ReactPaginateContainer>
-                <ReactPaginate
-                  pageCount={Math.ceil(productsList.length / 32)}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                  pageRangeDisplayed={2}
-                ></ReactPaginate>
-              </ReactPaginateContainer>
-            </>
-          ) : (
-            <Loading></Loading>
-          )} */}
         </CardsContainer>
       </div>
     </ProductsContainer>
