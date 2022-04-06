@@ -11,16 +11,11 @@ import UserDetail from "./userDetail/UserDetail";
 const AdminUserMode = (): JSX.Element => {
     const dispatch = useDispatch()
     const users = useSelector((state: State) => state.adminUsers.users);
-    
-
     useEffect ( ()=> {
-        console.log('se despacha');
-        
         dispatch(adminGetUsers())
     }, [])
     
 
-    console.log(users);
 
 
     

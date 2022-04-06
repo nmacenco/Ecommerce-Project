@@ -39,13 +39,18 @@ const UserDetail = ({
     CountryId,
   });
 
-    console.log(userUpdate);
+    // console.log(userUpdate);
     
   function isActiveOnChange(e: any): void {
     e.preventDefault();
-    console.log(e);
-    console.log(e.target.value);
+    
+    if (e.target.value === 'true' ) {
+      setUserUpdate({...userUpdate , isActive: false})
+    }else if (e.target.value === 'false' ) {
+      setUserUpdate({...userUpdate , isActive: true})
+    }
   }
+  console.log(userUpdate.isActive);
   return (
     <tbody>
       <tr className="table-light">
@@ -59,7 +64,7 @@ const UserDetail = ({
         <td>
           <div className="form-check form-switch">
             <input
-              value={"prueba"}
+              value={`${isActive}`}
               className="form-check-input"
               type="checkbox"
               id="flexSwitchCheckChecked"
