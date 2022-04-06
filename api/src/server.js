@@ -8,6 +8,7 @@ const {
   categoryRouter,
   brandRouter,
   subCategoryRouter,
+  orderRouter,
   reviewsRouter,
   questionsRouter,  
 } = require("./routes/allRoutes.js");
@@ -45,6 +46,7 @@ server.use("/api", countryRouter);
 server.use("/api", categoryRouter);
 server.use("/api", brandRouter);
 server.use("/api", subCategoryRouter);
+server.use("/api", orderRouter);
 server.use("/api", reviewsRouter);
 server.use("/api", questionsRouter);
 

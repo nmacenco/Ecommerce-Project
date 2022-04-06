@@ -6,7 +6,7 @@
     "email": "axel9034@hotmail.com",
     "billing_address": "Montevideo",
     "default_shipping_address": "Montevideo",
-    "role": "user",
+    "role": "admin",
     "isActive": true,
     "CountryId": 1
   },
@@ -17,7 +17,7 @@
     "email": "jaiderpanqueva@hotmail.com",
     "billing_address": "Cali",
     "default_shipping_address": "Cali",
-    "role": "user",
+    "role": "admin",
     "isActive": true,
     "CountryId": 244
   },
@@ -28,7 +28,7 @@
     "email": "carlosespinosa@hotmail.com",
     "billing_address": "Medellin",
     "default_shipping_address": "Medellin",
-    "role": "user",
+    "role": "admin",
     "isActive": true,
     "CountryId": 244
   },
