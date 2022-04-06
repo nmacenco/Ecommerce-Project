@@ -6,7 +6,7 @@ import Detail from "./components/detail/Detail";
 import Products from "./components/products/Products";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
-// import Loading from "./components/loading/Loading";
+import Loading from "./components/loading/Loading";
 import Edit from "./components/detail/edit/EditProduct";
 import FormCreate from "./components/form/FormCreate";
 import Home from "./components/home/Home";
@@ -35,7 +35,7 @@ function App(): JSX.Element {
           <Route path="/products" element={<Products />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/loading" element={<Loading />} /> */}
+          <Route path="/loading" element={<Loading />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/adminMode" element={<AdminModeCards />} />
         </Routes>
