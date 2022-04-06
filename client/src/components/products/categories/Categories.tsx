@@ -23,12 +23,13 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
     dispatch(chargeFilter(allProducts))
   }, [allProducts.length > 0])
 
-  function handleFilter(e: any): void {
-    orders(e.target.value)
+  function handleFilter(e: string): void {
+    orders(e)
     page(1);
   }
-  function handlerFIlterByBrand(e: any): void {
-    orders(e.target.value)
+
+  function handlerFIlterByBrand(e: string): void {
+    orders(e)
     page(1);
   }
 
@@ -87,7 +88,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                               className="btn p-1 text-start"
                               key={i}
                               value={subcategory.name}
-                              onClick={(e) => handleFilter(e)}
+                              onClick={() => handleFilter(subcategory.name)}
                             >
                               {subcategory.name}
                             </button>
@@ -161,7 +162,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                       key={i}
                       aria-controls={brand.name.replace(/ /g, "")}
                       value={brand.name}
-                      onClick={(e) => handlerFIlterByBrand(e)}
+                      onClick={() => handlerFIlterByBrand(brand.name)}
                     >
                       {brand.name}
                     </button>
