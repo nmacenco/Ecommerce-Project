@@ -2,14 +2,12 @@
 import {  Product, TYPES_PRODUCT } from "../interface";
 
 
-export const filterProducts = (value: string, products: Product[]) => {
+export const filterProducts = (value: string) => {
     try {
         return ({
           type: TYPES_PRODUCT.FILTERED_PRODUCTS,
-          payload: {
-            value,
-            products
-          }
+          payload: 
+            value
         });
     } catch (error) {
       alert(error);

@@ -6,22 +6,21 @@ import Detail from "./components/detail/Detail";
 import Products from "./components/products/Products";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
-import Loading from "./components/loading/Loading";
+// import Loading from "./components/loading/Loading";
 import Edit from "./components/detail/edit/EditProduct";
 import FormCreate from "./components/form/FormCreate";
 import Home from "./components/home/Home";
+import AdminModeCards from "./components/products/cards/AdminModeCards";
 import { useDispatch } from "react-redux";
 import { FindUSer } from "./redux/actions/user";
+import Cart from "./components/cart/Cart";
 
 function App(): JSX.Element {
-
-  const dispatch=useDispatch();
-  useEffect(()=>{
-
+  const dispatch = useDispatch();
+  useEffect(() => {
     dispatch(FindUSer());
-    console.log('find user!')
-
-  },[])
+    console.log("find user!");
+  }, []);
 
   return (
     <div className="App">
@@ -32,11 +31,13 @@ function App(): JSX.Element {
           <Route path="/home" element={<Home />} />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/createProduct" element={<FormCreate />} />
-          {/* <Route path="/editProduct/:id" element={<Edit />} /> */}
+          <Route path="/editProduct/:id" element={<Edit />} />
           <Route path="/products" element={<Products />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/loading" element={<Loading />} />
+          {/* <Route path="/loading" element={<Loading />} /> */}
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/adminMode" element={<AdminModeCards />} />
         </Routes>
       </BrowserRouter>
     </div>

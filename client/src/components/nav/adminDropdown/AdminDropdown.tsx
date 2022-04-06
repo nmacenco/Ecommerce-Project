@@ -19,9 +19,9 @@ const AdminDropdown = () => {
         <Link className="dropdown-item" to="/createProduct">
           Create product
         </Link>
-        <a className="dropdown-item" href="#">
+        <Link to={'/adminMode'} className="dropdown-item" >
           Admin mode
-        </a>
+        </Link>
         <div className="dropdown-divider"></div>
         <a className="dropdown-item" href="#">
           Log out
