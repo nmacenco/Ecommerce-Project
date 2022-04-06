@@ -8,7 +8,7 @@ const {
   logOut,
   googleLogIn,
   googleLogOut,
-  googleUpdateProfile
+  googleUpdateProfile,
 } = require("../controllers/user.js");
 const {
   adminGetUsers,
@@ -23,11 +23,13 @@ const { isAdmin, isLoggedIn } = require("../middleware/auth");
 //Creating routes and adding the controllers.
 const userRouter = express.Router();
 
-//admin
+//
+
+
 userRouter.get("/admin/users", isLoggedIn, isAdmin, adminGetUsers);
 userRouter.get("/admin/users/:id", isLoggedIn, isAdmin, adminGetUser);
 userRouter.put("/admin/users/:id", isLoggedIn, isAdmin, adminUpdateUser);
-userRouter.get("/admin/users/:id/getOrders",isLoggedIn,isAdmin,getUserOrders);
+userRouter.get("/admin/users/getOrders/:id", isLoggedIn, isAdmin,getUserOrders);
 userRouter.post("/admin/users", isLoggedIn, isAdmin, adminCreateUser);
 
 //user
@@ -50,7 +52,7 @@ userRouter.get(
   passport.authenticate("google"),
   googleLogIn
 );
-userRouter.get("/googleLogOut", isLoggedIn,googleLogOut);
-userRouter.put('/updateGoogleProfile',isLoggedIn,googleUpdateProfile);
+userRouter.get("/googleLogOut", isLoggedIn, googleLogOut);
+userRouter.put("/updateGoogleProfile", isLoggedIn, googleUpdateProfile);
 
 module.exports = userRouter;

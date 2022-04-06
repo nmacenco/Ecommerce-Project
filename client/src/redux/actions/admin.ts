@@ -31,8 +31,7 @@ export const deleteProduct = (id: string | undefined) => {
   export const putProducts = (editProduct: ProductForm, id: string | undefined) => {
     try {
       return async (dispatch: Dispatch) => {
-        await axios.put(`${URL}products/${id}`, editProduct);
-        alert("Product updated succesfully");
+        await axios.put(`${URL}${id}`, editProduct);
       };
     } catch (error) {
       alert(error);

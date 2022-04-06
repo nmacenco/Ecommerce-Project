@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { User } from "../interface";
+import { Page, User } from "../interface";
 import { Product } from "../interface";
 /**
  * import .... from 'userReducer'
@@ -12,6 +12,7 @@ import { reducerCategories, CATEGORIES } from './categoriesReducer';
 import { ORDER_STATE, reducerOrderProducts } from './orderProductsReducer';
 import { FILTERED_STATE , reducerFilterProducts } from './filterByCategoryReducer';
 import { BRANDS, reducerBrands } from "./brandsReducer";
+import setPageReducer, { PAGE } from "./setPageReducer";
 
 interface GLOBAL_STATE {
   user: User | null;
@@ -21,6 +22,7 @@ interface GLOBAL_STATE {
   orderedProducts: ORDER_STATE;
   filteredProducts: FILTERED_STATE;
   brands:BRANDS;
+  page : PAGE ; 
 }
 
 export const rootReducer = combineReducers<GLOBAL_STATE>({
@@ -30,7 +32,8 @@ export const rootReducer = combineReducers<GLOBAL_STATE>({
   categories : reducerCategories,
   orderedProducts: reducerOrderProducts ,
   filteredProducts : reducerFilterProducts,
-  brands: reducerBrands
+  brands: reducerBrands ,
+  page : setPageReducer, 
 });
 
 export type State = ReturnType<typeof rootReducer>;
