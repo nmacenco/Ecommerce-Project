@@ -117,10 +117,9 @@ const updateUser = async (req, res) => {
 };
 
 const getSingleUser = async (req, res) => {
-  let { id } = req.params;
 
   try {
-    // let id = req.userID;
+    let id = req.userID;
 
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
@@ -204,7 +203,7 @@ const googleUpdateProfile = async (req, res) => {
       default_shipping_address,
       CountryId,
     });
-    res.status(200).send({successMsg: "Google user updated successfully."})
+    res.status(200).send({ successMsg: "Google user updated successfully." });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -263,25 +262,34 @@ const logOut = async (req, res) => {
 };
 
 const getUserOrders = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.userID;
   try {
-    let dataOrders = await Order.findAll({
-      where: {
-        id,
-      }
-    });
-    if (!dataOrders.length) {
-      res.status(404).send({ errorMsg: "Oders not found" });
+    console.log(id);
+    if (id) {
+      let dataOrders = await Order.findAll({
+        where: {
+          UserId: id,
+        },
+      });
+      // if (!dataOrders.length) {
+      //   res.status(404).send({ errorMsg: "Oders not found" });
+      // }
+      dataOrders = dataOrders.map((Order) => {
+        return {
+          id: Order.id,
+          total_amount: Order.total_amount,
+          email_address: Order.email_address,
+          billing_address: Order.billing_address,
+          UserId: Order.UserId,
+          status: Order.status,
+        };
+      });
+      res
+        .status(200)
+        .send({ successMsg: "Here are your Ordes.", data: dataOrders });
+    } else {
+      res.status(404).send({ errorMsg: "missing id" });
     }
-    dataOrders = dataOrders.map((Order) => {
-      return {
-        name: Order.name,
-        id: Order.id,
-      };
-    });
-    res
-      .status(200)
-      .send({ successMsg: "Here are your Ordes.", data: dataOrders });
   } catch (error) {
     res.status(500).send({ errorMsg: error });
   }
