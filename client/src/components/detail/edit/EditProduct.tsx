@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import { displayPartsToString } from "typescript";
+import swal from "sweetalert";
 import { putProducts } from "../../../redux/actions/admin";
 import { getBrands } from "../../../redux/actions/brands";
 import {
@@ -9,10 +9,10 @@ import {
   getSubcategories,
 } from "../../../redux/actions/categories";
 import { getProductDetail } from "../../../redux/actions/productDetail";
-import { Brand, ProductForm, Subcategory } from "../../../redux/interface";
+import { ProductForm, Subcategory } from "../../../redux/interface";
 import { State } from "../../../redux/reducers";
+import { errorsCheck } from "../../form/validations";
 import { EditContainer, Textarea } from "./EditProductStyles";
-import editValidations from "./editValidations";
 
 export default function EditProduct(): JSX.Element {
   const dispatch = useDispatch();
@@ -42,6 +42,7 @@ export default function EditProduct(): JSX.Element {
     BrandId: productDetail.BrandId,
     SubcategoryId: productDetail.SubcategoryId,
   });
+  const [errorsList, setErrorsList] = useState<any>(false)
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -73,13 +74,20 @@ export default function EditProduct(): JSX.Element {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log(editProduct);
-    if (editValidations(editProduct, productDetail)) {
+    let errors = errorsCheck(editProduct);
+    setErrorsList(errors)
+    if (errors === false) {
       dispatch(putProducts(editProduct, id));
-      alert("Product edit successfully");
-      navigate("/products");
+      swal({
+        title: "Product edited successfully.",
+        icon: "success"
+      })
+      navigate("/products")
     } else {
-      alert("Something is wrong");
+      swal({
+        title: "Complete the form properly.",
+        icon: "error"
+      })
     }
   };
 
@@ -101,6 +109,7 @@ export default function EditProduct(): JSX.Element {
             onChange={(e) => handleChange(e)}
             value={editProduct.name}
           />
+          <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p>
         </div>
         <div className="form-group me-1">
           <label className="form-label mt-4">Brand</label>
@@ -139,6 +148,7 @@ export default function EditProduct(): JSX.Element {
             onChange={(e) => handleChange(e)}
             value={editProduct.image}
           />
+          <p className="text-danger">{errorsList.image ? errorsList.image : "⠀"}</p>
         </div>
         <div className="form-group">
           <label htmlFor="exampleTextarea" className="form-label mt-4">
@@ -152,6 +162,7 @@ export default function EditProduct(): JSX.Element {
             onChange={(e) => handleChange(e)}
             value={editProduct.description}
           />
+          <p className="text-danger">{errorsList.description ? errorsList.description : "⠀"}</p>
         </div>
         <div className="d-flex">
           <div className="form-group flex-fill">
@@ -208,6 +219,7 @@ export default function EditProduct(): JSX.Element {
               onChange={(e) => handleChange(e)}
               value={editProduct.price}
             />
+            <p className="text-danger">{errorsList.price ? errorsList.price : "⠀"}</p>
           </div>
           <div className="form-group mx-2 mx-md-3">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
@@ -222,6 +234,7 @@ export default function EditProduct(): JSX.Element {
               onChange={(e) => handleChange(e)}
               value={editProduct.weight}
             />
+            <p className="text-danger">{errorsList.weight ? errorsList.weight : "⠀"}</p>
           </div>
           <div className="form-group ml-1 ml-md-2">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
@@ -236,6 +249,7 @@ export default function EditProduct(): JSX.Element {
               onChange={(e) => handleChange(e)}
               value={editProduct.stock}
             />
+            <p className="text-danger">{errorsList.stock ? errorsList.stock : "⠀"}</p>
           </div>
         </div>
         <div className="text-center">

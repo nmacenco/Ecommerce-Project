@@ -18,7 +18,7 @@ import {
 import { State } from "../../redux/reducers";
 import { Textarea } from "../detail/edit/EditProductStyles";
 import { FormContainer } from "./FormCreateStyles";
-import validations from "./validations";
+import { Errors, errorsCheck, } from "./validations";
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
@@ -34,6 +34,7 @@ export default function FromCreate(): JSX.Element {
     BrandId: 0,
     SubcategoryId: 0,
   });
+  const [errorsList, setErrorsList] = useState<any>(false)
   const categoriesList = useSelector((state: State) => state.categories);
   const brandsList = useSelector((state: State) => state.brands);
   const subcategoriesList = useSelector(
@@ -73,10 +74,11 @@ export default function FromCreate(): JSX.Element {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (validations(product) === true) {
+    let errors = errorsCheck(product);
+    setErrorsList(errors)
+    if (errors === false) {
       dispatch(postProduct(product));
       dispatch(resetFilterProducts())
-      // dispatch(resetPoducts())
       swal({
         title: "Product created successfully",
         icon: "success"
@@ -84,7 +86,7 @@ export default function FromCreate(): JSX.Element {
       navigate("/products")
     } else {
       swal({
-        title: "Form is incomplete",
+        title: "Complete the form properly.",
         icon: "error"
       })
     }
@@ -107,6 +109,7 @@ export default function FromCreate(): JSX.Element {
             placeholder="Enter name"
             onChange={(e) => handleChange(e)}
           />
+          <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p>
         </div>
         <div className="form-group me-1">
           <label className="form-label mt-4">Brand</label>
@@ -121,6 +124,7 @@ export default function FromCreate(): JSX.Element {
               return <option value={brand.id}>{brand.name}</option>;
             })}
           </select>
+          <p className="text-danger">{errorsList.BrandId ? errorsList.BrandId : "⠀"}</p>
         </div>
         <div className="form-group">
           <label htmlFor="exampleInputPassword1" className="form-label mt-4">
@@ -135,13 +139,13 @@ export default function FromCreate(): JSX.Element {
             value={product.image}
             onChange={(e) => handleChange(e)}
           />
+          <p className="text-danger">{errorsList.image ? errorsList.image : "⠀"}</p>
         </div>
         <div className="form-group">
           <label htmlFor="exampleTextarea" className="form-label mt-4">
             Description
           </label>
           <Textarea
-            // type="textarea"
             className="form-control"
             id="exampleTextarea"
             name="description"
@@ -149,6 +153,7 @@ export default function FromCreate(): JSX.Element {
             value={product.description}
             onChange={(e) => handleChange(e)}
           />
+          <p className="text-danger">{errorsList.description ? errorsList.description : "⠀"}</p>
         </div>
         <div className="d-flex">
           <div className="form-group flex-fill">
@@ -163,6 +168,7 @@ export default function FromCreate(): JSX.Element {
                 return <option value={category.id}>{category.name}</option>;
               })}
             </select>
+            
           </div>
           <div className="form-group flex-fill ms-2">
             <label className="form-label mt-4">Subcategory</label>
@@ -180,6 +186,7 @@ export default function FromCreate(): JSX.Element {
                   );
                 })}
             </select>
+            <p className="text-danger">{errorsList.subcategory ? errorsList.subcategory : "⠀"}</p>
           </div>
         </div>
         <div className="d-flex justify-content-center">
@@ -196,6 +203,7 @@ export default function FromCreate(): JSX.Element {
               value={product.price}
               onChange={(e) => handleChange(e)}
             />
+            <p className="text-danger">{errorsList.price ? errorsList.price : "⠀"}</p>
           </div>
           <div className="form-group mx-2 mx-md-3">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
@@ -210,6 +218,7 @@ export default function FromCreate(): JSX.Element {
               value={product.weight}
               onChange={(e) => handleChange(e)}
             />
+            <p className="text-danger">{errorsList.weight ? errorsList.weight : "⠀"}</p>
           </div>
           <div className="form-group ml-1 ml-md-2">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
@@ -224,6 +233,7 @@ export default function FromCreate(): JSX.Element {
               value={product.stock}
               onChange={(e) => handleChange(e)}
             />
+            <p className="text-danger">{errorsList.stock ? errorsList.stock : "⠀"}</p>
           </div>
         </div>
         <div className="text-center">

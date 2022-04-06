@@ -1,19 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoriesContainer, Select } from "./CategoriesStyles";
+import { CategoriesContainer } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
-import {getCategories,getSubcategories} from "../../../redux/actions/categories";
-import { filterProducts } from "../../../redux/actions/filterByCategory";
-import { Product } from "../../../redux/interface";
+import { getCategories, getSubcategories } from "../../../redux/actions/categories";
+import { chargeFilter } from "../../../redux/actions/filterByCategory";
 import { ORDER } from "../cards/Cards";
-import { productNotFound } from "../../../redux/actions/products";
 import { getBrands } from "../../../redux/actions/brands";
-import { filterByBrand } from "../../../redux/actions/filterByBrand";
 
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
+  const allProducts = useSelector((state: State) => state.products.products)
   const categories = useSelector((state: State) => state.categories);
-  const allProducts = useSelector((state: State) => state.products.copyProducts);
   const brands = useSelector((state: State) => state.brands.brands);
 
   useEffect(() => {
@@ -22,16 +19,17 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
     dispatch(getBrands());
   }, []);
 
-  function handleFilter(e: any): void {
-    dispatch(productNotFound(false))
-    dispatch(filterProducts(e.target.value));
-    orders(e.target.value)
+  useEffect(() => {
+    dispatch(chargeFilter(allProducts))
+  }, [allProducts.length > 0])
+
+  function handleFilter(e: string): void {
+    orders(e)
     page(1);
   }
-  function handlerFIlterByBrand(e: any): void {
-    dispatch(productNotFound(false))
-    dispatch(filterByBrand(e.target.innerHTML));
-    orders(e.target.value)
+
+  function handlerFIlterByBrand(e: string): void {
+    orders(e)
     page(1);
   }
 
@@ -90,7 +88,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                               className="btn p-1 text-start"
                               key={i}
                               value={subcategory.name}
-                              onClick={(e) => handleFilter(e)}
+                              onClick={() => handleFilter(subcategory.name)}
                             >
                               {subcategory.name}
                             </button>
@@ -151,7 +149,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
           <div className="accordion-body">
             {brands.map((brand, i) => {
               return (
-                <div  key={i}>
+                <div key={i}>
                   <h2
                     className="accordion-header"
                     id={brand.name.replace(/ /g, "") + "label"}
@@ -163,7 +161,8 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                       className="btn p-1 text-start"
                       key={i}
                       aria-controls={brand.name.replace(/ /g, "")}
-                      onClick={(e) => handlerFIlterByBrand(e)}
+                      value={brand.name}
+                      onClick={() => handlerFIlterByBrand(brand.name)}
                     >
                       {brand.name}
                     </button>
@@ -174,13 +173,12 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                     aria-labelledby={brand.id + "label"}
                     data-bs-parent="#categories"
                   >
-
                   </div>
                 </div>
               );
             })}
           </div>
-      </div>
+        </div>
       </div>
     </CategoriesContainer>
   );

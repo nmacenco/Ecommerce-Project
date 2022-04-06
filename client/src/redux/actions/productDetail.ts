@@ -34,3 +34,18 @@ export const deleteProductDetail = () => {
     }
   }
 };
+
+
+export const createBlockDetail=(title:string,description:string,answer:any)=>{
+
+  try{
+    /**
+     * creacion de la Question o del Rewie
+     */
+
+
+  }catch(error){
+    console.log('error en create Question!');
+  }
+
+}

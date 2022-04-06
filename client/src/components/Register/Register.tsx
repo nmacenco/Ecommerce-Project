@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import validator, { validateForms } from '../../helpers/validateForm';
-import { CreateUser } from '../../redux/actions/user';
+import { CreateUser, IdentGoogle } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
 import Form from '../form/Form';
 import  {useNavigate} from 'react-router';
@@ -91,6 +91,12 @@ const Register=():JSX.Element=>{
 
     }
 
+    const SinUpGoogle = () => {
+        console.log('Login with Google');
+        dispatch(IdentGoogle('/signInWithGoogle'));
+
+    }
+
 
     return(
        <Form title='Register' >
@@ -130,6 +136,14 @@ const Register=():JSX.Element=>{
             <div>
                 <input type='text' placeholder='Default shipping address...' name='default_shipping_address' onChange={FormChange} className={checkError(error.default_shipping_address)} />
                 {error.default_shipping_address && <b className='invalid-feedback'>{error.default_shipping_address}</b>}
+            </div>
+            <div className='google form-log' onClick={SinUpGoogle}>
+                <div>
+                    <img src='https://freesvg.org/img/1534129544.png' />
+                </div>
+                <span>
+                    Continue with Google
+                </span>
             </div>
             <article>
                 {

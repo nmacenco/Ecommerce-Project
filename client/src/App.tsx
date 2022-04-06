@@ -14,6 +14,7 @@ import AdminModeCards from "./components/products/cards/AdminModeCards";
 import { useDispatch } from "react-redux";
 import { FindUSer } from "./redux/actions/user";
 import Cart from "./components/cart/Cart";
+import CreateCategories from "./components/products/categories/create/CreateCategories";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function App(): JSX.Element {
           <Route path="/loading" element={<Loading />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/adminMode" element={<AdminModeCards />} />
+          <Route path="/createCategory" element={<CreateCategories />} />
         </Routes>
       </BrowserRouter>
     </div>
