@@ -78,7 +78,6 @@ export default function EditProduct(): JSX.Element {
     setErrorsList(errors)
     if (errors === false) {
       dispatch(putProducts(editProduct, id));
-      // dispatch(resetFilterProducts())
       swal({
         title: "Product edited successfully.",
         icon: "success"
