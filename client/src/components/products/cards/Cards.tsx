@@ -8,13 +8,12 @@ import ReactPaginate from "react-paginate";
 
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
-import { getProducts } from "../../../redux/actions/products";
 import { Data_Paginate, FILTER_BOX, Product, Subcategory } from "../../../redux/interface";
 import Loading from "../../loading/Loading";
 import Categories from "../categories/Categories";
 import { ProductsContainer } from "../ProductsStyles";
 import NotFound from "../../notFound/NotFound";
-import { chargeFilter, filterByBrand, filterProducts, removeFilter, resetFilterProducts } from "../../../redux/actions/filterByCategory";
+import { filterByBrand, filterProducts } from "../../../redux/actions/filterByCategory";
 import { execPath } from "process";
 
 export interface ORDER {
@@ -248,3 +247,11 @@ const Cards = (): JSX.Element => {
   );
 };
 export default Cards;
+function removeFilter(brand: any): any {
+  throw new Error("Function not implemented.");
+}
+
+function chargeFilter(copyProductsList: Product[]): any {
+  throw new Error("Function not implemented.");
+}
+
