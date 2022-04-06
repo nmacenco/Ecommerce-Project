@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import validator, { validateForms } from '../../helpers/validateForm';
-import { GetUSer } from '../../redux/actions/user';
+import { GetUSer, IdentGoogle } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
 import Form from '../form/Form';
 
@@ -35,7 +35,7 @@ const Login = (): JSX.Element => {
 
     }
 
-    const RegisterFetch = (event: any) => {
+    const LoginFetch = (event: any) => {
         event.preventDefault();
         const res = validateForms(error, inputs);
 
@@ -52,10 +52,13 @@ const Login = (): JSX.Element => {
             console.log('user: ',inputs);
             // dispatch(GetUSer(inputs.email,inputs.passUser))
         }
-
-
     }
 
+    const SinInGoogle=()=>{
+        console.log('Login with Google');
+        dispatch(IdentGoogle('/signInWithGoogle'));
+
+    }
 
 
     let emailStyle = error.email ? 'form-control is-invalid' : 'form-control';
@@ -71,6 +74,15 @@ const Login = (): JSX.Element => {
                 <input type='password' placeholder='Password' name='passUser' className={passStyle} onChange={RegisterChange} />
                 {error.passUser && <b className='invalid-feedback'>{error.passUser}</b>}
             </div>
+
+            <div className='google' onClick={SinInGoogle}>
+               <div>
+                    <img src='https://freesvg.org/img/1534129544.png'/>
+               </div>
+               <span>
+                   Continue with Google
+               </span>
+           </div>
             
             <article>
                 {
@@ -79,12 +91,12 @@ const Login = (): JSX.Element => {
                             Submit
                         </button>
                         :
-                        <button className='btn btn-success button-links link-Router' onClick={RegisterFetch}>
+                        <button className='btn btn-success button-links link-Router' onClick={LoginFetch}>
                             Submit
                         </button>
                 }
                 <Link to='/register' className='btn btn-secondary link-Router button-links'>
-                    Register
+                    Sin Up
                 </Link> 
             </article>
             
