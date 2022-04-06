@@ -271,9 +271,9 @@ const getUserOrders = async (req, res) => {
           UserId: id,
         },
       });
-      // if (!dataOrders.length) {
-      //   res.status(404).send({ errorMsg: "Oders not found" });
-      // }
+      if (!dataOrders.length) {
+        res.status(404).send({ errorMsg: "Oders not found" });
+      }
       dataOrders = dataOrders.map((Order) => {
         return {
           id: Order.id,

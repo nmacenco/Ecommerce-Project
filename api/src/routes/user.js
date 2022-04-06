@@ -24,13 +24,17 @@ const { isAdmin, isLoggedIn } = require("../middleware/auth");
 const userRouter = express.Router();
 
 //
+userRouter.get("/admin/users", adminGetUsers);
+userRouter.get("/admin/users/:id", adminGetUser);
+userRouter.put("/admin/users/:id", adminUpdateUser);
+userRouter.get("/admin/users/getOrders/:id", getUserOrders);
+userRouter.post("/admin/users", adminCreateUser);
 
-
-userRouter.get("/admin/users", isLoggedIn, isAdmin, adminGetUsers);
-userRouter.get("/admin/users/:id", isLoggedIn, isAdmin, adminGetUser);
-userRouter.put("/admin/users/:id", isLoggedIn, isAdmin, adminUpdateUser);
-userRouter.get("/admin/users/getOrders/:id", isLoggedIn, isAdmin,getUserOrders);
-userRouter.post("/admin/users", isLoggedIn, isAdmin, adminCreateUser);
+// userRouter.get("/admin/users", isLoggedIn, isAdmin, adminGetUsers);
+// userRouter.get("/admin/users/:id", isLoggedIn, isAdmin, adminGetUser);
+// userRouter.put("/admin/users/:id", isLoggedIn, isAdmin, adminUpdateUser);
+// userRouter.get("/admin/users/getOrders/:id", isLoggedIn, isAdmin,getUserOrders);
+// userRouter.post("/admin/users", isLoggedIn, isAdmin, adminCreateUser);
 
 //user
 userRouter.get("/auth/users", isLoggedIn, getSingleUser);
