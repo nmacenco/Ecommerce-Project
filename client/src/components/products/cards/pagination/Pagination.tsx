@@ -1,15 +1,15 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 interface props {
-  productList : number ,
-  handlePageClick : (data : any ) => void;
+  productList: number,
+  handlePageClick: (data: any) => void;
 }
 
-  export default function Pagination({ productList , handlePageClick } : props): JSX.Element {
+export default function Pagination({ productList, handlePageClick }: props): JSX.Element {
 
-    return (
+  return (
 
-      <ReactPaginate
+    <ReactPaginate
       pageCount={Math.ceil(productList / 32)}
       nextLabel={">"}
       previousLabel={"<"}
@@ -26,8 +26,8 @@ interface props {
       breakLinkClassName={"page-link"}
       activeClassName={"active"}
     ></ReactPaginate>
-    )
-  }
+  )
+}
 
 
 

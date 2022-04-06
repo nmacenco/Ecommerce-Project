@@ -1,12 +1,13 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import { FORM_SUB } from "../../components/products/categories/create/CreateCategories";
 
-import { TYPES_CATEGORIES } from "../interface";
+import { Category, TYPES_CATEGORIES } from "../interface";
 
 const URL = "http://localhost:3001/api";
 
 export function getCategories() {
-  return async function(dispatch: Dispatch) {
+  return async function (dispatch: Dispatch) {
     const categories = await axios.get(URL + "/categories");
 
     return dispatch({
@@ -16,7 +17,7 @@ export function getCategories() {
   };
 }
 export function getSubcategories() {
-  return async function(dispatch: Dispatch) {
+  return async function (dispatch: Dispatch) {
     const subcategories = await axios.get(URL + "/subcategories");
 
     return dispatch({
@@ -24,4 +25,16 @@ export function getSubcategories() {
       payload: subcategories.data.data,
     });
   };
+}
+
+export function createCategories(category: Category) {
+  return async function (dispatch: Dispatch) {
+    await axios.post(URL + "/categories", category)
+  }
+}
+
+export function createSubcategories(subcategory: FORM_SUB) {
+  return async function (dispatch: Dispatch) {
+    await axios.post(URL + "/subcategories", subcategory)
+  }
 }

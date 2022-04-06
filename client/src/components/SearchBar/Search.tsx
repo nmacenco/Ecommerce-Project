@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import searchIcon from "../../icons/search-symbol.png";
 import { productNotFound, selectProducts } from "../../redux/actions/products";
 import { setPage } from "../../redux/actions/setPage";
+import { Product } from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import { SearchForm } from "./SBar";
 
@@ -15,27 +16,27 @@ const Search = (): JSX.Element => {
   const [value, setValue] = useState<string>("");
   const [realValue, setRealValue] = useState<string>("");
 
-  const SearchRequest = (event: any) => {
+  const SearchRequest = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setProducts([]);
-    let selectArtefacts = artefacts.filter((product) => {
+    let selectArtefacts = artefacts.filter((product: Product) => {
       if (product.name.toLowerCase().includes(realValue.toLowerCase())) {
         return product;
       }
     });
     dispatch(setPage(1))
-    if (selectArtefacts.length > 0 ) {
-        dispatch(selectProducts(selectArtefacts))
+    if (selectArtefacts.length > 0) {
+      dispatch(selectProducts(selectArtefacts))
     } else {
-        dispatch(productNotFound(true))
-        setTimeout(function(){
-            dispatch(productNotFound(false))
-        }, 3000);
+      dispatch(productNotFound(true))
+      setTimeout(function () {
+        dispatch(productNotFound(false))
+      }, 3000);
     }
     // selectArtefacts.length > 0 ? dispatch(selectProducts(selectArtefacts)) : dispatch(productNotFound(true))
-    
+
     setValue("");
-    
+
   };
 
   const SearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
