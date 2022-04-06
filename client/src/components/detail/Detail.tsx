@@ -20,6 +20,7 @@ import {
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
+import NewQ from "./questions/NewQ";
 // import { isConditionalExpression } from "typescript";
 
 export default function Detail() {
@@ -27,6 +28,7 @@ export default function Detail() {
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const product = useSelector((state: State) => state.productDetail);
+  const user=useSelector((state:State)=>state.user);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -132,6 +134,7 @@ export default function Detail() {
             <Rewies/>
           </div>
           <div className="tab-pane fade m-2" id="questions">
+            {user ? <NewQ />: null}
             <Question/>
             <Question />
             <Question />
