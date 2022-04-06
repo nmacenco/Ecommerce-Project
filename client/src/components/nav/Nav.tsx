@@ -74,6 +74,7 @@ const Nav = (): JSX.Element => {
           )}
           <Routes>
             <Route path="/products" element={<Search />} />
+            <Route path="/adminMode" element={<Search />} />
           </Routes>
         </div>
       </div>

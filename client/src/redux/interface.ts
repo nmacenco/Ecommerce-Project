@@ -98,6 +98,21 @@ export interface Subcategory {
   CategoryId: number;
 }
 
+export interface Data_Paginate {
+  selected: number
+}
+
+export interface FILTER_BOX {
+  subcategory: string,
+  brand: string
+}
+
+export interface IData {
+  length: number;
+  page: (numberOfPage: number) => void;
+}
+
+
 //=======================
 // User Actions
 
@@ -159,25 +174,25 @@ export interface ORDER_PRODUCTS {
 }
 export interface CHARGE_FILTERS {
   type: TYPES_PRODUCT.CHARGE_FILTERS;
-  payload: any;
+  payload: Product[];
 }
 export interface REMOVE_FILTER {
   type: TYPES_PRODUCT.REMOVE_FILTER;
-  payload: any;
+  payload: Product[];
 }
 export interface FILTERED_CAT_PRODUCTS {
   type: TYPES_PRODUCT.FILTERED_CAT_PRODUCTS;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
-  payload: any;
+  payload: Product[];
 }
 export interface FILTERED_BRAND_PRODUCTS {
   type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS;
-  payload: any;
+  payload: Product[];
 }
 export interface FILTER_BY_BRAND {
   type: TYPES_PRODUCT.FILTER_BY_BRAND;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
-  payload: any;
+  payload: Product[];
 }
 export interface RESET_FILTERED_PRODUCTS {
   type: TYPES_PRODUCT.RESET_FILTERED_PRODUCTS;
