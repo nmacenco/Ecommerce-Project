@@ -3,6 +3,9 @@ import styled from "styled-components";
 const QuestionContainer = styled.div`
   /* border: 2px solid red; */
   width: 100%;
+  /* border-top: 2px solid black; */
+  /* border-bottom: 2px solid black; */
+  margin-bottom: 20px;
   /* display: grid;
     grid-template-columns: 10% 90%; */
 
@@ -34,6 +37,44 @@ const QuestionContent = styled.div`
     height: calc(100% - 40px);
     /* border: 2px solid red; */
     padding: 10px;
+
+    .btn-reply {
+      margin: 10px 0px 0px 10px;
+      border: none;
+      padding: 7px 12px;
+    }
+  }
+
+  form {
+    /* border: 2px solid #f00; */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    textarea{
+      padding: 7px 5px;
+      outline: none;
+
+    }
+
+    div {
+      direction: rtl;
+
+      button {
+        border: none;
+        margin: 10px 20px 0px 0px;
+        padding: 5px 10px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .close {
+    padding: 0px;
+    height: 0px;
+    overflow: hidden;
+    margin: 0px;
   }
 `;
 
@@ -50,10 +91,7 @@ const ShowQuestions = styled.div`
     margin-bottom: 10px;
   }
 
-  .close {
-    height: 0px;
-    overflow: hidden;
-  }
+  
   
 `;
 
