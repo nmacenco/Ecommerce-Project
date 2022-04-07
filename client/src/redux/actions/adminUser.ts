@@ -8,7 +8,6 @@ export const adminGetUsers = () => {
   try {
     return async (dispatch: Dispatch) => {
       const allUsers = await axios.get(`${URL}`, {
-        
         headers: {
           "auth-token":
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5MjkyODczfQ.nPKDcQG-Rfl6zEwNqabYt5Ap2EpBlhZuLvmgHxVzMO8",
@@ -16,7 +15,6 @@ export const adminGetUsers = () => {
       });
       console.log(allUsers.data.users);
       
-
       return dispatch({
         type: TYPES_ADMIN_USER.GET_USERS,
         payload: allUsers.data.users,
@@ -26,19 +24,16 @@ export const adminGetUsers = () => {
     alert(error);
   }
 };
-export const adminEditUser = () => {
+export const adminEditUser = (id : any  , UserToUpdate : any ) => {
+  console.log(UserToUpdate);
+  
   try {
     return async (dispatch: Dispatch) => {
-      const allUsers = await axios.get(`${URL}`, {
+       await axios.put(`${URL}/${id}`, UserToUpdate ,  {
         headers: {
           "auth-token":
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5MjkyODczfQ.nPKDcQG-Rfl6zEwNqabYt5Ap2EpBlhZuLvmgHxVzMO8",
         },
-      });
-
-      return dispatch({
-        type: TYPES_ADMIN_USER.GET_USERS,
-        payload: allUsers.data.users,
       });
     };
   } catch (error) {

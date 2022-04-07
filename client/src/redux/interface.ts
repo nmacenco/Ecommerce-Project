@@ -5,7 +5,8 @@ export enum TYPES_USER {
   FIND_USER,
 }
 export enum TYPES_ADMIN_USER {
-  GET_USERS = 'GET_USERS'
+  GET_USERS = 'GET_USERS',
+  UPDATE_USER = 'UPDATE_USER'
 }
 
 export enum TYPES_DETAIL {
@@ -162,6 +163,7 @@ export interface ADMIN_USER {
   type : TYPES_ADMIN_USER.GET_USERS,
   payload: Users[]
 }
+
 //=======================
 // Category Actions
 

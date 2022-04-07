@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import swal from "sweetalert";
+import { adminEditUser } from "../../../../redux/actions/adminUser";
 interface props {
   id: number;
   name: string;
@@ -30,9 +32,12 @@ const UserDetail = ({
   countryCode,
   CountryId,
 }: props) => {
+  const dispatch = useDispatch()
+
   const [userUpdate, setUserUpdate] = useState( {
     name,
     email,
+    surname,
     billing_address,
     default_shipping_address,
     role,
@@ -42,8 +47,11 @@ const UserDetail = ({
     CountryId,
   });
 
-    function roleOnChange (e:any) : void {
+    function  roleOnChange (e:any) {
       e.preventDefault()
+      // console.log(e.target.id);
+      
+      setUserUpdate({...userUpdate , role: e.target.value})
       swal({
         title: "Are you sure?",
         text: "Do you want to change this user role?",
@@ -53,10 +61,34 @@ const UserDetail = ({
           cancel: true,
           confirm: true
         }
-      }).then((value) => {
+      }).then( (value) => {
         if (value) {
-          setUserUpdate({...userUpdate , role: e.target.value})
-          // aca tengo que despachar la accion para updeitear jaja 
+          e.target.value === 'admin' ?
+          dispatch(adminEditUser( e.target.id ,{
+            name,
+            email,
+            surname,
+            billing_address,
+            default_shipping_address,
+            role : 'admin',
+            isActive,
+            country,
+            countryCode,
+            CountryId,
+          }))
+          :
+          dispatch(adminEditUser( e.target.id ,{
+            name,
+            email,
+            surname,
+            billing_address,
+            default_shipping_address,
+            role : 'user',
+            isActive,
+            country,
+            countryCode,
+            CountryId,
+          }));
           swal({
             text: "Role changed",
             icon: "success"
@@ -64,13 +96,37 @@ const UserDetail = ({
         }
       })
     }
-    console.log(userUpdate);
+    
     function isActiveOnChange(e: any): void {
       e.preventDefault();
       if (e.target.value === 'true' ) {
         setUserUpdate({...userUpdate , isActive: false})
+        dispatch(adminEditUser( e.target.id ,{
+          name,
+          email,
+          surname,
+          billing_address,
+          default_shipping_address,
+          role ,
+          isActive: false,
+          country,
+          countryCode,
+          CountryId,
+        }))
       }else if (e.target.value === 'false' ) {
         setUserUpdate({...userUpdate , isActive: true})
+        dispatch(adminEditUser( e.target.id ,{
+          name,
+          email,
+          surname,
+          billing_address,
+          default_shipping_address,
+          role ,
+          isActive: true,
+          country,
+          countryCode,
+          CountryId,
+        }))
       }
     }
     
@@ -84,11 +140,11 @@ const UserDetail = ({
       <tr className="table-light">
         <th scope="row">{name}</th>
         <td className="form-group">
-          <select onChange={(e)=> roleOnChange(e)} defaultValue={userUpdate.role} className="form-select" id="exampleSelect1">
+          <select  onChange={(e)=> roleOnChange(e)} defaultValue={userUpdate.role} className="form-select" id={`${id}`} >
             <option disabled hidden>
               {userUpdate.role}
             </option>
-            <option value = {'admin'}>Admin</option>
+            <option  value = {'admin'}>Admin</option>
             <option value = {'user'}>User</option>
           </select>
         </td>
@@ -98,7 +154,7 @@ const UserDetail = ({
               value={`${isActive}`}
               className="form-check-input"
               type="checkbox"
-              id="flexSwitchCheckChecked"
+              id={`${id}`}
               onChange={(e) => isActiveOnChange(e)}
             />
             {/* <label className="form-check-label" htmlFor="flexSwitchCheckChecked">Checked switch checkbox input</label> */}
