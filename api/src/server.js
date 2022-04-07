@@ -11,6 +11,7 @@ const {
   orderRouter,
   reviewsRouter,
   questionsRouter,  
+  mailRouter,
 } = require("./routes/allRoutes.js");
 const server = express();
 const cors = require("cors");
@@ -20,7 +21,14 @@ require("dotenv").config();
 
 //Adding middleware and configuring server
 server.name = "API";
-server.use(cors());
+const allowedOrigin= process.env.ORIGIN;
+const options = {
+  origin: allowedOrigin,
+  methods: "GET,HEAD,PUT,POST,DELETE",
+  optionsSuccessStatus: 200,
+  exposedHeaders: "auth-token",
+};
+server.use(cors(options));
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
 server.use(cookieParser());
@@ -29,7 +37,7 @@ server.use(session({ secret: "SECRET" }));
 server.use(passport.initialize());
 server.use(passport.session());
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", process.env.ORIGIN || "*"); // update to match the domain you will make the request from
+  // res.header("Access-Control-Allow-Origin", process.env.ORIGIN || "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
     "Access-Control-Allow-Headers",
@@ -49,6 +57,7 @@ server.use("/api", subCategoryRouter);
 server.use("/api", orderRouter);
 server.use("/api", reviewsRouter);
 server.use("/api", questionsRouter);
+server.use("/api", mailRouter);
 
 // Error catching endware.
 server.use((err, req, res, next) => {

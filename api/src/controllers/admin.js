@@ -32,6 +32,7 @@ const adminGetUsers = async (req, res) => {
           countryCode: user.Country.code,
           CountryId: user.Country.id,
           tokens: user.tokens,
+          needsPasswordReset: user.needsPasswordReset,
         };
       });
       res.status(200).send({ successMsg: "Here are your users.", users });
@@ -71,6 +72,7 @@ const adminGetUser = async (req, res) => {
       isActive: user.isActive,
       tokens: user.tokens,
       signedInWithGoogle: user.signedInWithGoogle,
+      needsPasswordReset: user.needsPasswordReset,
     };
     res.status(200).send({ successMsg: "Here is your user.", data: user });
   } catch (error) {
@@ -88,56 +90,18 @@ const adminUpdateUser = async (req, res) => {
     if (!user) {
       return res.status(404).send({ errorMsg: "User not found." });
     }
-    let {
-      name,
-      surname,
-      password,
-      email,
-      billing_address,
-      default_shipping_address,
-      CountryId,
-      role,
-      isActive,
-    } = req.body;
-    if (
-      !name ||
-      !surname ||
-      !email ||
-      !billing_address ||
-      !default_shipping_address ||
-      !CountryId ||
-      !role ||
-      isActive === undefined
-    ) {
+    let { needsPasswordReset, role, isActive } = req.body;
+    if (needsPasswordReset === undefined || !role || isActive === undefined) {
       return res.status(400).send({ errorMsg: "Missing data." });
     }
-    if (email !== user.email) {
-      let doesEmailExist = await User.findOne({
-        where: { email, signedInWithGoogle: false },
-      });
-      if (doesEmailExist) {
-        return res
-          .status(400)
-          .send({ errorMsg: "Email already exists in another user." });
-      }
-    }
-    !password
-      ? (password = user.password)
-      : (password = await bcrypt.hash(password, 8));
-    const updatedUser = await user.update({
-      name,
-      surname,
-      password,
-      email,
-      billing_address,
-      default_shipping_address,
-      CountryId,
+    await user.update({
+      needsPasswordReset,
       role,
       isActive,
     });
     res
       .status(200)
-      .send({ successMsg: "User successfully updated.", data: updatedUser });
+      .send({ successMsg: "User successfully updated." });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }

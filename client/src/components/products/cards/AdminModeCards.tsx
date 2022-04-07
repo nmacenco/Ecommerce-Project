@@ -14,11 +14,12 @@ import AdminModeCard from "./card/AdminModeCard";
 import NotFound from "../../notFound/NotFound";
 import Pagination from "./pagination/Pagination";
 import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
+import { deleteProduct } from "../../../redux/actions/admin";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
   orders: (typeorder: string) => void;
-  AdmOrders: (typeorder: string) => void;
+  AdmOrders: (typeorder: number) => void;
 }
 
 const AdminModeCards = (): JSX.Element => {
@@ -65,20 +66,19 @@ const AdminModeCards = (): JSX.Element => {
   const AdmOrders = (typeorder: string): void => {
     setAdmOrders(typeorder);
   };
+
   useEffect(() => {
-    // if (!productsList.length) {
     dispatch(getProducts());
-    // }
   }, [Admorders]);
+
+
 
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
-  // newProductsList = productsList.slice(firstProduct, finalProduct);
-  // let newProductsList: Product[] = [];
   filteredProductList.length > 0
     ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
-    : (newProductsList = productsList.slice(firstProduct, finalProduct));
+    : (newProductsList = copyProductsList.slice(firstProduct, finalProduct));
 
   const handlePageClick = (data: Data_Paginate) => {
     setCurrentPage(data.selected + 1);
