@@ -10,7 +10,7 @@ export const adminGetUsers = () => {
       const allUsers = await axios.get(`${URL}`, {
         headers: {
           "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5Mjc0Njk0fQ.XcZ_B6SXT3sLRQn-lHPwdQr-FbQMu9pmDzbMnZvtsNI",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5MjkyODczfQ.nPKDcQG-Rfl6zEwNqabYt5Ap2EpBlhZuLvmgHxVzMO8",
         },
       });
 
@@ -29,7 +29,7 @@ export const adminEditUser = () => {
       const allUsers = await axios.get(`${URL}`, {
         headers: {
           "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5Mjc0Njk0fQ.XcZ_B6SXT3sLRQn-lHPwdQr-FbQMu9pmDzbMnZvtsNI",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5MjkyODczfQ.nPKDcQG-Rfl6zEwNqabYt5Ap2EpBlhZuLvmgHxVzMO8",
         },
       });
 
