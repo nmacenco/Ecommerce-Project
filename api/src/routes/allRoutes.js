@@ -8,6 +8,9 @@ const orderRouter = require("./order.js");
 const reviewsRouter = require("./review");
 const questionsRouter = require("./question");
 const orderDetailRouter = require("./orderdetaile");
+const mailRouter = require("./mailer");
+
+
 
 module.exports = {
   productRouter,
@@ -20,4 +23,5 @@ module.exports = {
   reviewsRouter,
   questionsRouter,
   orderDetailRouter,
+  mailRouter,
 };

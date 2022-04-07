@@ -48,3 +48,12 @@ export const resetPoducts = () => {
     payload: []
   };
 };
+export const productNotFound = (data : boolean) => {
+  return {
+    type: TYPES_PRODUCT.PRODUCT_NOT_FOUND,
+    payload: data
+  };
+};
+
+
+

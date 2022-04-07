@@ -12,6 +12,8 @@ const {
   reviewsRouter,
   questionsRouter,
   orderDetailRouter,
+  questionsRouter, 
+  mailRouter,
 } = require("./routes/allRoutes.js");
 const server = express();
 const cors = require("cors");
@@ -51,6 +53,8 @@ server.use("/api", orderRouter);
 server.use("/api", orderDetailRouter);
 server.use("/api", reviewsRouter);
 server.use("/api", questionsRouter);
+server.use("/api", mailRouter);
+
 
 // Error catching endware.
 server.use((err, req, res, next) => {

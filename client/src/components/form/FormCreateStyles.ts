@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const EditContainer = styled.div`
+export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,6 +9,3 @@ export const EditContainer = styled.div`
   width: 100vw;
 `;
 
-export const Textarea = styled.textarea`
-  height: 150px;
-`;
