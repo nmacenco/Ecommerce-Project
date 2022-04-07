@@ -50,13 +50,13 @@ const Login = (): JSX.Element => {
 
         if(!user){
             console.log('user: ',inputs);
-            // dispatch(GetUSer(inputs.email,inputs.passUser))
+            dispatch(GetUSer(inputs.email,inputs.passUser))
         }
     }
 
     const SinInGoogle=()=>{
         console.log('Login with Google');
-        dispatch(IdentGoogle('/signInWithGoogle'));
+        dispatch(IdentGoogle('/signInWithGoogle/callback'));
 
     }
 

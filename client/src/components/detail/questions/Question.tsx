@@ -2,11 +2,27 @@ import React, { useState } from 'react';
 import Answer from './Answers';
 import Styled from './QuestionStyle';
 
-const Question = (): JSX.Element => {
+interface Prop {
+    title: string,
+    body: string,
+    answer: string,
+    user: any
+
+}
+
+
+const Question = ({ title, body, answer, user }: Prop): JSX.Element => {
 
     const [show, setShow] = useState<boolean>(false);
+    const [reply, setReply] = useState<boolean>(false);
 
-   
+
+    const FetchQuestion = (event: any) => {
+        event.preventDefault();
+        // console.log(event.target.reply.value)
+
+    }
+
 
     return (
         <Styled.container>
@@ -16,22 +32,45 @@ const Question = (): JSX.Element => {
 
             <Styled.content>
                 <header>
-                    Title of the question
+                    {title ? title : ''}
                 </header>
                 <main>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae id nesciunt,
-                    quaerat qui facere veritatis repellat sapiente. Blanditiis dolores ducimus
-                    excepturi natus nesciunt assumenda ut ratione officia quo exercitationem! Expedita?
+                    <div>
+                        {body ? body : ''}
+                    </div>
+                    {
+                        user ?
+                            <>
+                                <button className='btn-reply' onClick={() => setReply(!reply)}>
+                                    Reply
+                                </button>
+                                <form className={reply ? '' : 'close'} onSubmit={FetchQuestion}>
+                                    <textarea name="reply" placeholder='Reply...' ></textarea>
+                                    <div>
+                                        <button>
+                                            Reply
+                                        </button>
+                                    </div>
+                                </form></>
+                            :
+                            null
+                    }
+
                     <Styled.answers>
-                        <aside className='show-answer' onClick={() => setShow(!show)}>
-                            View answers
-                        </aside>
-                        {console.log('sho is: ',show)}
-                        <div className={show ? '': 'close'}>
-                            <Answer />
-                            <br/>
-                            <Answer />
-                        </div>
+                        {
+                            answer ?
+                                <>
+                                    <aside className='show-answer' onClick={() => setShow(!show)}>
+                                        View answers
+                                    </aside>
+                                    <div className={show ? '' : 'close'}>
+                                        <Answer />
+                                        <br />
+                                        <Answer />
+                                    </div></>
+                                :
+                                null
+                        }
                     </Styled.answers>
                 </main>
 
