@@ -28,7 +28,7 @@ export default function Detail() {
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const product = useSelector((state: State) => state.productDetail);
-  const user=useSelector((state:State)=>state.user);
+  const user = useSelector((state: State) => state.user);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -131,13 +131,20 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            <Rewies/>
+            <Rewies />
           </div>
           <div className="tab-pane fade m-2" id="questions">
-            {user ? <NewQ />: null}
-            <Question/>
-            <Question />
-            <Question />
+            {user ? <NewQ ProductId={product.id!} /> : null}
+            {/* {console.log('QUESTIONS: ', product.questions)} */}
+            {
+              product.questions && product.questions.map((question, i) => {
+
+                return (
+                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user}/>
+                )
+
+              })
+            }
           </div>
         </div>
       </Box>

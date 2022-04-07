@@ -3,7 +3,7 @@ import { Dispatch } from "redux"
 import { TYPES_USER, User } from "../interface";
 
 
-const URL_USER = "http://localhost:3001/api/";
+const URL_USER = "http://localhost:3001/api";
 const USER_STORAGE = "USER_LOGGED";
 
 export const CreateUser=(user:any,cb:any)=>{
@@ -12,7 +12,7 @@ export const CreateUser=(user:any,cb:any)=>{
 
         try{
             console.log(URL_USER+'users');
-            const {data}=await axios.post(URL_USER+'users',user);
+            const { data } = await axios.post(URL_USER + "/signUp", user);
 
             // if(data.error){
             //     throw new Error("Error "+data.error);
@@ -47,12 +47,31 @@ export const GetUSer=(email:string,pass:string)=>{
     return async(dispatch:Dispatch)=>{
 
         try{
-            const {data}=await axios.post(URL_USER,{email,password:pass});
 
-            dispatch({
-                type:TYPES_USER.GET_USER,
-                payload:data
-            })
+        
+            const response = await axios.post(URL_USER + "/signIn", {
+              email,
+              password: pass,
+            });
+            console.log('data: ',response.data);
+            const TOKEN = response.headers["auth-token"];
+            console.log(response);
+            console.log('TOKEN: ',TOKEN);
+            if(response.status==200){
+
+                dispatch({
+                    type:TYPES_USER.GET_USER,
+                    payload:{
+                        email,
+                    }
+                })
+                window.localStorage.setItem(
+                  USER_STORAGE,
+                  JSON.stringify({email})
+                );
+
+            }
+
 
         }catch(error){
             console.log('Error en Get_User ',error);
