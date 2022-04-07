@@ -15,7 +15,7 @@ interface props {
   countryCode: string;
   CountryId: number;
   password : string ; 
-
+  needsPasswordReset : boolean ; 
 }
 
 const UserDetail = ({
@@ -31,6 +31,7 @@ const UserDetail = ({
   country,
   countryCode,
   CountryId,
+  needsPasswordReset
 }: props) => {
   const dispatch = useDispatch()
 
@@ -45,6 +46,7 @@ const UserDetail = ({
     country,
     countryCode,
     CountryId,
+    needsPasswordReset
   });
 
     function  roleOnChange (e:any) {
@@ -65,16 +67,10 @@ const UserDetail = ({
         if (value) {
           e.target.value === 'admin' ?
           dispatch(adminEditUser( e.target.id ,{
-            name,
-            email,
-            surname,
-            billing_address,
-            default_shipping_address,
             role : 'admin',
             isActive,
-            country,
-            countryCode,
-            CountryId,
+            needsPasswordReset
+
           }))
           :
           dispatch(adminEditUser( e.target.id ,{

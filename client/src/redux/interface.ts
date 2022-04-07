@@ -74,6 +74,7 @@ export interface Users {
   role: string;
   isActive: boolean;
   tokens: string[];
+  needsPasswordReset : boolean;
 }
 
 export interface ProductForm {

@@ -48,7 +48,7 @@ const AdminUserMode = (): JSX.Element => {
                         country = {user.country}
                         countryCode = {user.countryCode}
                         CountryId = {user.CountryId}
-
+                        needsPasswordReset = {user.needsPasswordReset}
                       />
                     );
                   })}
