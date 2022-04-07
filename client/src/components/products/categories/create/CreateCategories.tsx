@@ -66,16 +66,19 @@ export default function CreateCategories(): JSX.Element {
             ...newSubcategory,
             name: e.target.value
         })
+        setNewCategory({
+            ...newCategory,
+            name: newCategory.name.trim(),
+        })
     }
 
     const  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (newCategory.name !== "") {
             const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
-            if (putId.length === 0) dispatch(createCategories(newCategory))
+            if (putId.length === 0)  dispatch(createCategories(newCategory))
 
             if (newSubcategory.name.length !== 0) {
-                console.log('se despacha');
                 await dispatch(createSubcategories(newSubcategory))
                 dispatch(resetSubcategories())
             }

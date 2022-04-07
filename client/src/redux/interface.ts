@@ -72,6 +72,7 @@ export interface Users {
   default_shipping_address: string;
   role: string;
   isActive: boolean;
+  tokens: string[];
 }
 
 export interface ProductForm {

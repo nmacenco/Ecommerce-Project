@@ -37,6 +37,8 @@ const AdminUserMode = (): JSX.Element => {
                     return (
                       <UserDetail
                         id={user.id}
+                        surname = {user.surname}
+                        password = {user.password}
                         name={user.name}
                         email = {user.email}
                         billing_address = {user.billing_address}

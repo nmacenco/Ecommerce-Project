@@ -3,6 +3,7 @@ import swal from "sweetalert";
 interface props {
   id: number;
   name: string;
+  surname: string;
   email: string;
   billing_address: string;
   default_shipping_address: string;
@@ -11,11 +12,15 @@ interface props {
   country: string;
   countryCode: string;
   CountryId: number;
+  password : string ; 
+
 }
 
 const UserDetail = ({
   id,
   name,
+  password,
+  surname,
   email,
   billing_address,
   default_shipping_address,
@@ -26,7 +31,6 @@ const UserDetail = ({
   CountryId,
 }: props) => {
   const [userUpdate, setUserUpdate] = useState( {
-    id,
     name,
     email,
     billing_address,
