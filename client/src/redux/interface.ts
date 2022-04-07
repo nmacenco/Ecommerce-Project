@@ -40,6 +40,10 @@ export enum TYPES_PRODUCT {
   FILTER_BY_BRAND = "FILTER_BY_BRAND",
 }
 
+export enum TYPES_CART {
+  ADD_PRODUCT = "ADD_PRODUCT",
+}
+
 //=======================
 // Objects Interfaces
 
@@ -86,6 +90,7 @@ export interface Product {
   subcategory: string;
   CategoryId: number;
   category: number;
+  count: number;
 }
 
 export interface Category {
@@ -158,6 +163,13 @@ export interface GET_BRANDS {
 export interface SET_PAGE {
   type: TYPES_PAGE.SET_PAGE;
   payload: Page;
+}
+
+//====================
+//Cart Actions
+export interface ADD_PRODUCT {
+  type: TYPES_CART.ADD_PRODUCT;
+  payload: Product;
 }
 
 //=====================
@@ -247,3 +259,5 @@ export type BrandsActions = GET_BRANDS;
 export type AdminActions = DELETE_PRODUCT;
 
 export type SetPage = SET_PAGE;
+
+export type CartActions = ADD_PRODUCT;

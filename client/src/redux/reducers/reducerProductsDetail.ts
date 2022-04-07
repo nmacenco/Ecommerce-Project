@@ -16,7 +16,8 @@ const INITIAL_PRODUCT = {
   CategoryId : 0 , 
   category : 0 ,
   questions:[],
-  rewies:[] 
+  rewies:[], 
+  count:0
 };
 
 export const productDetailReducer = (state: Product = INITIAL_PRODUCT, action: Actions): Product => {

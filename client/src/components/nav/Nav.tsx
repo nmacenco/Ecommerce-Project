@@ -8,25 +8,28 @@ import { Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
 import { LogoutUser } from "../../redux/actions/user";
-import { getProducts, productNotFound, resetPoducts } from "../../redux/actions/products";
+import {
+  getProducts,
+  productNotFound,
+  resetPoducts,
+} from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
 import { Routes } from "react-router-dom";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
   const user = useSelector((state: State) => state.user);
+  const productsCart = useSelector((state: State) => state.cart.cart);
 
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
   };
 
-
-
   function handleClickProducts() {
-    dispatch(productNotFound(false))
-    dispatch(resetFilterProducts())
-    dispatch(resetPoducts())
+    dispatch(productNotFound(false));
+    dispatch(resetFilterProducts());
+    dispatch(resetPoducts());
     // dispatch(resetPoducts())
     dispatch(deleteProductDetail());
     dispatch(getProducts());
@@ -82,6 +85,11 @@ const Nav = (): JSX.Element => {
       <div className="ms-auto mb-auto py-lg-3">
         <Link className="nav-item" to={"/cart"}>
           <CartIcon src={cartIcon} />
+          {productsCart.length > 0 && (
+            <span className="badge rounded-pill bg-light text-dark fs-5">
+              {productsCart.reduce((a,product) => a + product.count,0)}
+            </span>
+          )}
         </Link>
         <button
           className="navbar-toggler nav-item"
