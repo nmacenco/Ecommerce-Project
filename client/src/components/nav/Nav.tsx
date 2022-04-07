@@ -15,6 +15,7 @@ import {
 } from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
 import { Routes } from "react-router-dom";
+import { Product } from "../../redux/interface";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ const Nav = (): JSX.Element => {
           <CartIcon src={cartIcon} />
           {productsCart.length > 0 && (
             <span className="badge rounded-pill bg-light text-dark fs-5">
-              {productsCart.reduce((a,product) => a + product.count,0)}
+              {productsCart.reduce((a:number,product: Product) => a + product.count,0)}
             </span>
           )}
         </Link>

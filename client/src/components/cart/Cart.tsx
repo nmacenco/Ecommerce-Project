@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Product } from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import CartProduct from "./cartProduct/CartProduct";
 import { CartContainer } from "./CartStyles";
@@ -21,7 +22,7 @@ const Cart = (): JSX.Element => {
       ) : (
         <div>
           <div className="mt-5">
-            {productsCart.map((product) => (
+            {productsCart.map((product: Product) => (
               <CartProduct
                 key={product.id}
                 name={product.name}
@@ -34,8 +35,8 @@ const Cart = (): JSX.Element => {
           <div className="d-flex justify-content-between mt-4 align-items-center">
             <h3>
               Total: $
-              {productsCart.reduce((a, product) => a + product.price * product.count,0)}
-              ( {productsCart.reduce((a, product) => a + product.count,0)} products )
+              {productsCart.reduce((a: number, product: Product) => a + product.price * product.count,0)}
+              ( {productsCart.reduce((a: number, product: Product) => a + product.count,0)} products )
             </h3>
             <div>
               <button className="btn btn-primary">Confirm order</button>

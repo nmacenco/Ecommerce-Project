@@ -8,6 +8,8 @@ export enum TYPES_USER {
 export enum TYPES_DETAIL {
   PRODUCT_DETAIL = "PRODUCT_DETAIL",
   DELETE_PRODUCT_DETAIL = "DELETE_PRODUCT_DETAIL",
+  CREATE_QUESTION = "CREATE_QUESTION",
+  CREATE_REWIE='CREATE_REWIE'
 }
 
 export enum TYPES_ADMIN {
@@ -75,6 +77,7 @@ export interface Brand {
   id: number;
 }
 
+
 export interface Product {
   SubcategoryId: number;
   id?: number;
@@ -91,6 +94,20 @@ export interface Product {
   CategoryId: number;
   category: number;
   count: number;
+  questions:any[];
+  rewies:any[]
+}
+
+export interface Question{
+  id?:number,
+  title:string,
+  description:string
+}
+export interface Rewie {
+  id?: number;
+  title: string;
+  description: string;
+  ProductId:number
 }
 
 export interface Category {
@@ -234,6 +251,16 @@ export interface DELETE_PRODUCT_DETAIL {
   type: TYPES_DETAIL.DELETE_PRODUCT_DETAIL;
   payload: Product;
 }
+
+export interface CREATE_QUESTION {
+  type: TYPES_DETAIL;
+  payload: Question;
+}
+
+export interface CREATE_REWIE {
+  type: TYPES_DETAIL;
+  payload: Rewie;
+}
 //======================
 //Admin Actions
 export interface DELETE_PRODUCT {
@@ -246,7 +273,7 @@ export interface AXIOSDATA {
   data: Product[];
 }
 
-export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
+export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL | CREATE_QUESTION | CREATE_REWIE ;
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 

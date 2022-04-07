@@ -1,13 +1,15 @@
-import React, {useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { AdminProductIMG } from "./AdminModeCardStyles";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../../../redux/actions/admin";
-import { useDispatch } from "react-redux";
-import { getProducts} from "../../../../redux/actions/products";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../../../../redux/actions/products";
 import { ORDER } from "../Cards";
-import { resetFilterProducts } from "../../../../redux/actions/filterByCategory";
+import { chargeFilter, resetFilterProducts } from "../../../../redux/actions/filterByCategory";
 import { getProductDetail } from "../../../../redux/actions/productDetail";
 import swal from "sweetalert";
+import { State } from "../../../../redux/reducers";
+import { Product } from "../../../../redux/interface";
 interface props {
   name: string;
   image: string;
@@ -17,11 +19,11 @@ interface props {
   page: (typeorder: number) => void;
 }
 
-const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) => {
-  const dispatch = useDispatch();
-  const stringID = String(id);
+const AdminModeCard = ({ name, image, price, id, AdmOrders, page }: props) => {
+  const dispatch = useDispatch()
+  const stringId = String(id)
   const navigate = useNavigate()
-
+  const allProducts = useSelector((state: State) => state.products.products)
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
     swal({
@@ -34,14 +36,13 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
         confirm: true
       }
     }).then((value) => {
+
       if (value) {
-
-        dispatch(deleteProduct(stringID));
-        dispatch(resetFilterProducts())
-        dispatch(getProducts())
+        dispatch(deleteProduct(stringId));
+        let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
+        dispatch(chargeFilter(deleted))
         page(1)
-        AdmOrders(stringID)
-
+        AdmOrders(stringId)
         swal({
           text: "Product deleted",
           icon: "success"
@@ -51,9 +52,9 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
 
   }
 
-  function handleClickEdit (e: React.MouseEvent<HTMLButtonElement>) : void {
-    dispatch(getProductDetail(stringID)) ;
-    setTimeout(function(){
+  function handleClickEdit(e: React.MouseEvent<HTMLButtonElement>): void {
+    dispatch(getProductDetail(stringId));
+    setTimeout(function () {
       navigate(`/editProduct/${id}`)
     }, 500);
   }
@@ -70,7 +71,7 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
         </th>
         <td >
           {name.length > 30 ? (
-              <p className=""><Link to={`/detail/${id}`}>{name.slice(0, 30)}...</Link></p> 
+            <p className=""><Link to={`/detail/${id}`}>{name.slice(0, 30)}...</Link></p>
           ) : (
             <p className="card-title m-2"><Link to={`s/detail/${id}`}>{name}</Link></p>
           )}
@@ -78,7 +79,7 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
         <td > $ {price} </td>
         <td >
           <button
-            onClick={(e)=> {deleteHandler(e)}}
+            onClick={(e) => { deleteHandler(e) }}
             type="button"
             className="btn btn-danger btn-sm  "
           >
@@ -86,9 +87,9 @@ const AdminModeCard = ({ name, image, price, id ,  AdmOrders , page }: props ) =
           </button>
         </td>
         <td >
-            <button onClick={(e)=> handleClickEdit(e)} type="button" className="btn btn-warning btn-sm">
-              Edit
-            </button>
+          <button onClick={(e) => handleClickEdit(e)} type="button" className="btn btn-warning btn-sm">
+            Edit
+          </button>
         </td>
       </tr>
     </tbody>

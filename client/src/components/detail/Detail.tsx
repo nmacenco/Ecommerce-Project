@@ -151,10 +151,17 @@ export default function Detail() {
             <Rewies />
           </div>
           <div className="tab-pane fade m-2" id="questions">
-            {user ? <NewQ /> : null}
-            <Question />
-            <Question />
-            <Question />
+            {user ? <NewQ ProductId={product.id!} /> : null}
+            {/* {console.log('QUESTIONS: ', product.questions)} */}
+            {
+              product.questions && product.questions.map((question, i) => {
+
+                return (
+                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user}/>
+                )
+
+              })
+            }
           </div>
         </div>
       </Box>

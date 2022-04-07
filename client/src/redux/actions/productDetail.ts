@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import { TYPES_DETAIL } from '../interface';
 
 const URL = "http://localhost:3001/api/products/";
+const URL_BLOCKS = "http://localhost:3001/api/";
 
 export const getProductDetail = (id: string | undefined) => {
   return async (dispatch: Dispatch) => {
@@ -36,16 +37,67 @@ export const deleteProductDetail = () => {
 };
 
 
-export const createBlockDetail=(title:string,description:string,answer:any)=>{
+export const createQuestion=(title:string,description:string,ProductId:number)=>{
 
-  try{
-    /**
-     * creacion de la Question o del Rewie
-     */
+  return async(dispatch:Dispatch)=>{
 
+    try {
 
-  }catch(error){
-    console.log('error en create Question!');
+      const response = await axios.post(URL_BLOCKS + "questions", {
+        title,
+        description,
+        ProductId,
+      });
+
+      if(response.data.errorMsg){
+
+        throw new Error("ERROR EN CREATE QUESTION");
+      
+
+      }
+        console.log(response.data);
+        dispatch({
+          type: TYPES_DETAIL.CREATE_QUESTION,
+          payload: { question: response.data.data },
+        });
+
+      
+
+    } catch (error) {
+      console.log("error en create Question!");
+    }
+
   }
 
 }
+
+export const createRewie = (
+  title: string,
+  description: string,
+  ProductId: number,
+  UserId:number,
+  stars:number
+) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.post(URL_BLOCKS + "", {
+        ProductId,
+        UserId,
+        title,
+        description,
+        stars,
+      });
+
+      if (response.status == 200) {
+        dispatch({
+          type: TYPES_DETAIL.CREATE_REWIE,
+          payload: response.data,
+        });
+      } else {
+        console.log("ERROR: ", response.data);
+      }
+    } catch (error) {
+      console.log("error en create Question!");
+    }
+  };
+};

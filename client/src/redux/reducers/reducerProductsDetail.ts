@@ -23,12 +23,27 @@ const INITIAL_PRODUCT = {
 export const productDetailReducer = (state: Product = INITIAL_PRODUCT, action: Actions): Product => {
 
   switch (action.type) {
-
     case TYPES_DETAIL.PRODUCT_DETAIL:
-      return action.payload
+      return action.payload as Product;
 
     case TYPES_DETAIL.DELETE_PRODUCT_DETAIL:
-      return action.payload
+      return action.payload as Product;
+
+    case TYPES_DETAIL.CREATE_QUESTION:
+      // console.log('PAYLOAD QUESTION: ',action.payload);
+      let newArray=[];
+      newArray.push(action.payload);
+      return {
+        ...state,
+        questions: newArray.concat(state.questions),
+      };
+    case TYPES_DETAIL.CREATE_REWIE:
+      let newArrayRewies = [];
+      newArrayRewies.push(action.payload);
+      return {
+        ...state,
+        rewies: newArrayRewies.concat(state.rewies),
+      };
 
     default:
       return state;
