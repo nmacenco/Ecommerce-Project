@@ -10,7 +10,7 @@ export const adminGetUsers = () => {
       const allUsers = await axios.get(`${URL}`, {
         headers: {
           "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5MjkyODczfQ.nPKDcQG-Rfl6zEwNqabYt5Ap2EpBlhZuLvmgHxVzMO8",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjQ5MzU4NTAzfQ.26omT_oF12IGaE2MqUyoyh7NuXf0qHgwrKM5NjK6Zfw",
         },
       });
       console.log(allUsers.data.users);
@@ -24,6 +24,12 @@ export const adminGetUsers = () => {
     alert(error);
   }
 };
+export const adminresetUsers = () => {
+  return {
+    type: TYPES_ADMIN_USER.RESET_USERS,
+    payload: []
+  };
+};
 export const adminEditUser = (id : any  , UserToUpdate : any ) => {
   console.log(UserToUpdate);
   
@@ -32,7 +38,7 @@ export const adminEditUser = (id : any  , UserToUpdate : any ) => {
        await axios.put(`${URL}/${id}`, UserToUpdate ,  {
         headers: {
           "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5MjkyODczfQ.nPKDcQG-Rfl6zEwNqabYt5Ap2EpBlhZuLvmgHxVzMO8",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjQ5MzU4NTAzfQ.26omT_oF12IGaE2MqUyoyh7NuXf0qHgwrKM5NjK6Zfw",
         },
       });
     };

@@ -11,13 +11,20 @@ import UserDetail from "./userDetail/UserDetail";
 const AdminUserMode = (): JSX.Element => {
     const dispatch = useDispatch()
     const users = useSelector((state: State) => state.adminUsers.users);
+    const [Admorders, setAdmOrders] = useState<string>("");
     useEffect ( ()=> {
+      setTimeout(() => {
         dispatch(adminGetUsers())
-    }, [])
+      }, 500)
+    }, [Admorders])
     
 
+    const AdmOrders = (typeorder: string): void => {
+      setAdmOrders(typeorder);
+    };
 
-
+    console.log(Admorders);
+    
     
     return(
         <AdminUsersContainer>
@@ -49,6 +56,7 @@ const AdminUserMode = (): JSX.Element => {
                         countryCode = {user.countryCode}
                         CountryId = {user.CountryId}
                         needsPasswordReset = {user.needsPasswordReset}
+                        AdmOrders ={AdmOrders}
                       />
                     );
                   })}

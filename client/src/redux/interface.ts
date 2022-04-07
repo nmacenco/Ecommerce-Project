@@ -6,6 +6,7 @@ export enum TYPES_USER {
 }
 export enum TYPES_ADMIN_USER {
   GET_USERS = 'GET_USERS',
+  RESET_USERS = 'RESET_USERS',
   UPDATE_USER = 'UPDATE_USER'
 }
 
@@ -164,6 +165,10 @@ export interface ADMIN_USER {
   type : TYPES_ADMIN_USER.GET_USERS,
   payload: Users[]
 }
+export interface ADMIN_RESET_USER {
+  type : TYPES_ADMIN_USER.RESET_USERS,
+  payload: []
+}
 
 //=======================
 // Category Actions
@@ -277,7 +282,7 @@ export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL;
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
-export type AdminUserActions = ADMIN_USER
+export type AdminUserActions = ADMIN_USER | ADMIN_RESET_USER ;
 
 
 export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | CHARGE_FILTERS | REMOVE_FILTER | FILTERED_CAT_PRODUCTS | FILTERED_BRAND_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
