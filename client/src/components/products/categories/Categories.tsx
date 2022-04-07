@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CategoriesContainer } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
-import { chargeFilter } from "../../../redux/actions/filterByCategory";
+import { chargeFilter, filterProducts } from "../../../redux/actions/filterByCategory";
 import { ORDER } from "../cards/Cards";
 import { getBrands } from "../../../redux/actions/brands";
 

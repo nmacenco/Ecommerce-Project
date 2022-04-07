@@ -18,7 +18,7 @@ import {
 import { State } from "../../redux/reducers";
 import { Textarea } from "../detail/edit/EditProductStyles";
 import { FormContainer } from "./FormCreateStyles";
-import { Errors, errorsCheck, } from "./validations";
+import { Errors, errorsCheck } from "./validations";
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
@@ -168,7 +168,7 @@ export default function FromCreate(): JSX.Element {
                 return <option value={category.id}>{category.name}</option>;
               })}
             </select>
-            
+
           </div>
           <div className="form-group flex-fill ms-2">
             <label className="form-label mt-4">Subcategory</label>
