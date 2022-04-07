@@ -6,7 +6,7 @@ const {
   bulkCreateSubcategories,
   bulkCreateProducts,
   bulkCreateCountries,
-  bulkCreateUsers
+  bulkCreateUsers,
 } = require("./src/utils/fillScript");
 
 // Syncing all the models at once.
@@ -23,7 +23,5 @@ conn.sync({ force: true }).then(() => {
     await bulkCreateCountries();
     // disable this one if the app is already functional, just for testing.
     await bulkCreateUsers();
-
-
   });
 });

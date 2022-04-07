@@ -3,12 +3,12 @@ const { Order, User } = require("../db");
 const getOrders = async (req, res, next) => {
   try {
     let Orders = await Order.findAll({
-      // include: [
-      //   {
-      //     model: User,
-      //     attributes: ["id", "name","surname","email" ],
-      //   },
-      // ],
+      include: [
+        {
+          model: User,
+          attributes: ["id", "name","surname","email" ],
+        },
+      ],
     });
     if (!Orders.length) {
       res.status(404).send({ errorMsg: "Oders not found." });
