@@ -10,8 +10,9 @@ const {
   subCategoryRouter,
   orderRouter,
   reviewsRouter,
-  questionsRouter,  
+  questionsRouter,
   mailRouter,
+  orderDetailRouter,
 } = require("./routes/allRoutes.js");
 const server = express();
 const cors = require("cors");
@@ -51,7 +52,7 @@ server.use("/api", orderRouter);
 server.use("/api", reviewsRouter);
 server.use("/api", questionsRouter);
 server.use("/api", mailRouter);
-
+server.use("/api", orderDetailRouter);
 // Error catching endware.
 server.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
