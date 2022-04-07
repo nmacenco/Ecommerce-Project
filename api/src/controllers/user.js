@@ -67,7 +67,6 @@ const updateUser = async (req, res) => {
   let {
     name,
     surname,
-    password,
     email,
     billing_address,
     default_shipping_address,
@@ -95,13 +94,9 @@ const updateUser = async (req, res) => {
         return res.status(400).send({ errorMsg: "Email is already in use." });
       }
     }
-    !password
-      ? (password = user.password)
-      : (password = await bcrypt.hash(password, 8));
     let updatedUser = await user.update({
       name,
       surname,
-      password,
       email,
       billing_address,
       default_shipping_address,
@@ -117,10 +112,8 @@ const updateUser = async (req, res) => {
 };
 
 const getSingleUser = async (req, res) => {
-
   try {
     let id = req.userID;
-
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
