@@ -35,6 +35,17 @@ export default function CreateCategories(): JSX.Element {
         dispatch(getCategories())
     }, [])
 
+    // const validations = ({ category, subcategory }: FORM_CAT): boolean => {
+    //     let bool: boolean = false,
+    //         vCategory: boolean = false,
+    //         vSubcategory: boolean = false
+    //     if (category === "") vCategory = true;
+    //     if (subcategory === "") vSubcategory = true;
+
+    //     if (category && subcategory) bool = true;
+    //     return bool
+    // }
+
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         e.preventDefault()
         setNewCategory({
@@ -45,6 +56,8 @@ export default function CreateCategories(): JSX.Element {
             ...newSubcategory,
             CategoryId: e.target.selectedIndex
         })
+        console.log(e)
+        console.log(allCategories)
     }
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -52,10 +65,6 @@ export default function CreateCategories(): JSX.Element {
         setNewCategory({
             ...newCategory,
             name: e.target.value,
-        })
-        setNewSubcategory({
-            ...newSubcategory,
-            CategoryId: allCategories.length + 1
         })
     }
 
@@ -69,24 +78,43 @@ export default function CreateCategories(): JSX.Element {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
+        console.log(newCategory)
+        console.log(newSubcategory)
         if (newCategory.name !== "") {
             const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
             if (putId.length === 0) dispatch(createCategories(newCategory))
-
-            if (newSubcategory.name.length !== 0) {
-                dispatch(createSubcategories(newSubcategory))
+            else if (newSubcategory.name.length !== 0) {
+                console.log(putId[0].id)
+                setNewSubcategory({
+                    ...newSubcategory,
+                    CategoryId: 0
+                })
+                if (newSubcategory.CategoryId !== 0) dispatch(createSubcategories(newSubcategory))
+                console.log(newSubcategory.CategoryId)
             }
-            swal({
-                title: "Create successfully",
-                icon: "success"
-            })
-            navigate('/products')
-        } else {
-            swal({
-                title: "Form needs all fields",
-                icon: "error"
-            })
+
+            if (newSubcategory.name.length !== 0 && putId.length === 0) {
+                setNewSubcategory({
+                    ...newSubcategory,
+                    CategoryId: allCategories.length + 1
+                })
+                if (newSubcategory.CategoryId === allCategories.length + 1) dispatch(createSubcategories(newSubcategory))
+            }
+            console.log(newSubcategory)
         }
+        // if (validations(newCategory)) {
+        // dispatch(createCategories(newCategory))
+        // swal({
+        //     title: "Create successfully",
+        //     icon: "success"
+        // })
+        // navigate('/products')
+        // } else {
+        //     swal({
+        //         title: "Form needs all fields",
+        //         icon: "error"
+        //     })
+        // }
     }
 
     return (

@@ -66,10 +66,15 @@ const Cards = (): JSX.Element => {
   }
 
   useEffect(() => {
+    dispatch(chargeFilter(copyProductsList))
+  }, [filteredProductList.length > copyProductsList.length])
+
+  useEffect(() => {
     setTimeout(() => {
       LoadCharge(true)
     }, 500)
   }, [setLoad])
+
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
@@ -137,23 +142,6 @@ const Cards = (): JSX.Element => {
                       productList={filteredProductList.length}
                       handlePageClick={handlePageClick}
                     ></Pagination>
-                    {/* <ReactPaginate
-                  pageCount={Math.ceil(productsList.length / 32)}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                ></ReactPaginate> */}
                   </ReactPaginateContainer>
                 </> : (
                   <NotFound eliminateFilters={eliminateFilters}></NotFound>

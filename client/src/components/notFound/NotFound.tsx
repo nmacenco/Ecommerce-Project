@@ -9,7 +9,6 @@ export interface NOT_FOUND {
 const NotFound = (props: NOT_FOUND) => {
     const dispatch = useDispatch()
     useEffect(() => {
-
         dispatch(productNotFound(true))
         setTimeout(function () {
             props.eliminateFilters()
