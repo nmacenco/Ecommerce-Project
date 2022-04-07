@@ -21,14 +21,16 @@ import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
 import NewQ from "./questions/NewQ";
-// import { isConditionalExpression } from "typescript";
+import { addProductCart } from "../../redux/actions/cart";
+import { Product } from "../../redux/interface";
 
 export default function Detail() {
   const dispatch = useDispatch();
-  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
+  const { id } = useParams<{ id?: string }>();
   const product = useSelector((state: State) => state.productDetail);
   const user = useSelector((state: State) => state.user);
+  const productsCart = useSelector((state: State) => state.cart.cart);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -37,6 +39,17 @@ export default function Detail() {
       dispatch(resetFilterProducts());
     };
   }, []);
+
+  function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
+    const productInCart = productsCart.find((x:Product) => x.id === product.id);
+    const count = productInCart ? productInCart.count + 1 : 1;
+    if (Number(count) <= Number(product.stock)) {
+      product.count = count
+      dispatch(addProductCart(product));
+    } else {
+      window.alert("No stock available.");
+    }
+  }
 
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
@@ -47,8 +60,8 @@ export default function Detail() {
       dangerMode: true,
       buttons: {
         cancel: true,
-        confirm: true
-      }
+        confirm: true,
+      },
     }).then((value) => {
       if (value) {
         dispatch(deleteProduct(id));
@@ -56,10 +69,10 @@ export default function Detail() {
         // dispatch(resetPoducts())
         swal({
           text: "Product deleted",
-          icon: "success"
-        })
+          icon: "success",
+        });
       }
-    })
+    });
   }
 
   return (
@@ -82,7 +95,11 @@ export default function Detail() {
                 <Price>
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
-                  <button type="button" className="btn btn-primary btn">
+                  <button
+                    type="button"
+                    className="btn btn-primary btn"
+                    onClick={(e) => addCartHandler(e)}
+                  >
                     Add to cart
                   </button>
                   <DeleteEditButton>
