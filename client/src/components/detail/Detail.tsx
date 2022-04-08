@@ -23,6 +23,7 @@ import Question from "./questions/Question";
 import NewQ from "./questions/NewQ";
 import { addProductCart } from "../../redux/actions/cart";
 import { Product } from "../../redux/interface";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ export default function Detail() {
   const product = useSelector((state: State) => state.productDetail);
   const user = useSelector((state: State) => state.user);
   const productsCart = useSelector((state: State) => state.cart.cart);
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -64,7 +66,7 @@ export default function Detail() {
       },
     }).then((value) => {
       if (value) {
-        dispatch(deleteProduct(id));
+        dispatch(deleteProduct(id, userInStorage.token));
         navigate("/products");
         // dispatch(resetPoducts())
         swal({

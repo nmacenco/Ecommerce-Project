@@ -10,6 +10,7 @@ import { getProductDetail } from "../../../../redux/actions/productDetail";
 import swal from "sweetalert";
 import { State } from "../../../../redux/reducers";
 import { Product } from "../../../../redux/interface";
+import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 interface props {
   name: string;
   image: string;
@@ -23,6 +24,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page }: props) => {
   const dispatch = useDispatch()
   const stringId = String(id)
   const navigate = useNavigate()
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
   const allProducts = useSelector((state: State) => state.products.products)
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
@@ -38,7 +40,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page }: props) => {
     }).then((value) => {
 
       if (value) {
-        dispatch(deleteProduct(stringId));
+        dispatch(deleteProduct(stringId , userInStorage.token));
         let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
         dispatch(chargeFilter(deleted))
         page(1)

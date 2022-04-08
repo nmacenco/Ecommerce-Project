@@ -14,10 +14,15 @@ export const postProduct = (product: ProductForm) => {
     }
   };
 
-export const deleteProduct = (id: string | undefined) => {
+export const deleteProduct = (id: string | undefined , theToken : any ) => {
     try {
       return async (dispatch: Dispatch) => {    
-        await axios.delete(URL + id);
+        await axios.delete(URL + id , {
+          headers: {
+            "auth-token":
+            theToken,
+          },
+        });
         return dispatch({
             type: TYPES_ADMIN.DELETE_PRODUCTS,
             payload: id,

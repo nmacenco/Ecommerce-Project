@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Filter from "./filter/Filter";
 import { CardsContainer, ReactPaginateContainer } from "./CardsStyles";
-// import Pagination from "./pagination/Pagination";
-// import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
 import { getProducts } from "../../../redux/actions/products";
