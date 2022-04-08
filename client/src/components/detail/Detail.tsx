@@ -31,6 +31,9 @@ export default function Detail() {
   const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
   const productInCart = productsCart.find((x: Product) => x.id === product.id);
 
+
+  
+  
   useEffect(() => {
     dispatch(getProductDetail(id));
     return () => {

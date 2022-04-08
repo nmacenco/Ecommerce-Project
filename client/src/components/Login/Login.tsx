@@ -66,6 +66,9 @@ const Login = (): JSX.Element => {
         }));
 
     }
+    const forgotPassword = ()=> {
+        navigate('/emailReset')
+    }
 
 
     let emailStyle = error.email ? 'form-control is-invalid' : 'form-control';
@@ -88,6 +91,11 @@ const Login = (): JSX.Element => {
                </div>
                <span>
                    Continue with Google
+               </span>
+           </div>
+            <div className='google' onClick={forgotPassword}>
+               <span>
+                   Forgot Password 
                </span>
            </div>
             
