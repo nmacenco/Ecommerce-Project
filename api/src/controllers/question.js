@@ -6,13 +6,14 @@ const createQuestion = async (req, res) => {
     try {
         let { ProductId, title, description } = req.body;
 
-        if (!ProductId || !title || !description) {
+        if (!ProductId || !title || !description || !UserId) {
             res.status(402).send({ errorMsg: "Missing data." });
         } else {
             let newQuestion = await Question.Create({
                 ProductId,
+                UserId,
                 title,
-                description
+                description,
             });
             newQuestion
                 ? res.status(201).json({ successMsg: "The question has been added to the product.", data: newQuestion })
@@ -25,8 +26,8 @@ const createQuestion = async (req, res) => {
 
 const getQuestions = async (req, res) => {
     try {
-        let dataQuestions = await Question.findAll({ attributes: ["id", "ProductId", "title", "description","answer"] });
-        
+        let dataQuestions = await Question.findAll({ attributes: ["id","UserId", "ProductId", "title", "description", "answer"] });
+
         if (!dataQuestions) {
             res.status(404).send({ errorMsg: "There are no questions available." });
         } else {
@@ -46,7 +47,7 @@ const getSingleQuestion = async (req, res) => {
             res.status(400).send({ errorMsg: "Missing data." });
         } else {
             let singleQuestion = await Question.findOne({
-                attributes: ["id","ProductId", "title", "description","answer"],
+                attributes: ["id", "ProductId","UserId", "title", "description", "answer"],
                 where: {
                     id,
                 },
@@ -66,30 +67,37 @@ const getSingleQuestion = async (req, res) => {
 
 
 const updateQuestion = async (req, res) => {
+    let { id, ProductId, UserId, title, description, answer } = req.body;
 
     try {
-        let questionToUpdate = await Question.findOne({
-            where: {
-                id: id,
-                ProductId: ProductId,
-            },
-        });
-        if (!questionToUpdate) {
-            res.status(404).send({ errorMsg: "Question not found." });
+        if (!ProductId || !UserId || !title || !description || !answer) {
+            res.status(402).send({ errorMsg: "Missing data." });
         } else {
-            let updatedQuestion = await questionToUpdate.update({
-                ProductId,
-                title,
-                description,
-                answer,
+            let questionToUpdate = await Question.findOne({
+                where: {
+                    id: id,
+                    ProductId: ProductId,
+                },
             });
-            updatedQuestion ?
-                res.status(200).send({
-                    successMsg: "Question has been updated in Database",
-                    data: `Question id: ${updatedQuestion}`
-                })
-                : res.status(401).json({ errorMsg: "Question hasn't exists in the database." });
+            if (!questionToUpdate) {
+                res.status(404).send({ errorMsg: "Question not found." });
+            } else {
+                let updatedQuestion = await questionToUpdate.update({
+                    ProductId,
+                    UserId,
+                    title,
+                    description,
+                    answer,
+                });
+                updatedQuestion ?
+                    res.status(200).send({
+                        successMsg: "Question has been updated in Database",
+                        data: `Question id: ${updatedQuestion}`
+                    })
+                    : res.status(401).json({ errorMsg: "Question hasn't exists in the database." });
+            }
         }
+
     } catch (error) {
         res.status(500).send({ errorMsg: error.message });
     }
