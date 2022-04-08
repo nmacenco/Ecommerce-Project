@@ -9,7 +9,7 @@ export enum TYPES_DETAIL {
   PRODUCT_DETAIL = "PRODUCT_DETAIL",
   DELETE_PRODUCT_DETAIL = "DELETE_PRODUCT_DETAIL",
   CREATE_QUESTION = "CREATE_QUESTION",
-  CREATE_REWIE='CREATE_REWIE'
+  CREATE_REWIE = 'CREATE_REWIE'
 }
 
 export enum TYPES_ADMIN {
@@ -45,6 +45,10 @@ export enum TYPES_PRODUCT {
 export enum TYPES_CART {
   ADD_PRODUCT = "ADD_PRODUCT",
   REMOVE_PRODUCT = "REMOVE_PRODUCT",
+}
+
+export enum TYPES_COUNTRIES {
+  GET_COUNTRIES = "GET_COUNTRIES"
 }
 
 
@@ -97,20 +101,20 @@ export interface Product {
   CategoryId: number;
   category: number;
   count: number;
-  questions:any[];
-  rewies:any[]
+  questions: any[];
+  rewies: any[]
 }
 
-export interface Question{
-  id?:number,
-  title:string,
-  description:string
+export interface Question {
+  id?: number,
+  title: string,
+  description: string
 }
 export interface Rewie {
   id?: number;
   title: string;
   description: string;
-  ProductId:number
+  ProductId: number
 }
 
 export interface Category {
@@ -137,6 +141,12 @@ export interface IData {
   page: (numberOfPage: number) => void;
 }
 
+export interface ICountries {
+  name: string,
+  code: string,
+  id: number
+}
+
 
 //=======================
 // User Actions
@@ -156,6 +166,14 @@ export interface LOGOUT_USER {
 export interface FIND_USER {
   type: TYPES_USER.FIND_USER;
   payload: User;
+}
+
+//=======================
+// Countries Actions
+
+export interface GET_COUNTRIES {
+  type: TYPES_COUNTRIES.GET_COUNTRIES;
+  payload: ICountries[]
 }
 
 //=======================
@@ -281,7 +299,7 @@ export interface AXIOSDATA {
   data: Product[];
 }
 
-export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL | CREATE_QUESTION | CREATE_REWIE ;
+export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL | CREATE_QUESTION | CREATE_REWIE;
 
 export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
 
@@ -296,3 +314,5 @@ export type AdminActions = DELETE_PRODUCT;
 export type SetPage = SET_PAGE;
 
 export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT;
+
+export type CountriesActions = GET_COUNTRIES

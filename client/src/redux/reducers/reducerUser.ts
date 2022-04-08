@@ -4,7 +4,7 @@
  * 
  */
 
-import {  User, UserActions, TYPES_USER } from '../interface';
+import { User, UserActions, TYPES_USER } from '../interface';
 
 type USER = null | User;
 
@@ -27,7 +27,6 @@ export const userReducer = (state: USER = INITIAL_USER, action: UserActions): US
 
     case TYPES_USER.LOGOUT_USER:
       return action.payload;
-
     default:
       return state;
   }
