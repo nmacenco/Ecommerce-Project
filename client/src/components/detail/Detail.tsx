@@ -154,18 +154,24 @@ export default function Detail() {
                 <NewRewie/>
                 : null
             }
-            <Rewies name='Alonso Gutierrez' img="" stars={4} />
-            <Rewies name='Alonso Pato' img="" stars={1} />
-            <Rewies name='Anastasia Peluso' img="" stars={5} />
+            {console.log('rewies: ', product.reviews)}
+            {
+              product.reviews && product.reviews.map((rew,i )=> {
+                // console.log(rew.review)
+                return (
+                  <Rewies title={rew.review.title} stars={rew.review.stars} key={i} texto={rew.review.description}/>
+                )
+              })
+            }
           </div>
           <div className="tab-pane fade m-2" id="questions">
             {user ? <NewQ ProductId={product.id!} /> : null}
             {/* {console.log('QUESTIONS: ', product.questions)} */}
             {
               product.questions && product.questions.map((question, i) => {
-
+                // console.log(question);
                 return (
-                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user}/>
+                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user} idA={question.question.id}/>
                 )
 
               })

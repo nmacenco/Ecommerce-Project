@@ -47,6 +47,7 @@ export const createQuestion=(title:string,description:string,ProductId:number)=>
         title,
         description,
         ProductId,
+        UserId:1
       });
 
       if(response.data.errorMsg){
@@ -72,6 +73,62 @@ export const createQuestion=(title:string,description:string,ProductId:number)=>
 }
 
 
+export const createAnswer=( id:number, ProductId:number, UserId:number, title:string, description:string, answer:string )=>{
+
+
+  return async(dispatch:Dispatch)=>{
+
+    try{
+
+      // console.log('PARAMETROS: ',{id,ProductId,UserId,title,description,answer})
+      // dispatch({
+      //   type: TYPES_DETAIL.UPDATE_QUESTION,
+      //   payload: {
+      //     id: id,
+      //     answer: answer,
+      //   },
+      // });
+      // console.log('se despacho')
+      // return null;
+
+
+      const response = await axios.put(URL_BLOCKS + "questions",{
+        id,
+        ProductId,
+        UserId,
+        title,
+        description,
+        answer
+      });
+      console.log(response)
+
+      if(response.status===200){
+
+        dispatch({
+          type:TYPES_DETAIL.UPDATE_QUESTION,
+          payload:{
+            id:id,
+            answer:answer
+          }
+        })
+        
+        console.log('RES: ',response.data);
+        
+
+
+      }
+
+
+    }catch(error){
+      console.log('Error en create Answer: ',error);
+    }
+
+  }
+
+
+
+}
+
 export const createRewie = (
   title: string,
   description: string,
@@ -88,12 +145,17 @@ export const createRewie = (
         description,
         stars,
       });
-
-      if (response.status == 200) {
-        console.log('RESPUESTA: ',response);
+      if (response.status == 200 || response.status==201) {
         dispatch({
           type: TYPES_DETAIL.CREATE_REWIE,
-          payload: response.data,
+          payload: {
+            review:{
+              name: "",
+            stars,
+            description,
+            title
+            }
+          },
         });
       } else {
         console.log("ERROR: ", response.data);
