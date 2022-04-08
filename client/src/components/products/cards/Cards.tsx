@@ -128,6 +128,8 @@ const Cards = (): JSX.Element => {
                       return (
                         <div className="col" key={e.id}>
                           <Card
+                            product={e}
+                            stock={e.stock}
                             name={e.name}
                             image={e.image}
                             price={e.price}

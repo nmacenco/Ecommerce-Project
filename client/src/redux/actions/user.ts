@@ -11,28 +11,34 @@ export const CreateUser=(user:any,cb:any)=>{
     return async(dispatch:Dispatch)=>{
 
         try{
-            console.log(URL_USER+'users');
-            const { data } = await axios.post(URL_USER + "/signUp", user);
+            console.log(URL_USER + "/signUp");
+            const response = await axios.post(URL_USER + "/signUp", user);
 
             // if(data.error){
             //     throw new Error("Error "+data.error);
             // }
 
+            const data=response.data;
+            console.log(response.headers);
             console.log('data: ',data);
             if(data.errorMsg){
-                alert('ALgo paso!');
-            }else{
-
+               return  alert('ALgo paso!');
             }
+
+            const newUser={
+                    name:user.name,
+                    email:user.email,
+                    token:response.headers['auth-token']
+                }
 
             dispatch({
                 type:TYPES_USER.CREATE_USER,
-                payload:data.newUser
+                payload:newUser
             })
             console.log('despachando el usuario');
             cb();
 
-            window.localStorage.setItem(USER_STORAGE,JSON.stringify(data.newUser));// Cambiar cuando exista un usuario
+            window.localStorage.setItem(USER_STORAGE,JSON.stringify(newUser));// Cambiar cuando exista un usuario
 
 
         }catch(error){
@@ -42,7 +48,7 @@ export const CreateUser=(user:any,cb:any)=>{
     }
 }
 
-export const GetUSer=(email:string,pass:string)=>{
+export const GetUSer=(email:string,pass:string,cb:any)=>{
 
     return async(dispatch:Dispatch)=>{
 
@@ -53,9 +59,7 @@ export const GetUSer=(email:string,pass:string)=>{
               email,
               password: pass,
             });
-            console.log('data: ',response.data);
             const TOKEN = response.headers["auth-token"];
-            console.log(response);
             console.log('TOKEN: ',TOKEN);
             if(response.status==200){
 
@@ -63,12 +67,14 @@ export const GetUSer=(email:string,pass:string)=>{
                     type:TYPES_USER.GET_USER,
                     payload:{
                         email,
+                        token:TOKEN
                     }
                 })
                 window.localStorage.setItem(
                   USER_STORAGE,
-                  JSON.stringify({email})
+                  JSON.stringify({email,token:TOKEN})
                 );
+                cb();//Ejecutamos un callback wajajaj
 
             }
 
@@ -104,7 +110,7 @@ export const LogoutUser=()=>{
 }
 
 let url = "/signInWithGoogle";
-export const IdentGoogle=(url:string)=>{
+export const IdentGoogle=(url:string,cb:any)=>{
 
     return async(dispatch:Dispatch)=>{
         try {
@@ -122,6 +128,8 @@ export const IdentGoogle=(url:string)=>{
             type:TYPES_USER.GET_USER,
             payload:response.data.data
           })
+
+          cb()//ejecutamos el callback
 
         } catch (error) {
           console.log("Error en sig in google: ", error);

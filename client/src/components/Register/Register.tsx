@@ -93,7 +93,9 @@ const Register=():JSX.Element=>{
 
     const SinUpGoogle = () => {
         console.log('Login with Google');
-        dispatch(IdentGoogle('/signInWithGoogle'));
+        dispatch(IdentGoogle('/signInWithGoogle',()=>{
+            navigate('/products');
+        }));
 
     }
 

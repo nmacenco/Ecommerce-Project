@@ -1,32 +1,36 @@
 import React from "react";
-import cartIcon from "../../icons/cart-icon.png";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "../SearchBar/Search";
-import { CartIcon } from "./NavStyles";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
 import { LogoutUser } from "../../redux/actions/user";
-import { getProducts, productNotFound, resetPoducts } from "../../redux/actions/products";
+import {
+  getProducts,
+  productNotFound,
+  resetPoducts,
+} from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
 import { Routes } from "react-router-dom";
+import { Product } from "../../redux/interface";
+import UserDropdown from "./userDropdown/UserDropdown";
+import CartIcon from "./cartIcon/CartIcon";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
   const user = useSelector((state: State) => state.user);
+  const productsCart = useSelector((state: State) => state.cart.cart);
 
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
   };
 
-
-
   function handleClickProducts() {
-    dispatch(productNotFound(false))
-    dispatch(resetFilterProducts())
-    dispatch(resetPoducts())
+    dispatch(productNotFound(false));
+    dispatch(resetFilterProducts());
+    dispatch(resetPoducts());
     // dispatch(resetPoducts())
     dispatch(deleteProductDetail());
     dispatch(getProducts());
@@ -35,7 +39,7 @@ const Nav = (): JSX.Element => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
       <div className="flex-grow-1 d-lg-flex">
         <Link className="navbar-brand pt-3" to="/home">
-          ECOMMERCE
+          PCSHOP
         </Link>
         <div className="collapse navbar-collapse" id="navbarColor01">
           <div className="navbar-nav me-auto">
@@ -56,15 +60,17 @@ const Nav = (): JSX.Element => {
               </Link>
             </div>
           </div>
+          <Routes>
+            <Route path="/products" element={<Search />} />
+            <Route path="/adminMode" element={<Search />} />
+          </Routes>
+
+          {/* Dependiendo de que TIPO de usuario sea: */}
           <AdminDropdown />
-          {user ? (
-            <span
-              className="nav-item btn btn-secondary my-2 link-Router"
-              onClick={logout}
-            >
-              Logout
-            </span>
-          ) : (
+          {/* <UserDropdown />	 */}
+
+          {/* Una vez iniciada la sesion este boton no deberia aparecer */}
+          {!user && (
             <Link
               to="/login"
               className="nav-item btn btn-secondary my-2 link-Router"
@@ -72,17 +78,15 @@ const Nav = (): JSX.Element => {
               Login
             </Link>
           )}
-          <Routes>
-            <Route path="/products" element={<Search />} />
-            <Route path="/adminMode" element={<Search />} />
-          </Routes>
         </div>
       </div>
 
       <div className="ms-auto mb-auto py-lg-3">
-        <Link className="nav-item" to={"/cart"}>
-          <CartIcon src={cartIcon} />
-        </Link>
+        <Routes>
+          <Route path="/products" element={<CartIcon />} />
+          <Route path="/cart" element={<CartIcon />} />
+          <Route path="/detail/:id" element={<CartIcon />} />
+        </Routes>
         <button
           className="navbar-toggler nav-item"
           type="button"
