@@ -53,7 +53,7 @@ const Cart = (): JSX.Element => {
           </div>
           <div className="d-flex justify-content-between mt-4 align-items-center">
             <h3>
-              Total: $
+              total: $
               {productsCart.reduce(
                 (a: number, product: Product) =>
                   a + product.price * product.count,
