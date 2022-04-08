@@ -8,6 +8,7 @@ import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../redux/actions/admin";
 import Rewies from "./reviews/Review";
+import NewRewie from './reviews/NewRewie';
 import Loading from "../loading/Loading";
 import {
   DetailContainer,
@@ -148,7 +149,14 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            <Rewies />
+            {
+              user ?
+                <NewRewie/>
+                : null
+            }
+            <Rewies name='Alonso Gutierrez' img="" stars={4} />
+            <Rewies name='Alonso Pato' img="" stars={1} />
+            <Rewies name='Anastasia Peluso' img="" stars={5} />
           </div>
           <div className="tab-pane fade m-2" id="questions">
             {user ? <NewQ ProductId={product.id!} /> : null}

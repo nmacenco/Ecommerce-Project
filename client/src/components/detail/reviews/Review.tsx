@@ -1,8 +1,28 @@
 import React from 'react';
-import { RewieHeader, RewiewContainer, Rewiewstars } from './ReviewStyle';
+import { RewieHeader, RewiewContainer, Rewiewstars, RewiewstarStatic } from './ReviewStyle';
 
-const Rewies = (): JSX.Element => {
+const starsRating = [1, 2, 3, 4, 5]
 
+
+interface Prop{
+    name:string,
+    img:string,
+    stars:number
+}
+
+
+const Rewies = ({name,img,stars}:Prop): JSX.Element => {
+
+
+    // const printStars=(number:number)=>{
+
+
+    //     for(let i=0;i<= number ; i++){
+
+    //     }
+        
+    // }
+    let countStars=0;
 
     const handleClick=(event:any)=>{
 
@@ -16,26 +36,26 @@ const Rewies = (): JSX.Element => {
             <RewieHeader className="card-header">
                 <div className='d-img-rewiew'>
                     <div>
-                        <img src='https://cdn-icons-png.flaticon.com/512/149/149071.png' />
+                        <img src='https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-de-un-hombre-en-una-camisa-avatar-y-cara-solo-icono-en-estilo-de-dibujos-animados-vector-s%C3%ADmb.jpg' />
                     </div>
                     <div>
-                        Pedrito Suarez Valdez
+                        {name?  name :'not found'}
                     </div>
                 </div>
-                <Rewiewstars >
+                <RewiewstarStatic >
 
-                    <input type='radio' name='star' id='star1' /><label htmlFor='star1'>
-                    </label>
-                    <input type='radio' name='star' id='star2' /><label htmlFor='star2'>
-                    </label>
-                    <input type='radio' name='star' id='star3' /><label htmlFor='star3'>
-                    </label>
-                    <input type='radio' name='star' id='star4' /><label htmlFor='star4'>
-                    </label>
-                    <input type='radio' name='star' id='star5' /><label htmlFor='star5'>
-                    </label>
+                    {starsRating.map((star, i) => {
+                        console.log(star)
+                        let classe = (countStars === stars) ? 'dark-star' : 'rating';
+                        console.log(classe,stars)
+                        countStars++;
+
+                        return (
+                            <b className={classe}/>
+                        )
+                    })}
                     
-                </Rewiewstars>
+                </RewiewstarStatic>
             </RewieHeader>
             <div className="card-body">
                 <h4 className="card-title">Title?</h4>
