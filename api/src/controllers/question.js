@@ -9,7 +9,7 @@ const createQuestion = async (req, res) => {
         if (!ProductId || !title || !description) {
             res.status(402).send({ errorMsg: "Missing data." });
         } else {
-            let newQuestion = await Question.Create({
+            let newQuestion = await Question.create({
                 ProductId,
                 title,
                 description

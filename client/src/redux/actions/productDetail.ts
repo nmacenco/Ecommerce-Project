@@ -71,6 +71,7 @@ export const createQuestion=(title:string,description:string,ProductId:number)=>
 
 }
 
+
 export const createRewie = (
   title: string,
   description: string,
@@ -80,7 +81,7 @@ export const createRewie = (
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post(URL_BLOCKS + "", {
+      const response = await axios.post(URL_BLOCKS + "reviews", {
         ProductId,
         UserId,
         title,
@@ -89,6 +90,7 @@ export const createRewie = (
       });
 
       if (response.status == 200) {
+        console.log('RESPUESTA: ',response);
         dispatch({
           type: TYPES_DETAIL.CREATE_REWIE,
           payload: response.data,
@@ -97,7 +99,7 @@ export const createRewie = (
         console.log("ERROR: ", response.data);
       }
     } catch (error) {
-      console.log("error en create Question!");
+      console.log("error en create Rewie!");
     }
   };
 };

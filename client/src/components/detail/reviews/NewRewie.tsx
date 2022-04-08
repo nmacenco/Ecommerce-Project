@@ -10,6 +10,11 @@ const newRewie=():JSX.Element=>{
     const user=useSelector((state:State)=>state.user);
 
 
+    const SendRewie=()=>{
+        
+    }
+
+
     return(
         <RewiewContainer className="card border-secondary mb-3" >
             <RewieHeader className="card-header">

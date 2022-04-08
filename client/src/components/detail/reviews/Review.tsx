@@ -45,10 +45,10 @@ const Rewies = ({name,img,stars}:Prop): JSX.Element => {
                 <RewiewstarStatic >
 
                     {starsRating.map((star, i) => {
-                        console.log(star)
-                        let classe = (countStars === stars) ? 'dark-star' : 'rating';
-                        console.log(classe,stars)
-                        countStars++;
+                        // console.log(star)
+                        console.log('actual: ',i,' stars prop:  ',stars,'  countStar:  ',countStars);
+                        let classe = (stars <= 0 ) ? 'dark-star' : 'rating';
+                        stars--;
 
                         return (
                             <b className={classe}/>

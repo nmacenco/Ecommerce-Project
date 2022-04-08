@@ -4,11 +4,12 @@ const countryRouter = require("./country");
 const categoryRouter = require("./category");
 const brandRouter = require("./brand");
 const subCategoryRouter = require("./subcategory");
-const orderRouter =require("./order.js")
+const orderRouter = require("./order.js");
 const reviewsRouter = require("./review");
 const questionsRouter = require("./question");
-const mailRouter = require("./mailer");
 const orderDetailRouter = require("./orderdetaile");
+const mailRouter = require("./mailer");
+
 
 
 module.exports = {
@@ -21,6 +22,6 @@ module.exports = {
   orderRouter,
   reviewsRouter,
   questionsRouter,
+  orderDetailRouter,
   mailRouter,
-  orderDetailRouter
 };

@@ -11,8 +11,14 @@ const {
   orderRouter,
   reviewsRouter,
   questionsRouter,
+<<<<<<< HEAD
   mailRouter,
   orderDetailRouter,
+=======
+  orderDetailRouter,
+  questionsRouter, 
+  mailRouter,
+>>>>>>> 3c96f383148fc64e735e5fadd85925058b79fb4e
 } = require("./routes/allRoutes.js");
 const server = express();
 const cors = require("cors");
@@ -56,6 +62,7 @@ server.use("/api", categoryRouter);
 server.use("/api", brandRouter);
 server.use("/api", subCategoryRouter);
 server.use("/api", orderRouter);
+server.use("/api", orderDetailRouter);
 server.use("/api", reviewsRouter);
 server.use("/api", questionsRouter);
 server.use("/api", mailRouter);
