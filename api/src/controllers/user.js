@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sequelize = require("sequelize");
 const e = require("express");
+const sendMail = require("./mailer");
 require("dotenv").config();
 require("../auth/passport-setup");
 
@@ -43,7 +44,10 @@ const createUser = async (req, res) => {
         res
           .status(201)
           .header("auth-token", token)
-          .send({ successMsg: "User successfully created." });
+          .send({
+            successMsg: "User successfully created.",
+            data: { name: newUser.name, role: newUser.role },
+          });
       }
     }
   } catch (error) {
@@ -153,9 +157,10 @@ const googleLogIn = (req, res) => {
     const data = req.user.dataValues;
     const tokens = data.tokens;
     const token = tokens[tokens.length - 1];
-    res
-      .header("auth-token", token)
-      .send({ successMsg: "User authenticated with google.", data: data });
+    res.header("auth-token", token).send({
+      successMsg: "User authenticated with google.",
+      data: { name: data.name, role: data.role },
+    });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -224,9 +229,10 @@ const signIn = async (req, res) => {
       { tokens: sequelize.fn("array_append", sequelize.col("tokens"), token) },
       { where: { id: user.id } }
     );
-    res
-      .header("auth-token", token)
-      .send({ successMsg: "You signed in successfully." });
+    res.header("auth-token", token).send({
+      successMsg: "You signed in successfully.",
+      data: { name: user.name, role: user.role },
+    });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -324,6 +330,15 @@ const passwordReset = async (req, res) => {
   }
 };
 
+// www.ecommerce.com/passworReset/12983123kzxc.fgas12904123.f92109412301
+
+const sendPasswordResetMail = async (req, res) => {
+  try {
+    
+    //"<p>Click <a href='http://localhost:3000/sessions/recover/" + token + ">here</a> to reset your password</p>"
+  } catch (error) {}
+};
+
 const forcePasswordReset = async (req, res) => {
   try {
     let id = req.params.id;
@@ -343,8 +358,10 @@ const forcePasswordReset = async (req, res) => {
         return res.status(400).send({ errorMsg: "Passwords don't match." });
       }
       const isPasswordEqual = await bcrypt.compare(password, user.password);
-      if(isPasswordEqual) {
-        return res.status(400).send({ errorMsg: "New password is equal than the last one." });
+      if (isPasswordEqual) {
+        return res
+          .status(400)
+          .send({ errorMsg: "New password is equal than the last one." });
       }
       password = await bcrypt.hash(password, 8);
       await user.update({
