@@ -11,14 +11,8 @@ const {
   orderRouter,
   reviewsRouter,
   questionsRouter,
-<<<<<<< HEAD
   mailRouter,
   orderDetailRouter,
-=======
-  orderDetailRouter,
-  questionsRouter, 
-  mailRouter,
->>>>>>> 3c96f383148fc64e735e5fadd85925058b79fb4e
 } = require("./routes/allRoutes.js");
 const server = express();
 const cors = require("cors");
