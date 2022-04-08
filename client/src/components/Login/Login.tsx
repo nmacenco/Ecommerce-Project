@@ -5,6 +5,7 @@ import validator, { validateForms } from '../../helpers/validateForm';
 import { GetUSer, IdentGoogle } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
 import Form from '../form/Form';
+import { useNavigate } from 'react-router';
 
 interface Inputs {
     email: string,
@@ -15,6 +16,7 @@ const Login = (): JSX.Element => {
 
     const dispatch=useDispatch();
     const user=useSelector((state:State)=>state.user);
+    const navigate=useNavigate();
 
     const [inputs,setInputs]=useState<Inputs>({
         email:'',
@@ -50,13 +52,18 @@ const Login = (): JSX.Element => {
 
         if(!user){
             console.log('user: ',inputs);
-            dispatch(GetUSer(inputs.email,inputs.passUser))
+            dispatch(GetUSer(inputs.email,inputs.passUser,()=>{
+                navigate('/products')
+            }));
+            
         }
     }
 
     const SinInGoogle=()=>{
         console.log('Login with Google');
-        dispatch(IdentGoogle('/signInWithGoogle/callback'));
+        dispatch(IdentGoogle('/signInWithGoogle/callback',()=>{
+            navigate('/products');
+        }));
 
     }
 

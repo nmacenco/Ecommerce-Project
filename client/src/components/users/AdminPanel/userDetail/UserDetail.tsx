@@ -93,7 +93,6 @@ const UserDetail = ({
           isActive,
           needsPasswordReset
         }))
-        console.log(e.target)
       } else {
         dispatch(adminEditUser( e.target.id ,{
           role : 'user',

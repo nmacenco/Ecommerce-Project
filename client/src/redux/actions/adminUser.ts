@@ -3,14 +3,14 @@ import { Dispatch } from "redux";
 import { TYPES_ADMIN_USER, USERSAXIOSDATA } from "../interface";
 
 const URL = "http://localhost:3001/api/admin/users";
-
+const theToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5NDE4NzA5fQ.nAQNbz637DWxPBWzD3k0OssCEkJmk-K5A9MPSrnexoc'
 export const adminGetUsers = () => {
   try {
     return async (dispatch: Dispatch) => {
       const allUsers = await axios.get(`${URL}`, {
         headers: {
           "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjQ5MzU4NTAzfQ.26omT_oF12IGaE2MqUyoyh7NuXf0qHgwrKM5NjK6Zfw",
+            theToken,
         },
       });
       console.log(allUsers.data.users);
@@ -38,7 +38,7 @@ export const adminEditUser = (id : any  , UserToUpdate : any ) => {
        await axios.put(`${URL}/${id}`, UserToUpdate ,  {
         headers: {
           "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjQ5MzU4NTAzfQ.26omT_oF12IGaE2MqUyoyh7NuXf0qHgwrKM5NjK6Zfw",
+            theToken,
         },
       });
     };

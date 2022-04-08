@@ -23,7 +23,6 @@ const AdminUserMode = (): JSX.Element => {
       setAdmOrders(typeorder);
     };
 
-    console.log(Admorders);
     
     
     return(
