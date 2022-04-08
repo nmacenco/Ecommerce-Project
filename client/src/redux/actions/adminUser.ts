@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import { TYPES_ADMIN_USER, USERSAXIOSDATA } from "../interface";
 
 const URL = "http://localhost:3001/api/admin/users";
+const URLRESET = "http://localhost:3001/api/forcedPasswordReset"
 
 export const adminGetUsers = (theToken:any) => {
   try {
@@ -40,6 +41,22 @@ export const adminEditUser = (id : any  , UserToUpdate : any , theToken : any) =
           "auth-token":
           theToken,
         },
+      });
+    };
+  } catch (error) {
+    alert(error);
+  }
+};
+export const adminForcedPasswordReset = (email : string , theToken : string) => {
+  // console.log(UserToUpdate);
+  try {
+    return async (dispatch: Dispatch) => {
+       await axios.get(`${URLRESET}`,  {
+         headers: {
+           "auth-token":
+           theToken,
+          },
+          body : { email }, 
       });
     };
   } catch (error) {

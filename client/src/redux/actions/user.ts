@@ -4,8 +4,8 @@ import { TYPES_USER, User } from "../interface";
 
 
 const URL_USER = "http://localhost:3001/api";
+const URLRESET = "http://localhost:3001/api/forgotPasswordReset"
 const USER_STORAGE = "USER_LOGGED";
-
 export const CreateUser=(user:any,cb:any)=>{
     return async(dispatch:Dispatch)=>{
         try{
@@ -128,3 +128,20 @@ export const IdentGoogle=(url:string,cb:any)=>{
 
     }
 }
+
+
+export const forgotPasswordReset = (email : string , theToken : string) => {
+    // console.log(UserToUpdate);
+    try {
+      return async (dispatch: Dispatch) => {
+         await axios.put(`${URLRESET}`, email , {
+          headers: {
+            "auth-token":
+            theToken,
+          },
+        });
+      };
+    } catch (error) {
+      alert(error);
+    }
+  };
