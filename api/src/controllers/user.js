@@ -2,6 +2,7 @@ const { User, Order, OrderDetail, Country } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sequelize = require("sequelize");
+const e = require("express");
 require("dotenv").config();
 require("../auth/passport-setup");
 
@@ -288,6 +289,78 @@ const getUserOrders = async (req, res) => {
   }
 };
 
+const passwordReset = async (req, res) => {
+  try {
+    let id = req.userID;
+    let { password, passwordConfirm, actualPassword } = req.body;
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).send({ errorMsg: "User not found." });
+    }
+    if (!actualPassword || !password || !passwordConfirm) {
+      return res.status(400).send({ errorMsg: "Missing data." });
+    }
+    const passwordMatch = await bcrypt.compare(actualPassword, user.password);
+    if (!passwordMatch) {
+      return res
+        .status(400)
+        .send({ errorMsg: "Actual password is incorrect." });
+    }
+    if (password !== passwordConfirm) {
+      return res.status(400).send({ errorMsg: "Passwords don't match." });
+    }
+    if (password === actualPassword) {
+      return res
+        .status(400)
+        .send({ errorMsg: "New password is equal than the last one." });
+    }
+    password = await bcrypt.hash(password, 8);
+    await user.update({
+      password,
+    });
+    res.status(200).send({ successMsg: "Password successfully changed." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+const forcePasswordReset = async (req, res) => {
+  try {
+    let id = req.params.id;
+    if (!id) {
+      return res.status(400).send({ errorMsg: "No ID provided." });
+    }
+    let { password, passwordConfirm } = req.body;
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).send({ errorMsg: "User not found." });
+    }
+    if (user.needsPasswordReset && !user.isActive) {
+      if (!password || !passwordConfirm) {
+        return res.status(400).send({ errorMsg: "Missing data." });
+      }
+      if (password !== passwordConfirm) {
+        return res.status(400).send({ errorMsg: "Passwords don't match." });
+      }
+      const isPasswordEqual = await bcrypt.compare(password, user.password);
+      if(isPasswordEqual) {
+        return res.status(400).send({ errorMsg: "New password is equal than the last one." });
+      }
+      password = await bcrypt.hash(password, 8);
+      await user.update({
+        password,
+      });
+      res.status(200).send({ successMsg: "Password successfully changed." });
+    } else {
+      return res
+        .status(400)
+        .send({ errorMsg: "You don't need a password reset." });
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -298,4 +371,6 @@ module.exports = {
   googleLogIn,
   googleLogOut,
   googleUpdateProfile,
+  passwordReset,
+  forcePasswordReset,
 };
