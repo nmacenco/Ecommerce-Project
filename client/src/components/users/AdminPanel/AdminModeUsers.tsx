@@ -5,6 +5,7 @@ import { AdminUsersContainer, ListContainer } from "./AdminModeUsersStyles";
 import { State } from "../../../redux/reducers/index";
 import { Users } from "../../../redux/interface";
 import UserDetail from "./userDetail/UserDetail";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 
 
@@ -12,12 +13,12 @@ const AdminUserMode = (): JSX.Element => {
     const dispatch = useDispatch()
     const users = useSelector((state: State) => state.adminUsers.users);
     const [Admorders, setAdmOrders] = useState<string>("");
+    const [theToken , setTheToken] = useLocalStorage('USER_LOGGED','')
+    // console.log(typeof theToken.token);
+
     useEffect ( ()=> {
-      setTimeout(() => {
-        dispatch(adminGetUsers())
-      }, 500)
+      dispatch(adminGetUsers(theToken.token))
     }, [Admorders])
-    
 
     const AdmOrders = (typeorder: string): void => {
       setAdmOrders(typeorder);

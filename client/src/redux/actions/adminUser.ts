@@ -3,8 +3,8 @@ import { Dispatch } from "redux";
 import { TYPES_ADMIN_USER, USERSAXIOSDATA } from "../interface";
 
 const URL = "http://localhost:3001/api/admin/users";
-const theToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjQ5NDE4NzA5fQ.nAQNbz637DWxPBWzD3k0OssCEkJmk-K5A9MPSrnexoc'
-export const adminGetUsers = () => {
+
+export const adminGetUsers = (theToken:any) => {
   try {
     return async (dispatch: Dispatch) => {
       const allUsers = await axios.get(`${URL}`, {
@@ -13,7 +13,7 @@ export const adminGetUsers = () => {
             theToken,
         },
       });
-      console.log(allUsers.data.users);
+      // console.log(allUsers.data.users);
       
       return dispatch({
         type: TYPES_ADMIN_USER.GET_USERS,
@@ -30,15 +30,15 @@ export const adminresetUsers = () => {
     payload: []
   };
 };
-export const adminEditUser = (id : any  , UserToUpdate : any ) => {
-  console.log(UserToUpdate);
+export const adminEditUser = (id : any  , UserToUpdate : any , theToken : any) => {
+  // console.log(UserToUpdate);
   
   try {
     return async (dispatch: Dispatch) => {
        await axios.put(`${URL}/${id}`, UserToUpdate ,  {
         headers: {
           "auth-token":
-            theToken,
+          theToken,
         },
       });
     };

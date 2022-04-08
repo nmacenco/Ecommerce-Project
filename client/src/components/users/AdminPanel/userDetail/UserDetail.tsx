@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
+import {useLocalStorage} from '../../../../helpers/useLocalStorage'
 import { adminEditUser, adminGetUsers, adminresetUsers } from "../../../../redux/actions/adminUser";
 interface props {
   id: number;
@@ -36,69 +37,39 @@ const UserDetail = ({
   AdmOrders
 }: props) => {
   const dispatch = useDispatch()
-  
-  const [userUpdate, setUserUpdate] = useState( {
-    name,
-    email,
-    surname,
-    billing_address,
-    default_shipping_address,
-    role,
-    isActive,
-    country,
-    countryCode,
-    CountryId,
-    needsPasswordReset
-  });
+  const [theToken , setTheToken] = useLocalStorage('USER_LOGGED','')
 
+  // const [userUpdate, setUserUpdate] = useState( {
+  //   name,
+  //   email,
+  //   surname,
+  //   billing_address,
+  //   default_shipping_address,
+  //   role,
+  //   isActive,
+  //   country,
+  //   countryCode,
+  //   CountryId,
+  //   needsPasswordReset
+  // });
+
+
+  
     function  roleOnChange (e:any) {
       e.preventDefault()
-      // console.log(e.target.id);
-      
-      // setUserUpdate({...userUpdate , role: e.target.value})
-      // swal({
-      //   title: "Are you sure?",
-      //   text: "Do you want to change this user role?",
-      //   icon: "warning",
-      //   dangerMode: true,
-      //   buttons: {
-      //     cancel: true,
-      //     confirm: true
-      //   }
-      // }).then( (value) => {
-      //   if (value) {
-      //     if ( e.target.value === 'admin') {
-      //       dispatch(adminEditUser( e.target.id ,{
-      //         role : 'admin',
-      //         isActive,
-      //         needsPasswordReset
-      //       }))
-      //       console.log(e.target)
-      //     } else {
-      //       dispatch(adminEditUser( e.target.id ,{
-      //         role : 'user',
-      //         isActive,
-      //         needsPasswordReset
-      //       }));
-      //     }
-      //     swal({
-      //       text: "Role changed",
-      //       icon: "success"
-      //     })
-      //   }
-      // })
+
       if ( e.target.value === 'admin') {
         dispatch(adminEditUser( e.target.id ,{
           role : 'admin',
           isActive,
           needsPasswordReset
-        }))
+        }, theToken.token))
       } else {
         dispatch(adminEditUser( e.target.id ,{
           role : 'user',
           isActive,
           needsPasswordReset
-        }));
+        }, theToken.token));
       }
       // e.target.value = ''
       dispatch(adminresetUsers());
@@ -115,7 +86,7 @@ const UserDetail = ({
           role,
           needsPasswordReset,
           isActive: false,
-        }))
+        }, theToken.token))
       }else if (e.target.value === 'false' ) {
         // setUserUpdate({...userUpdate , isActive: true})
         dispatch(adminEditUser( e.target.id ,{
@@ -123,7 +94,7 @@ const UserDetail = ({
           needsPasswordReset,
           isActive: true,
 
-        }))
+        }, theToken.token))
       }
       dispatch(adminresetUsers());
       AdmOrders(e.target.value)
@@ -139,7 +110,7 @@ const UserDetail = ({
       <tr className="table-light">
         <th scope="row">{name}</th>
         <td className="form-group">
-          <select  onChange={(e)=> roleOnChange(e)} defaultValue={userUpdate.role} className="form-select" id={`${id}`} >
+          <select  onChange={(e)=> roleOnChange(e)} defaultValue={role} className="form-select" id={`${id}`} >
             <option disabled hidden>
               {role}
             </option>
@@ -191,3 +162,41 @@ const UserDetail = ({
 };
 
 export default UserDetail;
+
+
+/// mensaje de error, genera problemas a la hora de actualizar 
+
+      // console.log(e.target.id);
+      
+      // setUserUpdate({...userUpdate , role: e.target.value})
+      // swal({
+      //   title: "Are you sure?",
+      //   text: "Do you want to change this user role?",
+      //   icon: "warning",
+      //   dangerMode: true,
+      //   buttons: {
+      //     cancel: true,
+      //     confirm: true
+      //   }
+      // }).then( (value) => {
+      //   if (value) {
+      //     if ( e.target.value === 'admin') {
+      //       dispatch(adminEditUser( e.target.id ,{
+      //         role : 'admin',
+      //         isActive,
+      //         needsPasswordReset
+      //       }))
+      //       console.log(e.target)
+      //     } else {
+      //       dispatch(adminEditUser( e.target.id ,{
+      //         role : 'user',
+      //         isActive,
+      //         needsPasswordReset
+      //       }));
+      //     }
+      //     swal({
+      //       text: "Role changed",
+      //       icon: "success"
+      //     })
+      //   }
+      // })
