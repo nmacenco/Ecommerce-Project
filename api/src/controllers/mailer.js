@@ -4,7 +4,6 @@ const sendMail = async (req, res) => {
     let { emailToAddress, emailToSubject, emailToBody } = req.body;
 
     try {
-
         let info = await mailer.sendMail({
             from: 'E-commerce Henry PF" <najupasa@gmail.com>',
             to: emailToAddress,
@@ -16,11 +15,30 @@ const sendMail = async (req, res) => {
             res.status(200).send({
                 successMsg: "Mail successfully sent."
             })
+            : res.status(401).send({ errorMsg: "User doesn't" });
+    } catch (error) {
+        res.status(500).send({ errorMsg: error.message });
+    }
+};
+
+const sendMailPassword = async (emailToAddress, emailToSubject, emailToBody) => {
+    
+    try {
+        let info = await mailer.sendMail({
+            from: 'E-commerce Henry PF" <najupasa@gmail.com>',
+            to: emailToAddress,
+            subject: emailToSubject,
+            html: emailToBody,
+        });
+
+        info ?
+            res.status(200).send({
+                successMsg: "Mail successfully sent.", data: token
+            })
             : res.status(401).send({ errorMsg: "Mail can not be sent." });
     } catch (error) {
         res.status(500).send({ errorMsg: error.message });
     }
 };
 
-
-module.exports = sendMail;
+module.exports ={ sendMail, sendMailPassword}
