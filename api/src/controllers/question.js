@@ -25,7 +25,7 @@ const createQuestion = async (req, res) => {
 
 const getQuestions = async (req, res) => {
     try {
-        let dataQuestions = await Question.findAll({ attributes: ["id", "ProductId", "title", "description"] });
+        let dataQuestions = await Question.findAll({ attributes: ["id", "ProductId", "title", "description","answer"] });
         
         if (!dataQuestions) {
             res.status(404).send({ errorMsg: "There are no questions available." });
@@ -46,7 +46,7 @@ const getSingleQuestion = async (req, res) => {
             res.status(400).send({ errorMsg: "Missing data." });
         } else {
             let singleQuestion = await Question.findOne({
-                attributes: ["id","ProductId", "title", "description"],
+                attributes: ["id","ProductId", "title", "description","answer"],
                 where: {
                     id,
                 },
@@ -80,7 +80,8 @@ const updateQuestion = async (req, res) => {
             let updatedQuestion = await questionToUpdate.update({
                 ProductId,
                 title,
-                description
+                description,
+                answer,
             });
             updatedQuestion ?
                 res.status(200).send({
