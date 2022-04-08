@@ -54,6 +54,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page }: props) => {
 
   }
 
+  
   function handleClickEdit(e: React.MouseEvent<HTMLButtonElement>): void {
     dispatch(getProductDetail(stringId));
     setTimeout(function () {

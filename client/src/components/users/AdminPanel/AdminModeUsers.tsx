@@ -13,11 +13,11 @@ const AdminUserMode = (): JSX.Element => {
     const dispatch = useDispatch()
     const users = useSelector((state: State) => state.adminUsers.users);
     const [Admorders, setAdmOrders] = useState<string>("");
-    const [theToken , setTheToken] = useLocalStorage('USER_LOGGED','')
-    // console.log(typeof theToken.token);
+    const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+    // console.log(typeof userInStorage.token);
 
     useEffect ( ()=> {
-      dispatch(adminGetUsers(theToken.token))
+      dispatch(adminGetUsers(userInStorage.token))
     }, [Admorders])
 
     const AdmOrders = (typeorder: string): void => {
