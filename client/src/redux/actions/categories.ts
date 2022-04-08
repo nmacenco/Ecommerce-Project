@@ -38,3 +38,14 @@ export function createSubcategories(subcategory: FORM_SUB) {
     await axios.post(URL + "/subcategories", subcategory)
   }
 }
+
+export const resetSubcategories = () => {
+  try {
+    return ({
+      type: TYPES_CATEGORIES.RESET_SUBCATEGORIES,
+      payload: []
+    });
+  } catch (error) {
+    alert(error);
+  }
+};

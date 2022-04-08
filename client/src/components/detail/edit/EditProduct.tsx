@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import swal from "sweetalert";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { putProducts } from "../../../redux/actions/admin";
 import { getBrands } from "../../../redux/actions/brands";
 import {
@@ -43,6 +44,7 @@ export default function EditProduct(): JSX.Element {
     SubcategoryId: productDetail.SubcategoryId,
   });
   const [errorsList, setErrorsList] = useState<any>(false)
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -77,7 +79,7 @@ export default function EditProduct(): JSX.Element {
     let errors = errorsCheck(editProduct);
     setErrorsList(errors)
     if (errors === false) {
-      dispatch(putProducts(editProduct, id));
+      dispatch(putProducts(editProduct, id , userInStorage.token));
       swal({
         title: "Product edited successfully.",
         icon: "success"
