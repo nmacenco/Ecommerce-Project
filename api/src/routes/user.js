@@ -10,7 +10,7 @@ const {
   googleLogOut,
   googleUpdateProfile,
   passwordReset,
-  forgotAndForcedResetPassword
+  forgotAndForcedResetPassword,
 } = require("../controllers/user.js");
 const {
   adminGetUsers,
@@ -45,10 +45,9 @@ userRouter.delete("/auth/logOut", isLoggedIn, logOut);
 userRouter.put("/auth/users/passwordReset", isLoggedIn, passwordReset);
 
 //guest local sign in, sign up and sign out
-userRouter.put("/forcedPasswordReset/:id", forgotAndForcedResetPassword);
+userRouter.put("/submitPasswordReset/:id", forgotAndForcedResetPassword);
 userRouter.post("/signUp", createUser);
 userRouter.post("/signIn", signIn);
-userRouter.put("/forgotPassword/:id", forgotAndForcedResetPassword);
 
 //guest google sign in/login in and log out
 userRouter.get(
