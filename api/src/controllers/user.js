@@ -379,7 +379,7 @@ const sendForcedPasswordResetMail = async (req, res) => {
   }
 };
 
-const forgotPassword = async (req, res) => {
+const forgotAndForcedResetPassword = async (req, res) => {
   try {
     let token = req.params.id;
     if (!token) {
@@ -411,54 +411,9 @@ const forgotPassword = async (req, res) => {
       password,
       passwordResetToken: "",
       needsPasswordReset: false,
+      isActive: true,
     });
     res.status(200).send({ successMsg: "Password successfully changed." });
-  } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
-  }
-};
-
-const forcePasswordReset = async (req, res) => {
-  try {
-    let token = req.params.id;
-    if (!token) {
-      return res.status(400).send({ errorMsg: "No token provided." });
-    }
-    let { password, passwordConfirm } = req.body;
-    const payload = jwt.verify(token, process.env.SECRET_KEY);
-    const id = payload.id;
-    const user = await User.findOne({
-      where: { id, passwordResetToken: token },
-    });
-    if (!user) {
-      return res.status(404).send({ errorMsg: "User not found." });
-    }
-    if (user.needsPasswordReset && !user.isActive) {
-      if (!password || !passwordConfirm) {
-        return res.status(400).send({ errorMsg: "Missing data." });
-      }
-      if (password !== passwordConfirm) {
-        return res.status(400).send({ errorMsg: "Passwords don't match." });
-      }
-      const isPasswordEqual = await bcrypt.compare(password, user.password);
-      if (isPasswordEqual) {
-        return res
-          .status(400)
-          .send({ errorMsg: "New password is equal than the last one." });
-      }
-      password = await bcrypt.hash(password, 8);
-      await user.update({
-        password,
-        passwordResetToken: "",
-        needsPasswordReset: false,
-        isActive: true,
-      });
-      res.status(200).send({ successMsg: "Password successfully changed." });
-    } else {
-      return res
-        .status(400)
-        .send({ errorMsg: "You don't need a password reset." });
-    }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -475,8 +430,7 @@ module.exports = {
   googleLogOut,
   googleUpdateProfile,
   passwordReset,
-  forcePasswordReset,
   sendPasswordResetMail,
-  forgotPassword,
+  forgotAndForcedResetPassword,
   sendForcedPasswordResetMail,
 };
