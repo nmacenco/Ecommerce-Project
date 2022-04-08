@@ -1,13 +1,29 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { addProductCart, removeProductCart } from "../../redux/actions/cart";
 import { Product } from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import CartProduct from "./cartProduct/CartProduct";
 import { CartContainer } from "./CartStyles";
 
 const Cart = (): JSX.Element => {
+  const dispatch = useDispatch();
   const productsCart = useSelector((state: State) => state.cart.cart);
+
+  async function updateCountHandler(
+    product: Product,
+    count: number
+  ): Promise<void> {
+    if (count <= Number(product.stock) && count > 0) {
+      product.count = count;
+      dispatch(addProductCart(product));
+    }
+  }
+
+  function removeProductHandler(product: Product): void {
+    dispatch(removeProductCart(product));
+  }
 
   return (
     <CartContainer className="container-fluid">
@@ -24,19 +40,31 @@ const Cart = (): JSX.Element => {
           <div className="mt-5">
             {productsCart.map((product: Product) => (
               <CartProduct
-                key={product.id}
+                id={product.id}
                 name={product.name}
                 image={product.image}
                 count={product.count}
                 price={product.price}
+                updateCountHandler={updateCountHandler}
+                removeProductHandler={removeProductHandler}
+                product={product}
               />
             ))}
           </div>
           <div className="d-flex justify-content-between mt-4 align-items-center">
             <h3>
-              Total: $
-              {productsCart.reduce((a: number, product: Product) => a + product.price * product.count,0)}
-              ( {productsCart.reduce((a: number, product: Product) => a + product.count,0)} products )
+              total: $
+              {productsCart.reduce(
+                (a: number, product: Product) =>
+                  a + product.price * product.count,
+                0
+              )}{" "}
+              ({" "}
+              {productsCart.reduce(
+                (a: number, product: Product) => a + product.count,
+                0
+              )}{" "}
+              products )
             </h3>
             <div>
               <button className="btn btn-primary">Confirm order</button>
