@@ -4,7 +4,7 @@ const {
 
 const createQuestion = async (req, res) => {
     try {
-        let { ProductId, title, description } = req.body;
+        let { ProductId, title, description,UserId } = req.body;
 
         if (!ProductId || !title || !description || !UserId) {
             res.status(402).send({ errorMsg: "Missing data." });
@@ -20,6 +20,7 @@ const createQuestion = async (req, res) => {
                 : res.status(401).json({ errorMsg: "An error happend adding the question" });
         };
     } catch (error) {
+        console.log('el error: ',error)
         res.status(500).send({ errorMsg: error.message });
     }
 };
