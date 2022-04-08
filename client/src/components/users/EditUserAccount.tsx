@@ -71,8 +71,8 @@ export default function EditUserAccount(): JSX.Element {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
         if (editUser.name !== "" && editUser.surname !== "" && editUser.email !== "" && editUser.CountryId !== 0) {
-            dispatch(updateUser(id, editUser))
 
+            dispatch(updateUser(id, editUser))
         } else {
             showError(editUser)
             swal({

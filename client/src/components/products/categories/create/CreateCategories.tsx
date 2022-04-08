@@ -14,7 +14,7 @@ interface FORM_CAT {
 
 export interface FORM_SUB {
     name: string,
-    CategoryId: number
+    CategoryId: any
 }
 
 
@@ -50,36 +50,41 @@ export default function CreateCategories(): JSX.Element {
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault()
+
         setNewCategory({
             ...newCategory,
             name: e.target.value,
-        })
-        setNewSubcategory({
-            ...newSubcategory,
-            CategoryId: allCategories.length + 1
         })
     }
 
     const handleChangeSubcategory = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault()
+        let sett: any
+        const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
+        if (putId.length > 0) {
+            console.log('entre aca')
+            sett = putId[0].id
+        }
+        else {
+            sett = allCategories.length + 1
+        }
+
         setNewSubcategory({
             ...newSubcategory,
-            name: e.target.value
-        })
-        setNewCategory({
-            ...newCategory,
-            name: newCategory.name.trim(),
+            name: e.target.value,
+            CategoryId: sett
         })
     }
 
-    const  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (newCategory.name !== "") {
             const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
-            if (putId.length === 0)  dispatch(createCategories(newCategory))
+            if (putId.length === 0) dispatch(createCategories(newCategory))
 
             if (newSubcategory.name.length !== 0) {
-                await dispatch(createSubcategories(newSubcategory))
+                console.log(newSubcategory)
+                dispatch(createSubcategories(newSubcategory))
                 dispatch(resetSubcategories())
             }
             swal({

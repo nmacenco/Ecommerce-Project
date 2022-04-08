@@ -29,12 +29,11 @@ export default function ResetForcePassword(): JSX.Element {
     const handleShow = (password: string, confirmPassword: string): void => {
         if (password.length < 8 || password.length > 20) {
             (document.getElementById("password") as HTMLInputElement).textContent = "Must be 8-20 characters long"
-            console.log(document.getElementById("password"))
-        }
+        } else (document.getElementById("password") as HTMLInputElement).textContent = ""
 
         if (password !== confirmPassword) {
             (document.getElementById("confirmPassword") as HTMLInputElement).textContent = "Passwords don't match"
-        }
+        } else (document.getElementById("confirmPassword") as HTMLInputElement).textContent = ""
 
     }
 
@@ -42,7 +41,7 @@ export default function ResetForcePassword(): JSX.Element {
         e.preventDefault()
         if (reset.password !== "" && reset.confirmPassword !== "") {
             handleShow(reset.password, reset.confirmPassword)
-            if (reset.password === reset.confirmPassword) {
+            if (reset.password === reset.confirmPassword && reset.password.length >= 8 && reset.password.length <= 20) {
                 swal({
                     title: "Reset password",
                     icon: "success"
@@ -68,12 +67,12 @@ export default function ResetForcePassword(): JSX.Element {
                 <h3 className="text-center">Forgot password</h3>
                 <div className="form-group">
                     <label className="col-sm-2 col-form-label">New password</label>
-                    <input type="text" className="form-control" placeholder='Password' name="password" onChange={(e) => changePassword(e)} />
+                    <input type="password" className="form-control" placeholder='Password' name="password" onChange={(e) => changePassword(e)} />
                     <small id="password" className="text-danger"></small>
                 </div>
                 <div className="form-group">
                     <label className="col-sm-2 col-form-label">Repeat password</label>
-                    <input type="text" className="form-control" placeholder='Repeat password' name="confirmPassword" onChange={(e) => changePassword(e)} />
+                    <input type="password" className="form-control" placeholder='Repeat password' name="confirmPassword" onChange={(e) => changePassword(e)} />
                     <small id="confirmPassword" className="text-danger"></small>
                 </div>
                 <div className="text-center">

@@ -135,7 +135,6 @@ export const IdentGoogle = (url: string, cb: any) => {
         } catch (error) {
             console.log("Error en sig in google: ", error);
         }
-
     }
 }
 
