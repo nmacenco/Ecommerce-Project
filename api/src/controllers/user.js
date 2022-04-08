@@ -2,8 +2,7 @@ const { User, Order, OrderDetail, Country } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sequelize = require("sequelize");
-const e = require("express");
-const sendMail = require("./mailer");
+const { sendMailPassword } = require("./mailer");
 require("dotenv").config();
 require("../auth/passport-setup");
 
@@ -330,23 +329,107 @@ const passwordReset = async (req, res) => {
   }
 };
 
-// www.ecommerce.com/passworReset/12983123kzxc.fgas12904123.f92109412301
-
 const sendPasswordResetMail = async (req, res) => {
   try {
-    
-    //"<p>Click <a href='http://localhost:3000/sessions/recover/" + token + ">here</a> to reset your password</p>"
-  } catch (error) {}
+    let { email } = req.body;
+    if (!email) {
+      return res.status(400).send({ errorMsg: "Invalid email address." });
+    }
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).send({ errorMsg: "User not found." });
+    }
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+    await user.update({ passwordResetToken: token, needsPasswordReset: true });
+    await sendMailPassword(
+      email,
+      "Required password reset",
+      `<p>Click <a href='http://localhost:3000/sessions/recover/${token}>here</a> to reset your password</p>`
+    );
+    res.status(200).send({ successMsg: "Password reset sent." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+const sendForcedPasswordResetMail = async (req, res) => {
+  try {
+    let { email } = req.body;
+    if (!email) {
+      return res.status(400).send({ errorMsg: "Invalid email address." });
+    }
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).send({ errorMsg: "User not found." });
+    }
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+    await user.update({
+      passwordResetToken: token,
+      needsPasswordReset: true,
+      isActive: false,
+    });
+    await sendMailPassword(
+      email,
+      "Required password reset",
+      `<p>Click <a href='http://localhost:3000/sessions/recover/${token}>here</a> to reset your password</p>`
+    );
+    res.status(200).send({ successMsg: "Password reset sent." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+    let token = req.params.id;
+    if (!token) {
+      return res.status(400).send({ errorMsg: "No token provided." });
+    }
+    let { password, passwordConfirm } = req.body;
+    const payload = jwt.verify(token, process.env.SECRET_KEY);
+    const id = payload.id;
+    const user = await User.findOne({
+      where: { id, passwordResetToken: token },
+    });
+    if (!user) {
+      return res.status(404).send({ errorMsg: "User not found." });
+    }
+    if (!password || !passwordConfirm) {
+      return res.status(400).send({ errorMsg: "Missing data." });
+    }
+    if (password !== passwordConfirm) {
+      return res.status(400).send({ errorMsg: "Passwords don't match." });
+    }
+    const isPasswordEqual = await bcrypt.compare(password, user.password);
+    if (isPasswordEqual) {
+      return res
+        .status(400)
+        .send({ errorMsg: "New password is equal than the last one." });
+    }
+    password = await bcrypt.hash(password, 8);
+    await user.update({
+      password,
+      passwordResetToken: "",
+      needsPasswordReset: false,
+    });
+    res.status(200).send({ successMsg: "Password successfully changed." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
 };
 
 const forcePasswordReset = async (req, res) => {
   try {
-    let id = req.params.id;
-    if (!id) {
-      return res.status(400).send({ errorMsg: "No ID provided." });
+    let token = req.params.id;
+    if (!token) {
+      return res.status(400).send({ errorMsg: "No token provided." });
     }
     let { password, passwordConfirm } = req.body;
-    const user = await User.findByPk(id);
+    const payload = jwt.verify(token, process.env.SECRET_KEY);
+    const id = payload.id;
+    const user = await User.findOne({
+      where: { id, passwordResetToken: token },
+    });
     if (!user) {
       return res.status(404).send({ errorMsg: "User not found." });
     }
@@ -366,6 +449,9 @@ const forcePasswordReset = async (req, res) => {
       password = await bcrypt.hash(password, 8);
       await user.update({
         password,
+        passwordResetToken: "",
+        needsPasswordReset: false,
+        isActive: true,
       });
       res.status(200).send({ successMsg: "Password successfully changed." });
     } else {
@@ -390,4 +476,7 @@ module.exports = {
   googleUpdateProfile,
   passwordReset,
   forcePasswordReset,
+  sendPasswordResetMail,
+  forgotPassword,
+  sendForcedPasswordResetMail,
 };
