@@ -22,6 +22,13 @@ export const reducerCategories = (state: CATEGORIES = INITIAL_STATE, action: Cat
                 ...state, 
                 subcategories : action.payload
             }
+        
+        case TYPES_CATEGORIES.RESET_SUBCATEGORIES :
+            return {
+                ...state, 
+                subcategories : action.payload
+            }
+        
         default: {
             return {
                 ...state

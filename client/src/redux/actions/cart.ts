@@ -7,9 +7,9 @@ export function addProductCart(product: Product) {
   };
 }
 
-// export function removeItemtCar(product: Product) {
-//   return {
-//     type: TYPES_CART.REMOVE_PRODUCT,
-//     payload: product,
-//   };
-// }
+export function removeProductCart(product: Product) {
+  return {
+    type: TYPES_CART.REMOVE_PRODUCT,
+    payload: product,
+  };
+}

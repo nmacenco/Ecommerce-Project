@@ -5,7 +5,9 @@ export interface CART {
 }
 
 const INITIAL_STATE = {
-  cart: []
+  cart: localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart") || '{}')
+    : [],
 };
 
 export const reducerCart = (
@@ -28,8 +30,15 @@ export const reducerCart = (
           )
         : //if it is null it means it is a new product
           [...state.cart, newProduct];
-      return {...state, cart: cartItems};
-      //return {...state, cart: {...state.cart, cartItems: [...state.cart.cartItems, cartItems]}}
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      return { ...state, cart: cartItems };
+
+    case TYPES_CART.REMOVE_PRODUCT:
+      const cartItemsFiltered = state.cart.filter(
+        (product) => product.id !== action.payload.id
+      );
+      localStorage.setItem("cart", JSON.stringify(cartItemsFiltered));
+      return { ...state, cart: cartItemsFiltered };
 
     default: {
       return {
