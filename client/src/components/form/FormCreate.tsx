@@ -19,7 +19,7 @@ import {
 import { State } from "../../redux/reducers";
 import { Textarea } from "../detail/edit/EditProductStyles";
 import { FormContainer } from "./FormCreateStyles";
-import { Errors, errorsCheck } from "./validations";
+import { errorsCheck } from "./validations";
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();

@@ -17,7 +17,10 @@ const AdminUserMode = (): JSX.Element => {
     // console.log(typeof userInStorage.token);
 
     useEffect ( ()=> {
-      dispatch(adminGetUsers(userInStorage.token))
+      setTimeout( ()=> {
+        dispatch(adminGetUsers(userInStorage.token))
+
+      }, 200)
     }, [Admorders])
 
     const AdmOrders = (typeorder: string): void => {

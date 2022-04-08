@@ -9,14 +9,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../redux/actions/admin";
 import Rewies from "./reviews/Review";
 import Loading from "../loading/Loading";
-import {
-  DetailContainer,
-  Box,
-  ImgPriceContainer,
-  Price,
-  DeleteEditButton,
-  ImagesContainer,
-} from "./DetailStyles";
+import {  DetailContainer, Box,  ImgPriceContainer,  Price,  DeleteEditButton,  ImagesContainer,} from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
@@ -24,6 +17,9 @@ import NewQ from "./questions/NewQ";
 import { addProductCart } from "../../redux/actions/cart";
 import { Product } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
+import TrashIMG from "../../icons/white-trash.png"
+import EditIMG from "../../icons/edit.png"
+
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -33,6 +29,7 @@ export default function Detail() {
   const user = useSelector((state: State) => state.user);
   const productsCart = useSelector((state: State) => state.cart.cart);
   const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const productInCart = productsCart.find((x: Product) => x.id === product.id);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -43,13 +40,10 @@ export default function Detail() {
   }, []);
 
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
-    const productInCart = productsCart.find((x:Product) => x.id === product.id);
     const count = productInCart ? productInCart.count + 1 : 1;
     if (Number(count) <= Number(product.stock)) {
-      product.count = count
+      product.count = count;
       dispatch(addProductCart(product));
-    } else {
-      window.alert("No stock available.");
     }
   }
 
@@ -97,24 +91,35 @@ export default function Detail() {
                 <Price>
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn"
-                    onClick={(e) => addCartHandler(e)}
-                  >
-                    Add to cart
-                  </button>
+
+                  {product.count === product.stock || productInCart && productInCart.count === product.stock? (
+                    <button
+                      type="button"
+                      className="btn btn-primary btn"
+                      disabled
+                    >
+                      No stock
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-primary btn"
+                      onClick={(e) => addCartHandler(e)}
+                    >
+                      Add to cart
+                    </button>
+                  )}
                   <DeleteEditButton>
                     <button
                       onClick={deleteHandler}
                       type="button"
                       className="btn btn-danger btn-sm"
                     >
-                      Delete
+                      <img src={TrashIMG} alt="delete"></img>
                     </button>
                     <Link to={`/editProduct/${product.id}`}>
                       <button type="button" className="btn btn-warning btn-sm">
-                        Edit
+                      <img src={EditIMG} alt="edit"></img>
                       </button>
                     </Link>
                   </DeleteEditButton>
@@ -155,15 +160,18 @@ export default function Detail() {
           <div className="tab-pane fade m-2" id="questions">
             {user ? <NewQ ProductId={product.id!} /> : null}
             {/* {console.log('QUESTIONS: ', product.questions)} */}
-            {
-              product.questions && product.questions.map((question, i) => {
-
+            {product.questions &&
+              product.questions.map((question, i) => {
                 return (
-                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user}/>
-                )
-
-              })
-            }
+                  <Question
+                    title={question.question.title}
+                    body={question.question.description}
+                    key={i}
+                    answer={question.question.answer}
+                    user={user}
+                  />
+                );
+              })}
           </div>
         </div>
       </Box>
