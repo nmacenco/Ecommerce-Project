@@ -42,10 +42,7 @@ export default function CreateCategories(): JSX.Element {
             ...newCategory,
             name: e.target.value,
         })
-        setNewSubcategory({
-            ...newSubcategory,
-            CategoryId: e.target.selectedIndex
-        })
+
     }
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -68,11 +65,14 @@ export default function CreateCategories(): JSX.Element {
         else {
             sett = allCategories.length + 1
         }
-
         setNewSubcategory({
             ...newSubcategory,
             name: e.target.value,
             CategoryId: sett
+        })
+        setNewCategory({
+            ...newCategory,
+            name: newCategory.name.trim(),
         })
     }
 

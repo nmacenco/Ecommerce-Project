@@ -32,6 +32,9 @@ export default function Detail() {
   const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
   const productInCart = productsCart.find((x: Product) => x.id === product.id);
 
+
+  
+  
   useEffect(() => {
     dispatch(getProductDetail(id));
     return () => {
@@ -110,6 +113,9 @@ export default function Detail() {
                       Add to cart
                     </button>
                   )}
+
+                  {
+                    userInStorage && userInStorage.role === 'admin' ?
                   <DeleteEditButton>
                     <button
                       onClick={deleteHandler}
@@ -123,7 +129,9 @@ export default function Detail() {
                       <img src={EditIMG} alt="edit"></img>
                       </button>
                     </Link>
-                  </DeleteEditButton>
+                  </DeleteEditButton> :
+                  <div></div>
+                  }
                 </Price>
               </ImgPriceContainer>
             </div>

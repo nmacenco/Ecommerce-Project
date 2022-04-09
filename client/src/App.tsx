@@ -18,6 +18,7 @@ import CreateCategories from "./components/products/categories/create/CreateCate
 import ResetForcePassword from "./components/users/ResetForgotPasswords";
 import EditUserAccount from "./components/users/EditUserAccount";
 import AdminUserMode from "./components/users/AdminPanel/AdminModeUsers";
+import EmailResetPassword from './components/users/EmailResetPassword'
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function App(): JSX.Element {
           <Route path="/editUser/:id" element={<EditUserAccount />} />
           <Route path="/productsAdminMode" element={<AdminModeCards />} />
           <Route path="/usersAdminMode" element={<AdminUserMode />} />
+          <Route path="/emailReset" element={<EmailResetPassword/>} />
         </Routes>
       </BrowserRouter>
     </div>
