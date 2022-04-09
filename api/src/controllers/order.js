@@ -63,21 +63,31 @@ const getUserOrdersServer = async (req, res) => {
 };
 
 //create order (when user creates account, or if there are no pending orders)
+//Possible status: PENDING BILLED DELIVERED COMPLETED
 const createOrder = async (req, res) => {
   try {
-    let { total_amount, email_address, billing_address, status, UserId } =
+    let { total_amount, email_address, billing_address, UserId } =
       req.body;
-    if (!total_amount || !email_address || !billing_address || !status) {
+    if (!email_address || !billing_address || !UserId) {
       res.status(402).send({ errorMsg: "Missing data." });
     } else {
-      let neworder = await Order.create({
-        total_amount,
-        email_address,
-        billing_address,
-        UserId,
-        status,
+      let singleOrder = await Order.findOne({
+        where: {
+          UserId,
+          status: "PENDING",
+        }
       });
-      res.status(201).json(neworder);
+      if (!singleOrder) {
+        let neworder = await Order.create({
+          total_amount,
+          email_address,
+          billing_address,
+          UserId,
+        });
+        res.status(201).send(neworder);
+      } else {
+        res.status(201).send(singleOrder);
+      }
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
@@ -87,13 +97,13 @@ const createOrder = async (req, res) => {
 //Add order detail, delete order detail or modify order detail (use aux functions)
 const updateOrder = async (req, res) => {
   try {
-  } catch (error) {}
+  } catch (error) { }
 };
 
 //send actual order (cart) with it's order-details included.
 const getActiveOrder = async (req, res) => {
   try {
-  } catch (error) {}
+  } catch (error) { }
 };
 
 //order-detail aux functions
