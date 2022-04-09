@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import swal from 'sweetalert'
+import { useLocalStorage } from '../../helpers/useLocalStorage'
 import { getCountries } from '../../redux/actions/countries'
-import { updateUser } from '../../redux/actions/user'
+import { getSingleUser, GetUSer, updateUser } from '../../redux/actions/user'
 import { ICountries } from '../../redux/interface'
 import { State } from '../../redux/reducers'
 import { FormContainer } from '../form/FormCreateStyles'
@@ -15,7 +15,8 @@ export interface EDIT_USER {
     email: string,
     billing_address: string,
     default_shipping_address: string,
-    CountryId: number
+    CountryId: number,
+    password: string
 }
 
 export default function EditUserAccount(): JSX.Element {
@@ -23,26 +24,33 @@ export default function EditUserAccount(): JSX.Element {
     const navigate = useNavigate()
     const { id } = useParams<string>()
     const allCountries = useSelector((state: State) => state.countries.countries)
+    const user = useSelector((state: State) => state.user)
+    const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
     const [editUser, setEditUser] = useState<EDIT_USER>({
         name: "",
         surname: "",
         email: "",
         billing_address: "",
         default_shipping_address: "",
-        CountryId: 0
+        CountryId: 0,
+        password: ""
     })
 
     useEffect(() => {
         dispatch(getCountries())
-    }, [])
+        setTimeout(() => {
+            dispatch(getSingleUser(userInStorage))
+        }, 200)
+    }, [dispatch])
+    function cb () {
+
+    }
 
     const showError = (editUser: EDIT_USER): void => {
         if (editUser.name === "") (document.getElementById("error-name") as HTMLInputElement).textContent = "Name missing"
         else (document.getElementById("error-name") as HTMLInputElement).textContent = ""
         if (editUser.surname === "") (document.getElementById("error-surname") as HTMLInputElement).textContent = "Surname missing"
         else (document.getElementById("error-surname") as HTMLInputElement).textContent = ""
-        // if (editUser.billing_address === "") (document.getElementById("error-billing") as HTMLInputElement).textContent = "Billing address missing"
-        // else (document.getElementById("error-billing") as HTMLInputElement).textContent = ""
         if (editUser.email === "") (document.getElementById("error-email") as HTMLInputElement).textContent = "Email missing"
         else (document.getElementById("error-email") as HTMLInputElement).textContent = ""
         if (editUser.CountryId === 0) (document.getElementById("error-country") as HTMLSelectElement).textContent = "Country missing"

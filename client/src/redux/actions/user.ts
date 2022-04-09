@@ -145,3 +145,17 @@ export const updateUser = (id: string | undefined, editUser: EDIT_USER) => {
         console.log("Error updating user", error)
     }
 }
+
+export const getSingleUser = (token: any) => {
+    try {
+        return async function(dispatch: Dispatch) {
+            const user = await axios.get(URL + "/auth/users", token)
+            return dispatch({
+                type: TYPES_USER.GET_SINGLE_USER,
+                payload: user.data
+            })
+        }
+    } catch (error) {
+        console.log("Error get single user", error)
+    }
+}

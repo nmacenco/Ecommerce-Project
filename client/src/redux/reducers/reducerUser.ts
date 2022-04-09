@@ -27,6 +27,9 @@ export const userReducer = (state: USER = INITIAL_USER, action: UserActions): US
 
     case TYPES_USER.LOGOUT_USER:
       return action.payload;
+
+    case TYPES_USER.GET_SINGLE_USER:
+      return action.payload
     default:
       return state;
   }

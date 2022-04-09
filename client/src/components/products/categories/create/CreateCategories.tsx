@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import swal from 'sweetalert';
+import swal from 'sweetalert'
 import { createCategories, createSubcategories, getCategories, resetSubcategories } from '../../../../redux/actions/categories';
 import { Category } from '../../../../redux/interface';
 import { State } from '../../../../redux/reducers';

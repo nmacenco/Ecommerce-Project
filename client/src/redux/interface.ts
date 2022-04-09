@@ -3,6 +3,7 @@ export enum TYPES_USER {
   GET_USER,
   LOGOUT_USER,
   FIND_USER,
+  GET_SINGLE_USER = "GET_SINGLE_USER"
 }
 export enum TYPES_ADMIN_USER {
   GET_USERS = 'GET_USERS',
@@ -192,6 +193,10 @@ export interface FIND_USER {
   type: TYPES_USER.FIND_USER;
   payload: User;
 }
+export interface GET_SINGLE_USER {
+  type: TYPES_USER.GET_SINGLE_USER,
+  payload: any
+}
 
 //=======================
 // Countries Actions
@@ -343,10 +348,9 @@ export interface USERSAXIOSDATA {
 
 export type Actions = PRODUCT_DETAIL | DELETE_PRODUCT_DETAIL | CREATE_QUESTION | CREATE_REWIE;
 
-export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
+export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER | GET_SINGLE_USER;
 
 export type AdminUserActions = ADMIN_USER | ADMIN_RESET_USER;
-
 
 export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | CHARGE_FILTERS | REMOVE_FILTER | FILTERED_CAT_PRODUCTS | FILTERED_BRAND_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
 
