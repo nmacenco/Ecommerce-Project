@@ -3,14 +3,13 @@ const {
   createUser,
   updateUser,
   getSingleUser,
-  getUserOrders,
   signIn,
   logOut,
   googleLogIn,
   googleLogOut,
   googleUpdateProfile,
   passwordReset,
-  forgotAndForcedResetPassword
+  forgotAndForcedResetPassword,
 } = require("../controllers/user.js");
 const {
   adminGetUsers,
@@ -29,26 +28,18 @@ const userRouter = express.Router();
 userRouter.get("/admin/users", isLoggedIn, isAdmin, adminGetUsers);
 userRouter.get("/admin/users/:id", isLoggedIn, isAdmin, adminGetUser);
 userRouter.put("/admin/users/:id", isLoggedIn, isAdmin, adminUpdateUser);
-userRouter.get(
-  "/admin/users/getOrders/:id",
-  isLoggedIn,
-  isAdmin,
-  getUserOrders
-);
 userRouter.post("/admin/users", isLoggedIn, isAdmin, adminCreateUser);
 
 //user
 userRouter.get("/auth/users", isLoggedIn, getSingleUser);
 userRouter.put("/auth/users", isLoggedIn, updateUser);
-userRouter.get("/auth/users", isLoggedIn, getUserOrders);
 userRouter.delete("/auth/logOut", isLoggedIn, logOut);
 userRouter.put("/auth/users/passwordReset", isLoggedIn, passwordReset);
 
 //guest local sign in, sign up and sign out
-userRouter.put("/forcedPasswordReset/:id", forgotAndForcedResetPassword);
+userRouter.put("/submitPasswordReset/:id", forgotAndForcedResetPassword);
 userRouter.post("/signUp", createUser);
 userRouter.post("/signIn", signIn);
-userRouter.put("/forgotPassword/:id", forgotAndForcedResetPassword);
 
 //guest google sign in/login in and log out
 userRouter.get(
@@ -57,7 +48,7 @@ userRouter.get(
 );
 userRouter.get(
   "/signInWithGoogle/callback",
-  passport.authenticate("google"),
+  passport.authenticate("google", { successRedirect: "http://localhost:3000/home" }),
   googleLogIn
 );
 userRouter.get("/googleLogOut", isLoggedIn, googleLogOut);

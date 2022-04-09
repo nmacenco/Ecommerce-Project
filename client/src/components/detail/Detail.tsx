@@ -8,27 +8,29 @@ import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../redux/actions/admin";
 import Rewies from "./reviews/Review";
+import NewRewie from './reviews/NewRewie';
 import Loading from "../loading/Loading";
-import {
-  DetailContainer,
-  Box,
-  ImgPriceContainer,
-  Price,
-  DeleteEditButton,
-  ImagesContainer,
-} from "./DetailStyles";
+import {  DetailContainer, Box,  ImgPriceContainer,  Price,  DeleteEditButton,  ImagesContainer,} from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
 import NewQ from "./questions/NewQ";
-// import { isConditionalExpression } from "typescript";
+import { addProductCart } from "../../redux/actions/cart";
+import { Product } from "../../redux/interface";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
+import TrashIMG from "../../icons/white-trash.png"
+import EditIMG from "../../icons/edit.png"
+
 
 export default function Detail() {
   const dispatch = useDispatch();
-  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
+  const { id } = useParams<{ id?: string }>();
   const product = useSelector((state: State) => state.productDetail);
   const user = useSelector((state: State) => state.user);
+  const productsCart = useSelector((state: State) => state.cart.cart);
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const productInCart = productsCart.find((x: Product) => x.id === product.id);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -37,6 +39,14 @@ export default function Detail() {
       dispatch(resetFilterProducts());
     };
   }, []);
+
+  function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
+    const count = productInCart ? productInCart.count + 1 : 1;
+    if (Number(count) <= Number(product.stock)) {
+      product.count = count;
+      dispatch(addProductCart(product));
+    }
+  }
 
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
@@ -47,19 +57,19 @@ export default function Detail() {
       dangerMode: true,
       buttons: {
         cancel: true,
-        confirm: true
-      }
+        confirm: true,
+      },
     }).then((value) => {
       if (value) {
-        dispatch(deleteProduct(id));
+        // dispatch(deleteProduct(id, userInStorage.token));
         navigate("/products");
         // dispatch(resetPoducts())
         swal({
           text: "Product deleted",
-          icon: "success"
-        })
+          icon: "success",
+        });
       }
-    })
+    });
   }
 
   return (
@@ -82,20 +92,35 @@ export default function Detail() {
                 <Price>
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
-                  <button type="button" className="btn btn-primary btn">
-                    Add to cart
-                  </button>
+
+                  {product.count === product.stock || productInCart && productInCart.count === product.stock? (
+                    <button
+                      type="button"
+                      className="btn btn-primary btn"
+                      disabled
+                    >
+                      No stock
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-primary btn"
+                      onClick={(e) => addCartHandler(e)}
+                    >
+                      Add to cart
+                    </button>
+                  )}
                   <DeleteEditButton>
                     <button
                       onClick={deleteHandler}
                       type="button"
                       className="btn btn-danger btn-sm"
                     >
-                      Delete
+                      <img src={TrashIMG} alt="delete"></img>
                     </button>
                     <Link to={`/editProduct/${product.id}`}>
                       <button type="button" className="btn btn-warning btn-sm">
-                        Edit
+                      <img src={EditIMG} alt="edit"></img>
                       </button>
                     </Link>
                   </DeleteEditButton>
@@ -131,16 +156,29 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            <Rewies />
+            {
+              user ?
+                <NewRewie/>
+                : null
+            }
+            {console.log('rewies: ', product.reviews)}
+            {
+              product.reviews && product.reviews.map((rew,i )=> {
+                // console.log(rew.review)
+                return (
+                  <Rewies title={rew.review.title} stars={rew.review.stars} key={i} texto={rew.review.description}/>
+                )
+              })
+            }
           </div>
           <div className="tab-pane fade m-2" id="questions">
             {user ? <NewQ ProductId={product.id!} /> : null}
             {/* {console.log('QUESTIONS: ', product.questions)} */}
             {
               product.questions && product.questions.map((question, i) => {
-
+                // console.log(question);
                 return (
-                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user}/>
+                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user} idA={question.question.id}/>
                 )
 
               })

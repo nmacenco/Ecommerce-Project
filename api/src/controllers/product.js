@@ -53,7 +53,7 @@ const createProduct = async (req, res) => {
         : res.status(401).json({ errorMsg: "Product already exists." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -103,7 +103,7 @@ const updateProduct = async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -173,7 +173,7 @@ const getSingleProduct = async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -239,7 +239,7 @@ const getProducts = async (req, res) => {
         .send({ successMsg: "Here are your products.", data: dataProduct });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -259,7 +259,7 @@ const deleteProduct = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 

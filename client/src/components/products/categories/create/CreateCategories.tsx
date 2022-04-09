@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import swal from 'sweetalert';
-import { createCategories, createSubcategories, getCategories } from '../../../../redux/actions/categories';
+import { createCategories, createSubcategories, getCategories, resetSubcategories } from '../../../../redux/actions/categories';
 import { Category } from '../../../../redux/interface';
 import { State } from '../../../../redux/reducers';
 import { FormContainer } from '../../../form/FormCreateStyles';
@@ -33,6 +33,7 @@ export default function CreateCategories(): JSX.Element {
 
     useEffect(() => {
         dispatch(getCategories())
+
     }, [])
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -65,16 +66,21 @@ export default function CreateCategories(): JSX.Element {
             ...newSubcategory,
             name: e.target.value
         })
+        setNewCategory({
+            ...newCategory,
+            name: newCategory.name.trim(),
+        })
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    const  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (newCategory.name !== "") {
             const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
-            if (putId.length === 0) dispatch(createCategories(newCategory))
+            if (putId.length === 0)  dispatch(createCategories(newCategory))
 
             if (newSubcategory.name.length !== 0) {
-                dispatch(createSubcategories(newSubcategory))
+                await dispatch(createSubcategories(newSubcategory))
+                dispatch(resetSubcategories())
             }
             swal({
                 title: "Create successfully",

@@ -2,27 +2,29 @@ import { Actions, Product, TYPES_DETAIL } from '../interface';
 
 const INITIAL_PRODUCT = {
   id: 0,
-  name: '',
-  image: '',
+  name: "",
+  image: "",
   price: 0,
-  description: '',
+  description: "",
   weight: 0,
   stock: 0,
-  soldCount : 0 ,
-  BrandId : 0 ,
-  brand: '',
+  soldCount: 0,
+  BrandId: 0,
+  brand: "",
   SubcategoryId: 0,
-  subcategory : '' , 
-  CategoryId : 0 , 
-  category : 0 ,
-  questions:[],
-  rewies:[] 
+  subcategory: "",
+  CategoryId: 0,
+  category: 0,
+  questions: [],
+  reviews: [],
+  count: 0,
 };
 
 export const productDetailReducer = (state: Product = INITIAL_PRODUCT, action: Actions): Product => {
 
   switch (action.type) {
     case TYPES_DETAIL.PRODUCT_DETAIL:
+      console.log('Producto is: ',action.payload);
       return action.payload as Product;
 
     case TYPES_DETAIL.DELETE_PRODUCT_DETAIL:
@@ -37,12 +39,34 @@ export const productDetailReducer = (state: Product = INITIAL_PRODUCT, action: A
         questions: newArray.concat(state.questions),
       };
     case TYPES_DETAIL.CREATE_REWIE:
+      console.log("state de rewies ", state.reviews);
       let newArrayRewies = [];
       newArrayRewies.push(action.payload);
       return {
         ...state,
-        rewies: newArrayRewies.concat(state.rewies),
+        reviews: newArrayRewies.concat(state.reviews),
       };
+
+    case TYPES_DETAIL.UPDATE_QUESTION:
+
+        let arrayQ=state.questions;
+
+        let indexQ=arrayQ.findIndex(question=>question.question.id === action.payload.id);
+        console.log(arrayQ);
+
+        let newQ=arrayQ[indexQ].question;
+        newQ.answer = action.payload.answer;
+        console.log(newQ);
+        arrayQ[indexQ]={
+          question:newQ
+        };
+
+        return {
+          ...state,
+          questions:[...arrayQ]
+        }
+
+
 
     default:
       return state;

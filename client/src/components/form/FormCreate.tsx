@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import swal from "sweetalert";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
 import { postProduct } from "../../redux/actions/admin";
 import { getBrands } from "../../redux/actions/brands";
 import {
@@ -18,7 +19,7 @@ import {
 import { State } from "../../redux/reducers";
 import { Textarea } from "../detail/edit/EditProductStyles";
 import { FormContainer } from "./FormCreateStyles";
-import { Errors, errorsCheck } from "./validations";
+import { errorsCheck } from "./validations";
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
@@ -46,6 +47,8 @@ export default function FromCreate(): JSX.Element {
   const [subcategoriesFiltered, setSubcategoriesFiltered] = useState<
     Subcategory[]
   >([]);
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+
 
   useEffect(() => {
     dispatch(getCategories());
@@ -77,7 +80,7 @@ export default function FromCreate(): JSX.Element {
     let errors = errorsCheck(product);
     setErrorsList(errors)
     if (errors === false) {
-      dispatch(postProduct(product));
+      dispatch(postProduct(product , userInStorage.token));
       dispatch(resetFilterProducts())
       swal({
         title: "Product created successfully",

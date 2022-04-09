@@ -15,12 +15,13 @@ import { useDispatch } from "react-redux";
 import { FindUSer } from "./redux/actions/user";
 import Cart from "./components/cart/Cart";
 import CreateCategories from "./components/products/categories/create/CreateCategories";
+import AdminUserMode from "./components/users/AdminPanel/AdminModeUsers";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(FindUSer());
-    console.log("find user!");
+    // console.log("find user!");
   }, []);
 
   return (
@@ -38,8 +39,9 @@ function App(): JSX.Element {
           <Route path="/register" element={<Register />} />
           <Route path="/loading" element={<Loading />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/adminMode" element={<AdminModeCards />} />
           <Route path="/createCategory" element={<CreateCategories />} />
+          <Route path="/productsAdminMode" element={<AdminModeCards />} />
+          <Route path="/usersAdminMode" element={<AdminUserMode />} />
         </Routes>
       </BrowserRouter>
     </div>

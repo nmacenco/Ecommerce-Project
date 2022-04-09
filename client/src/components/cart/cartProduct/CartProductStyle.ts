@@ -13,6 +13,7 @@ margin:0.4rem;
 
 export const NameContainer = styled.div`
 max-width: 480px;
+margin-left:20px;
 // max-width: 320px;`
 
 export const CountContainer = styled.div`
@@ -26,4 +27,17 @@ align-items: center;
 export const ProductButton = styled.button`
     background-color: #fff;
     border:none;
+    padding:5px;
+    border-radius:3px;
+    &:hover{
+      background-color:#E1E1E1;
+    }
 `
+// export const TrashButton = styled.button`
+//     background-color: #fff;
+//     border:none;
+//     padd
+//     &:hover{
+//       background-color:#E1E1E1;
+//     }
+// `
