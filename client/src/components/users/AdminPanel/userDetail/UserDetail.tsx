@@ -84,10 +84,12 @@ const UserDetail = ({
       dispatch(adminresetUsers());
       AdmOrders(e.target.value)
     }
-    
+    const [theEmail , setTheEmail ] = useState({
+      email : email 
+    })
     function handleClickReset(e:any) : void {
       // console.log(email);
-      dispatch(adminForcedPasswordReset(email, theToken))
+      dispatch(adminForcedPasswordReset(theEmail, theToken.token))
       swal({
         text: "Email sended",
         icon: "success"

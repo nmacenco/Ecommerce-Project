@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "../SearchBar/Search";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
@@ -27,6 +27,12 @@ const Nav = (): JSX.Element => {
     event.preventDefault();
     dispatch(LogoutUser());
   };
+
+  // const [render , setRender] = useState( '')
+  // useEffect(()=> {
+  //   console.log('renderiza');
+  //   user && setRender( user.email + render)
+  // }, [user])
 
   function handleClickProducts() {
     dispatch(productNotFound(false));

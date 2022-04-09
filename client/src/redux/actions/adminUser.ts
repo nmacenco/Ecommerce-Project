@@ -47,19 +47,21 @@ export const adminEditUser = (id : any  , UserToUpdate : any , theToken : any) =
     alert(error);
   }
 };
-export const adminForcedPasswordReset = (email : string , theToken : string) => {
+export const adminForcedPasswordReset = (email : any  , theToken : string) => {
   // console.log(UserToUpdate);
   try {
+    // console.log(theToken);
     return async (dispatch: Dispatch) => {
-       await axios.get(`${URLRESET}`,  {
-        //  headers: {
-        //    "auth-token":
-        //    theToken,
-        //   },
-        //   body : { email }, 
+       await axios.post(`${URLRESET}`, email ,  {
+         headers: {
+           "auth-token":
+           theToken,
+          },
       });
     };
   } catch (error) {
+    console.log(error);
+    
     alert(error);
   }
 };

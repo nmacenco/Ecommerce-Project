@@ -132,16 +132,11 @@ export const IdentGoogle=(url:string,cb:any)=>{
 }
 
 
-export const forgotPasswordReset = (email : string , theToken : string) => {
+export const forgotPasswordReset = (email : any ) => {
     // console.log(UserToUpdate);
     try {
       return async (dispatch: Dispatch) => {
-         await axios.put(`${URLRESET}`, email , {
-          headers: {
-            "auth-token":
-            theToken,
-          },
-        });
+         await axios.post(`${URLRESET}`, email);
       };
     } catch (error) {
       alert(error);

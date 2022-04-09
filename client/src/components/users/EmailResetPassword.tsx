@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
+import { forgotPasswordReset } from "../../redux/actions/user";
 
 import { Container, FormContainer1 } from "./EmailResetPasswordStyles";
 
-export default function EmailResetPassword(): JSX.Element {
+// export function validate (theEmail : any )  {
 
+// }
+
+export default function EmailResetPassword(): JSX.Element {
+  const dispatch = useDispatch()
+
+  const [error, setError] = useState({
+    email: '',
+})
+  const [theEmail , setTheEmail ] = useState({
+    email :  ''
+  })
+  // function handleOnBlur(e) {
+  //   setError(
+  //     validate(theEmail.email)
+  //   );
+  // }
+  function handleOnChange (e : any ){
+    e.preventDefault()
+    setTheEmail({
+      email: e.target.value
+    })
+
+  }
+  
   function handleSubmit (){
-    
+    dispatch(forgotPasswordReset(theEmail))
   }
   return (
     <Container>
@@ -24,7 +51,7 @@ export default function EmailResetPassword(): JSX.Element {
                 name="name"
                 // value={}
                 placeholder="Type your email"
-                onChange={(e) => (e)}
+                onChange={(e) => handleOnChange(e)}
               />
               <p className="text-danger">
                 {/* {errorsList.name ? errorsList.name : "⠀"} */}
@@ -32,7 +59,7 @@ export default function EmailResetPassword(): JSX.Element {
             </div>
 
             <div className="text-center">
-              <button type="submit" className="btn btn-outline-primary mt-5 ">
+              <button onClick={()=> {handleSubmit()}} type="submit" className="btn btn-outline-primary mt-5 ">
                 Submit
               </button>
             </div>
