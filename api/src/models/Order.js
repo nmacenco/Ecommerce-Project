@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
     total_amount: {
       type: DataTypes.FLOAT,
       allowNull: false,
+      defaultValue:0,
     },
     email_address: {
       type: DataTypes.STRING,
