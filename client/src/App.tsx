@@ -15,6 +15,8 @@ import { useDispatch } from "react-redux";
 import { FindUSer } from "./redux/actions/user";
 import Cart from "./components/cart/Cart";
 import CreateCategories from "./components/products/categories/create/CreateCategories";
+import ResetForcePassword from "./components/users/ResetForgotPasswords";
+import EditUserAccount from "./components/users/EditUserAccount";
 import AdminUserMode from "./components/users/AdminPanel/AdminModeUsers";
 import EmailResetPassword from './components/users/EmailResetPassword'
 
@@ -27,7 +29,9 @@ function App(): JSX.Element {
 
   return (
     <div className="App">
+
       <BrowserRouter>
+
         <Nav />
         <Routes>
           <Route path="*" element={<Home />} />
@@ -41,6 +45,8 @@ function App(): JSX.Element {
           <Route path="/loading" element={<Loading />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/createCategory" element={<CreateCategories />} />
+          <Route path="/resetForgotPwd" element={<ResetForcePassword />} />
+          <Route path="/editUser/:id" element={<EditUserAccount />} />
           <Route path="/productsAdminMode" element={<AdminModeCards />} />
           <Route path="/usersAdminMode" element={<AdminUserMode />} />
           <Route path="/emailReset" element={<EmailResetPassword/>} />

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { TYPES_ADMIN_USER, USERSAXIOSDATA } from "../interface";
+import { TYPES_ADMIN_USER } from "../interface";
 
 const URL = "http://localhost:3001/api/admin/users";
 const URLRESET = "http://localhost:3001/api/forcedPasswordReset"

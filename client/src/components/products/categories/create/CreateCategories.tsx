@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import swal from 'sweetalert';
+import swal from 'sweetalert'
 import { createCategories, createSubcategories, getCategories, resetSubcategories } from '../../../../redux/actions/categories';
 import { Category } from '../../../../redux/interface';
 import { State } from '../../../../redux/reducers';
@@ -14,7 +14,7 @@ interface FORM_CAT {
 
 export interface FORM_SUB {
     name: string,
-    CategoryId: number
+    CategoryId: any
 }
 
 
@@ -42,16 +42,16 @@ export default function CreateCategories(): JSX.Element {
             ...newCategory,
             name: e.target.value,
         })
- 
+
     }
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault()
+
         setNewCategory({
             ...newCategory,
             name: e.target.value,
         })
-
     }
 
     const handleChangeSubcategory = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -68,7 +68,7 @@ export default function CreateCategories(): JSX.Element {
         setNewSubcategory({
             ...newSubcategory,
             name: e.target.value,
-            CategoryId : sett
+            CategoryId: sett
         })
         setNewCategory({
             ...newCategory,
@@ -76,14 +76,15 @@ export default function CreateCategories(): JSX.Element {
         })
     }
 
-    const  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (newCategory.name !== "") {
             const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
-            if (putId.length === 0)  dispatch(createCategories(newCategory))
+            if (putId.length === 0) dispatch(createCategories(newCategory))
 
             if (newSubcategory.name.length !== 0) {
-                await dispatch(createSubcategories(newSubcategory))
+                console.log(newSubcategory)
+                dispatch(createSubcategories(newSubcategory))
                 dispatch(resetSubcategories())
             }
             swal({

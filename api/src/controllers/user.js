@@ -55,6 +55,7 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  console.log("entro")
   const id = req.userID;
   if (!id) {
     return res.status(400).send({ errorMsg: "Id not provided." });

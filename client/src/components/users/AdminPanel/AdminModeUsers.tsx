@@ -10,67 +10,71 @@ import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 
 const AdminUserMode = (): JSX.Element => {
-    const dispatch = useDispatch()
-    const users = useSelector((state: State) => state.adminUsers.users);
-    const [Admorders, setAdmOrders] = useState<string>("");
-    const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
-    // console.log(typeof userInStorage.token);
+  const dispatch = useDispatch()
+  const users = useSelector((state: State) => state.adminUsers.users);
+  const [Admorders, setAdmOrders] = useState<string>("");
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
+  // console.log(typeof userInStorage.token);
 
-    useEffect ( ()=> {
-      setTimeout( ()=> {
-        dispatch(adminGetUsers(userInStorage.token))
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(adminGetUsers(userInStorage.token))
 
-      }, 200)
-    }, [Admorders])
+    }, 200)
+  }, [Admorders])
 
-    const AdmOrders = (typeorder: string): void => {
-      setAdmOrders(typeorder);
-    };
+  const AdmOrders = (typeorder: string): void => {
+    setAdmOrders(typeorder);
+  };
 
-    
-    
-    return(
-        <AdminUsersContainer>
-            <ListContainer >
-             <h1>User Controller</h1>
-                <div className="" >
-                <table className="table table-hover ">
-                  <thead>
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Role</th>
-                      <th scope="col">IsActive</th>
-                      <th scope="col">Password Reset </th>
-                    </tr>
-                  </thead>
-                  {users.map( user  => {
-                    return (
-                      <UserDetail
-                        id={user.id}
-                        surname = {user.surname}
-                        password = {user.password}
-                        name={user.name}
-                        email = {user.email}
-                        billing_address = {user.billing_address}
-                        default_shipping_address = {user.default_shipping_address}
-                        role = {user.role}
-                        isActive={user.isActive}
-                        country = {user.country}
-                        countryCode = {user.countryCode}
-                        CountryId = {user.CountryId}
-                        needsPasswordReset = {user.needsPasswordReset}
-                        AdmOrders ={AdmOrders}
-                      />
-                    );
-                  })}
-                </table>
+
+
+  return (
+    <AdminUsersContainer>
+      <ListContainer >
+        <h1>User Controller</h1>
+        <div className="" >
+          <table className="table table-hover ">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">IsActive</th>
+                <th scope="col">Password Reset </th>
+              </tr>
+            </thead>
+            {
+              users.map((user: Users) => {
+                if (user.email !== userInStorage.email) {
+                  return (
+                    <UserDetail
+                      key={user.id}
+                      id={user.id}
+                      surname={user.surname}
+                      password={user.password}
+                      name={user.name}
+                      email={user.email}
+                      billing_address={user.billing_address}
+                      default_shipping_address={user.default_shipping_address}
+                      role={user.role}
+                      isActive={user.isActive}
+                      country={user.country}
+                      countryCode={user.countryCode}
+                      CountryId={user.CountryId}
+                      needsPasswordReset={user.needsPasswordReset}
+                      AdmOrders={AdmOrders}
+                    />
                   );
-              </div> 
+                }
+              })}
+          </table>
+          );
+        </div>
 
-            </ListContainer>
-            
-        </AdminUsersContainer>
-    )
+      </ListContainer>
+
+    </AdminUsersContainer>
+  )
 }
 
-export default AdminUserMode ; 
+export default AdminUserMode; 

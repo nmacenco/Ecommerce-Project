@@ -1,19 +1,45 @@
 import axios from "axios";
 import { Dispatch } from "redux"
+import { EDIT_USER } from "../../components/users/EditUserAccount";
 import { TYPES_USER, User } from "../interface";
 
 
 const URL_USER = "http://localhost:3001/api";
 const URLRESET = "http://localhost:3001/api/forgotPasswordReset"
 const USER_STORAGE = "USER_LOGGED";
+<<<<<<< HEAD
+
+export const CreateUser = (user: any, cb: any) => {
+
+    return async (dispatch: Dispatch) => {
+
+        try {
+=======
 export const CreateUser=(user:any,cb:any)=>{
     return async(dispatch:Dispatch)=>{
         try{
+>>>>>>> development
             console.log(URL_USER + "/signUp");
             const response = await axios.post(URL_USER + "/signUp", user);
             // if(data.error){
             //     throw new Error("Error "+data.error);
             // }
+<<<<<<< HEAD
+
+            const data = response.data;
+            console.log(response.headers);
+            console.log('data: ', data);
+            if (data.errorMsg) {
+                return alert('ALgo paso!');
+            }
+
+            const newUser = {
+                name: user.name,
+                email: user.email,
+                token: response.headers['auth-token']
+            }
+
+=======
             const data=response.data;
             // console.log(response.headers);
             // console.log('data: ',data);
@@ -28,106 +54,173 @@ export const CreateUser=(user:any,cb:any)=>{
                 }
                 console.log(response);
                 
+>>>>>>> development
             dispatch({
-                type:TYPES_USER.CREATE_USER,
-                payload:newUser
+                type: TYPES_USER.CREATE_USER,
+                payload: newUser
             })
             // console.log('despachando el usuario');
             cb();
 
+<<<<<<< HEAD
+            window.localStorage.setItem(USER_STORAGE, JSON.stringify(newUser));// Cambiar cuando exista un usuario
+=======
             window.localStorage.setItem(USER_STORAGE,JSON.stringify({...newUser ,  name : response.data.data.name , role : response.data.data.role }));// Cambiar cuando exista un usuario
+>>>>>>> development
 
 
-        }catch(error){
-            console.log('Error en createUSer: ',error);
+        } catch (error) {
+            console.log('Error en createUSer: ', error);
 
         }
     }
 }
 
-export const GetUSer=(email:string,pass:string,cb:any)=>{
+export const GetUSer = (email: string, pass: string, cb: any) => {
 
-    return async(dispatch:Dispatch)=>{
+    return async (dispatch: Dispatch) => {
 
+        try {
+
+<<<<<<< HEAD
+
+=======
         try{
+>>>>>>> development
             const response = await axios.post(URL_USER + "/signIn", {
-              email,
-              password: pass,
+                email,
+                password: pass,
             });
             const TOKEN = response.headers["auth-token"];
+<<<<<<< HEAD
+            console.log('TOKEN: ', TOKEN);
+            if (response.status == 200) {
+
+=======
             // console.log('TOKEN: ',TOKEN);
             console.log(response.data.data);
             if(response.status==200){
+>>>>>>> development
                 dispatch({
-                    type:TYPES_USER.GET_USER,
-                    payload:{
+                    type: TYPES_USER.GET_USER,
+                    payload: {
                         email,
-                        token:TOKEN
+                        token: TOKEN
                     }
                 })
                 window.localStorage.setItem(
+<<<<<<< HEAD
+                    USER_STORAGE,
+                    JSON.stringify({ email, token: TOKEN })
+=======
                   USER_STORAGE,
                   JSON.stringify({email,token:TOKEN , name : response.data.data.name , role : response.data.data.role })
+>>>>>>> development
                 );
                 cb();//Ejecutamos un callback wajajaj
             }
+<<<<<<< HEAD
+
+
+        } catch (error) {
+            console.log('Error en Get_User ', error);
+=======
         }catch(error){
             console.log('Error en Get_User ',error);
+>>>>>>> development
         }
 
     }
 
 }
 
-export const FindUSer=()=>{
+export const FindUSer = () => {
 
+<<<<<<< HEAD
+    const user = window.localStorage.getItem(USER_STORAGE);
+    const userExist = user ? JSON.parse(user) : null;
+
+=======
     const user= window.localStorage.getItem(USER_STORAGE);
     const userExist= user ? JSON.parse(user) : null;
     // console.log(userExist);
     
+>>>>>>> development
     return {
-        type:TYPES_USER.FIND_USER,
-        payload:userExist
+        type: TYPES_USER.FIND_USER,
+        payload: userExist
     }
 }
 
-export const LogoutUser=()=>{
+export const LogoutUser = () => {
 
     console.log(window.localStorage.getItem(USER_STORAGE));
     window.localStorage.removeItem(USER_STORAGE);
 
     return {
-      type: TYPES_USER.LOGOUT_USER,
-      payload: null,
+        type: TYPES_USER.LOGOUT_USER,
+        payload: null,
     };
 }
 
 let url = "/signInWithGoogle";
-export const IdentGoogle=(url:string,cb:any)=>{
+export const IdentGoogle = (url: string, cb: any) => {
 
-    return async(dispatch:Dispatch)=>{
+    return async (dispatch: Dispatch) => {
         try {
-          const response = await axios.get(URL_USER+url);
+            const response = await axios.get(URL_USER + url);
 
-          if(response.data.errorMsg){
-              throw new Error("Error in google: ",response.data.errorMsg);
-          } 
+            if (response.data.errorMsg) {
+                throw new Error("Error in google: ", response.data.errorMsg);
+            }
 
-          const TOKEN=response.headers["auth-token"];
-          console.log('TOKEN HEADERS: ',TOKEN);
-          console.log('Data: ',response.data);
+            const TOKEN = response.headers["auth-token"];
+            console.log('TOKEN HEADERS: ', TOKEN);
+            console.log('Data: ', response.data);
 
-          dispatch({
-            type:TYPES_USER.GET_USER,
-            payload:response.data.data
-          })
+            dispatch({
+                type: TYPES_USER.GET_USER,
+                payload: response.data.data
+            })
 
-          cb()//ejecutamos el callback
+            cb()//ejecutamos el callback
 
         } catch (error) {
-          console.log("Error en sig in google: ", error);
+            console.log("Error en sig in google: ", error);
         }
+    }
+}
 
+export const updateUser = (token: string, editUser: any) => {
+    try {
+        // console.log(editUser)
+        return async function (dispatch: Dispatch) {
+            await axios.put(URL_USER + "/auth/users", editUser, {
+                headers: {
+                    "auth-token": token
+                },
+            })
+        }
+    } catch (error) {
+        console.log("Error updating user", error)
+    }
+}
+
+export const getSingleUser = (token: string) => {
+    try {
+        return async function (dispatch: Dispatch) {
+            const user = await axios.get(URL_USER + "/auth/users", {
+                headers: {
+                    "auth-token": token
+                }
+            })
+            return dispatch({
+                type: TYPES_USER.GET_SINGLE_USER,
+                payload: user.data.data
+            })
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
