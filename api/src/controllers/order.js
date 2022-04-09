@@ -1,4 +1,4 @@
-const { Order, User } = require("../db");
+const { Order, User, Order_detail } = require("../db");
 
 const getOrders = async (req, res, next) => {
   try {
@@ -98,14 +98,14 @@ const getActiveOrder = async (req, res) => {
 
 //order-detail aux functions
 
-const updateOrderDetail = async (id, quantity) => {
+const updateOrderDetail = async (id, quantity, OrderId, ProductId, amount) => {
   try {
     if (!amount || !quantity || !OrderId || !ProductId) {
-      res.status(402).send({ errorMsg: "Missing data." });
+      return "Missing data";
     } else {
       let neworderDetail = await Order_detail.findByPk(id);
       if (!neworderDetail) {
-        res.status(401).send({ errorMsg: "Order detail not found." });
+        return "order not found";
       } else {
         let UporderDetail = await neworderDetail.update({
           amount,
@@ -113,47 +113,76 @@ const updateOrderDetail = async (id, quantity) => {
           OrderId,
           ProductId,
         });
-
-        res.status(201).json({
-          successMsg: "Here are your UP Ordesdetail.",
-          data: UporderDetail,
-        });
+        return { msg: "updated user", data: neworderDetail };
       }
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
+    console.log(error.message);
   }
 };
 
 const deleteOrderDetail = async (id) => {
   try {
-  } catch (error) {}
+    if (!id) {
+      return "Put an id";
+    } else {
+      let deletedOrderDetail = await Order_detail.destroy({
+        where: {
+          id,
+        },
+      });
+
+      return `OrderDetail was removed: ${deletedOrderDetail}`;
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
-const createOrderDetail = async (OrderId, ProductId, quantity) => {
+const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
   try {
     if (!amount || !quantity || !OrderId || !ProductId) {
-      res.status(402).send({ errorMsg: "Missing data." });
+      return "Missing data.";
     } else {
-      let neworderDetail = await Order_detail.create({
+      const neworderDetail = await Order_detail.create({
         amount,
         quantity,
         OrderId,
         ProductId,
       });
-      res.status(201).json({
-        successMsg: "Here are your Ordesdetail.",
-        data: neworderDetail,
-      });
+      return { msg: "user created", data: neworderDetail };
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
+    console.log(error.message);
   }
 };
 
 const getUserOrders = async (id) => {
   try {
-  } catch (error) {}
+    if (id) {
+      let dataOrders = await Order.findAll({
+        where: {
+          UserId: id,
+        },
+      });
+      if (!dataOrders.length) {
+        return "this user has no orders";
+      }
+      dataOrders = dataOrders.map((Order) => {
+        return {
+          id: Order.id,
+          total_amount: Order.total_amount,
+          email_address: Order.email_address,
+          billing_address: Order.billing_address,
+          UserId: Order.UserId,
+          status: Order.status,
+        };
+      });
+      return { msg: "User orders", data: dataOrders };
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 module.exports = {
