@@ -42,10 +42,7 @@ export default function CreateCategories(): JSX.Element {
             ...newCategory,
             name: e.target.value,
         })
-        setNewSubcategory({
-            ...newSubcategory,
-            CategoryId: e.target.selectedIndex
-        })
+ 
     }
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -54,17 +51,24 @@ export default function CreateCategories(): JSX.Element {
             ...newCategory,
             name: e.target.value,
         })
-        setNewSubcategory({
-            ...newSubcategory,
-            CategoryId: allCategories.length + 1
-        })
+
     }
 
     const handleChangeSubcategory = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault()
+        let sett: any
+        const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
+        if (putId.length > 0) {
+            console.log('entre aca')
+            sett = putId[0].id
+        }
+        else {
+            sett = allCategories.length + 1
+        }
         setNewSubcategory({
             ...newSubcategory,
-            name: e.target.value
+            name: e.target.value,
+            CategoryId : sett
         })
         setNewCategory({
             ...newCategory,
