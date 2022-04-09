@@ -5,22 +5,26 @@ import { forgotPasswordReset } from "../../redux/actions/user";
 
 import { Container, FormContainer1 } from "./EmailResetPasswordStyles";
 
-// export function validate (theEmail : any )  {
-
-// }
+export function validate (theEmail : any )  {
+  let error = {};
+  
+  return error ; 
+}
 
 export default function EmailResetPassword(): JSX.Element {
   const dispatch = useDispatch()
 
   const [error, setError] = useState({
-    email: '',
 })
   const [theEmail , setTheEmail ] = useState({
     email :  ''
   })
   // function handleOnBlur(e) {
   //   setError(
-  //     validate(theEmail.email)
+  //     validate({
+  //       ...theEmail, 
+  //       [e.target.name]: e.target.value
+  //     })
   //   );
   // }
   function handleOnChange (e : any ){
@@ -52,6 +56,7 @@ export default function EmailResetPassword(): JSX.Element {
                 // value={}
                 placeholder="Type your email"
                 onChange={(e) => handleOnChange(e)}
+                // onBlur = {(e) => handleOnBlur(e) }
               />
               <p className="text-danger">
                 {/* {errorsList.name ? errorsList.name : "⠀"} */}
