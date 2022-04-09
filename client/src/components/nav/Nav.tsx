@@ -26,7 +26,8 @@ const Nav = (): JSX.Element => {
     event.preventDefault();
     dispatch(LogoutUser());
   };
-
+  const route : string  = window.location.pathname
+  console.log(window.location.pathname)
   // const [render , setRender] = useState( '')
   // useEffect(()=> {
   //   console.log('renderiza');
@@ -78,7 +79,8 @@ const Nav = (): JSX.Element => {
 
             <UserDropdown />
             :
-            !user && (
+            !user && route !== '/login' ? (
+              
               <Link
                 to="/login"
                 className="nav-item btn btn-secondary my-2 link-Router"
@@ -86,6 +88,8 @@ const Nav = (): JSX.Element => {
                 Login
               </Link>
             )
+            :
+            null 
  
           }
 

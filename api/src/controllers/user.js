@@ -383,6 +383,7 @@ const sendForcedPasswordResetMail = async (req, res) => {
 const forgotAndForcedResetPassword = async (req, res) => {
   try {
     let token = req.params.id;
+    console.log(token);
     if (!token) {
       return res.status(400).send({ errorMsg: "No token provided." });
     }
