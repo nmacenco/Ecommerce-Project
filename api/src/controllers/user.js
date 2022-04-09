@@ -371,7 +371,7 @@ const sendForcedPasswordResetMail = async (req, res) => {
     await sendMailPassword(
       email,
       "Required password reset",
-      `<p>Click <a href='http://localhost:3000/sessions/recover/${token}>here</a> to reset your password</p>`
+      `<p>Click <a href="http://localhost:3000/sessions/recover/${token}">here</a> to reset your password</p>`
     );
     res.status(200).send({ successMsg: "Password reset sent." });
   } catch (error) {
