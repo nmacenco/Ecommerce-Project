@@ -26,7 +26,8 @@ export const CreateUser=(user:any,cb:any)=>{
                     email:user.email,
                     token:response.headers['auth-token']
                 }
-
+                console.log(response);
+                
             dispatch({
                 type:TYPES_USER.CREATE_USER,
                 payload:newUser
@@ -34,7 +35,7 @@ export const CreateUser=(user:any,cb:any)=>{
             // console.log('despachando el usuario');
             cb();
 
-            window.localStorage.setItem(USER_STORAGE,JSON.stringify(newUser));// Cambiar cuando exista un usuario
+            window.localStorage.setItem(USER_STORAGE,JSON.stringify({...newUser ,  name : response.data.data.name , role : response.data.data.role }));// Cambiar cuando exista un usuario
 
 
         }catch(error){
@@ -55,6 +56,7 @@ export const GetUSer=(email:string,pass:string,cb:any)=>{
             });
             const TOKEN = response.headers["auth-token"];
             // console.log('TOKEN: ',TOKEN);
+            console.log(response.data.data);
             if(response.status==200){
                 dispatch({
                     type:TYPES_USER.GET_USER,
@@ -65,7 +67,7 @@ export const GetUSer=(email:string,pass:string,cb:any)=>{
                 })
                 window.localStorage.setItem(
                   USER_STORAGE,
-                  JSON.stringify({email,token:TOKEN})
+                  JSON.stringify({email,token:TOKEN , name : response.data.data.name , role : response.data.data.role })
                 );
                 cb();//Ejecutamos un callback wajajaj
             }

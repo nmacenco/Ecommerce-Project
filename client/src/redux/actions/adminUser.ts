@@ -52,11 +52,11 @@ export const adminForcedPasswordReset = (email : string , theToken : string) => 
   try {
     return async (dispatch: Dispatch) => {
        await axios.get(`${URLRESET}`,  {
-         headers: {
-           "auth-token":
-           theToken,
-          },
-          body : { email }, 
+        //  headers: {
+        //    "auth-token":
+        //    theToken,
+        //   },
+        //   body : { email }, 
       });
     };
   } catch (error) {
