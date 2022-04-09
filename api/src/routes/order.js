@@ -8,15 +8,14 @@ const orderRouter = express.Router();
 
 
 //user
-// orderRouter.post("/auth/orders", isLoggedIn, createOrder);
-orderRouter.post("/auth/orders", createOrder);
+orderRouter.post("/auth/orders", isLoggedIn, createOrder);
 orderRouter.put("/auth/orders/:id", isLoggedIn, updateOrder);
 orderRouter.get("/auth/orders", isLoggedIn, getUserOrdersServer);
 orderRouter.get("/auth/orders/:id",isLoggedIn, getActiveOrder);
 
 
 //admin
-orderRouter.get("/orders",isLoggedIn, isAdmin, getOrders);
+orderRouter.get("/admin/orders",isLoggedIn, isAdmin, getOrders);
 
 //make route for admin to see specifically user orders.
 
