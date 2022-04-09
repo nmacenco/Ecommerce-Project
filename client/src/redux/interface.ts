@@ -173,6 +173,16 @@ export interface ICountries {
   id: number
 }
 
+export interface IUser_Detail {
+  name: string,
+  surname: string,
+  email: string,
+  billing_address: string,
+  default_shipping_address: string,
+  country: string,
+  countryCode: number
+}
+
 
 //=======================
 // User Actions

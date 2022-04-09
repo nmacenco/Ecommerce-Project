@@ -138,24 +138,35 @@ export const IdentGoogle = (url: string, cb: any) => {
     }
 }
 
-export const updateUser = (id: string | undefined, editUser: EDIT_USER) => {
+export const updateUser = (token: string, editUser: any) => {
     try {
-        return axios.put(URL_USER + "/auth/users",)
+        // console.log(editUser)
+        return async function (dispatch: Dispatch) {
+            await axios.put(URL_USER + "/auth/users", editUser, {
+                headers: {
+                    "auth-token": token
+                },
+            })
+        }
     } catch (error) {
         console.log("Error updating user", error)
     }
 }
 
-export const getSingleUser = (token: any) => {
+export const getSingleUser = (token: string) => {
     try {
-        return async function(dispatch: Dispatch) {
-            const user = await axios.get(URL + "/auth/users", token)
+        return async function (dispatch: Dispatch) {
+            const user = await axios.get(URL_USER + "/auth/users", {
+                headers: {
+                    "auth-token": token
+                }
+            })
             return dispatch({
                 type: TYPES_USER.GET_SINGLE_USER,
-                payload: user.data
+                payload: user.data.data
             })
         }
     } catch (error) {
-        console.log("Error get single user", error)
+        console.log(error)
     }
 }

@@ -28,7 +28,9 @@ function App(): JSX.Element {
 
   return (
     <div className="App">
+
       <BrowserRouter>
+
         <Nav />
         <Routes>
           <Route path="*" element={<Home />} />

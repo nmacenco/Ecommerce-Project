@@ -16,6 +16,7 @@ import setPageReducer, { PAGE } from "./setPageReducer";
 import adminUsersReducer, { ADMIN_USERS } from "./adminReducerUser";
 import { CART, reducerCart } from "./cartReducer";
 import { COUNTRIES, countriesReducer } from "./countriesReducer";
+import { userDetailReducer, USER_STATE } from "./userDetailReducer";
 
 interface GLOBAL_STATE {
   user: User | null;
@@ -28,7 +29,8 @@ interface GLOBAL_STATE {
   adminUsers: ADMIN_USERS;
   page: PAGE;
   cart: CART;
-  countries: COUNTRIES
+  countries: COUNTRIES;
+  userDetail: USER_STATE;
 }
 
 export const rootReducer = combineReducers<GLOBAL_STATE>({
@@ -43,6 +45,7 @@ export const rootReducer = combineReducers<GLOBAL_STATE>({
   cart: reducerCart,
   countries: countriesReducer,
   adminUsers: adminUsersReducer,
+  userDetail: userDetailReducer,
 });
 
 export type State = ReturnType<typeof rootReducer>;

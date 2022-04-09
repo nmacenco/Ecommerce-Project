@@ -5,7 +5,7 @@ import swal from 'sweetalert'
 import { useLocalStorage } from '../../helpers/useLocalStorage'
 import { getCountries } from '../../redux/actions/countries'
 import { getSingleUser, GetUSer, updateUser } from '../../redux/actions/user'
-import { ICountries } from '../../redux/interface'
+import { ICountries, IUser_Detail } from '../../redux/interface'
 import { State } from '../../redux/reducers'
 import { FormContainer } from '../form/FormCreateStyles'
 
@@ -16,7 +16,6 @@ export interface EDIT_USER {
     billing_address: string,
     default_shipping_address: string,
     CountryId: number,
-    password: string
 }
 
 export default function EditUserAccount(): JSX.Element {
@@ -24,8 +23,7 @@ export default function EditUserAccount(): JSX.Element {
     const navigate = useNavigate()
     const { id } = useParams<string>()
     const allCountries = useSelector((state: State) => state.countries.countries)
-    const user = useSelector((state: State) => state.user)
-    const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+    const [userInStorage, setUserInStorage] = useLocalStorage('USER_LOGGED', '')
     const [editUser, setEditUser] = useState<EDIT_USER>({
         name: "",
         surname: "",
@@ -33,18 +31,12 @@ export default function EditUserAccount(): JSX.Element {
         billing_address: "",
         default_shipping_address: "",
         CountryId: 0,
-        password: ""
     })
 
     useEffect(() => {
         dispatch(getCountries())
-        setTimeout(() => {
-            dispatch(getSingleUser(userInStorage))
-        }, 200)
+        dispatch(getSingleUser(userInStorage.token))
     }, [dispatch])
-    function cb () {
-
-    }
 
     const showError = (editUser: EDIT_USER): void => {
         if (editUser.name === "") (document.getElementById("error-name") as HTMLInputElement).textContent = "Name missing"
@@ -79,8 +71,7 @@ export default function EditUserAccount(): JSX.Element {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
         if (editUser.name !== "" && editUser.surname !== "" && editUser.email !== "" && editUser.CountryId !== 0) {
-
-            dispatch(updateUser(id, editUser))
+            dispatch(updateUser(userInStorage.token, editUser))
         } else {
             showError(editUser)
             swal({
@@ -96,7 +87,7 @@ export default function EditUserAccount(): JSX.Element {
                 <h3 className="text-center">Edit user</h3>
                 <div className="form-group">
                     <label className="col-sm-2 col-form-label">Name</label>
-                    <input className="form-control" type="text" placeholder="Enter name" name="name" onChange={(e) => handleChange(e)} />
+                    <input className="form-control" type="text" placeholder="Enter name" name="name" value={editUser.name} onChange={(e) => handleChange(e)} />
                     <small id="error-name" className='text-danger'></small>
                 </div>
 
