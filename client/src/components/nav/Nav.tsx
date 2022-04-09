@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "../SearchBar/Search";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
-import { Link, Route } from "react-router-dom";
+import { Routes, Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
 import { LogoutUser } from "../../redux/actions/user";
@@ -12,7 +12,6 @@ import {
   resetPoducts,
 } from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
-import { Routes } from "react-router-dom";
 import { Product } from "../../redux/interface";
 import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";

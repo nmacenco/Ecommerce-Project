@@ -3,6 +3,7 @@ export enum TYPES_USER {
   GET_USER,
   LOGOUT_USER,
   FIND_USER,
+  GET_SINGLE_USER = "GET_SINGLE_USER"
 }
 export enum TYPES_ADMIN_USER {
   GET_USERS = 'GET_USERS',
@@ -54,6 +55,10 @@ export enum TYPES_CART {
   REMOVE_PRODUCT = "REMOVE_PRODUCT",
 }
 
+export enum TYPES_COUNTRIES {
+  GET_COUNTRIES = "GET_COUNTRIES"
+}
+
 
 
 //=======================
@@ -72,7 +77,7 @@ export interface User {
 }
 
 export interface Users {
-  CountryId : number
+  CountryId: number
   countryCode: string;
   country: string;
   email: string;
@@ -85,7 +90,7 @@ export interface Users {
   role: string;
   isActive: boolean;
   tokens: string[];
-  needsPasswordReset : boolean;
+  needsPasswordReset: boolean;
 }
 
 export interface ProductForm {
@@ -127,17 +132,17 @@ export interface Product {
   reviews: any[];
 }
 
-export interface Question{
-  id?:number,
-  title:string,
-  description:string,
-  answer:string
+export interface Question {
+  id?: number,
+  title: string,
+  description: string,
+  answer: string
 }
 export interface Rewie {
   id?: number;
   title: string;
   description: string;
-  ProductId:number
+  ProductId: number
 }
 
 export interface Category {
@@ -164,6 +169,22 @@ export interface IData {
   page: (numberOfPage: number) => void;
 }
 
+export interface ICountries {
+  name: string,
+  code: string,
+  id: number
+}
+
+export interface IUser_Detail {
+  name: string,
+  surname: string,
+  email: string,
+  billing_address: string,
+  default_shipping_address: string,
+  country: string,
+  countryCode: number
+}
+
 
 //=======================
 // User Actions
@@ -184,16 +205,26 @@ export interface FIND_USER {
   type: TYPES_USER.FIND_USER;
   payload: User;
 }
+export interface GET_SINGLE_USER {
+  type: TYPES_USER.GET_SINGLE_USER,
+  payload: any
+}
 
 //=======================
+// Countries Actions
+
+export interface GET_COUNTRIES {
+  type: TYPES_COUNTRIES.GET_COUNTRIES;
+  payload: ICountries[]
+}
 // Admin User Actions
 
 export interface ADMIN_USER {
-  type : TYPES_ADMIN_USER.GET_USERS,
+  type: TYPES_ADMIN_USER.GET_USERS,
   payload: Users[]
 }
 export interface ADMIN_RESET_USER {
-  type : TYPES_ADMIN_USER.RESET_USERS,
+  type: TYPES_ADMIN_USER.RESET_USERS,
   payload: []
 }
 
@@ -312,11 +343,11 @@ export interface CREATE_REWIE {
   payload: any;
 }
 
-export interface UPDATE_QUESTION{
-  type:TYPES_DETAIL.UPDATE_QUESTION,
-  payload:{
-    id:number,
-    answer:string
+export interface UPDATE_QUESTION {
+  type: TYPES_DETAIL.UPDATE_QUESTION,
+  payload: {
+    id: number,
+    answer: string
   }
 }
 
@@ -343,14 +374,13 @@ export type Actions =
   | CREATE_REWIE
   | UPDATE_QUESTION;
 
-export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
+export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER | GET_SINGLE_USER;
 
-export type AdminUserActions = ADMIN_USER | ADMIN_RESET_USER ;
-
+export type AdminUserActions = ADMIN_USER | ADMIN_RESET_USER;
 
 export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | CHARGE_FILTERS | REMOVE_FILTER | FILTERED_CAT_PRODUCTS | FILTERED_BRAND_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
 
-export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES | RESET_SUBCATEGORIES ;
+export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES | RESET_SUBCATEGORIES;
 
 export type BrandsActions = GET_BRANDS;
 
@@ -359,3 +389,5 @@ export type AdminActions = DELETE_PRODUCT;
 export type SetPage = SET_PAGE;
 
 export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT;
+
+export type CountriesActions = GET_COUNTRIES
