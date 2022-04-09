@@ -44,7 +44,7 @@ const AdminUserMode = (): JSX.Element => {
               </tr>
             </thead>
             {
-              users.map(user => {
+              users.map((user: Users) => {
                 if (user.email !== userInStorage.email) {
                   return (
                     <UserDetail

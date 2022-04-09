@@ -69,28 +69,3 @@ passport.use(
     }
   )
 );
-
-// [{
-
-//     "provider": "google",
-//     "sub": "118391811559263906184",
-//     "id": "118391811559263906184",
-//     "displayName": "Carlos Mario Espinosa Restrepo",
-//     "name": { "givenName": "Carlos Mario", "familyName": "Espinosa Restrepo" },
-//     "given_name": "Carlos Mario",
-//     "family_name": "Espinosa Restrepo",
-//     "email_verified": true,
-//     "verified": true,
-//     "language": "en",
-//     "locale": "undefined",
-//     "email": "najupasa@gmail.com",
-//     "emails": [ { "value": "najupasa@gmail.com", "type": "account" } ],
-//     "photos": [
-//       {
-//         "value": "https://lh3.googleusercontent.com/a-/AOh14Ggm1FxYHVT1M5vl16Okmx8TS-2Nij0Gz1Cn-dkAGw=s96-c",
-//         "type": "default"
-//       }
-//     ],
-//     "picture": "https://lh3.googleusercontent.com/a-/AOh14Ggm1FxYHVT1M5vl16Okmx8TS-2Nij0Gz1Cn-dkAGw=s96-c"
-// }
-// ]

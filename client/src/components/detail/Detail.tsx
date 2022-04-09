@@ -8,6 +8,7 @@ import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../redux/actions/admin";
 import Rewies from "./reviews/Review";
+import NewRewie from './reviews/NewRewie';
 import Loading from "../loading/Loading";
 import {  DetailContainer, Box,  ImgPriceContainer,  Price,  DeleteEditButton,  ImagesContainer,} from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
@@ -60,7 +61,7 @@ export default function Detail() {
       },
     }).then((value) => {
       if (value) {
-        dispatch(deleteProduct(id, userInStorage.token));
+        // dispatch(deleteProduct(id, userInStorage.token));
         navigate("/products");
         // dispatch(resetPoducts())
         swal({
@@ -155,23 +156,33 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            <Rewies />
+            {
+              user ?
+                <NewRewie/>
+                : null
+            }
+            {console.log('rewies: ', product.reviews)}
+            {
+              product.reviews && product.reviews.map((rew,i )=> {
+                // console.log(rew.review)
+                return (
+                  <Rewies title={rew.review.title} stars={rew.review.stars} key={i} texto={rew.review.description}/>
+                )
+              })
+            }
           </div>
           <div className="tab-pane fade m-2" id="questions">
             {user ? <NewQ ProductId={product.id!} /> : null}
             {/* {console.log('QUESTIONS: ', product.questions)} */}
-            {product.questions &&
-              product.questions.map((question, i) => {
+            {
+              product.questions && product.questions.map((question, i) => {
+                // console.log(question);
                 return (
-                  <Question
-                    title={question.question.title}
-                    body={question.question.description}
-                    key={i}
-                    answer={question.question.answer}
-                    user={user}
-                  />
-                );
-              })}
+                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user} idA={question.question.id}/>
+                )
+
+              })
+            }
           </div>
         </div>
       </Box>
