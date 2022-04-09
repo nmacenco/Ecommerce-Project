@@ -53,7 +53,7 @@ const getUserOrdersServer = async (req, res) => {
       });
       res
         .status(200)
-        .send({ successMsg: "Here are your Ordes.", data: dataOrders });
+        .send({ successMsg: "Here are your Orders.", data: dataOrders });
     } else {
       res.status(404).send({ errorMsg: "missing id" });
     }
@@ -64,11 +64,12 @@ const getUserOrdersServer = async (req, res) => {
 
 //create order (when user creates account, or if there are no pending orders)
 //Possible status: PENDING BILLED DELIVERED COMPLETED
+
 const createOrder = async (req, res) => {
   try {
-    let { total_amount, email_address, billing_address, UserId } =
-      req.body;
-    if (!email_address || !billing_address || !UserId) {
+    let { email_address, UserId, allProductsOrder } = req.body;
+    let newOrderDetail;
+    if (!email_address || !UserId) {
       res.status(402).send({ errorMsg: "Missing data." });
     } else {
       let singleOrder = await Order.findOne({
@@ -77,18 +78,32 @@ const createOrder = async (req, res) => {
           status: "PENDING",
         }
       });
-      if (!singleOrder) {
-        let neworder = await Order.create({
-          total_amount,
+      newOrderCreated = singleOrder;
+      if (!newOrderCreated) {
+        let newOrder = await Order.create({
           email_address,
-          billing_address,
           UserId,
         });
-        res.status(201).send(neworder);
-      } else {
-        res.status(201).send(singleOrder);
+        newOrderCreated = newOrder;
+      }
+      if (allProductsOrder) {
+
+        let deletedOrderDetail = await Order_detail.destroy({
+          where: {
+            OrderId: newOrderCreated.id,
+          },
+        });
+        for (let index = 0; index < allProductsOrder.length; index++) {
+          createOrderDetail(
+            newOrderCreated.id,
+            allProductsOrder[index].ProductId,
+            allProductsOrder[index].quantity,
+            allProductsOrder[index].amount
+          );
+        }
       }
     }
+    res.status(201).send({ successMsg: "Here are your new order.", data: newOrderCreated });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -123,7 +138,7 @@ const updateOrderDetail = async (id, quantity, OrderId, ProductId, amount) => {
           OrderId,
           ProductId,
         });
-        return { msg: "updated user", data: neworderDetail };
+        return { successMsg: "updated user", data: neworderDetail };
       }
     }
   } catch (error) {
@@ -133,17 +148,11 @@ const updateOrderDetail = async (id, quantity, OrderId, ProductId, amount) => {
 
 const deleteOrderDetail = async (id) => {
   try {
-    if (!id) {
-      return "Put an id";
-    } else {
-      let deletedOrderDetail = await Order_detail.destroy({
-        where: {
-          id,
-        },
-      });
-
-      return `OrderDetail was removed: ${deletedOrderDetail}`;
-    }
+    let deletedOrderDetail = await Order_detail.destroy({
+      where: {
+        id,
+      },
+    });
   } catch (error) {
     console.log(error.message);
   }
@@ -151,17 +160,12 @@ const deleteOrderDetail = async (id) => {
 
 const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
   try {
-    if (!amount || !quantity || !OrderId || !ProductId) {
-      return "Missing data.";
-    } else {
-      const neworderDetail = await Order_detail.create({
-        amount,
-        quantity,
-        OrderId,
-        ProductId,
-      });
-      return { msg: "user created", data: neworderDetail };
-    }
+    const newOrderProduct = await Order_detail.create({
+      amount,
+      quantity,
+      OrderId,
+      ProductId,
+    });
   } catch (error) {
     console.log(error.message);
   }
@@ -202,3 +206,4 @@ module.exports = {
   updateOrder,
   getUserOrdersServer,
 };
+
