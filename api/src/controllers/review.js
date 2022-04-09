@@ -1,6 +1,4 @@
-const {
-    Review,
-} = require("../db");
+const { Review } = require("../db");
 
 const createReview = async (req, res) => {
     try {
@@ -39,7 +37,6 @@ const getReviews = async (req, res) => {
     }
 };
 
-
 const getSingleReview = async (req, res) => {
     try {
         const id = req.params.id;
@@ -64,8 +61,6 @@ const getSingleReview = async (req, res) => {
         res.status(500).send({ errorMsg: error.message });
     }
 };
-
-
 
 const updateReview = async (req, res) => {
     let { id, ProductId, UserId, title, description, stars } = req.body;

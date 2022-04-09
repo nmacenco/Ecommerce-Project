@@ -56,6 +56,9 @@ export const Rewiewstars = styled.div`
     content: "★";
      color: lightgray; 
   } */
+
+  
+
   label {
     display: block;
     cursor: pointer;
@@ -84,5 +87,29 @@ export const Rewiewstars = styled.div`
   label:hover ~ label:after,
   input:checked ~ label:after {
     opacity: 1;
+  }
+`;
+
+
+export const RewiewstarStatic = styled.article`
+  width: 200px;
+  /* border: 2px solid blue; */
+  display: flex;
+  margin-right: 10px;
+
+  .dark-star:before {
+    content: "★";
+    position: relative;
+    display: block;
+    font-size: 50px;
+    color: lightgray;
+  }
+
+  .rating:before {
+    content: "★";
+    position: relative;
+    display: block;
+    font-size: 50px;
+    color: gold;
   }
 `;

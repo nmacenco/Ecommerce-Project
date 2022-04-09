@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import { createAnswer } from '../../../redux/actions/productDetail';
+import { State } from '../../../redux/reducers';
 import Answer from './Answers';
 import Styled from './QuestionStyle';
 
 interface Prop {
     title: string,
+    idA:number,
     body: string,
     answer: string,
     user: any
@@ -11,17 +16,34 @@ interface Prop {
 }
 
 
-const Question = ({ title, body, answer, user }: Prop): JSX.Element => {
+const Question = ({ title, body, answer, user,idA }: Prop): JSX.Element => {
 
     const [show, setShow] = useState<boolean>(false);
     const [reply, setReply] = useState<boolean>(false);
+    const { id } = useParams<{ id?: string }>();
+    const dispatch=useDispatch();
 
 
-    const FetchQuestion = (event: any) => {
+
+    const SendReply = (event: any) => {
         event.preventDefault();
-        // console.log(event.target.reply.value)
+        console.log(event.target.reply.value)
+        let reply=event.target.reply.value;
+
+        if(reply){
+            let userId=1;
+            console.log(idA);
+
+            dispatch(createAnswer(idA,Number(id),userId,title,body,reply));
+            console.log('despatch')
+
+        }   else{
+            alert('FALTAN CAMPOS!');
+        }     
 
     }
+
+    
 
 
     return (
@@ -38,13 +60,14 @@ const Question = ({ title, body, answer, user }: Prop): JSX.Element => {
                     <div>
                         {body ? body : ''}
                     </div>
+                    {console.log(user && !answer)}
                     {
-                        user ?
+                        user && !answer ?
                             <>
                                 <button className='btn-reply' onClick={() => setReply(!reply)}>
                                     Reply
                                 </button>
-                                <form className={reply ? '' : 'close'} onSubmit={FetchQuestion}>
+                                <form className={reply ? '' : 'close'} onSubmit={SendReply}>
                                     <textarea name="reply" placeholder='Reply...' ></textarea>
                                     <div>
                                         <button>
@@ -64,10 +87,10 @@ const Question = ({ title, body, answer, user }: Prop): JSX.Element => {
                                         View answers
                                     </aside>
                                     <div className={show ? '' : 'close'}>
-                                        <Answer />
-                                        <br />
-                                        <Answer />
-                                    </div></>
+                                        <Answer  res={answer}/>
+                                        
+                                    </div>
+                                </>
                                 :
                                 null
                         }

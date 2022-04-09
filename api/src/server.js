@@ -56,6 +56,7 @@ server.use("/api", categoryRouter);
 server.use("/api", brandRouter);
 server.use("/api", subCategoryRouter);
 server.use("/api", orderRouter);
+server.use("/api", orderDetailRouter);
 server.use("/api", reviewsRouter);
 server.use("/api", questionsRouter);
 server.use("/api", mailRouter);
