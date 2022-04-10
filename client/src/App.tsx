@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Nav from "./components/nav/Nav";
@@ -27,6 +27,8 @@ function App(): JSX.Element {
     dispatch(FindUSer());
     // console.log("find user!");
   }, []);
+
+
 
   return (
     <div className="App">

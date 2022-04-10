@@ -75,6 +75,7 @@ const Nav = (): JSX.Element => {
             userInStorage && userInStorage.role === 'admin' ?
               <AdminDropdown />
               : userInStorage && userInStorage.role === 'user' ?
+
                 <UserDropdown />
                 :
                 !user && (
