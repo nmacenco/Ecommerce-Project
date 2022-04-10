@@ -18,7 +18,6 @@ const getOrders = async (req, res) => {
             },
           ],
         },
-
       ],
     });
     if (!Orders.length) {
@@ -32,7 +31,12 @@ const getOrders = async (req, res) => {
         status: Order.status,
         user: Order.User.name + " " + Order.User.surname,
         billing_address: Order.billing_address,
-        detail: Order.Order_details.length > 0 ? Order.Order_details.map((detail) => { return { detail }; }) : [],
+        detail:
+          Order.Order_details.length > 0
+            ? Order.Order_details.map((detail) => {
+                return { detail };
+              })
+            : [],
       };
     });
     res.status(200).send({ successMsg: "Here are your Orders.", data: Orders });
@@ -47,8 +51,8 @@ const getUserOrdersServer = async (req, res) => {
     if (id) {
       let Orders = await Order.findAll({
         where: {
-          UserId:id,
-        },            
+          UserId: id,
+        },
         include: [
           {
             model: User,
@@ -77,10 +81,14 @@ const getUserOrdersServer = async (req, res) => {
           status: Order.status,
           user: Order.User.name + " " + Order.User.surname,
           billing_address: Order.billing_address,
-          detail: Order.Order_details.length > 0 ? Order.Order_details.map((detail) => { return { detail }; }) : [],
+          detail:
+            Order.Order_details.length > 0
+              ? Order.Order_details.map((detail) => {
+                  return { detail };
+                })
+              : [],
         };
       });
-
 
       res
         .status(200)
@@ -151,15 +159,19 @@ const updateOrder = async (req, res) => {
 const getActiveOrder = async (req, res) => {
   try {
     const id = req.userID;
-    const activeOrder = Order.findOne({
+    let activeOrder = Order.findOne({
       where: {
         UserId: id,
         status: "PENDING",
       },
       include: [
         {
+          model: User,
+          attributes: ["id", "name", "surname", "email"],
+        },
+        {
           model: Order_detail,
-          attributes: ["amount", "quantity", "ProductId", "id"],
+          attributes: ["amount", "quantity"],
           include: [
             {
               model: Product,
@@ -174,6 +186,20 @@ const getActiveOrder = async (req, res) => {
         .status(404)
         .send({ errorMsg: "You don't have an active order." });
     }
+    activeOrder = {
+      id: activeOrder.id,
+      total_amount: activeOrder.total_amount,
+      email_address: activeOrder.email_address,
+      status: activeOrder.status,
+      user: activeOrder.User.name + " " + activeOrder.User.surname,
+      billing_address: activeOrder.billing_address,
+      detail:
+        activeOrder.Order_details.length > 0
+          ? activeOrder.Order_details.map((detail) => {
+              return { detail };
+            })
+          : [],
+    };
     res
       .status(200)
       .send({ successMsg: "Here is your order.", data: activeOrder });
