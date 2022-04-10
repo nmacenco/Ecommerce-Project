@@ -247,7 +247,7 @@ const deleteProduct = async (req, res) => {
   try {
     console.log("Hola")
     const id = req.params.id;
-    Number(id);
+    // Number(id);
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
