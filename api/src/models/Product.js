@@ -48,11 +48,15 @@ module.exports = (sequelize) => {
       defaultValue: 0,
       allowNull: true,
     },
-
     soldCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
       allowNull: false,
     },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },    
   });
 };
