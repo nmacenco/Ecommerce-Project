@@ -47,7 +47,6 @@ const getUserOrdersServer = async (req, res) => {
     if (id) {
       let Orders = await Order.findAll({
         where: {
-<<<<<<< HEAD
           UserId:id,
         },            
         include: [
@@ -66,11 +65,6 @@ const getUserOrdersServer = async (req, res) => {
             ],
           },
         ],
-=======
-          UserId: id,
-        },
-        // ALERT: acuerdense de incluir las order details de cada orden.
->>>>>>> f944e67b83b064744ef3be98068d74116c85f020
       });
       if (!Orders.length) {
         res.status(404).send({ errorMsg: "Oders not found." });
