@@ -5,19 +5,19 @@ import { forgotPasswordReset } from "../../redux/actions/user";
 
 import { Container, FormContainer1 } from "./EmailResetPasswordStyles";
 
-export function validate (theEmail : any )  {
+export function validate(theEmail: any) {
   let error = {};
-  
-  return error ; 
+
+  return error;
 }
 
 export default function EmailResetPassword(): JSX.Element {
   const dispatch = useDispatch()
 
   const [error, setError] = useState({
-})
-  const [theEmail , setTheEmail ] = useState({
-    email :  ''
+  })
+  const [theEmail, setTheEmail] = useState({
+    email: ''
   })
   // function handleOnBlur(e) {
   //   setError(
@@ -27,15 +27,15 @@ export default function EmailResetPassword(): JSX.Element {
   //     })
   //   );
   // }
-  function handleOnChange (e : any ){
+  function handleOnChange(e: any) {
     e.preventDefault()
     setTheEmail({
       email: e.target.value
     })
 
   }
-  
-  function handleSubmit (){
+
+  function handleSubmit() {
     dispatch(forgotPasswordReset(theEmail))
   }
   return (
@@ -56,7 +56,7 @@ export default function EmailResetPassword(): JSX.Element {
                 // value={}
                 placeholder="Type your email"
                 onChange={(e) => handleOnChange(e)}
-                // onBlur = {(e) => handleOnBlur(e) }
+              // onBlur = {(e) => handleOnBlur(e) }
               />
               <p className="text-danger">
                 {/* {errorsList.name ? errorsList.name : "⠀"} */}
@@ -64,7 +64,7 @@ export default function EmailResetPassword(): JSX.Element {
             </div>
 
             <div className="text-center">
-              <button onClick={()=> {handleSubmit()}} type="submit" className="btn btn-outline-primary mt-5 ">
+              <button onClick={() => { handleSubmit() }} type="submit" className="btn btn-outline-primary mt-5 ">
                 Submit
               </button>
             </div>

@@ -21,7 +21,7 @@ const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
   const user = useSelector((state: State) => state.user);
   const productsCart = useSelector((state: State) => state.cart.cart);
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
@@ -74,19 +74,18 @@ const Nav = (): JSX.Element => {
           {
             userInStorage && userInStorage.role === 'admin' ?
               <AdminDropdown />
-            : userInStorage && userInStorage.role === 'user' ?
+              : userInStorage && userInStorage.role === 'user' ?
+                <UserDropdown />
+                :
+                !user && (
+                  <Link
+                    to="/login"
+                    className="nav-item btn btn-secondary my-2 link-Router"
+                  >
+                    Login
+                  </Link>
+                )
 
-            <UserDropdown />
-            :
-            !user && (
-              <Link
-                to="/login"
-                className="nav-item btn btn-secondary my-2 link-Router"
-              >
-                Login
-              </Link>
-            )
- 
           }
 
           {/* Dependiendo de que TIPO de usuario sea: */}
