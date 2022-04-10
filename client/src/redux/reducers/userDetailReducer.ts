@@ -2,11 +2,17 @@ import { EDIT_USER } from "../../components/users/EditUserAccount";
 import { IUser_Detail, TYPES_USER, UserActions } from "../interface";
 
 export interface USER_STATE {
-    userDetail: IUser_Detail[]
+    userDetail: IUser_Detail
 }
 
 const INITIAL_STATE = {
-    userDetail: []
+    userDetail: {  name: '',
+        surname: '',
+        email: '',
+        billing_address: '',
+        default_shipping_address: '',
+        country: '',
+        countryCode: 0 }
 }
 
 

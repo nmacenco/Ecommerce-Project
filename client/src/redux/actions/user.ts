@@ -11,7 +11,7 @@ const USER_STORAGE = "USER_LOGGED";
 export const CreateUser=(user:any,cb:any)=>{
     return async(dispatch:Dispatch)=>{
         try{
-            console.log(URL_USER + "/signUp");
+            // console.log(URL_USER + "/signUp");
             const response = await axios.post(URL_USER + "/signUp", user);
             // if(data.error){
             //     throw new Error("Error "+data.error);
@@ -47,7 +47,8 @@ export const CreateUser=(user:any,cb:any)=>{
     }
 }
 
-export const GetUSer = (email: string, pass: string, cb: any) => {
+
+export const GetUSer = (email: string, pass: string , cb :any ) => {
 
     return async (dispatch: Dispatch) => {
 
@@ -73,7 +74,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
                   JSON.stringify({email,token:TOKEN , name : response.data.data.name , role : response.data.data.role })
                 );
                 cb();//Ejecutamos un callback wajajaj
-            }
+            } 
         }catch(error){
             console.log('Error en Get_User ',error);
         }
@@ -96,7 +97,7 @@ export const FindUSer = () => {
 
 export const LogoutUser = () => {
 
-    console.log(window.localStorage.getItem(USER_STORAGE));
+    // console.log(window.localStorage.getItem(USER_STORAGE));
     window.localStorage.removeItem(USER_STORAGE);
 
     return {
@@ -117,8 +118,8 @@ export const IdentGoogle = (url: string, cb: any) => {
             }
 
             const TOKEN = response.headers["auth-token"];
-            console.log('TOKEN HEADERS: ', TOKEN);
-            console.log('Data: ', response.data);
+            // console.log('TOKEN HEADERS: ', TOKEN);
+            // console.log('Data: ', response.data);
 
             dispatch({
                 type: TYPES_USER.GET_USER,
@@ -156,6 +157,8 @@ export const getSingleUser = (token: string) => {
                     "auth-token": token
                 }
             })
+            // console.log(user.data.data);
+            
             return dispatch({
                 type: TYPES_USER.GET_SINGLE_USER,
                 payload: user.data.data

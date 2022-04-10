@@ -19,6 +19,7 @@ import ResetForcePassword from "./components/users/ResetForgotPasswords";
 import EditUserAccount from "./components/users/EditUserAccount";
 import AdminUserMode from "./components/users/AdminPanel/AdminModeUsers";
 import EmailResetPassword from './components/users/EmailResetPassword'
+import UserProfile from "./components/users/profile/UserProfile";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ function App(): JSX.Element {
           <Route path="/productsAdminMode" element={<AdminModeCards />} />
           <Route path="/usersAdminMode" element={<AdminUserMode />} />
           <Route path="/emailReset" element={<EmailResetPassword/>} />
+          <Route path="/profile" element={<UserProfile/>} />
         </Routes>
       </BrowserRouter>
     </div>
