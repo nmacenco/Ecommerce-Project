@@ -39,7 +39,7 @@ const getUserOrdersServer = async (req, res) => {
         where: {
           UserId: id,
         },
-         // ALERT: acuerdense de incluir las order details de cada orden.
+        // ALERT: acuerdense de incluir las order details de cada orden.
       });
       if (!dataOrders.length) {
         return res.status(404).send({ errorMsg: "Orders not found." });
@@ -90,7 +90,6 @@ const createOrder = async (req, res) => {
         newOrderCreated = newOrder;
       }
       if (allProductsOrder) {
-
         let deletedOrderDetail = await Order_detail.destroy({
           where: {
             OrderId: newOrderCreated.id,
@@ -106,7 +105,9 @@ const createOrder = async (req, res) => {
         }
       }
     }
-    res.status(201).send({ successMsg: "Here are your new order.", data: newOrderCreated });
+    res
+      .status(201)
+      .send({ successMsg: "Here are your new order.", data: newOrderCreated });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -127,6 +128,12 @@ const getActiveOrder = async (req, res) => {
         UserId: id,
         status: "PENDING",
       },
+      include: [
+        {
+          model: Order_detail,
+          attributes: ["amount", "quantity", "ProductId", "id"],
+        },
+      ],
     });
     if (!activeOrder) {
       return res
@@ -198,7 +205,7 @@ const getUserOrders = async (id) => {
         where: {
           UserId: id,
         },
-         // ALERT: acuerdense de incluir las order details de cada orden.
+        // ALERT: acuerdense de incluir las order details de cada orden.
       });
       if (!dataOrders.length) {
         return "This user has no orders.";
@@ -227,4 +234,3 @@ module.exports = {
   updateOrder,
   getUserOrdersServer,
 };
-
