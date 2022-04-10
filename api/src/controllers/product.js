@@ -163,6 +163,7 @@ const getSingleProduct = async (req, res) => {
           isInDiscount: singleProduct.isInDiscount,
           discountPercent: singleProduct.discountPercent,
           discountQty: singleProduct.discountQty,
+          isActive:singleProduct.isActive,
           questions: singleProduct.Questions.length > 0 ? singleProduct.Questions.map((question) => { return { question }; }) : [],
           reviews: singleProduct.Reviews.length > 0 ? singleProduct.Reviews.map((review) => { return { review }; }) : [],
         };
@@ -227,13 +228,11 @@ const getProducts = async (req, res) => {
           isInDiscount: product.isInDiscount,
           discountPercent: product.discountPercent,
           discountQty: product.discountQty,
+          isActive:product.isActive,
           questions: product.Questions.length > 0 ? product.Questions.map((question) => { return { question }; }) : [],
           reviews: product.Reviews.length > 0 ? product.Reviews.map((review) => { return { review }; }) : [],
         };
       });
-
-
-
 
       res
         .status(200)
@@ -246,19 +245,17 @@ const getProducts = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
+    console.log("Hola")
     const id = req.params.id;
     Number(id);
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
-      let deletedProduct = await Product.destroy({
-        where: {
-          id,
-        },
-      });
+      Product.update({isActive:false},
+        {where: {id: id}})
       res.status(200).send({
         successMsg: "Product deleted in Database",
-        data: `Product id: ${deletedProduct}`,
+        data: `Product id: ${id}`,
       });
     }
   } catch (error) {
