@@ -16,7 +16,10 @@ orderRouter.get("/auth/orders/:id",isLoggedIn, getActiveOrder);
 
 //admin
 orderRouter.get("/admin/orders",isLoggedIn, isAdmin, getOrders);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1c0254d3436e8e61b8739d620d82b1e387248566
 
 //make route for admin to see specifically user orders.
 

@@ -22,7 +22,7 @@ const getOrders = async (req, res) => {
       ],
     });
     if (!Orders.length) {
-      res.status(404).send({ errorMsg: "Oders not found." });
+      return res.status(404).send({ errorMsg: "Orders not found." });
     }
     Orders = Orders.map((Order) => {
       return {
@@ -42,7 +42,7 @@ const getOrders = async (req, res) => {
 };
 
 const getUserOrdersServer = async (req, res) => {
-  const { id } = req.userID;
+  const id = req.userID;
   try {
     if (id) {
       let Orders = await Order.findAll({
@@ -86,7 +86,7 @@ const getUserOrdersServer = async (req, res) => {
         .status(200)
         .send({ successMsg: "Here are your Orders.", data: Orders });
     } else {
-      res.status(404).send({ errorMsg: "missing id" });
+      res.status(404).send({ errorMsg: "Missing id." });
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
@@ -107,7 +107,7 @@ const createOrder = async (req, res) => {
         where: {
           UserId,
           status: "PENDING",
-        }
+        },
       });
       newOrderCreated = singleOrder;
       if (!newOrderCreated) {
@@ -143,13 +143,30 @@ const createOrder = async (req, res) => {
 //Add order detail, delete order detail or modify order detail (use aux functions)
 const updateOrder = async (req, res) => {
   try {
-  } catch (error) { }
+  } catch (error) {}
 };
 
 //send actual order (cart) with it's order-details included.
 const getActiveOrder = async (req, res) => {
   try {
-  } catch (error) { }
+    const id = req.userID;
+    const activeOrder = Order.findOne({
+      where: {
+        UserId: id,
+        status: "PENDING",
+      },
+    });
+    if (!activeOrder) {
+      return res
+        .status(404)
+        .send({ errorMsg: "You don't have an active order." });
+    }
+    res
+      .status(200)
+      .send({ successMsg: "Here is your order.", data: activeOrder });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
 };
 
 //order-detail aux functions
@@ -159,11 +176,11 @@ const updateOrderDetail = async (id, quantity, OrderId, ProductId, amount) => {
     if (!amount || !quantity || !OrderId || !ProductId) {
       return "Missing data";
     } else {
-      let neworderDetail = await Order_detail.findByPk(id);
-      if (!neworderDetail) {
+      let orderDetail = await Order_detail.findByPk(id);
+      if (!orderDetail) {
         return "order not found";
       } else {
-        let UporderDetail = await neworderDetail.update({
+        let UpdatedOrderDetail = await orderDetail.update({
           amount,
           quantity,
           OrderId,
@@ -209,9 +226,10 @@ const getUserOrders = async (id) => {
         where: {
           UserId: id,
         },
+         // ALERT: acuerdense de incluir las order details de cada orden.
       });
       if (!dataOrders.length) {
-        return "this user has no orders";
+        return "This user has no orders.";
       }
       dataOrders = dataOrders.map((Order) => {
         return {
