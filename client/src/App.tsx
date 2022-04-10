@@ -45,7 +45,7 @@ function App(): JSX.Element {
           <Route path="/loading" element={<Loading />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/createCategory" element={<CreateCategories />} />
-          <Route path="/resetForgotPwd" element={<ResetForcePassword />} />
+          <Route path="/sessions/recover/:token" element={<ResetForcePassword />} />
           <Route path="/editUser/:id" element={<EditUserAccount />} />
           <Route path="/productsAdminMode" element={<AdminModeCards />} />
           <Route path="/usersAdminMode" element={<AdminUserMode />} />

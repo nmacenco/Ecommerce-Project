@@ -19,7 +19,7 @@ export const postProduct = (product: ProductForm , theToken : any ) => {
     }
   };
 
-export const deleteProduct = (id: string | undefined , theToken : any ) => {
+export const deleteProduct = (id: number | undefined , theToken : any ) => {
     try {
       return async (dispatch: Dispatch) => {    
         await axios.delete(URL + id , {

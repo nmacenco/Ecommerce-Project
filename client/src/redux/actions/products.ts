@@ -9,6 +9,8 @@ export const getProducts = () => {
   try {
     return async (dispatch: Dispatch) => {
       const allProducts = await axios.get<AXIOSDATA>(`${URL}/products`);
+      console.log(allProducts.data.data);
+      
       return dispatch({
         type: TYPES_PRODUCT.GET_PRODUCTS,
         payload: allProducts.data.data,
