@@ -132,6 +132,12 @@ const getActiveOrder = async (req, res) => {
         {
           model: Order_detail,
           attributes: ["amount", "quantity", "ProductId", "id"],
+          include: [
+            {
+              model: Product,
+              attributes: ["name"],
+            },
+          ],
         },
       ],
     });
