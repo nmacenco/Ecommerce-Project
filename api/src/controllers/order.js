@@ -1,6 +1,6 @@
-const { Order, User, Order_detail } = require("../db");
+const { Order, User, Order_detail, Product } = require("../db");
 
-const getOrders = async (req, res, next) => {
+const getOrders = async (req, res) => {
   try {
     let Orders = await Order.findAll({
       include: [
@@ -8,6 +8,17 @@ const getOrders = async (req, res, next) => {
           model: User,
           attributes: ["id", "name", "surname", "email"],
         },
+        {
+          model: Order_detail,
+          attributes: ["amount", "quantity"],
+          include: [
+            {
+              model: Product,
+              attributes: ["name"],
+            },
+          ],
+        },
+
       ],
     });
     if (!Orders.length) {
@@ -19,46 +30,66 @@ const getOrders = async (req, res, next) => {
         total_amount: Order.total_amount,
         email_address: Order.email_address,
         status: Order.status,
+        user: Order.User.name + " " + Order.User.surname,
         billing_address: Order.billing_address,
+        detail: Order.Order_details.length > 0 ? Order.Order_details.map((detail) => { return { detail }; }) : [],
       };
     });
-    res.status(200).send({ successMsg: "Here are your Orders.", Orders });
+    res.status(200).send({ successMsg: "Here are your Orders.", data: Orders });
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
 const getUserOrdersServer = async (req, res) => {
   const { id } = req.userID;
   try {
-    console.log(id);
     if (id) {
-      let dataOrders = await Order.findAll({
+      let Orders = await Order.findAll({
         where: {
-          UserId: id,
-        },
+          UserId:id,
+        },            
+        include: [
+          {
+            model: User,
+            attributes: ["id", "name", "surname", "email"],
+          },
+          {
+            model: Order_detail,
+            attributes: ["amount", "quantity"],
+            include: [
+              {
+                model: Product,
+                attributes: ["name"],
+              },
+            ],
+          },
+        ],
       });
-      if (!dataOrders.length) {
-        res.status(404).send({ errorMsg: "Oders not found" });
+      if (!Orders.length) {
+        res.status(404).send({ errorMsg: "Oders not found." });
       }
-      dataOrders = dataOrders.map((Order) => {
+      Orders = Orders.map((Order) => {
         return {
           id: Order.id,
           total_amount: Order.total_amount,
           email_address: Order.email_address,
-          billing_address: Order.billing_address,
-          UserId: Order.UserId,
           status: Order.status,
+          user: Order.User.name + " " + Order.User.surname,
+          billing_address: Order.billing_address,
+          detail: Order.Order_details.length > 0 ? Order.Order_details.map((detail) => { return { detail }; }) : [],
         };
       });
+
+
       res
         .status(200)
-        .send({ successMsg: "Here are your Orders.", data: dataOrders });
+        .send({ successMsg: "Here are your Orders.", data: Orders });
     } else {
       res.status(404).send({ errorMsg: "missing id" });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
