@@ -1,0 +1,52 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
+import { getSingleUser } from "../../../redux/actions/user";
+import { ButtonBox, Container, ProfileContainer } from "./UserProfileStyles";
+import { State } from "../../../redux/reducers";
+import { Link } from "react-router-dom";
+
+interface userDetail {
+  name: string;
+}
+
+const UserProfile = () => {
+  const dispatch = useDispatch();
+  const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
+  const userDetail = useSelector((state: State) => state.userDetail.userDetail);
+
+
+  useEffect(() => {
+    dispatch(getSingleUser(userInStorage.token));
+  }, []);
+
+  return (
+    <Container>
+      <ProfileContainer>
+        <div className="card text-center h-100 w-100">
+          <h3 className="card-header">Profile</h3>
+          <div className="card-body d-flex flex-column justify-content-center align-items-center">
+            <h5 className="card-title"> Hello {userDetail.name}!!! </h5>
+            <p className="card-text"></p>
+            <p className="card-text"> Email : {userDetail.email}</p>
+            <p className="card-text">Country : {userDetail.country}</p>
+            <p className="card-text">Billing adress : {userDetail.billing_address}</p>
+            <p className="card-text">Default shipping adress : {userDetail.default_shipping_address}</p>
+            <ButtonBox>
+
+              <Link to={'/resetpwd'} className="btn btn-primary">
+                Edit password
+              </Link>
+              <Link to={`/editUser/${userInStorage.token}`} className="btn btn-primary">
+                Edit Profile
+              </Link>
+            </ButtonBox>
+          </div>
+          <div className="card-footer text-muted"></div>
+        </div>
+      </ProfileContainer>
+    </Container>
+  );
+};
+
+export default UserProfile;

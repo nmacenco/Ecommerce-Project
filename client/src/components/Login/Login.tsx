@@ -6,7 +6,7 @@ import { GetUSer, IdentGoogle } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
 import Form from '../form/Form';
 import { useNavigate } from 'react-router';
-
+import swal from "sweetalert";
 interface Inputs {
     email: string,
     passUser: string
@@ -14,13 +14,13 @@ interface Inputs {
 
 const Login = (): JSX.Element => {
 
-    const dispatch=useDispatch();
-    const user=useSelector((state:State)=>state.user);
-    const navigate=useNavigate();
+    const dispatch = useDispatch();
+    const user = useSelector((state: State) => state.user);
+    const navigate = useNavigate();
 
-    const [inputs,setInputs]=useState<Inputs>({
-        email:'',
-        passUser:''
+    const [inputs, setInputs] = useState<Inputs>({
+        email: '',
+        passUser: ''
     });
     const [error, setErrores] = useState<Inputs>({
         email: '',
@@ -50,21 +50,24 @@ const Login = (): JSX.Element => {
          * dispatch
          */
 
-        if(!user){
-            console.log('user: ',inputs);
-            dispatch(GetUSer(inputs.email,inputs.passUser,()=>{
+        if (!user) {
+            console.log('user: ', inputs);
+            dispatch(GetUSer(inputs.email, inputs.passUser, () => {
+
                 navigate('/products')
-            }));
-            
+            }))
         }
     }
 
-    const SinInGoogle=()=>{
+    const SinInGoogle = () => {
         console.log('Login with Google');
-        dispatch(IdentGoogle('/signInWithGoogle/callback',()=>{
+        dispatch(IdentGoogle('/signInWithGoogle/callback', () => {
             navigate('/products');
         }));
 
+    }
+    const forgotPassword = () => {
+        navigate('/emailReset')
     }
 
 
@@ -83,14 +86,19 @@ const Login = (): JSX.Element => {
             </div>
 
             <div className='google' onClick={SinInGoogle}>
-               <div>
-                    <img src='https://freesvg.org/img/1534129544.png'/>
-               </div>
-               <span>
-                   Continue with Google
-               </span>
-           </div>
-            
+                <div>
+                    <img src='https://freesvg.org/img/1534129544.png' />
+                </div>
+                <span>
+                    Continue with Google
+                </span>
+            </div>
+            <div className='google' onClick={forgotPassword}>
+                <span>
+                    Forgot Password
+                </span>
+            </div>
+
             <article>
                 {
                     validateForms(error, inputs).length ?
@@ -104,9 +112,9 @@ const Login = (): JSX.Element => {
                 }
                 <Link to='/register' className='btn btn-secondary link-Router button-links'>
                     Sin Up
-                </Link> 
+                </Link>
             </article>
-            
+
         </Form>
     )
 }

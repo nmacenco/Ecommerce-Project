@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
 import {useLocalStorage} from '../../../../helpers/useLocalStorage'
-import { adminEditUser, adminGetUsers, adminresetUsers } from "../../../../redux/actions/adminUser";
+import { adminEditUser, adminForcedPasswordReset, adminGetUsers, adminresetUsers } from "../../../../redux/actions/adminUser";
 interface props {
   id: number;
   name: string;
@@ -38,21 +38,6 @@ const UserDetail = ({
 }: props) => {
   const dispatch = useDispatch()
   const [theToken , setTheToken] = useLocalStorage('USER_LOGGED','')
-
-  // const [userUpdate, setUserUpdate] = useState( {
-  //   name,
-  //   email,
-  //   surname,
-  //   billing_address,
-  //   default_shipping_address,
-  //   role,
-  //   isActive,
-  //   country,
-  //   countryCode,
-  //   CountryId,
-  //   needsPasswordReset
-  // });
-
 
   
     function  roleOnChange (e:any) {
@@ -99,9 +84,16 @@ const UserDetail = ({
       dispatch(adminresetUsers());
       AdmOrders(e.target.value)
     }
-    
+    const [theEmail , setTheEmail ] = useState({
+      email : email 
+    })
     function handleClickReset(e:any) : void {
-      /// aca deberia despachar otra accion 
+      // console.log(email);
+      dispatch(adminForcedPasswordReset(theEmail, theToken.token))
+      swal({
+        text: "Email sended",
+        icon: "success"
+      })
     }
 
 

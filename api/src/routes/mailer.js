@@ -9,9 +9,9 @@ const mailRouter = express.Router();
 mailRouter.put("/admin/email", sendMail);
 
 //guest request password reset
-mailRouter.get("/forgotPasswordReset", sendPasswordResetMail);
+mailRouter.post("/forgotPasswordReset", sendPasswordResetMail);
 
 //admin forces password reset
-mailRouter.get("/forcedPasswordReset",isLoggedIn, isAdmin, sendForcedPasswordResetMail);
+mailRouter.post("/forcedPasswordReset",isLoggedIn, isAdmin, sendForcedPasswordResetMail);
 
 module.exports = mailRouter;

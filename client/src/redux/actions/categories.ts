@@ -35,6 +35,7 @@ export function createCategories(category: Category) {
 
 export function createSubcategories(subcategory: FORM_SUB) {
   return async function (dispatch: Dispatch) {
+    console.log(subcategory)
     await axios.post(URL + "/subcategories", subcategory)
   }
 }

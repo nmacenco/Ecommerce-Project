@@ -56,6 +56,7 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  console.log("entro")
   const id = req.userID;
   if (!id) {
     return res.status(400).send({ errorMsg: "Id not provided." });
@@ -261,43 +262,12 @@ const logOut = async (req, res) => {
   }
 };
 
-const getUserOrders = async (req, res) => {
-  const { id } = req.userID;
-  try {
-    console.log(id);
-    if (id) {
-      let dataOrders = await Order.findAll({
-        where: {
-          UserId: id,
-        },
-      });
-      if (!dataOrders.length) {
-        res.status(404).send({ errorMsg: "Oders not found" });
-      }
-      dataOrders = dataOrders.map((Order) => {
-        return {
-          id: Order.id,
-          total_amount: Order.total_amount,
-          email_address: Order.email_address,
-          billing_address: Order.billing_address,
-          UserId: Order.UserId,
-          status: Order.status,
-        };
-      });
-      res
-        .status(200)
-        .send({ successMsg: "Here are your Ordes.", data: dataOrders });
-    } else {
-      res.status(404).send({ errorMsg: "missing id" });
-    }
-  } catch (error) {
-    res.status(500).send({ errorMsg: error });
-  }
-};
+
 
 const passwordReset = async (req, res) => {
   try {
     let id = req.userID;
+    console.log(id)
     let { password, passwordConfirm, actualPassword } = req.body;
     const user = await User.findByPk(id);
     if (!user) {
@@ -372,7 +342,7 @@ const sendForcedPasswordResetMail = async (req, res) => {
     await sendMailPassword(
       email,
       "Required password reset",
-      `<p>Click <a href='http://localhost:3000/sessions/recover/${token}>here</a> to reset your password</p>`
+      `<p>Click <a href="http://localhost:3000/sessions/recover/${token}">here</a> to reset your password</p>`
     );
     res.status(200).send({ successMsg: "Password reset sent." });
   } catch (error) {
@@ -383,6 +353,7 @@ const sendForcedPasswordResetMail = async (req, res) => {
 const forgotAndForcedResetPassword = async (req, res) => {
   try {
     let token = req.params.id;
+    console.log(token);
     if (!token) {
       return res.status(400).send({ errorMsg: "No token provided." });
     }
@@ -424,7 +395,6 @@ module.exports = {
   createUser,
   updateUser,
   getSingleUser,
-  getUserOrders,
   signIn,
   logOut,
   googleLogIn,
