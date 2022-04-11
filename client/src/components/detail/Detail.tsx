@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getProductDetail,deleteProductDetail} from "../../redux/actions/productDetail";
+import { getProductDetail, deleteProductDetail } from "../../redux/actions/productDetail";
 import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Rewies from "./reviews/Review";
@@ -158,11 +158,13 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            {user ? <NewRewie /> : null}
+            {user && user.role !== 'user' ? <NewRewie /> : null}
             {product.reviews &&
               product.reviews.map((rew, i) => {
+                // console.log(rew.review);
                 return (
                   <Rewies
+                    name={user!.name}
                     title={rew.review.title}
                     stars={rew.review.stars}
                     key={i}
