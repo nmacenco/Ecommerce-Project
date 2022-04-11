@@ -12,6 +12,7 @@ passport.serializeUser(function (user, done) {
     to the done callback
     PS: You dont have to do it like this its just usually done like this
     */
+   console.log('user: ',user);
   done(null, user);
 });
 
@@ -21,6 +22,7 @@ passport.deserializeUser(function (user, done) {
     then you use the id to select the user from the db and pass the user obj to the done callback
     PS: You can later access this data in any routes in: req.user
     */
+   console.log("user: ", user);
   done(null, user);
 });
 
@@ -34,8 +36,8 @@ passport.use(
     },
     async function (request, accessToken, refreshToken, profile, done) {
       const { given_name, family_name, email } = profile;
-      let name = given_name.split(" ")[0];
-      let surname = family_name.split(" ")[0];
+      let name = given_name ? given_name.split(" ")[0] : '';
+      let surname = family_name? family_name.split(" ")[0]: '';
       let isActive = true;
       let role = "user";
       let CountryId = 1;

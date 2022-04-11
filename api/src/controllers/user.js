@@ -50,6 +50,7 @@ const createUser = async (req, res) => {
       }
     }
   } catch (error) {
+    console.log('ERROR EN USER: ',error);
     res.status(500).json({ errorMsg: error.message });
   }
 };
