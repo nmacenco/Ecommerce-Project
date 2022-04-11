@@ -39,7 +39,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
           <option value="asc-name">A - Z</option>
           <option value="des-name">Z - A</option>
         </Select>
-        <p className="ms-auto m-3">{!filteredProducts.length ? allProducts.length : filteredProducts.length} products</p>
+        <p className="ms-auto m-3">{!filteredProducts.length ? "0" : filteredProducts.length} products</p>
       </div>
     </div>
   );

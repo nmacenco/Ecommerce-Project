@@ -13,7 +13,6 @@ interface Inputs {
 }
 
 const Login = (): JSX.Element => {
-
     const dispatch = useDispatch();
     const user = useSelector((state: State) => state.user);
     const navigate = useNavigate();
