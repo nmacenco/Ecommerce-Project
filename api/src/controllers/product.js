@@ -94,7 +94,15 @@ const updateProduct = async (req, res) => {
         res.status(401).send({ errorMsg: "Product not found." });
       } else {
         let productUpdated = await productToUpdate.update({
-          name, price, description, image, weight, stock, soldCount, BrandId, SubcategoryId,
+          name,
+          price,
+          description,
+          image,
+          weight,
+          stock,
+          soldCount,
+          BrandId,
+          SubcategoryId,
         });
         res.status(200).send({
           successMsg: "Product successfully updated.",
@@ -163,10 +171,21 @@ const getSingleProduct = async (req, res) => {
           isInDiscount: singleProduct.isInDiscount,
           discountPercent: singleProduct.discountPercent,
           discountQty: singleProduct.discountQty,
-          isActive:singleProduct.isActive,
-          questions: singleProduct.Questions.length > 0 ? singleProduct.Questions.map((question) => { return { question }; }) : [],
-          reviews: singleProduct.Reviews.length > 0 ? singleProduct.Reviews.map((review) => { return { review }; }) : [],
+          isActive: singleProduct.isActive,
+          questions:
+            singleProduct.Questions.length > 0
+              ? singleProduct.Questions.map((question) => {
+                  return { question };
+                })
+              : [],
+          reviews:
+            singleProduct.Reviews.length > 0
+              ? singleProduct.Reviews.map((review) => {
+                  return { review };
+                })
+              : [],
         };
+        console.log("producto solo: ", singleProduct);
         res
           .status(200)
           .send({ successMsg: "Here is your product.", data: singleProduct });
@@ -228,9 +247,19 @@ const getProducts = async (req, res) => {
           isInDiscount: product.isInDiscount,
           discountPercent: product.discountPercent,
           discountQty: product.discountQty,
-          isActive:product.isActive,
-          questions: product.Questions.length > 0 ? product.Questions.map((question) => { return { question }; }) : [],
-          reviews: product.Reviews.length > 0 ? product.Reviews.map((review) => { return { review }; }) : [],
+          isActive: product.isActive,
+          questions:
+            product.Questions.length > 0
+              ? product.Questions.map((question) => {
+                  return { question };
+                })
+              : [],
+          reviews:
+            product.Reviews.length > 0
+              ? product.Reviews.map((review) => {
+                  return { review };
+                })
+              : [],
         };
       });
 
@@ -249,8 +278,7 @@ const deleteProduct = async (req, res) => {
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
-      Product.update({isActive:false},
-        {where: {id: id}})
+      Product.update({ isActive: false }, { where: { id: id } });
       res.status(200).send({
         successMsg: "Product deleted in Database",
         data: `Product id: ${id}`,
