@@ -159,11 +159,3 @@ const Cards = (): JSX.Element => {
   );
 };
 export default Cards;
-// function removeFilter(brand: any): any {
-//   throw new Error("Function not implemented.");
-// }
-
-// function chargeFilter(copyProductsList: Product[]): any {
-//   throw new Error("Function not implemented.");
-// }
-

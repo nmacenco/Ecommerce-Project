@@ -14,8 +14,6 @@ const NewQ=({ProductId}:Prop):JSX.Element=>{
 
     const createBlock=(event:any)=>{
         event.preventDefault();
-        // console.log('envio de datos:');
-        // console.log(ProductId);
         let title = event.target.title.value;
         let body=event.target.body.value;
         dispatch(createQuestion(title,body,ProductId));
@@ -27,11 +25,11 @@ const NewQ=({ProductId}:Prop):JSX.Element=>{
     return(
         <Styled.container>
             <h5 >
-                Write the Question!😉
+                Ask a question!
             </h5>
 
             <Styled.form onSubmit={createBlock} >
-                <input type='text' placeholder="Title of the question!..." name="title"/>
+                <input type='text' placeholder="Title..." name="title"/>
                 <textarea placeholder="Question..." name="body"/>
                 <div>
                     <button>Save</button>

@@ -26,7 +26,6 @@ function App(): JSX.Element {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(FindUSer());
-    // console.log("find user!");
   }, []);
 
 
@@ -50,7 +49,7 @@ function App(): JSX.Element {
           <Route path="/cart" element={<Cart />} />
           <Route path="/createCategory" element={<CreateCategories />} />
           <Route path="/sessions/recover/:token" element={<ResetForcePassword />} />
-          <Route path="/editUser" element={<EditUserAccount />} />
+          <Route path="/editUser/:token" element={<EditUserAccount />} />
           <Route path="/productsAdminMode" element={<AdminModeCards />} />
           <Route path="/usersAdminMode" element={<AdminUserMode />} />
           <Route path="/emailReset" element={<EmailResetPassword />} />

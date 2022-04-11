@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { Product, ProductForm, TYPES_ADMIN } from '../interface';
+import { ProductForm, TYPES_ADMIN } from '../interface';
 
 const URL = "http://localhost:3001/api/admin/products/";
 

@@ -14,7 +14,7 @@ export const adminGetUsers = (theToken:any) => {
             theToken,
         },
       });
-      // console.log(allUsers.data.users);
+      console.log(allUsers.data.users);
       
       return dispatch({
         type: TYPES_ADMIN_USER.GET_USERS,

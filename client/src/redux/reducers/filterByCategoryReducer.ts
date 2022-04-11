@@ -66,7 +66,9 @@ export const reducerFilterProducts = (
     case TYPES_PRODUCT.RESET_FILTERED_PRODUCTS:
       return {
         ...state,
-        filteredProducts: []
+        filteredProducts: [],
+        copyFilteredProducts: []
+        
       }
 
 

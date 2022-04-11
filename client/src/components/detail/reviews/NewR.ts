@@ -1,7 +1,6 @@
 
 import styled from 'styled-components';
 
-
 export const FormRewie = styled.form`
   display: flex;
   flex-direction: column;
@@ -9,7 +8,6 @@ export const FormRewie = styled.form`
   input {
     margin-bottom: 20px;
     outline: none;
-    /* border: none; */
     padding: 5px 10px 2px 10px;
   }
   textarea {

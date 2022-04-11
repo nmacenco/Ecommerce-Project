@@ -48,7 +48,6 @@ export default function EmailResetPassword(): JSX.Element {
     setTheEmail({
       email: e.target.value
     })
-
   }
 
   console.log(Object.keys(error).length);
