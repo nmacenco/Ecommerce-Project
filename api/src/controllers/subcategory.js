@@ -18,7 +18,7 @@ const getSubCategories = async (req, res, next) => {
       data: dataSubCategory,
     });
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -42,8 +42,28 @@ const createSubCategory = async (req, res, next) => {
         : res.status(400).send({ errorMsg: "Subcategory already exists." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error});
+    res.status(500).send({ errorMsg: error.message});
   }
 };
 
-module.exports = { getSubCategories, createSubCategory };
+const deleteSubcategory = async (id) => {
+  try {
+    let deletedSubcategory = await Subcategory.destroy({
+      where: {
+        id,
+      },
+    });
+
+    deletedSubcategory
+    ? res.status(200).send({
+        successMsg: "Subcategory has been deleted created.",
+        data: newSubCategory,
+      })
+    : res.status(401).send({ errorMsg: "Subcategory doesn't exist." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message});
+  }
+};
+
+
+module.exports = { getSubCategories, createSubCategory, deleteSubcategory };
