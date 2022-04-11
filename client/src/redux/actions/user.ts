@@ -1,17 +1,19 @@
 import axios from "axios";
 import { Dispatch } from "redux"
 import { EDIT_USER } from "../../components/users/EditUserAccount";
+import { RESET_PASSWORD } from "../../components/users/ResetForgotPasswords";
 import { PWD } from "../../components/users/ResetPwd";
 import { TYPES_USER, User } from "../interface";
-
+// import { RESET_PASSWORD } from '../../components/users/ResetForgotPasswords'
 
 const URL_USER = "http://localhost:3001/api";
 const URLRESET = "http://localhost:3001/api/forgotPasswordReset"
+const URLRESET2 = "http://localhost:3001/api/submitPasswordReset"
 const USER_STORAGE = "USER_LOGGED";
 export const CreateUser = (user: any, cb: any) => {
     return async (dispatch: Dispatch) => {
         try {
-            console.log(URL_USER + "/signUp");
+            // console.log(URL_USER + "/signUp");
             const response = await axios.post(URL_USER + "/signUp", user);
             // if(data.error){
             //     throw new Error("Error "+data.error);
@@ -39,11 +41,13 @@ export const CreateUser = (user: any, cb: any) => {
 
             window.localStorage.setItem(USER_STORAGE, JSON.stringify({ ...newUser, name: response.data.data.name, role: response.data.data.role }));// Cambiar cuando exista un usuario
 
+
         } catch (error) {
             console.log('Error en createUSer: ', error);
         }
     }
 }
+
 
 export const GetUSer = (email: string, pass: string, cb: any) => {
 
@@ -83,6 +87,7 @@ export const FindUSer = () => {
 
     const user = window.localStorage.getItem(USER_STORAGE);
     const userExist = user ? JSON.parse(user) : null;
+    // console.log(userExist);
 
     return {
         type: TYPES_USER.FIND_USER,
@@ -92,7 +97,7 @@ export const FindUSer = () => {
 
 export const LogoutUser = () => {
 
-    console.log(window.localStorage.getItem(USER_STORAGE));
+    // console.log(window.localStorage.getItem(USER_STORAGE));
     window.localStorage.removeItem(USER_STORAGE);
 
     return {
@@ -113,8 +118,8 @@ export const IdentGoogle = (url: string, cb: any) => {
             }
 
             const TOKEN = response.headers["auth-token"];
-            console.log('TOKEN HEADERS: ', TOKEN);
-            console.log('Data: ', response.data);
+            // console.log('TOKEN HEADERS: ', TOKEN);
+            // console.log('Data: ', response.data);
 
             dispatch({
                 type: TYPES_USER.GET_USER,
@@ -152,6 +157,8 @@ export const getSingleUser = (token: string) => {
                     "auth-token": token
                 }
             })
+            // console.log(user.data.data);
+
             return dispatch({
                 type: TYPES_USER.GET_SINGLE_USER,
                 payload: user.data.data
@@ -162,10 +169,8 @@ export const getSingleUser = (token: string) => {
     }
 }
 
-export const resetPassword = (password: PWD, token: string) => {
+export const resetPassword = (password: PWD, token: string | any) => {
     try {
-        console.log(password)
-        console.log(token)
         return async (dispatch: Dispatch) => {
             await axios.put(URL_USER + "/auth/users/passwordReset", password,
                 {
@@ -184,6 +189,18 @@ export const forgotPasswordReset = (email: any) => {
     try {
         return async (dispatch: Dispatch) => {
             await axios.post(`${URLRESET}`, email);
+        };
+    } catch (error) {
+        alert(error);
+    }
+};
+
+export const resetForgotPassword = (id: any, password: RESET_PASSWORD) => {
+    // console.log(UserToUpdate);
+
+    try {
+        return async (dispatch: Dispatch) => {
+            await axios.put(`${URLRESET2}/${id}`, password);
         };
     } catch (error) {
         alert(error);

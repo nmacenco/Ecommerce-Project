@@ -197,6 +197,3 @@ export default function Detail() {
     </DetailContainer>
   );
 }
-function resetPoducts(): any {
-  throw new Error("Function not implemented.");
-}

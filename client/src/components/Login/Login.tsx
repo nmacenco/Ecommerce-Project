@@ -6,7 +6,7 @@ import { GetUSer, IdentGoogle } from '../../redux/actions/user';
 import { State } from '../../redux/reducers';
 import Form from '../form/Form';
 import { useNavigate } from 'react-router';
-
+import swal from "sweetalert";
 interface Inputs {
     email: string,
     passUser: string
@@ -53,9 +53,9 @@ const Login = (): JSX.Element => {
         if (!user) {
             console.log('user: ', inputs);
             dispatch(GetUSer(inputs.email, inputs.passUser, () => {
-                navigate('/products')
-            }));
 
+                navigate('/products')
+            }))
         }
     }
 

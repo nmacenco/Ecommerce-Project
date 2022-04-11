@@ -130,6 +130,7 @@ export interface Product {
   count: number;
   questions: any[];
   reviews: any[];
+  isActive : boolean ; 
 }
 
 export interface Question {
