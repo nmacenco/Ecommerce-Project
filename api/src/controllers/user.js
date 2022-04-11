@@ -266,6 +266,7 @@ const logOut = async (req, res) => {
 const passwordReset = async (req, res) => {
   try {
     let id = req.userID;
+    console.log(id)
     let { password, passwordConfirm, actualPassword } = req.body;
     const user = await User.findByPk(id);
     if (!user) {

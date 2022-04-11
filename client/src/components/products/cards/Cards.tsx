@@ -125,21 +125,21 @@ const Cards = (): JSX.Element => {
                   {filterBox.brand.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.brand)} className="btn btn-primary mt-2 mr-2">{filterBox.brand}</button></span> : ""}
                   <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
                     {newProductsList.map((e: Product) => {
-                      if (e.isActive) {
+                      // if (e.isActive) {
 
-                        return (
-                          <div className="col" key={e.id}>
-                            <Card
-                              product={e}
-                              stock={e.stock}
-                              name={e.name}
-                              image={e.image}
-                              price={e.price}
-                              id={e.id}
-                            />
-                          </div>
-                        );
-                      }
+                      return (
+                        <div className="col" key={e.id}>
+                          <Card
+                            product={e}
+                            stock={e.stock}
+                            name={e.name}
+                            image={e.image}
+                            price={e.price}
+                            id={e.id}
+                          />
+                        </div>
+                      );
+                      // }
                     })}
                   </div>
                   <ReactPaginateContainer>

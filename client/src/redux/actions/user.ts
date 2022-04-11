@@ -4,8 +4,7 @@ import { EDIT_USER } from "../../components/users/EditUserAccount";
 import { RESET_PASSWORD } from "../../components/users/ResetForgotPasswords";
 import { PWD } from "../../components/users/ResetPwd";
 import { TYPES_USER, User } from "../interface";
-// import { RESET_PASSWORD } from '../../components/users/ResetForgotPasswords'
-
+import swal from "sweetalert";
 const URL_USER = "http://localhost:3001/api";
 const URLRESET = "http://localhost:3001/api/forgotPasswordReset"
 const URLRESET2 = "http://localhost:3001/api/submitPasswordReset"
@@ -43,7 +42,17 @@ export const CreateUser = (user: any, cb: any) => {
 
 
         } catch (error) {
-            console.log('Error en createUSer: ', error);
+            swal({
+                title: "Wrong data",
+                text: "This email ir already taken!",
+                icon: "warning",
+                dangerMode: true,
+                buttons: {
+                    cancel: true,
+                    confirm: true,
+                },
+            })
+
         }
     }
 }
@@ -66,7 +75,9 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
                     type: TYPES_USER.GET_USER,
                     payload: {
                         email,
-                        token: TOKEN
+                        token: TOKEN,
+                        name: response.data.data.name,
+                        role: response.data.data.role
                     }
                 })
                 window.localStorage.setItem(
@@ -76,7 +87,16 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
                 cb();//Ejecutamos un callback wajajaj
             }
         } catch (error) {
-            console.log('Error en Get_User ', error);
+            swal({
+                title: "Wrong data",
+                text: "The email is not in data base!",
+                icon: "warning",
+                dangerMode: true,
+                buttons: {
+                    cancel: true,
+                    confirm: true,
+                },
+            })
         }
 
     }

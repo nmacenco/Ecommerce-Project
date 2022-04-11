@@ -19,7 +19,7 @@ import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.user);
+  const userState = useSelector((state: State) => state.user);
   const productsCart = useSelector((state: State) => state.cart.cart);
   const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
@@ -71,41 +71,17 @@ const Nav = (): JSX.Element => {
             <Route path="/adminMode" element={<Search />} />
           </Routes>
 
-          {
-            userInStorage && userInStorage.role === 'admin' ?
-              <AdminDropdown />
-              : userInStorage && userInStorage.role === 'user' ?
 
-                // <UserDropdown />
-                // // :
-                // // !user && (
-                // //   <Link
-                // //     to="/login"
-                // //     className="nav-item btn btn-secondary my-2 link-Router"
-                // //   >
-                // //     Login
-                // //   </Link>
-                // // )
-
-                <UserDropdown />
-                :
-                !user && route !== '/login' ? (
-
-                  <Link
-                    to="/login"
-                    className="nav-item btn btn-secondary my-2 link-Router"
-                  >
-                    Login
-                  </Link>
-                )
-                  :
-                  null
-
-          }
-
-          {/* Dependiendo de que TIPO de usuario sea: */}
-
-          {/* Una vez iniciada la sesion este boton no deberia aparecer */}
+          {userState && userState.role === "admin" && <AdminDropdown />}
+          {userState && userState.role === "user" && <UserDropdown />}
+          {!userState && (
+            <Link
+              to="/login"
+              className="nav-item btn btn-secondary my-2 link-Router"
+            >
+              Login
+            </Link>
+          )}
 
         </div>
       </div>
