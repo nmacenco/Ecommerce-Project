@@ -47,9 +47,6 @@ const Question = ({ title, body, answer, user, idA }: Prop): JSX.Element => {
 
     return (
         <Styled.container>
-            {/* <div className='div-img'>
-                <img src='https://cdn-icons-png.flaticon.com/512/149/149071.png' />
-            </div> */}
 
             <Styled.content>
                 <header>
@@ -61,7 +58,7 @@ const Question = ({ title, body, answer, user, idA }: Prop): JSX.Element => {
                     </div>
                     {console.log(user && !answer)}
                     {
-                        user && !answer ?
+                        user && user.role !== 'user' && !answer ?
                             <>
                                 <button className='btn-reply' onClick={() => setReply(!reply)}>
                                     Reply

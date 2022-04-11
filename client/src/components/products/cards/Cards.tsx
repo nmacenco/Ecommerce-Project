@@ -128,7 +128,7 @@ const Cards = (): JSX.Element => {
                   {filterBox.subcategory.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.subcategory)} className="btn btn-primary mt-2 mr-2">{filterBox.subcategory}</button></span> : ""}
                   {filterBox.brand.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.brand)} className="btn btn-primary mt-2 mr-2">{filterBox.brand}</button></span> : ""}
                   <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
-                    {activeProductsList.map((e: Product) => {
+                    {newProductsList.map((e: Product) => {
                       return (
                         <div className="col" key={e.id}>
                           <Card
@@ -160,11 +160,3 @@ const Cards = (): JSX.Element => {
   );
 };
 export default Cards;
-// function removeFilter(brand: any): any {
-//   throw new Error("Function not implemented.");
-// }
-
-// function chargeFilter(copyProductsList: Product[]): any {
-//   throw new Error("Function not implemented.");
-// }
-

@@ -5,11 +5,8 @@ const newContainer=styled.div`
     width: 100%;
     margin-top: 10px;
     margin-bottom: 20px;
-    /* border: 2px solid black; */
-    /* padding: 1px 20px; */
 
     h5{
-        /* background-color: red; */
         padding: 5px 10px;
     }
 

@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router'
 import swal from 'sweetalert'
 import { useLocalStorage } from '../../helpers/useLocalStorage'
 import { getCountries } from '../../redux/actions/countries'
-import { getSingleUser, GetUSer, updateUser } from '../../redux/actions/user'
+import { getSingleUser, GetUSer, LogoutUser, updateUser } from '../../redux/actions/user'
 import { ICountries, IUser_Detail } from '../../redux/interface'
 import { State } from '../../redux/reducers'
 import { FormContainer } from '../form/FormCreateStyles'
@@ -72,6 +72,8 @@ export default function EditUserAccount(): JSX.Element {
         e.preventDefault()
         if (editUser.name !== "" && editUser.surname !== "" && editUser.email !== "" && editUser.CountryId !== 0) {
             dispatch(updateUser(userInStorage.token, editUser))
+            dispatch(LogoutUser())
+            navigate('/login')
         } else {
             showError(editUser)
             swal({
