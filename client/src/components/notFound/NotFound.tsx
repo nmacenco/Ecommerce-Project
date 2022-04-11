@@ -18,7 +18,7 @@ const NotFound = (props: NOT_FOUND) => {
 
     return (
         <NotFoundContainer>
-            <h1>No se encontro el Producto</h1>
+            <h1>No products found</h1>
         </NotFoundContainer>
     )
 }

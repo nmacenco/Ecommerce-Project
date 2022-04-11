@@ -27,7 +27,8 @@ export const CreateUser = (user: any, cb: any) => {
             const newUser = {
                 name: user.name,
                 email: user.email,
-                token: response.headers['auth-token']
+                token: response.headers['auth-token'],
+                role: response.data.data.role
             }
             console.log(response);
 

@@ -10,6 +10,7 @@ import {
   getSubcategories,
 } from "../../redux/actions/categories";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
+import { resetPoducts } from "../../redux/actions/products";
 import {
   Brand,
   Category,
@@ -81,12 +82,19 @@ export default function FromCreate(): JSX.Element {
     setErrorsList(errors)
     if (errors === false) {
       dispatch(postProduct(product , userInStorage.token));
-      dispatch(resetFilterProducts())
       swal({
         title: "Product created successfully",
-        icon: "success"
+        icon: "success",
+        buttons: {
+          confirm: true,
+        },
+      }).then((value) => {
+        if (value) {
+          dispatch(resetFilterProducts())
+          dispatch(resetPoducts())
+          navigate("/products")
+        }
       })
-      navigate("/products")
     } else {
       swal({
         title: "Complete the form properly.",

@@ -9,7 +9,9 @@ import {
   getCategories,
   getSubcategories,
 } from "../../../redux/actions/categories";
+import { resetFilterProducts } from "../../../redux/actions/filterByCategory";
 import { getProductDetail } from "../../../redux/actions/productDetail";
+import { resetPoducts } from "../../../redux/actions/products";
 import { ProductForm, Subcategory } from "../../../redux/interface";
 import { State } from "../../../redux/reducers";
 import { errorsCheck } from "../../form/validations";
@@ -82,9 +84,17 @@ export default function EditProduct(): JSX.Element {
       dispatch(putProducts(editProduct, id , userInStorage.token));
       swal({
         title: "Product edited successfully.",
-        icon: "success"
+        icon: "success",
+        buttons: {
+          confirm: true,
+        },
+      }).then((value) => {
+        if (value) {
+          dispatch(resetFilterProducts())
+          dispatch(resetPoducts())
+          navigate("/products")
+        }
       })
-      navigate("/products")
     } else {
       swal({
         title: "Complete the form properly.",
