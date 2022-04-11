@@ -7,6 +7,6 @@ const subCategoryRouter = express.Router();
 
 subCategoryRouter.get("/subcategories", getSubCategories);
 subCategoryRouter.post("/subcategories", createSubCategory);
-subCategoryRouter.delete("/subcategories", deleteSubcategory);
+subCategoryRouter.delete("/subcategories/:id", deleteSubcategory);
 
 module.exports = subCategoryRouter;
