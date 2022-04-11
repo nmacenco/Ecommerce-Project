@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import swal from 'sweetalert'
+import { forgotPasswordReset, resetForgotPassword, resetPassword } from '../../redux/actions/user';
 import { FormContainer } from '../form/FormCreateStyles'
 
-interface RESET_PASSWORD {
+export interface RESET_PASSWORD {
     password: string;
-    confirmPassword: string;
+    passwordConfirm: string;
 }
 
 export default function ResetForcePassword(): JSX.Element {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { token } = useParams<string>()
     const [reset, setReset] = useState<RESET_PASSWORD>({
         password: "",
-        confirmPassword: ""
+        passwordConfirm: ""
     })
 
     const changePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -26,26 +28,30 @@ export default function ResetForcePassword(): JSX.Element {
         console.log(reset.password)
     }
 
-    const handleShow = (password: string, confirmPassword: string): void => {
+    const handleShow = (password: string, passwordConfirm: string): void => {
         if (password.length < 8 || password.length > 20) {
             (document.getElementById("password") as HTMLInputElement).textContent = "Must be 8-20 characters long"
         } else (document.getElementById("password") as HTMLInputElement).textContent = ""
 
-        if (password !== confirmPassword) {
-            (document.getElementById("confirmPassword") as HTMLInputElement).textContent = "Passwords don't match"
-        } else (document.getElementById("confirmPassword") as HTMLInputElement).textContent = ""
+        if (password !== passwordConfirm) {
+            (document.getElementById("passwordConfirm") as HTMLInputElement).textContent = "Passwords don't match"
+        } else (document.getElementById("passwordConfirm") as HTMLInputElement).textContent = ""
 
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
-        if (reset.password !== "" && reset.confirmPassword !== "") {
-            handleShow(reset.password, reset.confirmPassword)
-            if (reset.password === reset.confirmPassword && reset.password.length >= 8 && reset.password.length <= 20) {
+        if (reset.password !== "" && reset.passwordConfirm !== "") {
+            handleShow(reset.password, reset.passwordConfirm)
+            if (reset.password === reset.passwordConfirm && reset.password.length >= 8 && reset.password.length <= 20) {
+                console.log(token);
+
+                dispatch(resetForgotPassword(token, reset))
                 swal({
                     title: "Reset password",
                     icon: "success"
                 })
+
                 navigate("/products") // PONER RUTA DE PERFIL DE USUARIO
             } else {
                 swal({
@@ -72,8 +78,8 @@ export default function ResetForcePassword(): JSX.Element {
                 </div>
                 <div className="form-group">
                     <label className="col-sm-2 col-form-label">Repeat password</label>
-                    <input type="password" className="form-control" placeholder='Repeat password' name="confirmPassword" onChange={(e) => changePassword(e)} />
-                    <small id="confirmPassword" className="text-danger"></small>
+                    <input type="password" className="form-control" placeholder='Repeat password' name="passwordConfirm" onChange={(e) => changePassword(e)} />
+                    <small id="passwordConfirm" className="text-danger"></small>
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-outline-primary mt-5 ">Submit</button>

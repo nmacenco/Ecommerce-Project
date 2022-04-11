@@ -1,18 +1,25 @@
 import React from "react";
 import { DropdownMenu } from "./UserDropdownStyle";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { LogoutUser } from "../../../redux/actions/user";
 import { State } from "../../../redux/reducers";
+import { Link, useNavigate } from "react-router-dom";
+import { getSingleUser, LogoutUser } from "../../../redux/actions/user";
 
 const UserDropdown = () => {
   const dispatch = useDispatch()
   const userState = useSelector((state: State) => state.user);
+  const navigate = useNavigate()
+
+  function handleClickProfile () {
+    // dispatch(getSingleUser(userInStorage.token))
+  }
 
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
+    navigate('/products')
     dispatch(LogoutUser());
   };
+  
   return (
     <ul className="nav-item dropdown navbar-nav">
       <a
@@ -25,8 +32,8 @@ const UserDropdown = () => {
         {userState && userState.name}
       </a>
       <DropdownMenu className="dropdown-menu">
-        <Link to={"/ordersHistory"} className="dropdown-item">
-          User config
+        <Link onClick={()=> {handleClickProfile()}} to={"/profile"} className="dropdown-item">
+          Profile
         </Link>
         <Link to={"/ordersHistory"} className="dropdown-item">
           Orders History

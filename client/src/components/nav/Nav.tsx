@@ -9,12 +9,11 @@ import {getProducts,productNotFound,resetPoducts} from "../../redux/actions/prod
 import { deleteProductDetail } from "../../redux/actions/productDetail";
 import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";
-import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
   const userState = useSelector((state: State) => state.user);
-  const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
+  // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
 
   function handleClickProducts() {
     dispatch(productNotFound(false));

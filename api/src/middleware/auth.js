@@ -10,7 +10,6 @@ const isLoggedIn = async (req, res, next) => {
     if (!token) {
       return res.status(400).send({ errorMsg: "There is no token." });
     }
-    console.log("pasamos token")
     const payload = jwt.verify(token, process.env.SECRET_KEY);
     const user = await User.findOne({
       where: {

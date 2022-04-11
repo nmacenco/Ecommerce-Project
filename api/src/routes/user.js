@@ -3,7 +3,6 @@ const {
   createUser,
   updateUser,
   getSingleUser,
-  getUserOrders,
   signIn,
   logOut,
   googleLogIn,
@@ -29,18 +28,11 @@ const userRouter = express.Router();
 userRouter.get("/admin/users", isLoggedIn, isAdmin, adminGetUsers);
 userRouter.get("/admin/users/:id", isLoggedIn, isAdmin, adminGetUser);
 userRouter.put("/admin/users/:id", isLoggedIn, isAdmin, adminUpdateUser);
-userRouter.get(
-  "/admin/users/getOrders/:id",
-  isLoggedIn,
-  isAdmin,
-  getUserOrders
-);
 userRouter.post("/admin/users", isLoggedIn, isAdmin, adminCreateUser);
 
 //user
 userRouter.get("/auth/users", isLoggedIn, getSingleUser);
 userRouter.put("/auth/users", isLoggedIn, updateUser);
-userRouter.get("/auth/users", isLoggedIn, getUserOrders);
 userRouter.delete("/auth/logOut", isLoggedIn, logOut);
 userRouter.put("/auth/users/passwordReset", isLoggedIn, passwordReset);
 
@@ -56,7 +48,7 @@ userRouter.get(
 );
 userRouter.get(
   "/signInWithGoogle/callback",
-  passport.authenticate("google"),
+  passport.authenticate("google", { successRedirect: "http://localhost:3000/home" }),
   googleLogIn
 );
 userRouter.get("/googleLogOut", isLoggedIn, googleLogOut);

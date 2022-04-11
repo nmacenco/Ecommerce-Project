@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
 import { GetUSer, IdentGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
-import Form from "./Form";
+import Form from "../form/Form";
 import { useNavigate } from "react-router";
-import { Forgot } from "./SLogin";
+import { Forgot } from "../form/SLogin";
 
 interface Inputs {
   email: string;

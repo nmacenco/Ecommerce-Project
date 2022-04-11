@@ -131,22 +131,25 @@ const AdminModeCards = (): JSX.Element => {
                       <th scope="col">Image</th>
                       <th scope="col">Product Name</th>
                       <th scope="col">Price</th>
+                      <th scope="col">State</th>
                       <th scope="col">Delete</th>
                       <th scope="col">Edit </th>
                     </tr>
                   </thead>
                   {newProductsList.map((e: Product) => {
-                    return (
-                      <AdminModeCard
-                        name={e.name}
-                        image={e.image}
-                        price={e.price}
-                        key={e.id}
-                        id={e.id}
-                        AdmOrders={AdmOrders}
-                        page={page}
-                      />
-                    );
+                    
+                      return (
+                        <AdminModeCard
+                          name={e.name}
+                          image={e.image}
+                          price={e.price}
+                          key={e.id}
+                          id={e.id}
+                          isActive = {e.isActive}
+                          AdmOrders={AdmOrders}
+                          page={page}
+                        />
+                      );
                   })}
                 </table>
                 );

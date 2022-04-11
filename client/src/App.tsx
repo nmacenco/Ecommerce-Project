@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Nav from "./components/nav/Nav";
@@ -19,12 +19,16 @@ import ResetForcePassword from "./components/users/ResetForgotPasswords";
 import EditUserAccount from "./components/users/EditUserAccount";
 import AdminUserMode from "./components/users/AdminPanel/AdminModeUsers";
 import EmailResetPassword from './components/users/EmailResetPassword'
+import { ResetPwd } from "./components/users/ResetPwd";
+import UserProfile from "./components/users/profile/UserProfile";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(FindUSer());
   }, []);
+
+
 
   return (
     <div className="App">
@@ -44,11 +48,13 @@ function App(): JSX.Element {
           <Route path="/loading" element={<Loading />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/createCategory" element={<CreateCategories />} />
-          <Route path="/resetForgotPwd" element={<ResetForcePassword />} />
-          <Route path="/editUser/:id" element={<EditUserAccount />} />
+          <Route path="/sessions/recover/:token" element={<ResetForcePassword />} />
+          <Route path="/editUser" element={<EditUserAccount />} />
           <Route path="/productsAdminMode" element={<AdminModeCards />} />
           <Route path="/usersAdminMode" element={<AdminUserMode />} />
-          <Route path="/emailReset" element={<EmailResetPassword/>} />
+          <Route path="/emailReset" element={<EmailResetPassword />} />
+          <Route path="/resetpwd" element={<ResetPwd />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </BrowserRouter>
     </div>

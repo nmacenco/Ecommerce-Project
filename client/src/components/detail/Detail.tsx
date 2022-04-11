@@ -6,7 +6,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Rewies from "./reviews/Review";
 import NewRewie from "./reviews/NewRewie";
 import Loading from "../loading/Loading";
-import {DetailContainer,Box,ImgPriceContainer,Price,DeleteEditButton,ImagesContainer} from "./DetailStyles";
+import { DetailContainer, Box, ImgPriceContainer, Price, DeleteEditButton, ImagesContainer, } from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
@@ -25,10 +25,8 @@ export default function Detail() {
   const product = useSelector((state: State) => state.productDetail);
   const user = useSelector((state: State) => state.user);
   const productsCart = useSelector((state: State) => state.cart.cart);
-  const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const productInCart = productsCart.find((x: Product) => x.id === product.id);
-
-  console.log(userInStorage)
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -59,7 +57,7 @@ export default function Detail() {
       },
     }).then((value) => {
       if (value) {
-        // dispatch(deleteProduct(id, userInStorage.token));
+        dispatch(deleteProduct(id, userInStorage.token));
         navigate("/products");
         swal({
           text: "Product deleted",
@@ -89,8 +87,8 @@ export default function Detail() {
                 <Price>
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
-                  {product.count === product.stock ||
-                  (productInCart && productInCart.count === product.stock) ? (
+
+                  {product.count === product.stock || productInCart && productInCart.count === product.stock ? (
                     <button
                       type="button"
                       className="btn btn-primary btn"
@@ -161,10 +159,8 @@ export default function Detail() {
           </div>
           <div className="tab-pane fade m-2" id="profile">
             {user ? <NewRewie /> : null}
-            {console.log("rewies: ", product.reviews)}
             {product.reviews &&
               product.reviews.map((rew, i) => {
-                // console.log(rew.review)
                 return (
                   <Rewies
                     title={rew.review.title}
@@ -177,10 +173,8 @@ export default function Detail() {
           </div>
           <div className="tab-pane fade m-2" id="questions">
             {user ? <NewQ ProductId={product.id!} /> : null}
-            {/* {console.log('QUESTIONS: ', product.questions)} */}
             {product.questions &&
               product.questions.map((question, i) => {
-                // console.log(question);
                 return (
                   <Question
                     title={question.question.title}
@@ -197,7 +191,4 @@ export default function Detail() {
       </Box>
     </DetailContainer>
   );
-}
-function resetPoducts(): any {
-  throw new Error("Function not implemented.");
 }

@@ -18,6 +18,7 @@ const INITIAL_PRODUCT = {
   questions: [],
   reviews: [],
   count: 0,
+  isActive : true , 
 };
 
 export const productDetailReducer = (
