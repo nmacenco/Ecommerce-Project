@@ -84,14 +84,23 @@ export default function CreateCategories(): JSX.Element {
 
             if (newSubcategory.name.length !== 0) {
                 console.log(newSubcategory)
-                dispatch(createSubcategories(newSubcategory))
-                dispatch(resetSubcategories())
+                setTimeout(()=> {
+
+                    dispatch(createSubcategories(newSubcategory))
+                    dispatch(resetSubcategories())
+                }, 300)
             }
             swal({
                 title: "Create successfully",
-                icon: "success"
-            })
-            navigate('/products')
+                icon: "success",
+                buttons: {
+                    confirm: true,
+                  },
+            }).then((value) => {
+                if (value) {
+                    navigate('/products')
+                }
+              });
         } else {
             swal({
                 title: "Form needs all fields",
