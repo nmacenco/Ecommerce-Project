@@ -60,6 +60,8 @@ export default function Detail() {
     }).then((value) => {
       if (value) {
         dispatch(deleteProduct(id, userInStorage.token));
+        dispatch(resetFilterProducts())
+        dispatch(resetPoducts())
         navigate("/products");
         swal({
           text: "Product deleted",
