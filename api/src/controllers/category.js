@@ -1,4 +1,4 @@
-const { Category } = require("../db");
+const { Category, Subcategory } = require("../db");
 
 const getCategories = async (req, res, next) => {
   try {
@@ -43,4 +43,35 @@ const createCategory = async (req, res, next) => {
   }
 };
 
-module.exports = { getCategories, createCategory };
+const deleteCategory = async (req, res) => {
+  const id = req.params.id;
+  try {
+    let dataSubcategory = await Subcategory.findAll({
+      where: {
+        CategoryId: id,
+      },
+    });
+    if (dataSubcategory.length <=0) {
+      let deleteCategorydb = await Category.destroy({
+        where: {
+          id,
+        },
+      });
+      deleteCategorydb
+        ? res.status(200).send({
+          successMsg: "Category has been deleted.",
+          data: deleteCategorydb,
+        })
+        : res.status(401).send({ errorMsg: "Category doesn't exist" });
+    } else {
+      res.status(401).send({ errorMsg: "Category can't be deleted because has associated Subcategories" });
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+
+
+
+module.exports = { getCategories, createCategory,deleteCategory };

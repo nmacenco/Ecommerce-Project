@@ -223,6 +223,9 @@ const signIn = async (req, res) => {
     if (!isMatch) {
       return res.status(400).send({ errorMsg: "Invalid password." });
     }
+    if (!user.isActive) {
+      return res.status(400).send({ errorMsg: "User is not active." });
+    }
     const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
     await User.update(
       { tokens: sequelize.fn("array_append", sequelize.col("tokens"), token) },
@@ -259,8 +262,6 @@ const logOut = async (req, res) => {
     res.status(500).send({ errorMsg: error.message });
   }
 };
-
-
 
 const passwordReset = async (req, res) => {
   try {
