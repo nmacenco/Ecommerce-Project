@@ -34,12 +34,12 @@ const UserProfile = () => {
             <p className="card-text">Default shipping adress : {userDetail.default_shipping_address}</p>
             <ButtonBox>
 
-            <Link to={''} className="btn btn-primary">
-             Edit password 
-            </Link>
-            <Link to={`/editUser/${userInStorage.token}`} className="btn btn-primary">
-              Edit Profile 
-            </Link>
+              <Link to={'/resetpwd'} className="btn btn-primary">
+                Edit password
+              </Link>
+              <Link to={`/editUser/${userInStorage.token}`} className="btn btn-primary">
+                Edit Profile
+              </Link>
             </ButtonBox>
           </div>
           <div className="card-footer text-muted"></div>

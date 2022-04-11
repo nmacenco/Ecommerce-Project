@@ -21,13 +21,12 @@ const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
   const userState = useSelector((state: State) => state.user);
   const productsCart = useSelector((state: State) => state.cart.cart);
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
   };
-  const route : string  = window.location.pathname
-  console.log(window.location.pathname)
+  const route: string = window.location.pathname
   // const [render , setRender] = useState( '')
   // useEffect(()=> {
   //   console.log('renderiza');
@@ -72,7 +71,7 @@ const Nav = (): JSX.Element => {
             <Route path="/adminMode" element={<Search />} />
           </Routes>
 
-          
+
           {userState && userState.role === "admin" && <AdminDropdown />}
           {userState && userState.role === "user" && <UserDropdown />}
           {!userState && (

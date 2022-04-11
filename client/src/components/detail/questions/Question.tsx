@@ -8,42 +8,41 @@ import Styled from './QuestionStyle';
 
 interface Prop {
     title: string,
-    idA:number,
+    idA: number,
     body: string,
     answer: string,
     user: any
-
 }
 
 
-const Question = ({ title, body, answer, user,idA }: Prop): JSX.Element => {
+const Question = ({ title, body, answer, user, idA }: Prop): JSX.Element => {
 
     const [show, setShow] = useState<boolean>(false);
     const [reply, setReply] = useState<boolean>(false);
     const { id } = useParams<{ id?: string }>();
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
 
 
 
     const SendReply = (event: any) => {
         event.preventDefault();
         console.log(event.target.reply.value)
-        let reply=event.target.reply.value;
+        let reply = event.target.reply.value;
 
-        if(reply){
-            let userId=1;
+        if (reply) {
+            let userId = 1;
             console.log(idA);
 
-            dispatch(createAnswer(idA,Number(id),userId,title,body,reply));
+            dispatch(createAnswer(idA, Number(id), userId, title, body, reply));
             console.log('despatch')
 
-        }   else{
+        } else {
             alert('FALTAN CAMPOS!');
-        }     
+        }
 
     }
 
-    
+
 
 
     return (
@@ -87,8 +86,8 @@ const Question = ({ title, body, answer, user,idA }: Prop): JSX.Element => {
                                         View answers
                                     </aside>
                                     <div className={show ? '' : 'close'}>
-                                        <Answer  res={answer}/>
-                                        
+                                        <Answer res={answer} />
+
                                     </div>
                                 </>
                                 :

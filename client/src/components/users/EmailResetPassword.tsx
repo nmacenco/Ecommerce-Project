@@ -8,60 +8,60 @@ import swal from "sweetalert";
 import { Container, FormContainer1 } from "./EmailResetPasswordStyles";
 import { useNavigate } from "react-router";
 
-export function validate (theEmail : any )  {
+export function validate(theEmail: any) {
   let error = {
-    email : ''
+    email: ''
   };
 
   if (!theEmail.email) {
     error.email = "Email required.";
-  } else if (!/[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+/gm.test(theEmail.email)){
+  } else if (!/[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+/gm.test(theEmail.email)) {
     error.email = "It's not a valid email.";
   }
 
 
-  return error ;  
+  return error;
 }
 
 export default function EmailResetPassword(): JSX.Element {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [showError , setShowError] = useState(false) ;
+  const [showError, setShowError] = useState(false);
   const [error, setError] = useState({
-    email : 'Empty required'
+    email: 'Empty required'
   })
-  const [theEmail , setTheEmail ] = useState({
-    email :  ''
+  const [theEmail, setTheEmail] = useState({
+    email: ''
   })
-  function handleOnBlur(e: any ) {
+  function handleOnBlur(e: any) {
     console.log(e.target.name);
-    
+
     setError(
       validate({
-        ...theEmail, 
+        ...theEmail,
         [e.target.name]: e.target.value
       })
     );
   }
-  function handleOnChange (e : any ){
+  function handleOnChange(e: any) {
     e.preventDefault()
     setTheEmail({
       email: e.target.value
     })
 
   }
-  
+
   console.log(Object.keys(error).length);
-  function handleSubmit (e : any ){
+  function handleSubmit(e: any) {
     setShowError(true)
-    if( error.email.length === 0 ) {
+    if (error.email.length === 0) {
       dispatch(forgotPasswordReset(theEmail))
       swal({
         title: "Email sended, check your inbox",
         icon: "success"
       })
       navigate("/products")
-      
+
     } else {
       e.preventDefault()
       swal({
@@ -89,21 +89,21 @@ export default function EmailResetPassword(): JSX.Element {
                 // value={}
                 placeholder="Type your email"
                 onChange={(e) => handleOnChange(e)}
-                onBlur = {(e) => handleOnBlur(e) }
+                onBlur={(e) => handleOnBlur(e)}
               />
               <p className="text-danger">
-                { showError  ? error.email : "⠀"}
+                {showError ? error.email : "⠀"}
               </p>
             </div>
 
             <div className="text-center">
-              <button onClick={(e)=> {handleSubmit(e)}} type="submit" className="btn btn-outline-primary mt-5 ">
+              <button onClick={(e) => { handleSubmit(e) }} type="submit" className="btn btn-outline-primary mt-5 ">
                 Submit
               </button>
             </div>
-          </form>
-        </div>
-      </FormContainer1>
-    </Container>
+          </form >
+        </div >
+      </FormContainer1 >
+    </Container >
   );
 }

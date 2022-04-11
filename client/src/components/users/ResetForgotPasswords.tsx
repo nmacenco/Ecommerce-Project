@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router';
 import swal from 'sweetalert'
-import { resetPassword } from '../../redux/actions/user';
+import { forgotPasswordReset, resetForgotPassword, resetPassword } from '../../redux/actions/user';
 import { FormContainer } from '../form/FormCreateStyles'
 
- export interface RESET_PASSWORD {
+export interface RESET_PASSWORD {
     password: string;
     passwordConfirm: string;
 }
@@ -13,7 +13,7 @@ import { FormContainer } from '../form/FormCreateStyles'
 export default function ResetForcePassword(): JSX.Element {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {token} = useParams<string>()
+    const { token } = useParams<string>()
     const [reset, setReset] = useState<RESET_PASSWORD>({
         password: "",
         passwordConfirm: ""
@@ -45,8 +45,8 @@ export default function ResetForcePassword(): JSX.Element {
             handleShow(reset.password, reset.passwordConfirm)
             if (reset.password === reset.passwordConfirm && reset.password.length >= 8 && reset.password.length <= 20) {
                 console.log(token);
-                
-                dispatch(resetPassword(token , reset ))
+
+                dispatch(resetForgotPassword(token, reset))
                 swal({
                     title: "Reset password",
                     icon: "success"

@@ -18,16 +18,16 @@ interface props {
   image: string;
   price: number;
   id?: number;
-  isActive  : boolean ; 
+  isActive: boolean;
   AdmOrders: (typeorder: string) => void;
   page: (typeorder: number) => void;
 }
 
-const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive  }: props) => {
+const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: props) => {
   const dispatch = useDispatch()
   const stringId = String(id)
   const navigate = useNavigate()
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const allProducts = useSelector((state: State) => state.products.products)
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
@@ -43,7 +43,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive  }: p
     }).then((value) => {
 
       if (value) {
-        dispatch(deleteProduct(id , userInStorage.token));
+        dispatch(deleteProduct(stringId, userInStorage.token));
         let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
         dispatch(chargeFilter(deleted))
         page(1)
@@ -57,7 +57,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive  }: p
 
   }
 
-  
+
   function handleClickEdit(e: React.MouseEvent<HTMLButtonElement>): void {
     dispatch(getProductDetail(stringId));
     setTimeout(function () {
@@ -77,7 +77,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive  }: p
         </th>
         <td >
           {name.length > 30 ? (
-            <p ><Link className="text-decoration-none"to={`/detail/${id}`}>{name.slice(0, 30)}...</Link></p>
+            <p ><Link className="text-decoration-none" to={`/detail/${id}`}>{name.slice(0, 30)}...</Link></p>
           ) : (
             <p className="card-title m-2"><Link to={`s/detail/${id}`}>{name}</Link></p>
           )}
@@ -85,9 +85,9 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive  }: p
         <td > $ {price} </td>
         {
           isActive ?
-          <td > Active </td>
-          :
-          <td > Not Active </td>
+            <td > Active </td>
+            :
+            <td > Not Active </td>
 
         }
         <td >
@@ -100,7 +100,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive  }: p
               >
                 <img src={TrashIMG} alt="delete"></img>
               </button>
-            :
+              :
               <button
                 disabled
                 onClick={(e) => { deleteHandler(e) }}
@@ -114,7 +114,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive  }: p
         </td>
         <td >
           <button onClick={(e) => handleClickEdit(e)} type="button" className="btn btn-warning btn-sm">
-          <img src={EditIMG} alt="edit"></img>
+            <img src={EditIMG} alt="edit"></img>
           </button>
         </td>
       </tr>
