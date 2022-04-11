@@ -151,7 +151,10 @@ const createOrder = async (req, res) => {
 
 //Add order detail, delete order detail or modify order detail (use aux functions)
 const updateOrder = async (req, res) => {
+  const id = req.userID
   try {
+
+    
   } catch (error) {}
 };
 
