@@ -32,7 +32,6 @@ export default function EmailResetPassword(): JSX.Element {
     setTheEmail({
       email: e.target.value
     })
-
   }
   
   function handleSubmit (){

@@ -47,8 +47,6 @@ const Rewies = ({texto,stars,title}:Prop): JSX.Element => {
                 <RewiewstarStatic >
 
                     {starsRating.map((star, i) => {
-                        // console.log(star)
-                        // console.log('actual: ',i,' stars prop:  ',stars,'  countStar:  ',countStars);
                         let classe = (stars <= 0 ) ? 'dark-star' : 'rating';
                         stars--;
 

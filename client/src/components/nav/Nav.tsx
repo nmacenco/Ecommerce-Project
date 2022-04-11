@@ -5,42 +5,26 @@ import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Routes, Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
-import { LogoutUser } from "../../redux/actions/user";
-import {
-  getProducts,
-  productNotFound,
-  resetPoducts,
-} from "../../redux/actions/products";
+import {getProducts,productNotFound,resetPoducts} from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
-import { Product } from "../../redux/interface";
 import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.user);
-  const productsCart = useSelector((state: State) => state.cart.cart);
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
-  const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
-    event.preventDefault();
-    dispatch(LogoutUser());
-  };
-
-  // const [render , setRender] = useState( '')
-  // useEffect(()=> {
-  //   console.log('renderiza');
-  //   user && setRender( user.email + render)
-  // }, [user])
+  const userState = useSelector((state: State) => state.user);
+  const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
 
   function handleClickProducts() {
     dispatch(productNotFound(false));
     dispatch(resetFilterProducts());
     dispatch(resetPoducts());
-    // dispatch(resetPoducts())
     dispatch(deleteProductDetail());
     dispatch(getProducts());
+    // dispatch(resetPoducts())
   }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
       <div className="flex-grow-1 d-lg-flex">
@@ -71,28 +55,16 @@ const Nav = (): JSX.Element => {
             <Route path="/adminMode" element={<Search />} />
           </Routes>
 
-          {
-            userInStorage && userInStorage.role === 'admin' ?
-              <AdminDropdown />
-            : userInStorage && userInStorage.role === 'user' ?
-
-            <UserDropdown />
-            :
-            !user && (
-              <Link
-                to="/login"
-                className="nav-item btn btn-secondary my-2 link-Router"
-              >
-                Login
-              </Link>
-            )
- 
-          }
-
-          {/* Dependiendo de que TIPO de usuario sea: */}
-
-          {/* Una vez iniciada la sesion este boton no deberia aparecer */}
-
+          {userState && userState.role === "admin" && <AdminDropdown />}
+          {userState && userState.role === "user" && <UserDropdown />}
+          {!userState && (
+            <Link
+              to="/login"
+              className="nav-item btn btn-secondary my-2 link-Router"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
 

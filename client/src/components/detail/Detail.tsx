@@ -1,16 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProductDetail,
-  deleteProductDetail,
-} from "../../redux/actions/productDetail";
+import {getProductDetail,deleteProductDetail} from "../../redux/actions/productDetail";
 import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { deleteProduct } from "../../redux/actions/admin";
 import Rewies from "./reviews/Review";
-import NewRewie from './reviews/NewRewie';
+import NewRewie from "./reviews/NewRewie";
 import Loading from "../loading/Loading";
-import {  DetailContainer, Box,  ImgPriceContainer,  Price,  DeleteEditButton,  ImagesContainer,} from "./DetailStyles";
+import {DetailContainer,Box,ImgPriceContainer,Price,DeleteEditButton,ImagesContainer} from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
@@ -18,9 +14,9 @@ import NewQ from "./questions/NewQ";
 import { addProductCart } from "../../redux/actions/cart";
 import { Product } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
-import TrashIMG from "../../icons/white-trash.png"
-import EditIMG from "../../icons/edit.png"
-
+import TrashIMG from "../../icons/white-trash.png";
+import EditIMG from "../../icons/edit.png";
+import { deleteProduct } from "../../redux/actions/admin";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -29,12 +25,11 @@ export default function Detail() {
   const product = useSelector((state: State) => state.productDetail);
   const user = useSelector((state: State) => state.user);
   const productsCart = useSelector((state: State) => state.cart.cart);
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
   const productInCart = productsCart.find((x: Product) => x.id === product.id);
 
+  console.log(userInStorage)
 
-  
-  
   useEffect(() => {
     dispatch(getProductDetail(id));
     return () => {
@@ -66,7 +61,6 @@ export default function Detail() {
       if (value) {
         // dispatch(deleteProduct(id, userInStorage.token));
         navigate("/products");
-        // dispatch(resetPoducts())
         swal({
           text: "Product deleted",
           icon: "success",
@@ -95,8 +89,8 @@ export default function Detail() {
                 <Price>
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
-
-                  {product.count === product.stock || productInCart && productInCart.count === product.stock? (
+                  {product.count === product.stock ||
+                  (productInCart && productInCart.count === product.stock) ? (
                     <button
                       type="button"
                       className="btn btn-primary btn"
@@ -113,25 +107,27 @@ export default function Detail() {
                       Add to cart
                     </button>
                   )}
-
-                  {
-                    userInStorage && userInStorage.role === 'admin' ?
-                  <DeleteEditButton>
-                    <button
-                      onClick={deleteHandler}
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                    >
-                      <img src={TrashIMG} alt="delete"></img>
-                    </button>
-                    <Link to={`/editProduct/${product.id}`}>
-                      <button type="button" className="btn btn-warning btn-sm">
-                      <img src={EditIMG} alt="edit"></img>
+                  {userInStorage && userInStorage.role === "admin" ? (
+                    <DeleteEditButton>
+                      <button
+                        onClick={deleteHandler}
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                      >
+                        <img src={TrashIMG} alt="delete"></img>
                       </button>
-                    </Link>
-                  </DeleteEditButton> :
-                  <div></div>
-                  }
+                      <Link to={`/editProduct/${product.id}`}>
+                        <button
+                          type="button"
+                          className="btn btn-warning btn-sm"
+                        >
+                          <img src={EditIMG} alt="edit"></img>
+                        </button>
+                      </Link>
+                    </DeleteEditButton>
+                  ) : (
+                    <div></div>
+                  )}
                 </Price>
               </ImgPriceContainer>
             </div>
@@ -164,33 +160,38 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            {
-              user ?
-                <NewRewie/>
-                : null
-            }
-            {console.log('rewies: ', product.reviews)}
-            {
-              product.reviews && product.reviews.map((rew,i )=> {
+            {user ? <NewRewie /> : null}
+            {console.log("rewies: ", product.reviews)}
+            {product.reviews &&
+              product.reviews.map((rew, i) => {
                 // console.log(rew.review)
                 return (
-                  <Rewies title={rew.review.title} stars={rew.review.stars} key={i} texto={rew.review.description}/>
-                )
-              })
-            }
+                  <Rewies
+                    title={rew.review.title}
+                    stars={rew.review.stars}
+                    key={i}
+                    texto={rew.review.description}
+                  />
+                );
+              })}
           </div>
           <div className="tab-pane fade m-2" id="questions">
             {user ? <NewQ ProductId={product.id!} /> : null}
             {/* {console.log('QUESTIONS: ', product.questions)} */}
-            {
-              product.questions && product.questions.map((question, i) => {
+            {product.questions &&
+              product.questions.map((question, i) => {
                 // console.log(question);
                 return (
-                  <Question title={question.question.title} body={question.question.description} key={i} answer={question.question.answer} user={user} idA={question.question.id}/>
-                )
-
-              })
-            }
+                  <Question
+                    title={question.question.title}
+                    body={question.question.description}
+                    key={i}
+                    answer={question.question.answer}
+                    user={user}
+                    idA={question.question.id}
+                  />
+                );
+              })}
           </div>
         </div>
       </Box>

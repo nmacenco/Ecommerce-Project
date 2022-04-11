@@ -1,12 +1,14 @@
 import React from "react";
 import { DropdownMenu } from "./UserDropdownStyle";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../../redux/actions/user";
+import { State } from "../../../redux/reducers";
 
 const UserDropdown = () => {
   const dispatch = useDispatch()
-  
+  const userState = useSelector((state: State) => state.user);
+
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
@@ -20,8 +22,7 @@ const UserDropdown = () => {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        {/* Aca deberia ir el nombre del usuario */}
-        User
+        {userState && userState.name}
       </a>
       <DropdownMenu className="dropdown-menu">
         <Link to={"/ordersHistory"} className="dropdown-item">

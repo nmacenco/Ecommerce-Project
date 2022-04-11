@@ -59,8 +59,6 @@ export enum TYPES_COUNTRIES {
   GET_COUNTRIES = "GET_COUNTRIES"
 }
 
-
-
 //=======================
 // Objects Interfaces
 
@@ -74,6 +72,7 @@ export interface User {
   password: string;
   email: string;
   token: string;
+  role?: string;
 }
 
 export interface Users {

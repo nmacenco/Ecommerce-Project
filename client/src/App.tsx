@@ -24,7 +24,6 @@ function App(): JSX.Element {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(FindUSer());
-    // console.log("find user!");
   }, []);
 
   return (
