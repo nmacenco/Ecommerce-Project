@@ -84,11 +84,17 @@ export default function FromCreate(): JSX.Element {
       dispatch(postProduct(product , userInStorage.token));
       swal({
         title: "Product created successfully",
-        icon: "success"
+        icon: "success",
+        buttons: {
+          confirm: true,
+        },
+      }).then((value) => {
+        if (value) {
+          dispatch(resetFilterProducts())
+          dispatch(resetPoducts())
+          navigate("/products")
+        }
       })
-      dispatch(resetFilterProducts())
-      dispatch(resetPoducts())
-      navigate("/products")
     } else {
       swal({
         title: "Complete the form properly.",
