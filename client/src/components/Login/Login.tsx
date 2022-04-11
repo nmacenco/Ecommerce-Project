@@ -85,12 +85,14 @@ const Login = (): JSX.Element => {
                 {error.passUser && <b className='invalid-feedback'>{error.passUser}</b>}
             </div>
 
-            <div className='google' onClick={SinInGoogle}>
+            <div className='google' >
                 <div>
                     <img src='https://freesvg.org/img/1534129544.png' />
                 </div>
                 <span>
-                    Continue with Google
+                    <a href='http://localhost:3001/api//signInWithGoogle' target='_blank'>
+                        Continue with Google
+                    </a>
                 </span>
             </div>
             <div className='google' onClick={forgotPassword}>

@@ -61,7 +61,7 @@ const Question = ({ title, body, answer, user, idA }: Prop): JSX.Element => {
                     </div>
                     {console.log(user && !answer)}
                     {
-                        user && !answer ?
+                        user && user.role !== 'user' && !answer ?
                             <>
                                 <button className='btn-reply' onClick={() => setReply(!reply)}>
                                     Reply
