@@ -225,7 +225,6 @@ const updateOrderDetail = async (id, quantity, OrderId, ProductId, amount) => {
           OrderId,
           ProductId,
         });
-        return { successMsg: "updated user", data: neworderDetail };
       }
     }
   } catch (error) {
