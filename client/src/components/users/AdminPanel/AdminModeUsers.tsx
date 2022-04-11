@@ -7,14 +7,11 @@ import { Users } from "../../../redux/interface";
 import UserDetail from "./userDetail/UserDetail";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
-
-
 const AdminUserMode = (): JSX.Element => {
   const dispatch = useDispatch()
   const users = useSelector((state: State) => state.adminUsers.users);
   const [Admorders, setAdmOrders] = useState<string>("");
   const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
-  // console.log(typeof userInStorage.token);
 
   useEffect(() => {
     setTimeout(() => {
@@ -32,8 +29,8 @@ const AdminUserMode = (): JSX.Element => {
   return (
     <AdminUsersContainer>
       <ListContainer >
-        <h1>User Controller</h1>
-        <div className="" >
+        <h3>User Controller</h3>
+        <div className="mt-4" >
           <table className="table table-hover ">
             <thead>
               <tr>

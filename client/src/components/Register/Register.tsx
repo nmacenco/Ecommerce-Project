@@ -47,7 +47,6 @@ const Register=():JSX.Element=>{
     const FormChange=(event:any)=>{
         event.preventDefault();
         const errores=validator(error,event.target);
-        // console.log('errores: ',errores);
         setInputs({
             ...inputs,
             [event.target.name]:event.target.value
@@ -61,13 +60,11 @@ const Register=():JSX.Element=>{
 
     const RegisterFetch=(event:any)=>{
         event.preventDefault();
-
         const res= validateForms(error,inputs);
 
         if(res){
             return alert(res);
         }
-        console.log(inputs);
         const newUser={
             name:inputs.name,
             surname:inputs.lastname,
@@ -76,8 +73,6 @@ const Register=():JSX.Element=>{
             billing_address:inputs.billing_address,
             default_shipping_address:inputs.default_shipping_address,
             CountryId:Number(inputs.countryId),
-            // role:'user',
-            // isActive:true
         }
         console.log('USUARIO: ',user);
         if(!user){
@@ -85,14 +80,10 @@ const Register=():JSX.Element=>{
                 navigate('/products')
             }));
         }
-        /**
-         * Request
-         */
 
     }
 
     const SinUpGoogle = () => {
-        console.log('Login with Google');
         dispatch(IdentGoogle('/signInWithGoogle',()=>{
             navigate('/products');
         }));
@@ -107,7 +98,6 @@ const Register=():JSX.Element=>{
                     <input type='text' placeholder='Name...' name='name' onChange={FormChange} className={checkError(error.name)}/>
                     {error.name && <b className='invalid-feedback'>{error.name}</b>}
                 </div>
-                {/* <br/> */}
                 <div>
                     <input type='text' placeholder='LastName...' name='lastname' onChange={FormChange} className={checkError(error.lastname)}/>
                     {error.lastname && <b className='invalid-feedback'>{error.lastname}</b>}
@@ -124,7 +114,6 @@ const Register=():JSX.Element=>{
                     <input type='email' placeholder='Email...' name='email' onChange={FormChange} className={checkError(error.email)} />
                     {error.email && <b className='invalid-feedback'>{error.email}</b>}
                 </div>
-                {/* <br /> */}
                 <div>
                     <input type='password' placeholder='Password...' name='passUser' onChange={FormChange} className={checkError(error.passUser)} />
                     {error.passUser && <b className='invalid-feedback'>{error.passUser}</b>}
@@ -150,11 +139,11 @@ const Register=():JSX.Element=>{
             <article>
                 {
                     validateForms(error,inputs).length ?
-                        <button className='btn btn-success button-links link-Router' disabled>
+                        <button className='btn btn-primary button-links link-Router' disabled>
                             Submit
                         </button>
                         :
-                        <button className='btn btn-success button-links link-Router' onClick={RegisterFetch}>
+                        <button className='btn btn-primary button-links link-Router' onClick={RegisterFetch}>
                             Submit
                         </button>
                 }
@@ -164,7 +153,6 @@ const Register=():JSX.Element=>{
             </article>
        </Form> 
     )
-
 }
 
 export default Register;

@@ -1,14 +1,15 @@
 import React from "react";
 import { DropdownMenu } from "./UserDropdownStyle";
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../../../redux/reducers";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { getSingleUser, LogoutUser } from "../../../redux/actions/user";
-import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const UserDropdown = () => {
   const dispatch = useDispatch()
-  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
+  const userState = useSelector((state: State) => state.user);
   const navigate = useNavigate()
+
   function handleClickProfile () {
     // dispatch(getSingleUser(userInStorage.token))
   }
@@ -18,6 +19,7 @@ const UserDropdown = () => {
     navigate('/products')
     dispatch(LogoutUser());
   };
+  
   return (
     <ul className="nav-item dropdown navbar-nav">
       <a
@@ -27,8 +29,7 @@ const UserDropdown = () => {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        {/* Aca deberia ir el nombre del usuario */}
-        User
+        {userState && userState.name}
       </a>
       <DropdownMenu className="dropdown-menu">
         <Link onClick={()=> {handleClickProfile()}} to={"/profile"} className="dropdown-item">

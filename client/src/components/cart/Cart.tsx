@@ -51,21 +51,15 @@ const Cart = (): JSX.Element => {
               />
             ))}
           </div>
-          <div className="d-flex justify-content-between mt-4 align-items-center">
-            <h3>
-              total: $
-              {productsCart.reduce(
-                (a: number, product: Product) =>
-                  a + product.price * product.count,
-                0
-              )}{" "}
-              ({" "}
-              {productsCart.reduce(
-                (a: number, product: Product) => a + product.count,
-                0
-              )}{" "}
-              products )
-            </h3>
+          <div className="d-flex flex-column flex-md-row justify-content-between mt-4 align-items-center mb-5">
+            <div className="d-flex flex-column">
+              <h4 className="text-center">
+                total: ${productsCart.reduce((a: number, product: Product) =>a + product.price * product.count,0)}
+              </h4>
+              <h4 className="text-center mb-4 mb-md-0">
+                ({productsCart.reduce((a: number, product: Product) => a + product.count,0)} products)
+              </h4>
+            </div>
             <div>
               <button className="btn btn-primary">Confirm order</button>
             </div>

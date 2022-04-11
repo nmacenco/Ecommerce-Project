@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch } from "redux"
+import { Dispatch } from "redux";
 import { EDIT_USER } from "../../components/users/EditUserAccount";
 import { RESET_PASSWORD } from "../../components/users/ResetForgotPasswords";
 import { PWD } from "../../components/users/ResetPwd";
@@ -55,11 +55,9 @@ export const CreateUser = (user: any, cb: any) => {
 
         }
     }
-}
-
+  };
 
 export const GetUSer = (email: string, pass: string, cb: any) => {
-
     return async (dispatch: Dispatch) => {
 
         try {
@@ -98,76 +96,67 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
                 },
             })
         }
-
     }
+  };
 
-}
 
 export const FindUSer = () => {
+  const user = window.localStorage.getItem(USER_STORAGE);
+  const userExist = user ? JSON.parse(user) : null;
 
-    const user = window.localStorage.getItem(USER_STORAGE);
-    const userExist = user ? JSON.parse(user) : null;
-    // console.log(userExist);
-
-    return {
-        type: TYPES_USER.FIND_USER,
-        payload: userExist
-    }
-}
+  return {
+    type: TYPES_USER.FIND_USER,
+    payload: userExist,
+  };
+};
 
 export const LogoutUser = () => {
+  console.log(window.localStorage.getItem(USER_STORAGE));
+  window.localStorage.removeItem(USER_STORAGE);
 
-    // console.log(window.localStorage.getItem(USER_STORAGE));
-    window.localStorage.removeItem(USER_STORAGE);
-
-    return {
-        type: TYPES_USER.LOGOUT_USER,
-        payload: null,
-    };
-}
+  return {
+    type: TYPES_USER.LOGOUT_USER,
+    payload: null,
+  };
+};
 
 let url = "/signInWithGoogle";
 export const IdentGoogle = (url: string, cb: any) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.get(URL_USER + url);
+      
+      if (response.data.errorMsg) {
+        throw new Error("Error in google: ", response.data.errorMsg);
+      }
 
-    return async (dispatch: Dispatch) => {
-        try {
-            const response = await axios.get(URL_USER + url);
+      const TOKEN = response.headers["auth-token"];
+      
+      dispatch({
+        type: TYPES_USER.GET_USER,
+        payload: response.data.data,
+      });
 
-            if (response.data.errorMsg) {
-                throw new Error("Error in google: ", response.data.errorMsg);
-            }
-
-            const TOKEN = response.headers["auth-token"];
-            // console.log('TOKEN HEADERS: ', TOKEN);
-            // console.log('Data: ', response.data);
-
-            dispatch({
-                type: TYPES_USER.GET_USER,
-                payload: response.data.data
-            })
-
-            cb()//ejecutamos el callback
-
-        } catch (error) {
-            console.log("Error en sig in google: ", error);
-        }
+      cb(); //ejecutamos el callback
+    } catch (error) {
+      console.log("Error en sign in google: ", error);
     }
-}
+  };
+};
 
 export const updateUser = (token: string, editUser: any) => {
-    try {
-        // console.log(editUser)
-        return async function (dispatch: Dispatch) {
-            await axios.put(URL_USER + "/auth/users", editUser, {
-                headers: {
-                    "auth-token": token
-                },
-            })
-        }
-    } catch (error) {
-        console.log("Error updating user", error)
-    }
-}
+  try {
+    return async function (dispatch: Dispatch) {
+      await axios.put(URL_USER + "/auth/users", editUser, {
+        headers: {
+          "auth-token": token,
+        },
+      });
+    };
+  } catch (error) {
+    console.log("Error updating user", error);
+  }
+};
 
 export const getSingleUser = (token: string) => {
     try {
@@ -177,7 +166,6 @@ export const getSingleUser = (token: string) => {
                     "auth-token": token
                 }
             })
-            // console.log(user.data.data);
 
             return dispatch({
                 type: TYPES_USER.GET_SINGLE_USER,
@@ -205,7 +193,6 @@ export const resetPassword = (password: PWD, token: string | any) => {
 }
 
 export const forgotPasswordReset = (email: any) => {
-    // console.log(UserToUpdate);
     try {
         return async (dispatch: Dispatch) => {
             await axios.post(`${URLRESET}`, email);
@@ -216,8 +203,6 @@ export const forgotPasswordReset = (email: any) => {
 };
 
 export const resetForgotPassword = (id: any, password: RESET_PASSWORD) => {
-    // console.log(UserToUpdate);
-
     try {
         return async (dispatch: Dispatch) => {
             await axios.put(`${URLRESET2}/${id}`, password);

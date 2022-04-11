@@ -61,9 +61,7 @@ const newRewie=():JSX.Element=>{
 
     const handleStar = (event: any) => {
         console.log(event.target.id);
-        // console.log(event.target.htmlFor);
         let star = returnStar(event.target.htmlFor);
-        // star = star[star.length - 1];
         setData(star);
     }
 
@@ -71,14 +69,9 @@ const newRewie=():JSX.Element=>{
     return(
         <RewiewContainer className="card border-secondary mb-3" >
             <RewieHeader className="card-header">
-                <div className='d-img-rewiew'>
-                    <div>
-                        <img src='https://www.iconninja.com/files/648/510/436/avatar-face-icon.png' />
-                    </div>
-                    <div>
-                        {(user && user.name) ? user.name : 'nout found'}
-                    </div>
-                </div>
+                <h5>
+                        {(user && user.name) ? user.name : 'not found'}
+                </h5>
                 <Rewiewstars >
 
                     <input type='radio' name='star' id='star1' /><label htmlFor='star1' onClick={handleStar}>
@@ -96,7 +89,7 @@ const newRewie=():JSX.Element=>{
             </RewieHeader>
             <FormRewie className="card-body" onSubmit={SendRewie}>
                 <input type='text' placeholder='Title...' name='title'/>
-                <textarea placeholder='Rewie...' name='body'>
+                <textarea placeholder='Review...' name='body'>
 
                 </textarea>
                 <div className='buttons'>
