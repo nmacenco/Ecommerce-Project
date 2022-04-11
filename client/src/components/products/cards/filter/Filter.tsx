@@ -40,7 +40,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
           <option value="des-name">Z - A</option>
         </Select>
 
-        <p className="ms-auto m-3">{!filteredProducts.length ? '0' : filteredProducts.map(product => {
+        <p className="ms-auto m-3">{!filteredProducts.length ? '' : filteredProducts.map(product => {
           if (product.isActive) { counter.push(product.id) }
         })} {counter.length}  products </p>
       </div>
