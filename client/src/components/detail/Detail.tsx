@@ -158,7 +158,7 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            {user ? <NewRewie /> : null}
+            {user && user.role !== 'user' ? <NewRewie /> : null}
             {product.reviews &&
               product.reviews.map((rew, i) => {
                 // console.log(rew.review);

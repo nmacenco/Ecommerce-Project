@@ -7,11 +7,11 @@ import { FormRewie } from './NewR';
 import { RewieHeader, RewiewContainer, Rewiewstars } from './ReviewStyle';
 
 
-function returnStar(id:string){
+function returnStar(id: string) {
 
-    let star=id[id.length-1];
+    let star = id[id.length - 1];
     // console.log(star);
-    switch(star){
+    switch (star) {
         case '1':
             return 5
         case '2':
@@ -27,11 +27,11 @@ function returnStar(id:string){
 }
 
 
-const newRewie=():JSX.Element=>{
+const newRewie = (): JSX.Element => {
 
-    const user=useSelector((state:State)=>state.user);
+    const user = useSelector((state: State) => state.user);
     const [data, setData] = useState<number>();
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
     const { id } = useParams<{ id?: string }>();
 
 
@@ -39,16 +39,16 @@ const newRewie=():JSX.Element=>{
     const SendRewie = (event: any) => {
         event.preventDefault();
         console.log('send del rewie');
-        let title=event.target.title.value;
-        let body=event.target.body.value;
+        let title = event.target.title.value;
+        let body = event.target.body.value;
 
-        if(!title || !body || !data){
-            alert('faltan datos weon');
-        }else{
-            console.log({title,body,data});
-            let userId=1;
-            
-            dispatch(createRewie(title,body,Number(id),userId,data));
+        if (!title || !body || !data) {
+            alert('faltan datos');
+        } else {
+            console.log({ title, body, data });
+            let userId = 1;
+
+            dispatch(createRewie(title, body, Number(id), userId, data));
             console.log('se depacho la rewie');
         }
     }
@@ -66,11 +66,11 @@ const newRewie=():JSX.Element=>{
     }
 
 
-    return(
+    return (
         <RewiewContainer className="card border-secondary mb-3" >
             <RewieHeader className="card-header">
                 <h5>
-                        {(user && user.name) ? user.name : 'not found'}
+                    {(user && user.name) ? user.name : 'not found'}
                 </h5>
                 <Rewiewstars >
 
@@ -88,7 +88,7 @@ const newRewie=():JSX.Element=>{
                 </Rewiewstars>
             </RewieHeader>
             <FormRewie className="card-body" onSubmit={SendRewie}>
-                <input type='text' placeholder='Title...' name='title'/>
+                <input type='text' placeholder='Title...' name='title' />
                 <textarea placeholder='Review...' name='body'>
 
                 </textarea>
