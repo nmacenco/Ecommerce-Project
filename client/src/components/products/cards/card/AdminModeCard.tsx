@@ -3,7 +3,7 @@ import { AdminProductIMG } from "./AdminModeCardStyles";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../../../redux/actions/admin";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../../../../redux/actions/products";
+import { getProducts, resetPoducts } from "../../../../redux/actions/products";
 import { ORDER } from "../Cards";
 import { chargeFilter, resetFilterProducts } from "../../../../redux/actions/filterByCategory";
 import { getProductDetail } from "../../../../redux/actions/productDetail";
@@ -44,6 +44,8 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
 
       if (value) {
         dispatch(deleteProduct(stringId, userInStorage.token));
+        dispatch(resetFilterProducts())
+        dispatch(resetPoducts())
         let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
         dispatch(chargeFilter(deleted))
         page(1)

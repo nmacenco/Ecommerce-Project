@@ -20,6 +20,7 @@ import { Product } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import TrashIMG from "../../icons/white-trash.png"
 import EditIMG from "../../icons/edit.png"
+import { resetPoducts } from "../../redux/actions/products";
 
 
 export default function Detail() {
@@ -40,6 +41,7 @@ export default function Detail() {
     return () => {
       dispatch(deleteProductDetail());
       dispatch(resetFilterProducts());
+      dispatch(resetPoducts());
     };
   }, []);
 
