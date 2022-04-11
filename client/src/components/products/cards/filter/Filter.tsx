@@ -10,7 +10,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const allProducts = useSelector((state: State) => state.products.products);
   const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
-  let counter : any[] = [] 
+  let counter: any[] = []
   useEffect(() => {
     dispatch(getProducts());
   }, []);
@@ -40,8 +40,8 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
           <option value="des-name">Z - A</option>
         </Select>
 
-        <p className="ms-auto m-3">{!filteredProducts.length ? '0' : filteredProducts.map( product => { 
-          if(product.isActive){ counter.push(product.id)}
+        <p className="ms-auto m-3">{!filteredProducts.length ? '' : filteredProducts.map(product => {
+          if (product.isActive) { counter.push(product.id) }
         })} {counter.length}  products </p>
       </div>
     </div>
