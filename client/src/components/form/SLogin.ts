@@ -34,6 +34,7 @@ export const LogForm = styled.form`
   }
   .div-data {
     display: flex;
+    align-items: center;
     div:nth-child(3) {
       margin-left: 10px;
     }
@@ -98,19 +99,18 @@ export const Content = styled.div`
       }
     }
   }
-  .google:active{
+  .google:active {
     box-shadow: 0 0 0 0.25rem rgb(206 198 198 / 25%);
   }
 
-  .form-log{
+  .form-log {
     width: 50%;
     margin: 10px 25%;
   }
-
 `;
 
 export const Forgot = styled.div`
-&:hover {
-  font-color: red;
-}
-`
+  &:hover {
+    color: red;
+  }
+`;
