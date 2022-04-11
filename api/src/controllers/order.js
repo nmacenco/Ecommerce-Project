@@ -105,19 +105,19 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 
 const createOrder = async (req, res) => {
+  const id = req.userID;
   try {
-    let { email_address, UserId, allProductsOrder } = req.body;
-    let newOrderDetail;
-    if (!email_address || !UserId) {
+    let { allProductsOrder } = req.body;
+    if (!id) {
       res.status(402).send({ errorMsg: "Missing data." });
     } else {
       let singleOrder = await Order.findOne({
         where: {
-          UserId,
+          id,
           status: "PENDING",
         },
       });
-      newOrderCreated = singleOrder;
+      let newOrderCreated = singleOrder;
       if (!newOrderCreated) {
         let newOrder = await Order.create({
           email_address,
@@ -126,11 +126,6 @@ const createOrder = async (req, res) => {
         newOrderCreated = newOrder;
       }
       if (allProductsOrder) {
-        let deletedOrderDetail = await Order_detail.destroy({
-          where: {
-            OrderId: newOrderCreated.id,
-          },
-        });
         for (let index = 0; index < allProductsOrder.length; index++) {
           createOrderDetail(
             newOrderCreated.id,
