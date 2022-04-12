@@ -56,6 +56,10 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: true,
     },
+    activationToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     needsPasswordReset: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -64,6 +68,6 @@ module.exports = (sequelize) => {
     passwordResetToken: {
       type: DataTypes.STRING,
       allowNull: true,
-    }
+    },
   });
 };

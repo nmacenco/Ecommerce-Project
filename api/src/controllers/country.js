@@ -15,7 +15,7 @@ const getCountries = async (req, res, next) => {
     });
     res.status(200).send({ successMsg: "Here are your countries.", countries });
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 const setCountries = async (req, res) => {
@@ -38,7 +38,7 @@ const setCountries = async (req, res) => {
         : res.status(400).send({ errorMsg: "Country already exists." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
