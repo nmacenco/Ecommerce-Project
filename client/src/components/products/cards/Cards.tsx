@@ -152,11 +152,10 @@ const Cards = (): JSX.Element => {
                 </> : (
                   <NotFound eliminateFilters={eliminateFilters}></NotFound>
                 )
-
           }
         </CardsContainer>
       </div>
     </ProductsContainer>
-  );
+  )
 };
 export default Cards;
