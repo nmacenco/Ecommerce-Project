@@ -17,12 +17,6 @@ const Nav = (): JSX.Element => {
   const page = useSelector((state: State) => state.page);
   // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
 
-  // no borrar pendiente para ver si podemos sacar el boton  login de la pagina de login 
-  // const route : string  = window.location.pathname ;
-  // console.log(route !== '/login');
-  // console.log(route);
-  
-
   function handleClickLogIn() {
     dispatch(setPage(0))
   }
