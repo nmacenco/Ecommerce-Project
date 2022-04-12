@@ -46,7 +46,8 @@ const getOrders = async (req, res) => {
 };
 
 const getUserOrdersServer = async (req, res) => {
-  const id = req.userID;
+  // const id = req.userID;
+  const { id } = req.params;
   try {
     if (id) {
       let Orders = await Order.findAll({
@@ -121,7 +122,7 @@ const createOrder = async (req, res) => {
       if (!newOrderCreated) {
         let newOrder = await Order.create({
           email_address,
-          UserId,
+          userID,
         });
         newOrderCreated = newOrder;
       }
@@ -146,18 +147,35 @@ const createOrder = async (req, res) => {
 
 //Add order detail, delete order detail or modify order detail (use aux functions)
 const updateOrder = async (req, res) => {
-  const id = req.userID
+  // const id = req.userID;
+  const { id } = req.params;
   try {
+    let { allProductsOrder } = req.body;
 
-    
-  } catch (error) {}
+    if (!id) {
+      res.status(402).send({ errorMsg: "Missing data." });
+    } else {
+      const  = getUserOrders(id);
+      if (allProductsOrder) {
+        allProductsOrder.forEach((e) => {
+          updateOrderDetail(data[0].id, e.ProductId, e.amount, e.quantity);
+        });
+      }
+      res.status(201).send({
+        successMsg: "Here are your new order.",
+        data: newOrderCreated,
+      });
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
 };
 
 //send actual order (cart) with it's order-details included.
 const getActiveOrder = async (req, res) => {
   try {
     const id = req.userID;
-    let activeOrder = Order.findOne({
+    let activeOrder = await Order.findOne({
       where: {
         UserId: id,
         status: "PENDING",
@@ -208,12 +226,17 @@ const getActiveOrder = async (req, res) => {
 
 //order-detail aux functions
 
-const updateOrderDetail = async (id, quantity, OrderId, ProductId, amount) => {
+const updateOrderDetail = async (quantity, OrderId, ProductId, amount) => {
   try {
     if (!amount || !quantity || !OrderId || !ProductId) {
       return "Missing data";
     } else {
-      let orderDetail = await Order_detail.findByPk(id);
+      let orderDetail = await Order_detail.findAll({
+        where: {
+          OrderId,
+          ProductId,
+        },
+      });
       if (!orderDetail) {
         return "order not found";
       } else {
@@ -261,8 +284,24 @@ const getUserOrders = async (id) => {
       let dataOrders = await Order.findAll({
         where: {
           UserId: id,
+
         },
-        // ALERT: acuerdense de incluir las order details de cada orden.
+        include: [
+          {
+            model: User,
+            attributes: ["id", "name", "surname", "email"],
+          },
+          {
+            model: Order_detail,
+            attributes: ["amount", "quantity"],
+            include: [
+              {
+                model: Product,
+                attributes: ["name"],
+              },
+            ],
+          },
+        ],
       });
       if (!dataOrders.length) {
         return "This user has no orders.";
@@ -275,9 +314,15 @@ const getUserOrders = async (id) => {
           billing_address: Order.billing_address,
           UserId: Order.UserId,
           status: Order.status,
+          detail:
+            Order.Order_details.length > 0
+              ? Order.Order_details.map((detail) => {
+                  return { detail };
+                })
+              : [],
         };
       });
-      return { msg: "User orders", data: dataOrders };
+      return { data: dataOrders };
     }
   } catch (error) {
     console.log(error.message);
