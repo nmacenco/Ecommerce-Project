@@ -1,25 +1,25 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 100vw;
-  height: 60vh;
+  margin-top: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media (max-width: 768px) {
+    margin-top: 180px;
+  }
 `;
+
 export const ProfileContainer = styled.div`
-  height: 60% ;
-  width: 40%;
+  width: 90%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
 
-export const ButtonBox = styled.div `
+export const ButtonBox = styled.div`
   width: 80%;
-  display: flex;
-  justify-content: space-around;
-
-`
+`;

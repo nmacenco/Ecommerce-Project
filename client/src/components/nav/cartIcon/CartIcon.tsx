@@ -12,7 +12,6 @@ const CartIcon = () => {
   return (
     <Link className="nav-item" to={"/cart"}>
       <CartIMG src={cartIcon} />
-
       <span className="badge rounded-pill bg-light text-dark fs-5">
         {productsCart.reduce(
           (a: number, product: Product) => a + product.count,
