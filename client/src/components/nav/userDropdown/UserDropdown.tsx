@@ -10,7 +10,7 @@ const UserDropdown = () => {
   const userState = useSelector((state: State) => state.user);
   const navigate = useNavigate()
 
-  function handleClickProfile () {
+  function handleClickProfile() {
     // dispatch(getSingleUser(userInStorage.token))
   }
 
@@ -19,7 +19,7 @@ const UserDropdown = () => {
     navigate('/products')
     dispatch(LogoutUser());
   };
-  
+
   return (
     <ul className="nav-item dropdown navbar-nav">
       <a
@@ -32,11 +32,14 @@ const UserDropdown = () => {
         {userState && userState.name}
       </a>
       <DropdownMenu className="dropdown-menu">
-        <Link onClick={()=> {handleClickProfile()}} to={"/profile"} className="dropdown-item">
+        <Link onClick={() => { handleClickProfile() }} to={"/profile"} className="dropdown-item">
           Profile
         </Link>
         <Link to={"/ordersHistory"} className="dropdown-item">
           Orders History
+        </Link>
+        <Link to={"/wishList"} className="dropdown-item">
+          WishList
         </Link>
         <div className="dropdown-divider"></div>
         <a onClick={logout} className="dropdown-item" href="#">
