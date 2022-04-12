@@ -106,23 +106,22 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 
 const createOrder = async (req, res) => {
-  const id = req.userID;
+  const UserId = req.userID;
   try {
     let { allProductsOrder } = req.body;
-    if (!id) {
+    if (!UserId) {
       res.status(402).send({ errorMsg: "Missing data." });
     } else {
       let singleOrder = await Order.findOne({
         where: {
-          id,
+          UserId,
           status: "PENDING",
         },
       });
       let newOrderCreated = singleOrder;
       if (!newOrderCreated) {
         let newOrder = await Order.create({
-          email_address,
-          userID,
+          UserId,
         });
         newOrderCreated = newOrder;
       }
@@ -146,25 +145,41 @@ const createOrder = async (req, res) => {
 };
 
 //Add order detail, delete order detail or modify order detail (use aux functions)
-const updateOrder = async (req, res) => {
+const addproductsOrder = async (req, res) => {
   // const id = req.userID;
   const { id } = req.params;
   try {
-    let { allProductsOrder } = req.body;
+    const { Productid } = req.body;
+    let product = await Product.findOne({
+      where: {
+        Productid,
+      },
+    });
+    const ordersUser = orderuseractive(id);
+    console.log(product.price);
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 
+const updateOrderState = async (req, res) => {
+  const id = req.params.id;
+  let { status } = req.body;
+  try {
     if (!id) {
-      res.status(402).send({ errorMsg: "Missing data." });
+      res.status(404).send({ errorMsg: "Missing id." });
     } else {
-      const  = getUserOrders(id);
-      if (allProductsOrder) {
-        allProductsOrder.forEach((e) => {
-          updateOrderDetail(data[0].id, e.ProductId, e.amount, e.quantity);
-        });
+      let orderState = await Order.update(
+        { status: status },
+        { where: { id: id } }
+      );
+      if (!orderState) {
+        res.status(404).send({ errorMsg: "order not found" });
+      } else {
+        res
+          .status(201)
+          .send({ successMsg: "Order has been updated", data: orderState });
       }
-      res.status(201).send({
-        successMsg: "Here are your new order.",
-        data: newOrderCreated,
-      });
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
@@ -246,6 +261,7 @@ const updateOrderDetail = async (quantity, OrderId, ProductId, amount) => {
           OrderId,
           ProductId,
         });
+        return { successMsg: "updated user", data: orderDetail };
       }
     }
   } catch (error) {
@@ -253,6 +269,7 @@ const updateOrderDetail = async (quantity, OrderId, ProductId, amount) => {
   }
 };
 
+//                           PRODUCT ID
 const deleteOrderDetail = async (id) => {
   try {
     let deletedOrderDetail = await Order_detail.destroy({
@@ -284,7 +301,6 @@ const getUserOrders = async (id) => {
       let dataOrders = await Order.findAll({
         where: {
           UserId: id,
-
         },
         include: [
           {
@@ -328,11 +344,61 @@ const getUserOrders = async (id) => {
     console.log(error.message);
   }
 };
+const orderuseractive = async (id) => {
+  try {
+    let activeOrder = await Order.findOne({
+      where: {
+        UserId: id,
+        status: "PENDING",
+      },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "name", "surname", "email"],
+        },
+        {
+          model: Order_detail,
+          attributes: ["amount", "quantity"],
+          include: [
+            {
+              model: Product,
+              attributes: ["name"],
+            },
+          ],
+        },
+      ],
+    });
+    if (!activeOrder) {
+      return "no active orders";
+    }
+    activeOrder = {
+      id: activeOrder.id,
+      total_amount: activeOrder.total_amount,
+      email_address: activeOrder.email_address,
+      status: activeOrder.status,
+      user: activeOrder.User.name + " " + activeOrder.User.surname,
+      billing_address: activeOrder.billing_address,
+      detail:
+        activeOrder.Order_details.length > 0
+          ? activeOrder.Order_details.map((detail) => {
+              return { detail };
+            })
+          : [],
+    };
+    return {
+      data: activeOrder,
+    };
+  } catch (error) {
+    return error.message;
+  }
+};
 
 module.exports = {
   getOrders,
   createOrder,
   getActiveOrder,
-  updateOrder,
+  updateOrderState,
   getUserOrdersServer,
+  addproductsOrder,
+  // updateOrder,
 };
