@@ -5,7 +5,7 @@ const sendMail = async (req, res) => {
 
   try {
     let info = await mailer.sendMail({
-      from: 'E-commerce Henry PF" <najupasa@gmail.com>',
+      from: 'E-commerce Henry PF" <pcshop.ecommerce@gmail.com>',
       to: emailToAddress,
       subject: emailToSubject,
       html: emailToBody,
@@ -23,7 +23,7 @@ const sendMail = async (req, res) => {
 
 const sendMailPassword = async (emailToAddress,emailToSubject,emailToBody) => {
     let info = await mailer.sendMail({
-      from: 'E-commerce Henry PF" <najupasa@gmail.com>',
+      from: 'E-commerce Henry PF" <pcshop.ecommerce@gmail.com>',
       to: emailToAddress,
       subject: emailToSubject,
       html: emailToBody,
