@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
@@ -7,6 +7,7 @@ import { State } from "../../redux/reducers";
 import Form from "../form/Form";
 import { useNavigate } from "react-router";
 import { Forgot } from "../form/SLogin";
+import { setPage } from "../../redux/actions/setPage";
 
 interface Inputs {
     email: string;
@@ -17,6 +18,16 @@ const Login = (): JSX.Element => {
     const dispatch = useDispatch();
     const user = useSelector((state: State) => state.user);
     const navigate = useNavigate();
+
+
+    useEffect(()=> {
+        dispatch(setPage(1))
+        return ()=> {
+          console.log('se seteo en 0');
+          
+          dispatch(setPage(0))
+        }
+      }, [])
 
     const [inputs, setInputs] = useState<Inputs>({
         email: "",

@@ -9,12 +9,24 @@ import {getProducts,productNotFound,resetPoducts} from "../../redux/actions/prod
 import { deleteProductDetail } from "../../redux/actions/productDetail";
 import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";
+import { setPage } from "../../redux/actions/setPage";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
   const userState = useSelector((state: State) => state.user);
+  const page = useSelector((state: State) => state.page);
   // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
 
+  // no borrar pendiente para ver si podemos sacar el boton  login de la pagina de login 
+  // const route : string  = window.location.pathname ;
+  // console.log(route !== '/login');
+  // console.log(route);
+  
+
+  function handleClickLogIn() {
+    dispatch(setPage(0))
+  }
+  
   function handleClickProducts() {
     dispatch(productNotFound(false));
     dispatch(resetFilterProducts());
@@ -56,14 +68,15 @@ const Nav = (): JSX.Element => {
 
           {userState && userState.role === "admin" && <AdminDropdown />}
           {userState && userState.role === "user" && <UserDropdown />}
-          {!userState && (
+          {(!userState && page === 0) ? (
             <Link
               to="/login"
               className="nav-item btn btn-secondary my-2 link-Router"
+              onClick={()=>{handleClickLogIn()}}
             >
               Login
             </Link>
-          )}
+          ) : null}
         </div>
       </div>
 
