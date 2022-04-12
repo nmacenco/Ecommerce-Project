@@ -34,8 +34,8 @@ const getOrders = async (req, res) => {
         detail:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-                return { detail };
-              })
+              return { detail };
+            })
             : [],
       };
     });
@@ -84,8 +84,8 @@ const getUserOrdersServer = async (req, res) => {
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                  return { detail };
-                })
+                return { detail };
+              })
               : [],
         };
       });
@@ -105,10 +105,10 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 
 const createOrder = async (req, res) => {
+  const UserId = req.userID;
   try {
-    let { email_address, UserId, allProductsOrder } = req.body;
-    let newOrderDetail;
-    if (!email_address || !UserId) {
+    let { allProductsOrder } = req.body;
+    if (!UserId) {
       res.status(402).send({ errorMsg: "Missing data." });
     } else {
       let singleOrder = await Order.findOne({
@@ -117,20 +117,14 @@ const createOrder = async (req, res) => {
           status: "PENDING",
         },
       });
-      newOrderCreated = singleOrder;
+      let newOrderCreated = singleOrder;
       if (!newOrderCreated) {
         let newOrder = await Order.create({
-          email_address,
           UserId,
         });
         newOrderCreated = newOrder;
       }
       if (allProductsOrder) {
-        let deletedOrderDetail = await Order_detail.destroy({
-          where: {
-            OrderId: newOrderCreated.id,
-          },
-        });
         for (let index = 0; index < allProductsOrder.length; index++) {
           createOrderDetail(
             newOrderCreated.id,
@@ -150,10 +144,26 @@ const createOrder = async (req, res) => {
 };
 
 //Add order detail, delete order detail or modify order detail (use aux functions)
-const updateOrder = async (req, res) => {
+const updateOrderState = async (req, res) => {
+  const id = req.params.id;
+  let { status } = req.body;
   try {
-    
-  } catch (error) {}
+    if (!id) {
+      res.status(404).send({ errorMsg: "Missing id." });
+    } else {
+      let orderState = await Order.update({status:status},
+        {where: {id: id}})
+     if (!orderState) {
+        res.status(404).send({ errorMsg: "order not found" });
+      } else {
+        res
+          .status(201)
+          .send({ successMsg: "Order has been updated", data: orderState });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
 };
 
 //send actual order (cart) with it's order-details included.
@@ -197,8 +207,8 @@ const getActiveOrder = async (req, res) => {
       detail:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-              return { detail };
-            })
+            return { detail };
+          })
           : [],
     };
     res
@@ -226,7 +236,7 @@ const updateOrderDetail = async (id, quantity, OrderId, ProductId, amount) => {
           OrderId,
           ProductId,
         });
-        return { successMsg: "updated user", data: neworderDetail };
+        return { successMsg: "updated user", data: orderDetail };
       }
     }
   } catch (error) {
@@ -292,6 +302,10 @@ module.exports = {
   getOrders,
   createOrder,
   getActiveOrder,
-  updateOrder,
+  updateOrderState,
   getUserOrdersServer,
+  updateOrderDetail,
+  deleteOrderDetail,
+  createOrderDetail
+
 };

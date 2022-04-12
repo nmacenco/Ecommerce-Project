@@ -1,4 +1,4 @@
-const { Subcategory } = require("../db");
+const { Subcategory, Product } = require("../db");
 
 const getSubCategories = async (req, res, next) => {
   try {
@@ -36,14 +36,43 @@ const createSubCategory = async (req, res, next) => {
       });
       created
         ? res.status(201).send({
-            successMsg: "Subcategory successfully created.",
-            data: newSubCategory,
-          })
+          successMsg: "Subcategory successfully created.",
+          data: newSubCategory,
+        })
         : res.status(400).send({ errorMsg: "Subcategory already exists." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message});
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
-module.exports = { getSubCategories, createSubCategory };
+const deleteSubcategory = async (req, res) => {
+  const id = req.params.id;
+  try {
+    let dataProduct = await Product.findAll({
+      where: {
+        SubcategoryId: id,
+      },
+    });
+    if (dataProduct.length <=0) {
+      let deletedSubcategory = await Subcategory.destroy({
+        where: {
+          id,
+        },
+      });
+      deletedSubcategory
+        ? res.status(200).send({
+          successMsg: "Subcategory has been deleted.",
+          data: deletedSubcategory,
+        })
+        : res.status(401).send({ errorMsg: "Subcategory doesn't exist" });
+    } else {
+      res.status(401).send({ errorMsg: "Subcategory can't be deleted because have associated products" });
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+
+module.exports = { getSubCategories, createSubCategory, deleteSubcategory };
