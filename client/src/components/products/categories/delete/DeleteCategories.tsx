@@ -1,28 +1,52 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCategories, getSubcategories } from '../../../../redux/actions/categories'
+import { useNavigate } from 'react-router'
+import swal from 'sweetalert'
+import { deleteCategory, deleteSubcategory, getCategories, getSubcategories } from '../../../../redux/actions/categories'
 import { Category } from '../../../../redux/interface'
 import { State } from '../../../../redux/reducers'
 import { FormContainer } from '../../../form/FormCreateStyles'
 
 export interface CATEGORIES {
-    category: string;
-    subcategory: string;
+    category: number;
+    subcategory: number;
 }
 
 export default function DeleteCateogires(): JSX.Element {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const allCategories = useSelector((state: State) => state.categories.categories)
     const allSubcategories = useSelector((state: State) => state.categories.subcategories)
     const [categories, setCategories] = useState<CATEGORIES>({
-        category: "",
-        subcategory: ""
+        category: 0,
+        subcategory: 0
     })
+    let onlyCategories: any = [];
 
     useEffect(() => {
         dispatch(getCategories())
         dispatch(getSubcategories())
     }, [])
+
+    if (allCategories.length > 0) {
+        let sub = allSubcategories.map(e => e.CategoryId)
+        let unicsSub: any = new Set(sub)
+        let result = [...unicsSub]
+        let newArr = []
+        for (let i in allCategories) {
+            if (!result.includes(allCategories[i].id)) {
+                newArr.push(allCategories[i].id)
+            }
+        }
+
+        for (let i in newArr) {
+            for (let j in allCategories) {
+                if (Number(newArr[i]) === Number(allCategories[j].id)) {
+                    onlyCategories.push(allCategories[j])
+                }
+            }
+        }
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         setCategories({
@@ -32,7 +56,28 @@ export default function DeleteCateogires(): JSX.Element {
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-        console.log('deleted')
+        e.preventDefault()
+        if (categories.subcategory !== 0) {
+            dispatch(deleteSubcategory(String(categories.subcategory)))
+            swal({
+                title: 'Deleted categorie',
+                icon: 'success'
+            })
+            navigate('/products')
+        }
+        if (categories.category !== 0) {
+            dispatch(deleteCategory(String(categories.category)))
+            swal({
+                title: 'Deleted subcategorie',
+                icon: 'success'
+            })
+            navigate('/products')
+        }
+
+        swal({
+            title: 'Not selected any categoriy or subcategory',
+            icon: 'error'
+        })
     }
 
     return (
@@ -41,6 +86,7 @@ export default function DeleteCateogires(): JSX.Element {
                 <h3>Delete category</h3>
                 <div className='form-group flex-fill ms-2'>
                     <label className="form-label mt-4">Existing Categories</label>
+
                     <select
                         onChange={(e) => handleChange(e)}
                         className="form-select"
@@ -50,13 +96,15 @@ export default function DeleteCateogires(): JSX.Element {
                         <option hidden>Select category</option>
                         {
                             allCategories.length > 0
-                                ? allCategories.map((e: Category) => { return <option key={e.id} >{e.name}</option> })
-                                : <option>No hay ninguna categoria creada</option>
+                                ? onlyCategories.map((e: Category) => { return <option key={e.id} value={e.id}>{e.name}</option> })
+                                : <option>Not categories without any connected</option>
                         }
                     </select>
+                    <small>If there are no categories it is because they are all connected to a subcategory</small>
+
                 </div>
                 <div className='form-group flex-fill ms-2'>
-                    <label className="form-label mt-4">Existing Categories</label>
+                    <label className="form-label mt-4">Existing Subcategories</label>
                     <select
                         onChange={(e) => handleChange(e)}
                         className="form-select"
@@ -66,8 +114,8 @@ export default function DeleteCateogires(): JSX.Element {
                         <option hidden>Select subcategory</option>
                         {
                             allSubcategories.length > 0
-                                ? allSubcategories.map((e: Category) => { return <option key={e.id} >{e.name}</option> })
-                                : <option>No hay ninguna categoria creada</option>
+                                ? allSubcategories.map((e: Category) => { return <option key={e.id} value={e.id}>{e.name}</option> })
+                                : <option>Not subcategories created</option>
                         }
                     </select>
                 </div>
