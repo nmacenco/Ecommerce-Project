@@ -48,7 +48,6 @@ export const CreateUser = (user: any, cb: any) => {
                 icon: "warning",
                 dangerMode: true,
                 buttons: {
-                    cancel: true,
                     confirm: true,
                 },
             })
@@ -67,7 +66,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             });
             const TOKEN = response.headers["auth-token"];
             // console.log('TOKEN: ',TOKEN);
-            console.log(response.data.data);
+            // console.log(response.data.data);
             if (response.status == 200) {
                 dispatch({
                     type: TYPES_USER.GET_USER,
@@ -85,6 +84,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
                 cb();//Ejecutamos un callback wajajaj
             }
         } catch (error) {
+
             swal({
                 title: "Wrong data",
                 text: "Please try with a diferent email or password",
