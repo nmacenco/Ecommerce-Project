@@ -113,7 +113,7 @@ const createOrder = async (req, res) => {
     } else {
       let singleOrder = await Order.findOne({
         where: {
-          id,
+          UserId,
           status: "PENDING",
         },
       });
