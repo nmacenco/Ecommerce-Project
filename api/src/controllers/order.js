@@ -105,10 +105,10 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 
 const createOrder = async (req, res) => {
-  const id = req.userID;
+  const UserId = req.userID;
   try {
     let { allProductsOrder } = req.body;
-    if (!id) {
+    if (!UserId) {
       res.status(402).send({ errorMsg: "Missing data." });
     } else {
       let singleOrder = await Order.findOne({
@@ -120,7 +120,6 @@ const createOrder = async (req, res) => {
       let newOrderCreated = singleOrder;
       if (!newOrderCreated) {
         let newOrder = await Order.create({
-          email_address,
           UserId,
         });
         newOrderCreated = newOrder;
