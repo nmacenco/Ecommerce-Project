@@ -8,38 +8,37 @@ import swal from "sweetalert";
 const URL_USER = "http://localhost:3001/api";
 const URLRESET = "http://localhost:3001/api/forgotPasswordReset"
 const URLRESET2 = "http://localhost:3001/api/submitPasswordReset"
+const URLVALIDATE = "http://localhost:3001/api/activateAccount/"
+
 const USER_STORAGE = "USER_LOGGED";
 export const CreateUser = (user: any, cb: any) => {
     return async (dispatch: Dispatch) => {
         try {
-            // console.log(URL_USER + "/signUp");
             const response = await axios.post(URL_USER + "/signUp", user);
-            // if(data.error){
-            //     throw new Error("Error "+data.error);
-            // }
             const data = response.data;
-            // console.log(response.headers);
-            // console.log('data: ',data);
+
+            console.log(response.headers);
+            console.log('data: ',data);
             if (data.errorMsg) {
                 return alert('ALgo paso!');
             }
 
-            const newUser = {
-                name: user.name,
-                email: user.email,
-                token: response.headers['auth-token'],
-                role: response.data.data.role
-            }
-            console.log(response);
+            // const newUser = {
+            //     name: user.name,
+            //     email: user.email,
+            //     token: response.headers['auth-token'],
+            //     role: response.data.data.role
+            // }
+            // console.log(response);
 
             dispatch({
                 type: TYPES_USER.CREATE_USER,
-                payload: newUser
+                payload: {}
             })
             // console.log('despachando el usuario');
             cb();
 
-            window.localStorage.setItem(USER_STORAGE, JSON.stringify({ ...newUser, name: response.data.data.name, role: response.data.data.role }));// Cambiar cuando exista un usuario
+            // window.localStorage.setItem(USER_STORAGE, JSON.stringify({ ...newUser, name: response.data.data.name, role: response.data.data.role }));// Cambiar cuando exista un usuario
 
 
         } catch (error) {
@@ -56,7 +55,7 @@ export const CreateUser = (user: any, cb: any) => {
 
         }
     }
-  };
+};
 
 export const GetUSer = (email: string, pass: string, cb: any) => {
     return async (dispatch: Dispatch) => {
@@ -68,7 +67,6 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             });
             const TOKEN = response.headers["auth-token"];
             // console.log('TOKEN: ',TOKEN);
-            console.log(response.data.data);
             if (response.status == 200) {
                 dispatch({
                     type: TYPES_USER.GET_USER,
@@ -88,7 +86,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
         } catch (error) {
             swal({
                 title: "Wrong data",
-                text: "The email is not in data base!",
+                text: "Please try with a diferent email or password",
                 icon: "warning",
                 dangerMode: true,
                 buttons: {
@@ -98,65 +96,64 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             })
         }
     }
-  };
+};
 
 
 export const FindUSer = () => {
-  const user = window.localStorage.getItem(USER_STORAGE);
-  const userExist = user ? JSON.parse(user) : null;
+    const user = window.localStorage.getItem(USER_STORAGE);
+    const userExist = user ? JSON.parse(user) : null;
 
-  return {
-    type: TYPES_USER.FIND_USER,
-    payload: userExist,
-  };
+    return {
+        type: TYPES_USER.FIND_USER,
+        payload: userExist,
+    };
 };
 
 export const LogoutUser = () => {
-  console.log(window.localStorage.getItem(USER_STORAGE));
-  window.localStorage.removeItem(USER_STORAGE);
+    window.localStorage.removeItem(USER_STORAGE);
 
-  return {
-    type: TYPES_USER.LOGOUT_USER,
-    payload: null,
-  };
+    return {
+        type: TYPES_USER.LOGOUT_USER,
+        payload: null,
+    };
 };
 
 let url = "/signInWithGoogle";
 export const IdentGoogle = (url: string, cb: any) => {
-  return async (dispatch: Dispatch) => {
-    try {
-      const response = await axios.get(URL_USER + url);
-      
-      if (response.data.errorMsg) {
-        throw new Error("Error in google: ", response.data.errorMsg);
-      }
+    return async (dispatch: Dispatch) => {
+        try {
+            const response = await axios.get(URL_USER + url);
 
-      const TOKEN = response.headers["auth-token"];
-      
-      dispatch({
-        type: TYPES_USER.GET_USER,
-        payload: response.data.data,
-      });
+            if (response.data.errorMsg) {
+                throw new Error("Error in google: ", response.data.errorMsg);
+            }
 
-      cb(); //ejecutamos el callback
-    } catch (error) {
-      console.log("Error en sign in google: ", error);
-    }
-  };
+            const TOKEN = response.headers["auth-token"];
+
+            dispatch({
+                type: TYPES_USER.GET_USER,
+                payload: response.data.data,
+            });
+
+            cb(); //ejecutamos el callback
+        } catch (error) {
+            console.log("Error en sign in google: ", error);
+        }
+    };
 };
 
 export const updateUser = (token: string, editUser: any) => {
-  try {
-    return async function (dispatch: Dispatch) {
-      await axios.put(URL_USER + "/auth/users", editUser, {
-        headers: {
-          "auth-token": token,
-        },
-      });
-    };
-  } catch (error) {
-    console.log("Error updating user", error);
-  }
+    try {
+        return async function (dispatch: Dispatch) {
+            await axios.put(URL_USER + "/auth/users", editUser, {
+                headers: {
+                    "auth-token": token,
+                },
+            });
+        };
+    } catch (error) {
+        console.log("Error updating user", error);
+    }
 };
 
 export const getSingleUser = (token: string) => {
@@ -207,6 +204,17 @@ export const resetForgotPassword = (id: any, password: RESET_PASSWORD) => {
     try {
         return async (dispatch: Dispatch) => {
             await axios.put(`${URLRESET2}/${id}`, password);
+        };
+    } catch (error) {
+        alert(error);
+    }
+};
+export const validateAccount = (id: any) => {
+    console.log(id);
+    
+    try {
+        return async (dispatch: Dispatch) => {
+            await axios.get(`${URLVALIDATE}${id}`);
         };
     } catch (error) {
         alert(error);
