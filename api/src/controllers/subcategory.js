@@ -18,7 +18,7 @@ const getSubCategories = async (req, res, next) => {
       data: dataSubCategory,
     });
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -42,7 +42,7 @@ const createSubCategory = async (req, res, next) => {
         : res.status(400).send({ errorMsg: "Subcategory already exists." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error});
+    res.status(500).send({ errorMsg: error.message});
   }
 };
 

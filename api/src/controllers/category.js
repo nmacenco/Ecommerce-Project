@@ -16,7 +16,7 @@ const getCategories = async (req, res, next) => {
       .status(200)
       .send({ successMsg: "Here are your categories.", data: dataCategory });
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -39,7 +39,7 @@ const createCategory = async (req, res, next) => {
         : res.status(400).send({ errorMsg: "Category already exists." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
