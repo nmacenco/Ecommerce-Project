@@ -144,7 +144,7 @@ const createOrder = async (req, res) => {
 };
 
 //Add order detail, delete order detail or modify order detail (use aux functions)
-const updateOrder = async (req, res) => {
+const updateOrderState = async (req, res) => {
   const id = req.params.id;
   let { status } = req.body;
   try {
@@ -302,7 +302,7 @@ module.exports = {
   getOrders,
   createOrder,
   getActiveOrder,
-  updateOrder,
+  updateOrderState,
   getUserOrdersServer,
   updateOrderDetail,
   deleteOrderDetail,
