@@ -97,12 +97,12 @@ const Login = (): JSX.Element => {
                 Forgot Password?
             </Forgot>
 
-            <div className="google mt-2" onClick={SinInGoogle}>
+            <div className="google mt-2" >
                 <div>
                     <img src="https://freesvg.org/img/1534129544.png" />
                 </div>
                 <span>
-                    <a href='http://localhost:3001/api//signInWithGoogle' target='_blank'>
+                    <a href='http://localhost:3001/api/signInWithGoogle/callback' target='_blank'>
                         Continue with Google
                     </a>
                 </span>
