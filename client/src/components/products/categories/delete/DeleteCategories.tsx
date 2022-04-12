@@ -65,19 +65,20 @@ export default function DeleteCateogires(): JSX.Element {
             })
             navigate('/products')
         }
-        if (categories.category !== 0) {
+        else if (categories.category !== 0) {
             dispatch(deleteCategory(String(categories.category)))
             swal({
                 title: 'Deleted subcategorie',
                 icon: 'success'
             })
             navigate('/products')
+        } else {
+            swal({
+                title: 'Not selected any categoriy or subcategory',
+                icon: 'error'
+            })
         }
 
-        swal({
-            title: 'Not selected any categoriy or subcategory',
-            icon: 'error'
-        })
     }
 
     return (
