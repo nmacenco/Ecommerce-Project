@@ -51,6 +51,24 @@ export const reducerOrderProducts = (
           if (a.price < b.price) return -1;
           return 0;
         });
+      } else if (action.payload.value === "isActive") {
+        order.sort(function (
+          a: Product,
+          b: Product
+        ) {
+          if (a.isActive < b.isActive) return 1;
+          if (a.isActive > b.isActive) return -1;
+          return 0;
+        });
+      } else if (action.payload.value === "notActive") {
+        order.sort(function (
+          a: Product,
+          b: Product
+        ) {
+          if (a.isActive > b.isActive) return 1;
+          if (a.isActive < b.isActive) return -1;
+          return 0
+        })
       }
       return {
         ...state,

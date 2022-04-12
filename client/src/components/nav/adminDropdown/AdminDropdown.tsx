@@ -7,7 +7,7 @@ import { adminresetUsers } from "../../../redux/actions/adminUser";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { State } from "../../../redux/reducers";
 
-const AdminDropdown = () => {
+const AdminDropdown = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userState = useSelector((state: State) => state.user);
@@ -35,6 +35,9 @@ const AdminDropdown = () => {
         </Link>
         <Link className="dropdown-item" to="/createCategory">
           Create category
+        </Link>
+        <Link className="dropdown-item" to="/deleteCategory">
+          Delete category
         </Link>
         <Link to={"/productsAdminMode"} className="dropdown-item">
           Admin products
