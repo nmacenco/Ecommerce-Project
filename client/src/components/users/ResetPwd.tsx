@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router';
 import swal from 'sweetalert';
 import { useLocalStorage } from '../../helpers/useLocalStorage';
-import { resetPassword } from '../../redux/actions/user';
+import { LogoutUser, resetPassword } from '../../redux/actions/user';
 import { FormContainer } from '../form/FormCreateStyles'
 
 export interface PWD {
@@ -12,6 +13,7 @@ export interface PWD {
 }
 
 export function ResetPwd(): JSX.Element {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [useInStorage, setUseInStorage] = useLocalStorage("USER_LOGGED", "")
     const [resetPwd, setResetPwd] = useState<PWD>({
@@ -52,6 +54,9 @@ export function ResetPwd(): JSX.Element {
                 title: "Password change successfully",
                 icon: "success"
             })
+            dispatch(LogoutUser())
+            navigate('/login')
+            
         } else {
             swal({
                 title: "Error",

@@ -14,8 +14,9 @@ import NewQ from "./questions/NewQ";
 import { addProductCart } from "../../redux/actions/cart";
 import { Product } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
-import TrashIMG from "../../icons/white-trash.png";
-import EditIMG from "../../icons/edit.png";
+import TrashIMG from "../../icons/white-trash.png"
+import EditIMG from "../../icons/edit.png"
+import { resetPoducts } from "../../redux/actions/products";
 import { deleteProduct } from "../../redux/actions/admin";
 
 export default function Detail() {
@@ -33,6 +34,7 @@ export default function Detail() {
     return () => {
       dispatch(deleteProductDetail());
       dispatch(resetFilterProducts());
+      dispatch(resetPoducts());
     };
   }, []);
 
@@ -58,6 +60,8 @@ export default function Detail() {
     }).then((value) => {
       if (value) {
         dispatch(deleteProduct(id, userInStorage.token));
+        dispatch(resetFilterProducts())
+        dispatch(resetPoducts())
         navigate("/products");
         swal({
           text: "Product deleted",
