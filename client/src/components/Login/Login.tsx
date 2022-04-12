@@ -23,7 +23,7 @@ const Login = (): JSX.Element => {
     useEffect(()=> {
         dispatch(setPage(1))
         return ()=> {
-          console.log('se seteo en 0');
+        //   console.log('se seteo en 0');
           
           dispatch(setPage(0))
         }

@@ -56,7 +56,7 @@ function App(): JSX.Element {
           <Route path="/emailReset" element={<EmailResetPassword />} />
           <Route path="/resetpwd" element={<ResetPwd />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/validateAccount" element={<ValidateAccount />} /> 
+          <Route path="/validateAccount/:id" element={<ValidateAccount />} /> 
         </Routes>
       </BrowserRouter>
     </div>

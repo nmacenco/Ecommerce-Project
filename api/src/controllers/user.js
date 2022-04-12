@@ -51,7 +51,7 @@ const createUser = async (req, res) => {
 
 const activateAccount = async (req, res) => {
   try {
-    let { activationToken } = req.params.id;
+    let  activationToken  = req.params.id;
     if (!activationToken) {
       return res.status(400).send({errorMsg: "Invalid activation token"});
     }
