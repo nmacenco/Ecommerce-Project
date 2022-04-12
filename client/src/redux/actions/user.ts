@@ -56,7 +56,7 @@ export const CreateUser = (user: any, cb: any) => {
 
         }
     }
-  };
+};
 
 export const GetUSer = (email: string, pass: string, cb: any) => {
     return async (dispatch: Dispatch) => {
@@ -68,7 +68,6 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             });
             const TOKEN = response.headers["auth-token"];
             // console.log('TOKEN: ',TOKEN);
-            console.log(response.data.data);
             if (response.status == 200) {
                 dispatch({
                     type: TYPES_USER.GET_USER,
@@ -98,65 +97,64 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             })
         }
     }
-  };
+};
 
 
 export const FindUSer = () => {
-  const user = window.localStorage.getItem(USER_STORAGE);
-  const userExist = user ? JSON.parse(user) : null;
+    const user = window.localStorage.getItem(USER_STORAGE);
+    const userExist = user ? JSON.parse(user) : null;
 
-  return {
-    type: TYPES_USER.FIND_USER,
-    payload: userExist,
-  };
+    return {
+        type: TYPES_USER.FIND_USER,
+        payload: userExist,
+    };
 };
 
 export const LogoutUser = () => {
-  console.log(window.localStorage.getItem(USER_STORAGE));
-  window.localStorage.removeItem(USER_STORAGE);
+    window.localStorage.removeItem(USER_STORAGE);
 
-  return {
-    type: TYPES_USER.LOGOUT_USER,
-    payload: null,
-  };
+    return {
+        type: TYPES_USER.LOGOUT_USER,
+        payload: null,
+    };
 };
 
 let url = "/signInWithGoogle";
 export const IdentGoogle = (url: string, cb: any) => {
-  return async (dispatch: Dispatch) => {
-    try {
-      const response = await axios.get(URL_USER + url);
-      
-      if (response.data.errorMsg) {
-        throw new Error("Error in google: ", response.data.errorMsg);
-      }
+    return async (dispatch: Dispatch) => {
+        try {
+            const response = await axios.get(URL_USER + url);
 
-      const TOKEN = response.headers["auth-token"];
-      
-      dispatch({
-        type: TYPES_USER.GET_USER,
-        payload: response.data.data,
-      });
+            if (response.data.errorMsg) {
+                throw new Error("Error in google: ", response.data.errorMsg);
+            }
 
-      cb(); //ejecutamos el callback
-    } catch (error) {
-      console.log("Error en sign in google: ", error);
-    }
-  };
+            const TOKEN = response.headers["auth-token"];
+
+            dispatch({
+                type: TYPES_USER.GET_USER,
+                payload: response.data.data,
+            });
+
+            cb(); //ejecutamos el callback
+        } catch (error) {
+            console.log("Error en sign in google: ", error);
+        }
+    };
 };
 
 export const updateUser = (token: string, editUser: any) => {
-  try {
-    return async function (dispatch: Dispatch) {
-      await axios.put(URL_USER + "/auth/users", editUser, {
-        headers: {
-          "auth-token": token,
-        },
-      });
-    };
-  } catch (error) {
-    console.log("Error updating user", error);
-  }
+    try {
+        return async function (dispatch: Dispatch) {
+            await axios.put(URL_USER + "/auth/users", editUser, {
+                headers: {
+                    "auth-token": token,
+                },
+            });
+        };
+    } catch (error) {
+        console.log("Error updating user", error);
+    }
 };
 
 export const getSingleUser = (token: string) => {

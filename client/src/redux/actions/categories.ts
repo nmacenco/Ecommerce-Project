@@ -50,3 +50,13 @@ export const resetSubcategories = () => {
     alert(error);
   }
 };
+
+export const deleteCategory = () => {
+  try {
+    return async function (dispatch: Dispatch) {
+      await axios.delete(URL)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}

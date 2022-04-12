@@ -25,8 +25,6 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
     orders(`${e.target.value} order`);
 
   }
-
-  console.log(location)
   return (
     <div className="card mt-3">
       <div className=" d-flex">

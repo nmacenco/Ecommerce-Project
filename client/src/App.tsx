@@ -21,6 +21,8 @@ import AdminUserMode from "./components/users/AdminPanel/AdminModeUsers";
 import EmailResetPassword from './components/users/EmailResetPassword'
 import { ResetPwd } from "./components/users/ResetPwd";
 import UserProfile from "./components/users/profile/UserProfile";
+import DeleteCategories from "./components/products/categories/delete/DeleteCategories";
+
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -55,6 +57,7 @@ function App(): JSX.Element {
           <Route path="/emailReset" element={<EmailResetPassword />} />
           <Route path="/resetpwd" element={<ResetPwd />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/deleteCategory" element={<DeleteCategories />} />
         </Routes>
       </BrowserRouter>
     </div>
