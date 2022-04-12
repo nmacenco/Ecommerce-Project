@@ -109,7 +109,6 @@ const Cards = (): JSX.Element => {
       brand: ""
     })
   }
-  // console.log(activeProductsList.length)
   return (
     <ProductsContainer className="row row-cols-xl-2 row-cols-md-1 mx-auto">
       <div className="col-xl-3 col-sm-12">
@@ -152,11 +151,10 @@ const Cards = (): JSX.Element => {
                 </> : (
                   <NotFound eliminateFilters={eliminateFilters}></NotFound>
                 )
-
           }
         </CardsContainer>
       </div>
     </ProductsContainer>
-  );
+  )
 };
 export default Cards;
