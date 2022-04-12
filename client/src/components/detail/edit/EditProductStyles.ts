@@ -8,3 +8,7 @@ export const EditContainer = styled.div`
   padding: 15px;
   width: 100vw;
 `;
+
+export const Textarea = styled.textarea`
+  height: 150px;
+`;

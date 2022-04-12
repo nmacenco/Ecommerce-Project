@@ -1,32 +1,38 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoriesContainer, Select } from "./CategoriesStyles";
+import { CategoriesContainer } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
-import {
-  getCategories,
-  getSubcategories,
-} from "../../../redux/actions/categories";
-import { filterProducts } from "../../../redux/actions/filterByCategory";
-import { Product } from "../../../redux/interface";
+import { getCategories, getSubcategories } from "../../../redux/actions/categories";
+import { chargeFilter, filterProducts } from "../../../redux/actions/filterByCategory";
 import { ORDER } from "../cards/Cards";
+import { getBrands } from "../../../redux/actions/brands";
+
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
+  const allProducts = useSelector((state: State) => state.products.products)
   const categories = useSelector((state: State) => state.categories);
-  const allProducts = useSelector(
-    (state: State) => state.products.copyProducts
-  );
+  const brands = useSelector((state: State) => state.brands.brands);
+
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getSubcategories());
+    dispatch(getBrands());
   }, []);
 
-  function handleFilter(e: any, allProducts: Product[]): void {
-    console.log(e);
-    // e.target.value = e.target[0].innerHTML;
-    dispatch(filterProducts(e.target.value, allProducts));
+  useEffect(() => {
+    dispatch(chargeFilter(allProducts))
+  }, [allProducts.length > 0])
 
+  function handleFilter(e: string): void {
+    orders(e)
     page(1);
   }
+
+  function handlerFIlterByBrand(e: string): void {
+    orders(e)
+    page(1);
+  }
+
 
   return (
     <CategoriesContainer className="accordion mx-3 mt-3" id="accordionMain">
@@ -43,47 +49,6 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
             Categories
           </button>
         </h2>
-
-        {/* //VIEJO */}
-
-        {/* <div
-          id="collapseOne"
-          className="accordion-collapse collapse"
-          aria-labelledby="headingOne"
-          data-bs-parent="#accordionMain"
-        >
-          <div className="accordion-body">
-            {categories.categories.length > 0 &&
-              categories.categories.map((category) => {
-                return (
-                  <Select
-                    onChange={(e) => handleFilter(e, allProducts)}
-                    className=""
-                    defaultValue={`${category.name}`}
-                  >
-                    <option disabled hidden>
-                      {`${category.name}`}
-                    </option>
-                    {categories.subcategories.length > 0 &&
-                      categories.subcategories.map((subcategory, i) => {
-                        if (category.id === subcategory.CategoryId) {
-                          return (
-                            <option
-                              // className="accordion-header"
-                              className="accordion-body"
-                              value={`${subcategory.name}`}
-                            >
-                              {subcategory.name}
-                            </option>
-                          );
-                        }
-                      })}
-                  </Select>
-                );
-              })}
-          </div>
-        </div>
-        </div> */}  
         <div
           id="collapseOne"
           className="accordion-collapse collapse"
@@ -123,7 +88,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                               className="btn p-1 text-start"
                               key={i}
                               value={subcategory.name}
-                              onClick={(e) => handleFilter(e, allProducts)}
+                              onClick={() => handleFilter(subcategory.name)}
                             >
                               {subcategory.name}
                             </button>
@@ -139,7 +104,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
         </div>
       </div>
 
-      <div className="accordion-item">
+      {/* <div className="accordion-item">
         <h2 className="accordion-header" id="headingTwo">
           <button
             className="accordion-button collapsed"
@@ -160,7 +125,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
         >
           <div className="accordion-body"></div>
         </div>
-      </div>
+      </div> */}
       <div className="accordion-item">
         <h2 className="accordion-header" id="headingThree">
           <button
@@ -180,7 +145,39 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
           aria-labelledby="headingThree"
           data-bs-parent="#accordionMain"
         >
-          <div className="accordion-body"></div>
+
+          <div className="accordion-body">
+            {brands.map((brand, i) => {
+              return (
+                <div key={i}>
+                  <h2
+                    className="accordion-header"
+                    id={brand.name.replace(/ /g, "") + "label"}
+                  >
+                    <button
+                      type="button"
+                      data-bs-target={"#" + brand.name.replace(/ /g, "")}
+                      aria-expanded="false"
+                      className="btn p-1 text-start"
+                      key={i}
+                      aria-controls={brand.name.replace(/ /g, "")}
+                      value={brand.name}
+                      onClick={() => handlerFIlterByBrand(brand.name)}
+                    >
+                      {brand.name}
+                    </button>
+                  </h2>
+                  <div
+                    id={brand.name.replace(/ /g, "")}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={brand.id + "label"}
+                    data-bs-parent="#categories"
+                  >
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </CategoriesContainer>

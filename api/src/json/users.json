@@ -2,79 +2,85 @@
   {
     "name": "Axel",
     "surname": "Lois",
-    "password": "admin",
+    "password": "admin123",
     "email": "axel9034@hotmail.com",
     "billing_address": "Montevideo",
     "default_shipping_address": "Montevideo",
-    "role": "user",
+    "role": "admin",
     "isActive": true,
-    "CountryId": 1
+    "CountryId": 1,
+    "needsPasswordReset": false
   },
   {
     "name": "Jaider",
     "surname": "Panqueva",
-    "password": "admin",
+    "password": "admin123",
     "email": "jaiderpanqueva@hotmail.com",
     "billing_address": "Cali",
     "default_shipping_address": "Cali",
-    "role": "user",
+    "role": "admin",
     "isActive": true,
-    "CountryId": 244
+    "CountryId": 244,
+    "needsPasswordReset": false
   },
   {
     "name": "Carlos",
     "surname": "Espinosa",
-    "password": "admin",
-    "email": "carlosespinosa@hotmail.com",
+    "password": "admin123",
+    "email": "carlosespinosa66@outlook.com",
     "billing_address": "Medellin",
     "default_shipping_address": "Medellin",
-    "role": "user",
+    "role": "admin",
     "isActive": true,
-    "CountryId": 244
+    "CountryId": 244,
+    "needsPasswordReset": false
   },
   {
     "name": "Julian",
     "surname": "Gonzalez",
-    "password": "admin",
+    "password": "admin123",
     "email": "juliangonzalez@hotmail.com",
     "billing_address": "Buenos aires",
     "default_shipping_address": "Buenos aires",
     "role": "admin",
     "isActive": true,
-    "CountryId": 28
+    "CountryId": 28,
+    "needsPasswordReset": false
   },
   {
     "name": "Nicolas",
     "surname": "Macenco",
-    "password": "admin",
+    "password": "admin123",
     "email": "nicolasmacenco@hotmail.com",
     "billing_address": "Mendoza",
     "default_shipping_address": "Mendoza",
     "role": "admin",
     "isActive": true,
-    "CountryId": 28
+    "CountryId": 28,
+    "needsPasswordReset": false
   },
   {
     "name": "Francisco",
     "surname": "Lubo",
-    "password": "admin",
+    "password": "admin123",
     "email": "franciscolubo@hotmail.com",
     "billing_address": "Entre rios",
     "default_shipping_address": "Entre rios",
     "role": "admin",
     "isActive": true,
-    "CountryId": 28
+    "CountryId": 28,
+    "needsPasswordReset": false
   },
   {
     "name": "Dikson",
     "surname": "Aranda",
-    "password": "admin",
+    "password": "admin123",
     "email": "diksonaranda@hotmail.com",
     "billing_address": "Lima",
     "default_shipping_address": "Lima",
     "role": "admin",
     "isActive": true,
-    "CountryId": 149
+    "CountryId": 149,
+    "needsPasswordReset": false
   }
-
 ]

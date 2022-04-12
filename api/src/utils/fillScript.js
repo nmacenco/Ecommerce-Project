@@ -91,8 +91,9 @@ const bulkCreateProducts = async () => {
 
 const bulkCreateCountries = async () => {
   try {
-    let response = await axios.get("https://restcountries.com/v3.1/all");
-    const countries = response.data.map((country) => {
+    let data = fs.readFileSync(__dirname + "/../json/countries.json", "utf8");
+    data = JSON.parse(data);
+    const countries = data.map((country) => {
       return { name: country.name.common, code: country.cca3 };
     });
     for (let i = 0; i < countries.length; i++) {
@@ -125,6 +126,7 @@ const bulkCreateUsers = async () => {
           role: data[i].role,
           isActive: data[i].isActive,
           CountryId: data[i].CountryId,
+          needsPasswordReset: data[i].needsPasswordReset,
         },
       });
     }

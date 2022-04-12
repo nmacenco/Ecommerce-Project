@@ -1,13 +1,10 @@
-const e = require("express");
 const {
-  User,
   Product,
   Brand,
   Category,
   Subcategory,
   Question,
   Review,
-  conn,
 } = require("../db");
 
 const createProduct = async (req, res) => {
@@ -23,12 +20,6 @@ const createProduct = async (req, res) => {
       SubcategoryId,
       BrandId,
     } = req.body;
-    Number(price)
-    Number(weight)
-    Number(SubcategoryId)
-    Number(BrandId)
-    Number(stock)
-    Number(soldCount)
     if (
       !name ||
       !SubcategoryId ||
@@ -62,7 +53,7 @@ const createProduct = async (req, res) => {
         : res.status(401).json({ errorMsg: "Product already exists." });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -92,7 +83,7 @@ const updateProduct = async (req, res) => {
       !SubcategoryId ||
       !id
     ) {
-      res.status(400).send({ errorMsg: "Missing data." });
+      res.status(402).send({ errorMsg: "Missing data." });
     } else {
       let productToUpdate = await Product.findOne({
         where: {
@@ -100,7 +91,7 @@ const updateProduct = async (req, res) => {
         },
       });
       if (!productToUpdate) {
-        res.status(404).send({ errorMsg: "Product not found." });
+        res.status(401).send({ errorMsg: "Product not found." });
       } else {
         let productUpdated = await productToUpdate.update({
           name,
@@ -120,7 +111,7 @@ const updateProduct = async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -149,6 +140,14 @@ const getSingleProduct = async (req, res) => {
               },
             ],
           },
+          {
+            model: Question,
+            attributes: ["title", "description", "answer", "id"],
+          },
+          {
+            model: Review,
+            attributes: ["title", "description", "stars", "id"],
+          },
         ],
       });
       if (!singleProduct) {
@@ -169,14 +168,31 @@ const getSingleProduct = async (req, res) => {
           subcategory: singleProduct.Subcategory.name,
           CategoryId: singleProduct.Subcategory.Category.id,
           category: singleProduct.Subcategory.Category.name,
+          isInDiscount: singleProduct.isInDiscount,
+          discountPercent: singleProduct.discountPercent,
+          discountQty: singleProduct.discountQty,
+          isActive: singleProduct.isActive,
+          questions:
+            singleProduct.Questions.length > 0
+              ? singleProduct.Questions.map((question) => {
+                  return { question };
+                })
+              : [],
+          reviews:
+            singleProduct.Reviews.length > 0
+              ? singleProduct.Reviews.map((review) => {
+                  return { review };
+                })
+              : [],
         };
+        console.log("producto solo: ", singleProduct);
         res
           .status(200)
           .send({ successMsg: "Here is your product.", data: singleProduct });
       }
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
@@ -198,11 +214,20 @@ const getProducts = async (req, res) => {
             },
           ],
         },
+        {
+          model: Question,
+          attributes: ["title", "description", "answer", "id"],
+        },
+        {
+          model: Review,
+          attributes: ["title", "description", "stars", "id"],
+        },
       ],
     });
     if (!dataProduct) {
       res.status(404).send({ errorMsg: "There are no products available." });
     } else {
+      // totalreviews = dataProduct[0].reviews.length >0 ? dataProduct[0].reviews.map((review) => {return { review }}) : [],
       dataProduct = dataProduct.map((product) => {
         return {
           id: product.id,
@@ -219,36 +244,48 @@ const getProducts = async (req, res) => {
           subcategory: product.Subcategory.name,
           CategoryId: product.Subcategory.Category.id,
           category: product.Subcategory.Category.name,
+          isInDiscount: product.isInDiscount,
+          discountPercent: product.discountPercent,
+          discountQty: product.discountQty,
+          isActive: product.isActive,
+          questions:
+            product.Questions.length > 0
+              ? product.Questions.map((question) => {
+                  return { question };
+                })
+              : [],
+          reviews:
+            product.Reviews.length > 0
+              ? product.Reviews.map((review) => {
+                  return { review };
+                })
+              : [],
         };
       });
+
       res
         .status(200)
         .send({ successMsg: "Here are your products.", data: dataProduct });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error});
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 
 const deleteProduct = async (req, res) => {
   try {
     const id = req.params.id;
-    Number(id)
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
-      let deletedProduct = await Product.destroy({
-        where: {
-          id,
-        },
-      });
+      Product.update({ isActive: false }, { where: { id: id } });
       res.status(200).send({
         successMsg: "Product deleted in Database",
-        data: `Product id: ${deletedProduct}`,
+        data: `Product id: ${id}`,
       });
     }
   } catch (error) {
-    res.status(500).send({ errorMsg: error });
+    res.status(500).send({ errorMsg: error.message });
   }
 };
 

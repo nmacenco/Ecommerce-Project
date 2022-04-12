@@ -1,36 +1,66 @@
 
-import {  Product, TYPES_PRODUCT } from "../interface";
+import { Product, TYPES_PRODUCT } from "../interface";
 
+export const chargeFilter = (value: Product[]) => {
+  try {
+    return ({
+      type: TYPES_PRODUCT.CHARGE_FILTERS,
+      payload: value
+    })
+  } catch (error) {
+    alert(error);
+  }
+}
 
-export const filterProducts = (value: string, products: Product[]) => {
-    try {
-        return ({
-          type: TYPES_PRODUCT.FILTERED_PRODUCTS,
-          payload: {
-            value,
-            products
-          }
-        });
-    } catch (error) {
-      alert(error);
-    }
+export const removeFilter = (event: string) => {
+  try {
+    return ({
+      type: TYPES_PRODUCT.REMOVE_FILTER,
+      payload: event
+    })
+  } catch (error) {
+    alert(error);
+  }
+}
+
+export const filterProducts = (event: string) => {
+  try {
+    return ({
+      type: TYPES_PRODUCT.FILTERED_CAT_PRODUCTS,
+      payload: event
+    });
+  } catch (error) {
+    alert(error);
+  }
 };
+
+export const filterByBrand = (event: string) => {
+  try {
+    return ({
+      type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS,
+      payload: event
+    });
+  } catch (error) {
+    alert(error);
+  }
+};
+
 export const resetFilterProducts = () => {
-    try {
-        return ({
-          type: TYPES_PRODUCT.RESET_FILTERED_PRODUCTS,
-          payload: []
-        });
-    } catch (error) {
-      alert(error);
-    }
+  try {
+    return ({
+      type: TYPES_PRODUCT.RESET_FILTERED_PRODUCTS,
+      payload: []
+    });
+  } catch (error) {
+    alert(error);
+  }
 };
 
-export const searchProducts=(productName:string)=>{
+export const searchProducts = (productName: string) => {
 
   return {
-    type:TYPES_PRODUCT.SEARCH_PRODUCTS,
-    payload:productName
+    type: TYPES_PRODUCT.SEARCH_PRODUCTS,
+    payload: productName
   }
 
 }

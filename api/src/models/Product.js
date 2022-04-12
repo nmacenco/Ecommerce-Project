@@ -33,10 +33,30 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    discountPercent: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0,
+      allowNull: true,
+    },
+    isInDiscount: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: true,
+    },
+    discountQty: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: true,
+    },
     soldCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
       allowNull: false,
     },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },    
   });
 };

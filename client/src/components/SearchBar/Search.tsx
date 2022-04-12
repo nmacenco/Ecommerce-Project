@@ -1,41 +1,43 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import searchIcon from "../../icons/search-symbol.png";
-import { selectProducts } from "../../redux/actions/products";
+import { productNotFound, selectProducts } from "../../redux/actions/products";
+import { setPage } from "../../redux/actions/setPage";
+import { Product } from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import { SearchForm } from "./SBar";
 
 const Search = (): JSX.Element => {
   const dispatch = useDispatch();
   const table = useSelector((state: State) => state.products.productSearch);
-  const artefacts = useSelector((state: State) => state.products.products);
+  const artefacts = useSelector((state: State) => state.products.copyProducts);
 
   const [products, setProducts] = useState<string[]>([]);
   const [value, setValue] = useState<string>("");
   const [realValue, setRealValue] = useState<string>("");
 
-  const SearchRequest = (event: any) => {
+  const SearchRequest = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // console.log('valor del input:  ',realValue);
     setProducts([]);
-    // let selectArtefacts=[];
-    let selectArtefacts = artefacts.filter((product) => {
-      // if(product.name.toLowerCase().startsWith(realValue.toLowerCase())){
-      //     return product;
-      // }
+    let selectArtefacts = artefacts.filter((product: Product) => {
       if (product.name.toLowerCase().includes(realValue.toLowerCase())) {
         return product;
       }
     });
-
-    dispatch(selectProducts(selectArtefacts));
+    dispatch(setPage(1));
+    if (selectArtefacts.length > 0) {
+      dispatch(selectProducts(selectArtefacts));
+    } else {
+      dispatch(productNotFound(true));
+      setTimeout(function () {
+        dispatch(productNotFound(false));
+      }, 3000);
+    }
     setValue("");
-    
   };
 
   const SearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    // console.log(table.autocomplete(event.target.value.trim()));
     if (event.target.value.trim()) {
       setProducts(table.autocomplete(event.target.value.trim()));
       setRealValue(event.target.value);
@@ -51,7 +53,6 @@ const Search = (): JSX.Element => {
       autoComplete="off"
       onSubmit={SearchRequest}
     >
-      {/* {console.log('Search renderizado!')} */}
       <div className="desplegable">
         <input
           onChange={SearchChange}

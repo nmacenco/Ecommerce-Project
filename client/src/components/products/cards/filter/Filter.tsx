@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, orderProducts } from "../../../../redux/actions/products";
-import { resetFilterProducts } from '../../../../redux/actions/filterByCategory';
+import { getProducts, orderProducts, productNotFound } from "../../../../redux/actions/products";
 import { Product } from "../../../../redux/interface";
 import { State } from "../../../../redux/reducers";
 import { ORDER } from "../Cards";
@@ -11,24 +10,19 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const allProducts = useSelector((state: State) => state.products.products);
   const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
-
+  let counter: any[] = []
   useEffect(() => {
     dispatch(getProducts());
   }, []);
 
-  function handleSort(
-    e: React.ChangeEvent<HTMLSelectElement>,
-    //es un objeto
-    allProducts: Product[]
-  ): void {
+  function handleSort(e: React.ChangeEvent<HTMLSelectElement>, allProducts: Product[]): void {
     e.preventDefault();
-    // dispatch(resetFilterProducts());
-
+    // dispatch(productNotFound(false))
     page(1)
     orders(`${e.target.value} order`);
-    filteredProducts.length > 0 ? 
-    dispatch(orderProducts(e.target.value, filteredProducts)) :
-    dispatch(orderProducts(e.target.value, allProducts));
+    filteredProducts.length > 0 ?
+      dispatch(orderProducts(e.target.value, filteredProducts)) :
+      dispatch(orderProducts(e.target.value, filteredProducts));
   }
 
   return (
@@ -45,7 +39,10 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
           <option value="asc-name">A - Z</option>
           <option value="des-name">Z - A</option>
         </Select>
-        <p className="ms-auto m-3">{!filteredProducts.length ? allProducts.length : filteredProducts.length} products</p>
+
+        <p className="ms-auto m-3">{!filteredProducts.length ? '' : filteredProducts.map(product => {
+          if (product.isActive) { counter.push(product.id) }
+        })} {counter.length}  products </p>
       </div>
     </div>
   );

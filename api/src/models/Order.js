@@ -12,11 +12,21 @@ module.exports = (sequelize) => {
     total_amount: {
       type: DataTypes.FLOAT,
       allowNull: false,
+      defaultValue:0,
     },
+    email_address: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      isEmail: true,
+    },
+    billing_address: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },    
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: true,
+      defaultValue: "PENDING",
     },
   });
 };

@@ -5,12 +5,14 @@ export interface PRODUCTS {
   products: Product[];
   copyProducts: Product[];
   productSearch: any;
+  not_found: boolean
 }
 
 const INITIAL_STATE = {
   products: [],
   copyProducts: [],
   productSearch: [],
+  not_found: false,
 };
 
 export const reducerProduct = (
@@ -33,11 +35,12 @@ export const reducerProduct = (
         copyProducts: action.payload,
         productSearch: newTable,
       };
-    case TYPES_PRODUCT.RESET_PRODUCTS :
+
+    case TYPES_PRODUCT.RESET_PRODUCTS:
       return {
-        ...state , 
-        products : action.payload , 
-        copyProducts : action.payload , 
+        ...state,
+        products: action.payload,
+        copyProducts: action.payload,
       }
 
     default: {
