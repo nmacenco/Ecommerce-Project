@@ -34,8 +34,8 @@ const getOrders = async (req, res) => {
         detail:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-                return { detail };
-              })
+              return { detail };
+            })
             : [],
       };
     });
@@ -84,8 +84,8 @@ const getUserOrdersServer = async (req, res) => {
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                  return { detail };
-                })
+                return { detail };
+              })
               : [],
         };
       });
@@ -146,8 +146,25 @@ const createOrder = async (req, res) => {
 
 //Add order detail, delete order detail or modify order detail (use aux functions)
 const updateOrder = async (req, res) => {
+  const id = req.params.id;
+  let { status } = req.body;
   try {
-  } catch (error) {}
+    if (!id) {
+      res.status(404).send({ errorMsg: "Missing id." });
+    } else {
+      let orderState = await Order.update({status:status},
+        {where: {id: id}})
+     if (!orderState) {
+        res.status(404).send({ errorMsg: "order not found" });
+      } else {
+        res
+          .status(201)
+          .send({ successMsg: "Order has been updated", data: orderState });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
 };
 
 //send actual order (cart) with it's order-details included.
@@ -191,8 +208,8 @@ const getActiveOrder = async (req, res) => {
       detail:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-              return { detail };
-            })
+            return { detail };
+          })
           : [],
     };
     res
@@ -220,7 +237,7 @@ const updateOrderDetail = async (id, quantity, OrderId, ProductId, amount) => {
           OrderId,
           ProductId,
         });
-        return { successMsg: "updated user", data: neworderDetail };
+        return { successMsg: "updated user", data: orderDetail };
       }
     }
   } catch (error) {
@@ -288,4 +305,8 @@ module.exports = {
   getActiveOrder,
   updateOrder,
   getUserOrdersServer,
+  updateOrderDetail,
+  deleteOrderDetail,
+  createOrderDetail
+
 };
