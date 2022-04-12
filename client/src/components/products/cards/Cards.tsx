@@ -15,6 +15,7 @@ import { ProductsContainer } from "../ProductsStyles";
 import NotFound from "../../notFound/NotFound";
 import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 import { execPath } from "process";
+import { getSubcategories } from "../../../redux/actions/categories";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -67,6 +68,7 @@ const Cards = (): JSX.Element => {
   }
 
   useEffect(() => {
+    dispatch(getSubcategories())
     dispatch(chargeFilter(copyProductsList))
   }, [filteredProductList.length > copyProductsList.length])
 

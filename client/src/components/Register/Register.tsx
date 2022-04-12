@@ -152,7 +152,7 @@ const Register = (): JSX.Element => {
             onChange={FormChange}
           >
             {countries.length &&
-              countries.map((country, i) => {
+              countries.map((country : any, i : number) => {
                 return (
                   <option value={country.id} key={country.id}>
                     {country.name}
