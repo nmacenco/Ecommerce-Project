@@ -22,11 +22,10 @@ const Login = (): JSX.Element => {
 
 
     useEffect(() => {
-        dispatch(setPage(1))
+        dispatch(setPage(0))
         return () => {
-            //   console.log('se seteo en 0');
 
-            dispatch(setPage(0))
+            dispatch(setPage(1))
         }
     }, [])
 
@@ -138,14 +137,14 @@ const Login = (): JSX.Element => {
                 />
             </div>
 
-            <article>
+            <div className="text-center m-3">
                 {validateForms(error, inputs).length ? (
-                    <button className="btn btn-primary button-links link-Router" disabled>
+                    <button className="btn btn-primary button-links link-Router mx-2" disabled>
                         SUBMIT
                     </button>
                 ) : (
                     <button
-                        className="btn btn-primary button-links link-Router"
+                        className="btn btn-primary button-links link-Router mx-2"
                         onClick={LoginFetch}
                     >
                         SUBMIT
@@ -153,11 +152,11 @@ const Login = (): JSX.Element => {
                 )}
                 <Link
                     to="/register"
-                    className="btn btn-secondary link-Router button-links"
+                    className="btn btn-secondary link-Router button-links mx-2"
                 >
                     REGISTER
                 </Link>
-            </article>
+            </div>
         </Form>
     );
 };

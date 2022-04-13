@@ -13,15 +13,6 @@ export const LogForm = styled.form`
   background-color: #e1e1e1;
   padding: 10px 20px;
 
-  // header {
-  //   margin: 20px 10px;
-  //   text-align: center;
-  //   color: white;
-  //   font-weight: bold;
-  //   font-size: 1.2rem;
-  //   text-transform: uppercase;
-  // }
-
   .div-inputs {
     display: flex;
     justify-content: space-between;
@@ -45,8 +36,6 @@ export const LogForm = styled.form`
 `;
 
 export const Content = styled.div`
-  // width: 96%;
-  // margin: 10px 2%;
 
   input {
     width: 100%;
@@ -114,6 +103,6 @@ export const Content = styled.div`
 
 export const Forgot = styled.div`
   &:hover {
-    color: red;
+    color: #808080;
   }
 `;
