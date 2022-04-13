@@ -14,7 +14,6 @@ const UserProfile = () => {
   const dispatch = useDispatch();
   const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
   const userDetail = useSelector((state: State) => state.userDetail.userDetail);
-  console.log(userDetail);
 
   useEffect(() => {
     dispatch(getSingleUser(userInStorage.token));
