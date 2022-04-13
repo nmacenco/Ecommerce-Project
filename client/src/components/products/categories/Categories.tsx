@@ -104,7 +104,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
         </div>
       </div>
 
-      <div className="accordion-item">
+      {/* <div className="accordion-item">
         <h2 className="accordion-header" id="headingTwo">
           <button
             className="accordion-button collapsed"
@@ -125,7 +125,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
         >
           <div className="accordion-body"></div>
         </div>
-      </div>
+      </div> */}
       <div className="accordion-item">
         <h2 className="accordion-header" id="headingThree">
           <button

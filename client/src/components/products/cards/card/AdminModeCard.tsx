@@ -3,7 +3,7 @@ import { AdminProductIMG } from "./AdminModeCardStyles";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../../../redux/actions/admin";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../../../../redux/actions/products";
+import { getProducts, resetPoducts } from "../../../../redux/actions/products";
 import { ORDER } from "../Cards";
 import { chargeFilter, resetFilterProducts } from "../../../../redux/actions/filterByCategory";
 import { getProductDetail } from "../../../../redux/actions/productDetail";
@@ -11,20 +11,23 @@ import swal from "sweetalert";
 import { State } from "../../../../redux/reducers";
 import { Product } from "../../../../redux/interface";
 import { useLocalStorage } from "../../../../helpers/useLocalStorage";
+import TrashIMG from "../../../../icons/white-trash.png"
+import EditIMG from "../../../../icons/edit.png"
 interface props {
   name: string;
   image: string;
   price: number;
   id?: number;
+  isActive: boolean;
   AdmOrders: (typeorder: string) => void;
   page: (typeorder: number) => void;
 }
 
-const AdminModeCard = ({ name, image, price, id, AdmOrders, page }: props) => {
+const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: props) => {
   const dispatch = useDispatch()
   const stringId = String(id)
   const navigate = useNavigate()
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const allProducts = useSelector((state: State) => state.products.products)
   function deleteHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
@@ -40,7 +43,9 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page }: props) => {
     }).then((value) => {
 
       if (value) {
-        dispatch(deleteProduct(stringId , userInStorage.token));
+        dispatch(deleteProduct(stringId, userInStorage.token));
+        dispatch(resetFilterProducts())
+        dispatch(resetPoducts())
         let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
         dispatch(chargeFilter(deleted))
         page(1)
@@ -54,7 +59,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page }: props) => {
 
   }
 
-  
+
   function handleClickEdit(e: React.MouseEvent<HTMLButtonElement>): void {
     dispatch(getProductDetail(stringId));
     setTimeout(function () {
@@ -74,24 +79,44 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page }: props) => {
         </th>
         <td >
           {name.length > 30 ? (
-            <p className=""><Link to={`/detail/${id}`}>{name.slice(0, 30)}...</Link></p>
+            <p ><Link className="text-decoration-none" to={`/detail/${id}`}>{name.slice(0, 30)}...</Link></p>
           ) : (
             <p className="card-title m-2"><Link to={`s/detail/${id}`}>{name}</Link></p>
           )}
         </td>
         <td > $ {price} </td>
+        {
+          isActive ?
+            <td > Active </td>
+            :
+            <td > Not Active </td>
+
+        }
         <td >
-          <button
-            onClick={(e) => { deleteHandler(e) }}
-            type="button"
-            className="btn btn-danger btn-sm  "
-          >
-            Delete
-          </button>
+          {
+            isActive ?
+              <button
+                onClick={(e) => { deleteHandler(e) }}
+                type="button"
+                className="btn btn-danger btn-sm  "
+              >
+                <img src={TrashIMG} alt="delete"></img>
+              </button>
+              :
+              <button
+                disabled
+                onClick={(e) => { deleteHandler(e) }}
+                type="button"
+                className="btn btn-danger btn-sm  "
+              >
+                <img src={TrashIMG} alt="delete"></img>
+              </button>
+
+          }
         </td>
         <td >
           <button onClick={(e) => handleClickEdit(e)} type="button" className="btn btn-warning btn-sm">
-            Edit
+            <img src={EditIMG} alt="edit"></img>
           </button>
         </td>
       </tr>

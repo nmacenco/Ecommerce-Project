@@ -35,22 +35,33 @@ const Card = ({ name, image, price, id, stock, product }: props) => {
   return (
     <CardComponent className="card d-flex flex-column justify-content-between">
       <div className="d-flex flex-column">
+        <b className="corazon" onClick={(event: any) => {
+          event.preventDefault();
+          event.target.className = event.target.className == 'red-heart' ? 'corazon' : 'red-heart'
+          console.log(event.target.className)
+
+        }}>
+
+        </b>
+        {/* {<img src="/images/heartFit.svg" alt='add heart' />} */}
+        <ProductIMG
+          src={image}
+          alt={image}
+          className="card-img-top"
+        ></ProductIMG>
         <Link to={`/detail/${id}`} className="text-decoration-none">
-          <ProductIMG
-            src={image}
-            alt={image}
-            className="card-img-top"
-          ></ProductIMG>
+
           {name.length > 40 ? (
             <p className="card-title m-2">{name.slice(0, 40)}...</p>
           ) : (
             <p className="card-title m-2">{name}</p>
           )}
         </Link>
+
       </div>
       <CardFooter className="card-footer d-flex align-items-end justify-content-between">
         <h5 className="m-3">${price}</h5>
-        {product.count === stock || productInCart && productInCart.count === stock? (
+        {product.count === stock || productInCart && productInCart.count === stock ? (
           <button type="button" className="btn btn-primary h-100" disabled>
             <img src={cartIcon} alt=""></img>
           </button>

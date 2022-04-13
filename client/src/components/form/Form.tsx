@@ -1,5 +1,5 @@
 import React from "react";
-import { ContainerLog, Content, LogForm } from './SLogin';
+import { ContainerLog, Content, LogForm } from "./SLogin";
 
 interface Prop {
   title: string;
@@ -11,15 +11,17 @@ const Form = ({ title, children }: Prop): JSX.Element => {
     event.preventDefault();
   };
 
-  const width = (title === 'Register') ? { width: '600px' } : { width: '340px' }
+  const width = title === "Register" ? { width: "600px" } : { width: "340px" };
 
   return (
-    <ContainerLog >
-      <LogForm onSubmit={sendLogin} autoComplete="off" style={width}>
-        <header>{title ? title : "FORM"}</header>
-        <Content>{children}</Content>
-      </LogForm>
-    </ContainerLog>
+    <div className="container text-center">
+      <h3 className="pt-5">{title}</h3>
+      <ContainerLog>
+        <LogForm onSubmit={sendLogin} autoComplete="off" style={width}>
+          <Content>{children}</Content>
+        </LogForm>
+      </ContainerLog>
+    </div>
   );
 };
 

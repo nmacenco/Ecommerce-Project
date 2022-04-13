@@ -34,6 +34,7 @@ export const reducerFilterProducts = (
 
     case TYPES_PRODUCT.FILTERED_CAT_PRODUCTS:
       const newFilter = state.filteredProducts.filter((e: any) => e.subcategory === action.payload)
+
       return {
         ...state,
         filteredProducts: newFilter
@@ -41,6 +42,7 @@ export const reducerFilterProducts = (
 
     case TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS:
       const newFilterBrand = state.filteredProducts.filter((e: any) => e.brand === action.payload)
+
       return {
         ...state,
         filteredProducts: newFilterBrand
@@ -66,7 +68,9 @@ export const reducerFilterProducts = (
     case TYPES_PRODUCT.RESET_FILTERED_PRODUCTS:
       return {
         ...state,
-        filteredProducts: []
+        filteredProducts: [],
+        copyFilteredProducts: []
+
       }
 
 
