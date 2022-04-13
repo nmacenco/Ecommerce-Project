@@ -22,6 +22,7 @@ import EmailResetPassword from './components/users/EmailResetPassword'
 import { ResetPwd } from "./components/users/ResetPwd";
 import UserProfile from "./components/users/profile/UserProfile";
 import ValidateAccount from "./components/users/ValidateAccount";
+import OrdersHistory from "./components/users/ordersHistory/OrdersHistory";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ function App(): JSX.Element {
           <Route path="/resetpwd" element={<ResetPwd />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/validateAccount/:id" element={<ValidateAccount />} /> 
+          <Route path="/ordersHistory" element={<OrdersHistory/>}/>
         </Routes>
       </BrowserRouter>
     </div>
