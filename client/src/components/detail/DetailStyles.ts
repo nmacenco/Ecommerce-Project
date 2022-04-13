@@ -6,11 +6,15 @@ export const DetailContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 40px;
+
+  .wish {
+    margin-top: 10px;
+  }
 `;
 
 export const Box = styled.div`
-  margin-top:60px;
-  width:90%;
+  margin-top: 60px;
+  width: 90%;
   max-width: 900px;
 `;
 
@@ -36,6 +40,7 @@ export const Price = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 30px;
+
   @media (min-width: 800px) {
     margin-top: 0px;
   }
@@ -46,5 +51,4 @@ export const DeleteEditButton = styled.div`
   justify-content: space-around;
   margin-top: 30px;
   width: 40%;
-
 `;
