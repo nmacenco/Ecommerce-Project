@@ -162,6 +162,8 @@ export const RegisterWithGoogle = (user: any, cb: any) => {
         type: TYPES_USER.GET_USER,
         payload: response.data,
       });
+      //LO GUARADAMOS EN EL LOCAL STORAGE:
+      window.localStorage.setItem(USER_STORAGE, response.data);
 
       cb(); //ejecutamos el callback
     } catch (error) {
@@ -189,6 +191,8 @@ export const LoginWithGoogle = (email: string, cb: any) => {
         type: TYPES_USER.SIGNIN_GOOGLE,
         payload: data.data,
       });
+      //GUARDAR EN EL LOCAL STORAGE:
+      window.localStorage.setItem(USER_STORAGE, data.data);
     } catch (error) {
       console.log("ERROR EN LOGIN WITH GOOGLE: ", error);
     }
