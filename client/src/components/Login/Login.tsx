@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
-import { CreateUser, GetUSer, IdentGoogle } from "../../redux/actions/user";
+import { CreateUser, GetUSer, LoginWithGoogle, RegisterWithGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
 import { useNavigate } from "react-router";
@@ -67,13 +67,25 @@ const Login = (): JSX.Element => {
 
     const responseGoogle = (data: any) => {
 
-        console.log(data);
-        const { givenName, familyName, email } = data.profileObj;
+        console.log(data.profileObj);
+        const { email } = data.profileObj;
         // console.log({ givenName, familyName, email })
-        dispatch(CreateUser())
+        // { name, surname, email, password, CountryId }
+        // let newUser = {
+        //     name: givenName ? givenName : '',
+        //     surname: familyName ? familyName : '',
+        //     email: email,
+        //     CountryId: 1,
+        //     password: null
+        // };
+
+        dispatch(LoginWithGoogle(email, () => {
+            navigate('/products');
+        }))
     }
     const rejectGoogle = (error: any) => {
         console.log(error);
+        alert('Algo paso amigos mios')
 
     }
 

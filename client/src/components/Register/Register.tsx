@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
-import { CreateUser, IdentGoogle } from "../../redux/actions/user";
+import { CreateUser, RegisterWithGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
 import { useNavigate } from "react-router";
@@ -93,10 +93,22 @@ const Register = (): JSX.Element => {
   const responseGoogle = (data: any) => {
     // console.log(data);
     const { givenName, familyName, email } = data.profileObj;
-    console.log({ givenName, familyName, email })
+    // console.log({ givenName, familyName, email });
+    let newUser = {
+      name: givenName ? givenName : '',
+      surname: familyName ? familyName : '',
+      email: email,
+      CountryId: 1,
+      password: null
+    };
+
+    dispatch(RegisterWithGoogle(newUser, () => {
+      navigate('/products');
+    }));
   }
   const rejectGoogle = (error: any) => {
     console.log(error);
+    alert('ERROR en REGISTER WITH GOOGLE');
 
   }
 

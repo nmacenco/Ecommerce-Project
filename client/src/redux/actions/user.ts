@@ -11,6 +11,13 @@ const URLRESET2 = "http://localhost:3001/api/submitPasswordReset";
 const URLVALIDATE = "http://localhost:3001/api/activateAccount/";
 
 const USER_STORAGE = "USER_LOGGED";
+
+/**
+ *
+ * @param user  ,{ name, surname, email, password, CountryId }
+ * @param cb function callback
+ * @returns promise<any>
+ */
 export const CreateUser = (user: any, cb: any) => {
   return async (dispatch: Dispatch) => {
     try {
@@ -59,6 +66,14 @@ export const CreateUser = (user: any, cb: any) => {
     }
   };
 };
+
+/**
+ *
+ * @param email email of user
+ * @param pass  password of user
+ * @param cb callback
+ * @returns promise<any>
+ */
 
 export const GetUSer = (email: string, pass: string, cb: any) => {
   return async (dispatch: Dispatch) => {
@@ -125,11 +140,17 @@ export const LogoutUser = () => {
   };
 };
 
-let url = "/signInWithGoogle";
-export const IdentGoogle = (url: string, cb: any) => {
+/**
+ * Receive the email, name, surname and callback
+ * @param user email,name,surname
+ * @param cb callback
+ * @returns
+ */
+
+export const RegisterWithGoogle = (user: any, cb: any) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.get(URL_USER + url);
+      const response = await axios.post(URL_USER + "/signUpGoogle", user);
 
       if (response.data.errorMsg) {
         throw new Error("Error in google: ", response.data.errorMsg);
@@ -139,12 +160,37 @@ export const IdentGoogle = (url: string, cb: any) => {
 
       dispatch({
         type: TYPES_USER.GET_USER,
-        payload: response.data.data,
+        payload: response.data,
       });
 
       cb(); //ejecutamos el callback
     } catch (error) {
       console.log("Error en sign in google: ", error);
+    }
+  };
+};
+
+/**
+ * The function receive the user email for login with google
+ * @param email string
+ * @param cb callback
+ */
+
+export const LoginWithGoogle = (email: string, cb: any) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const { data } = await axios.post(URL_USER + "/sigInGoogle", { email });
+
+      if (data.errorMsg) {
+        console.log(data.errorMsg);
+        return alert("ERROR MESSAGE: ");
+      }
+      dispatch({
+        type: TYPES_USER.SIGNIN_GOOGLE,
+        payload: data.data,
+      });
+    } catch (error) {
+      console.log("ERROR EN LOGIN WITH GOOGLE: ", error);
     }
   };
 };
