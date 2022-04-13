@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
-import { GetUSer, IdentGoogle } from "../../redux/actions/user";
+import { CreateUser, GetUSer, IdentGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
 import { useNavigate } from "react-router";
 import { Forgot } from "../form/SLogin";
 import { setPage } from "../../redux/actions/setPage";
+import { GoogleLogin } from 'react-google-login';
 
 interface Inputs {
     email: string;
@@ -20,14 +21,14 @@ const Login = (): JSX.Element => {
     const navigate = useNavigate();
 
 
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(setPage(1))
-        return ()=> {
-        //   console.log('se seteo en 0');
-          
-          dispatch(setPage(0))
+        return () => {
+            //   console.log('se seteo en 0');
+
+            dispatch(setPage(0))
         }
-      }, [])
+    }, [])
 
     const [inputs, setInputs] = useState<Inputs>({
         email: "",
@@ -64,13 +65,20 @@ const Login = (): JSX.Element => {
         }
     };
 
-    const SinInGoogle = () => {
-        dispatch(
-            IdentGoogle("/signInWithGoogle/callback", () => {
-                navigate("/products");
-            })
-        );
-    };
+    const responseGoogle = (data: any) => {
+
+        console.log(data);
+        const { givenName, familyName, email } = data.profileObj;
+        // console.log({ givenName, familyName, email })
+        dispatch(CreateUser())
+    }
+    const rejectGoogle = (error: any) => {
+        console.log(error);
+
+    }
+
+
+
     const forgotPassword = () => {
         navigate("/emailReset");
     };
@@ -108,15 +116,14 @@ const Login = (): JSX.Element => {
                 Forgot Password?
             </Forgot>
 
-            <div className="google mt-2" >
-                <div>
-                    <img src="https://freesvg.org/img/1534129544.png" />
-                </div>
-                <span>
-                    <a href='http://localhost:3001/api/signInWithGoogle/callback' target='_blank'>
-                        Continue with Google
-                    </a>
-                </span>
+            <div className="form-log" >
+                <GoogleLogin
+                    clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+                    buttonText="Login"
+                    onSuccess={responseGoogle}
+                    onFailure={rejectGoogle}
+                    cookiePolicy={'single_host_origin'}
+                />
             </div>
 
             <article>

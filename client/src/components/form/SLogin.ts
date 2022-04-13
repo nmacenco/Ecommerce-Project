@@ -106,6 +106,9 @@ export const Content = styled.div`
   .form-log {
     width: 50%;
     margin: 10px 25%;
+    button {
+      width: 100% !important;
+    }
   }
 `;
 

@@ -8,6 +8,7 @@ import Form from "../form/Form";
 import { useNavigate } from "react-router";
 import { getCountries } from "../../redux/actions/countries";
 import swal from "sweetalert";
+import GoogleLogin from "react-google-login";
 
 interface Inputs {
   name: string;
@@ -81,21 +82,23 @@ const Register = (): JSX.Element => {
       dispatch(
         CreateUser(newUser, () => {
         })
-        );
-          swal({
-            text: "Please check your inbox to validate your account",
-            icon: "success",
-          })
+      );
+      swal({
+        text: "Please check your inbox to validate your account",
+        icon: "success",
+      })
     }
   };
 
-  const SinUpGoogle = () => {
-    dispatch(
-      IdentGoogle("/signInWithGoogle", () => {
-        navigate("/products");
-      })
-    );
-  };
+  const responseGoogle = (data: any) => {
+    // console.log(data);
+    const { givenName, familyName, email } = data.profileObj;
+    console.log({ givenName, familyName, email })
+  }
+  const rejectGoogle = (error: any) => {
+    console.log(error);
+
+  }
 
   useEffect(() => {
     dispatch(getCountries());
@@ -144,7 +147,7 @@ const Register = (): JSX.Element => {
             onChange={FormChange}
           >
             {countries.length &&
-              countries.map((country : any, i : number) => {
+              countries.map((country: any, i: number) => {
                 return (
                   <option value={country.id} key={country.id}>
                     {country.name}
@@ -204,11 +207,15 @@ const Register = (): JSX.Element => {
           <b className="invalid-feedback">{error.default_shipping_address}</b>
         )}
       </div> */}
-      <div className="google form-log" onClick={SinUpGoogle}>
-        <div>
-          <img src="https://freesvg.org/img/1534129544.png" />
-        </div>
-        <span>Continue with Google</span>
+      <div className="form-log" >
+        <GoogleLogin
+          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+          buttonText="Register"
+          onSuccess={responseGoogle}
+          onFailure={rejectGoogle}
+          cookiePolicy={'single_host_origin'}
+          style={{ width: '100% !important' }}
+        />
       </div>
       <article>
         {validateForms(error, inputs).length ? (
