@@ -9,6 +9,7 @@ require("../auth/passport-setup");
 const createUser = async (req, res) => {
   try {
     let { name, surname, email, password, CountryId } = req.body;
+    console.log(req.body);
     if (!name || !surname || !email || !CountryId || !password) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
@@ -44,7 +45,7 @@ const createUser = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log('ERROR EN USER: ',error);
+    console.log("ERROR EN USER: ", error);
     res.status(500).json({ errorMsg: error.message });
   }
 };
@@ -53,7 +54,7 @@ const activateAccount = async (req, res) => {
   try {
     let  activationToken  = req.params.id;
     if (!activationToken) {
-      return res.status(400).send({errorMsg: "Invalid activation token"});
+      return res.status(400).send({ errorMsg: "Invalid activation token" });
     }
     const payload = jwt.verify(activationToken, process.env.SECRET_KEY);
     await User.update(
@@ -65,14 +66,14 @@ const activateAccount = async (req, res) => {
         },
       }
     );
-    res.status(200).send({successMsg: 'User successfully activated.'});
+    res.status(200).send({ successMsg: "User successfully activated." });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
 };
 
 const updateUser = async (req, res) => {
-  console.log("entro")
+  console.log("entro");
   const id = req.userID;
   if (!id) {
     return res.status(400).send({ errorMsg: "Id not provided." });
@@ -284,7 +285,7 @@ const logOut = async (req, res) => {
 const passwordReset = async (req, res) => {
   try {
     let id = req.userID;
-    console.log(id)
+    console.log(id);
     let { password, passwordConfirm, actualPassword } = req.body;
     const user = await User.findByPk(id);
     if (!user) {
