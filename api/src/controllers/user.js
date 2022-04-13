@@ -19,7 +19,6 @@ const createUser = async (req, res) => {
           signedInWithGoogle: false,
         },
       });
-      console.log("Fue creado? : ", isUserCreated);
       if (isUserCreated) {
         res.status(400).send({ errorMsg: "Email already exists." });
       } else {
@@ -35,15 +34,13 @@ const createUser = async (req, res) => {
         });
         const token = jwt.sign({ id: newUser.id }, process.env.SECRET_KEY);
         await newUser.update({ activationToken: token });
-        // await sendMailPassword(
-        //   email,
-        //   "Please activate your account to continue.",
-        //   `<p>Click <a href="http://localhost:3000/validateAccount/${token}">here</a> to activate your account.</p>`
-        // );
-        console.log("SE ENVIO EL EMAIL!!");
-        res.status(201).header("auth-token", token).send({
+        await sendMailPassword(
+          email,
+          "Please activate your account to continue.",
+          `<p>Click <a href="http://localhost:3000/validateAccount/${token}">here</a> to activate your account.</p>`
+        );
+        res.status(201).send({
           successMsg: "User activation email sent.",
-          role: newUser.role,
         });
       }
     }
