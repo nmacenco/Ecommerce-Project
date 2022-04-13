@@ -74,9 +74,9 @@ const AdminModeCards = (): JSX.Element => {
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
-  filteredProductList.length > 0
-    ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
-    : (newProductsList = copyProductsList.slice(firstProduct, finalProduct));
+  if (filteredProductList.length > 0) {
+    newProductsList = filteredProductList.slice(firstProduct, finalProduct)
+  }
 
   const handlePageClick = (data: Data_Paginate) => {
     setCurrentPage(data.selected + 1);

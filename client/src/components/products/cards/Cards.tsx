@@ -15,6 +15,7 @@ import { ProductsContainer } from "../ProductsStyles";
 import NotFound from "../../notFound/NotFound";
 import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 import { execPath } from "process";
+import { getSubcategories } from "../../../redux/actions/categories";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -76,6 +77,9 @@ const Cards = (): JSX.Element => {
     }, 500)
   }, [setLoad])
 
+  useEffect(() => {
+    dispatch(getSubcategories())
+  }, [dispatch])
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
