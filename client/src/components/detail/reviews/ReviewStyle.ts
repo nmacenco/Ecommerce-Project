@@ -10,7 +10,6 @@ export const RewieHeader = styled.header`
   justify-content: space-between;
   padding: 0px 20px;
   align-items: center;
-  }
 `;
 
 export const Rewiewstars = styled.div`
@@ -54,7 +53,6 @@ export const Rewiewstars = styled.div`
     opacity: 1;
   }
 `;
-
 
 export const RewiewstarStatic = styled.article`
   width: 200px;
