@@ -36,6 +36,7 @@ const Card = ({ name, image, price, id, stock, product }: props) => {
     <CardComponent className="card d-flex flex-column justify-content-between">
       <div className="d-flex flex-column">
         <Link to={`/detail/${id}`} className="text-decoration-none">
+          <b className="corazon"><img src="/images/heartFit.svg" alt='add heart' /></b>
           <ProductIMG
             src={image}
             alt={image}
@@ -50,7 +51,7 @@ const Card = ({ name, image, price, id, stock, product }: props) => {
       </div>
       <CardFooter className="card-footer d-flex align-items-end justify-content-between">
         <h5 className="m-3">${price}</h5>
-        {product.count === stock || productInCart && productInCart.count === stock? (
+        {product.count === stock || productInCart && productInCart.count === stock ? (
           <button type="button" className="btn btn-primary h-100" disabled>
             <img src={cartIcon} alt=""></img>
           </button>

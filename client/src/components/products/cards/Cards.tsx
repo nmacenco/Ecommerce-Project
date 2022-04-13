@@ -68,6 +68,7 @@ const Cards = (): JSX.Element => {
   }
 
   useEffect(() => {
+    dispatch(getSubcategories())
     dispatch(chargeFilter(copyProductsList))
   }, [filteredProductList.length > copyProductsList.length])
 
