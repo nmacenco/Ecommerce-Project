@@ -21,10 +21,10 @@ const Login = (): JSX.Element => {
 
 
     useEffect(()=> {
-        dispatch(setPage(1))
+        dispatch(setPage(0))
         return ()=> {
           
-          dispatch(setPage(0))
+          dispatch(setPage(1))
         }
       }, [])
 

@@ -48,6 +48,7 @@ export enum TYPES_PRODUCT {
   RESET_PRODUCTS = "RESET_PRODUCTS",
   PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND',
   FILTER_BY_BRAND = "FILTER_BY_BRAND",
+  FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
 }
 
 export enum TYPES_CART {
@@ -283,6 +284,11 @@ export interface ORDER_PRODUCTS {
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
   payload: any;
 }
+export interface FILTER_PRODUCTS {
+  type: TYPES_PRODUCT.FILTERED_PRODUCTS;
+  //aca deberia ir un objeto con value(strinfg) y products(array de productos)
+  payload: any;
+}
 export interface CHARGE_FILTERS {
   type: TYPES_PRODUCT.CHARGE_FILTERS;
   payload: Product[];
@@ -378,7 +384,7 @@ export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER | GET
 
 export type AdminUserActions = ADMIN_USER | ADMIN_RESET_USER;
 
-export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | CHARGE_FILTERS | REMOVE_FILTER | FILTERED_CAT_PRODUCTS | FILTERED_BRAND_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
+export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | FILTER_PRODUCTS | CHARGE_FILTERS | REMOVE_FILTER | FILTERED_CAT_PRODUCTS | FILTERED_BRAND_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
 
 export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES | RESET_SUBCATEGORIES;
 
