@@ -17,6 +17,7 @@ import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../..
 import { execPath } from "process";
 import { getSubcategories } from "../../../redux/actions/categories";
 import { getProducts } from "../../../redux/actions/products";
+import { setPage } from "../../../redux/actions/setPage";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -25,8 +26,8 @@ export interface ORDER {
 
 const Cards = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  let currentPage = useSelector((state: State) => state.page);
   const [order, setOrder] = useState<string>("");
 
   const productsList = useSelector((state: State) => state.products.products);
@@ -38,10 +39,10 @@ const Cards = (): JSX.Element => {
     // if (typeorder !== 'asc-price order' && typeorder !== 'des-price order' && typeorder !== 'des-name order' && typeorder !== 'asc-name order' && typeorder !== 'Order by order') {
     //   checkFilterBox(typeorder)
     // }
-    setCurrentPage(numberOfPage);
+    // setCurrentPage(numberOfPage);
+    dispatch(setPage(numberOfPage))
   };
   const orders = (typeorder: string): void => {
-
     setOrder(typeorder);
   };
 
@@ -71,7 +72,8 @@ const Cards = (): JSX.Element => {
   // implementing react paginate
 
   const handlePageClick = (data: Data_Paginate): void => {
-    setCurrentPage(data.selected + 1);
+    dispatch(setPage(data.selected + 1))
+    // setCurrentPage(data.selected + 1);
   };
 
   // const resetFilter = (e: React.MouseEvent<HTMLButtonElement>): void => {

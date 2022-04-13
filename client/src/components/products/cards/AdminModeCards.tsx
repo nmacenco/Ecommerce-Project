@@ -13,6 +13,7 @@ import NotFound from "../../notFound/NotFound";
 import Pagination from "./pagination/Pagination";
 import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 import { deleteProduct } from "../../../redux/actions/admin";
+import { setPage } from "../../../redux/actions/setPage";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -22,7 +23,8 @@ export interface ORDER {
 
 const AdminModeCards = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  let currentPage = useSelector((state: State) => state.page);
   const [order, setOrder] = useState<string>("");
   // const [load, setLoad] = useState<boolean>(false)
   const [Admorders, setAdmOrders] = useState<string>("");
@@ -33,7 +35,8 @@ const AdminModeCards = (): JSX.Element => {
   // const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
 
   const page = (numberOfPage: number): void => {
-    setCurrentPage(numberOfPage);
+    // setCurrentPage(numberOfPage);
+    dispatch(setPage(numberOfPage))
   };
   const orders = (typeorder: string): void => {
 
@@ -59,7 +62,8 @@ const AdminModeCards = (): JSX.Element => {
   //   : (newProductsList = copyProductsList.slice(firstProduct, finalProduct));
 
   const handlePageClick = (data: Data_Paginate) => {
-    setCurrentPage(data.selected + 1);
+    // setCurrentPage(data.selected + 1);
+    dispatch(setPage(data.selected + 1))
   };
 
   // useEffect(() => {
