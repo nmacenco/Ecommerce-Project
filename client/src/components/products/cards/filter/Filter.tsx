@@ -12,7 +12,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const location = useLocation()
   const user = useSelector((state: State) => state.user);
   const allProducts = useSelector((state: State) => state.products.products);
-  const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
+  // const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
   let counter: any[] = []
   useEffect(() => {
     dispatch(getProducts());
@@ -21,22 +21,23 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
   function handleSort(e: React.ChangeEvent<HTMLSelectElement>): void {
     e.preventDefault();
     dispatch(productNotFound(false))
-    filteredProducts.length > 0 ? 
-    dispatch(orderProducts(e.target.value, filteredProducts)) :
+    // filteredProducts.length > 0 ? 
+    // dispatch(orderProducts(e.target.value, filteredProducts)) :
     dispatch(orderProducts(e.target.value, allProducts));
-
     page(1)
     orders(`${e.target.value} order`);
+    e.target.value = e.target[0].innerHTML
 
   }
   return (
     <div className="card mt-3">
       <div className=" d-flex">
         <Select
+          defaultValue={"Order by"}
           className="form-select"
           onChange={(e) => handleSort(e)}
         >
-          <option>Order by</option>
+          <option disabled hidden>Order by</option>
           <option value="asc-price">Higher price</option>
           <option value="des-price">Lower price</option>
           <div className="dropdown-divider"></div>
@@ -46,19 +47,27 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
         {
           location.pathname === "/productsAdminMode" ?
             <Select
+            defaultValue={"Active or Not"}
               className="form-select"
               onChange={(e) => handleSort(e)}
             >
-              <option>Active or Not</option>
+              <option disabled hidden>Active or Not</option>
               <option value="isActive">Active</option>
               <option value="notActive">Not active</option>
             </Select>
             : ""
         }
 
-        <p className="ms-auto m-3">{!filteredProducts.length ? '' : filteredProducts.map(product => {
+        <p className="ms-auto m-3">{!allProducts.length ? '' : allProducts.map(product => {
           if (product.isActive) { counter.push(product.id) }
-        })} {counter.length}  products </p>
+        })} {counter.length}  
+        {
+          location.pathname === "/productsAdminMode" ? ' Active Products' : ' Products'
+        }
+         </p>
+        {/* <p className="ms-auto m-3">{!filteredProducts.length ? '' : filteredProducts.map(product => {
+          if (product.isActive) { counter.push(product.id) }
+        })} {counter.length}  products </p> */}
       </div>
     </div>
   );
