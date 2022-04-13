@@ -126,6 +126,7 @@ const bulkCreateUsers = async () => {
           role: data[i].role,
           isActive: data[i].isActive,
           CountryId: data[i].CountryId,
+          needsPasswordReset: data[i].needsPasswordReset,
         },
       });
     }

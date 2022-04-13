@@ -2,28 +2,25 @@ import styled from "styled-components";
 
 export const ContainerLog = styled.div`
   width: 100%;
-  height: calc(100vh - 130px);
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 130px;
+  margin-top: 50px;
 `;
 
 export const LogForm = styled.form`
-  /* height: 80%; */
-  background-color: #43494e;
-  /* border-radius: 5px; */
+  background-color: #e1e1e1;
   padding: 10px 20px;
 
-  header {
-    margin: 20px 10px;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-  }
+  // header {
+  //   margin: 20px 10px;
+  //   text-align: center;
+  //   color: white;
+  //   font-weight: bold;
+  //   font-size: 1.2rem;
+  //   text-transform: uppercase;
+  // }
 
   .div-inputs {
     display: flex;
@@ -37,6 +34,7 @@ export const LogForm = styled.form`
   }
   .div-data {
     display: flex;
+    align-items: center;
     div:nth-child(3) {
       margin-left: 10px;
     }
@@ -47,9 +45,8 @@ export const LogForm = styled.form`
 `;
 
 export const Content = styled.div`
-  width: 96%;
-  margin: 10px 2%;
-  /* height: 300px; */
+  // width: 96%;
+  // margin: 10px 2%;
 
   input {
     width: 100%;
@@ -84,7 +81,7 @@ export const Content = styled.div`
 
   .google {
     padding: 7px 12px;
-    border-radius: 40px;
+    border-radius: 20px;
     width: 100%;
     background-color: #fff;
     display: flex;
@@ -101,17 +98,19 @@ export const Content = styled.div`
         height: 100%;
       }
     }
-    span {
-      font-weight: bold;
-    }
   }
-  .google:active{
+  .google:active {
     box-shadow: 0 0 0 0.25rem rgb(206 198 198 / 25%);
   }
 
-  .form-log{
+  .form-log {
     width: 50%;
     margin: 10px 25%;
   }
+`;
 
+export const Forgot = styled.div`
+  &:hover {
+    color: red;
+  }
 `;

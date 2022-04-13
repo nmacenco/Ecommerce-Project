@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CategoriesContainer } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
-import { chargeFilter } from "../../../redux/actions/filterByCategory";
+import { chargeFilter, filterProducts } from "../../../redux/actions/filterByCategory";
 import { ORDER } from "../cards/Cards";
 import { getBrands } from "../../../redux/actions/brands";
 
@@ -104,7 +104,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
         </div>
       </div>
 
-      <div className="accordion-item">
+      {/* <div className="accordion-item">
         <h2 className="accordion-header" id="headingTwo">
           <button
             className="accordion-button collapsed"
@@ -125,7 +125,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
         >
           <div className="accordion-body"></div>
         </div>
-      </div>
+      </div> */}
       <div className="accordion-item">
         <h2 className="accordion-header" id="headingThree">
           <button

@@ -1,53 +1,47 @@
 import React from 'react';
-import { RewieHeader, RewiewContainer, Rewiewstars } from './ReviewStyle';
+import { RewieHeader, RewiewContainer, Rewiewstars, RewiewstarStatic } from './ReviewStyle';
 
-const Rewies = (): JSX.Element => {
+const starsRating = [1, 2, 3, 4, 5]
 
 
-    const handleClick=(event:any)=>{
+interface Prop {
+    name: string,
+    texto: string,
+    stars: number,
+    title: string
+}
 
-        event.preventDefault();
-        console.log(event.target);
 
-    }
+const Rewies = ({ texto, stars, title, name }: Prop): JSX.Element => {
+
 
     return (
         <RewiewContainer className="card border-secondary mb-3" >
             <RewieHeader className="card-header">
                 <div className='d-img-rewiew'>
+                    {/* <div>
+                        <img src='https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-de-un-hombre-en-una-camisa-avatar-y-cara-solo-icono-en-estilo-de-dibujos-animados-vector-s%C3%ADmb.jpg' />
+                    </div> */}
                     <div>
-                        <img src='https://cdn-icons-png.flaticon.com/512/149/149071.png' />
-                    </div>
-                    <div>
-                        Pedrito Suarez Valdez
+                        {name ? name : 'anonymous'}
                     </div>
                 </div>
-                <Rewiewstars >
+                <RewiewstarStatic >
 
-                    <input type='radio' name='star' id='star1' /><label htmlFor='star1'>
-                    </label>
-                    <input type='radio' name='star' id='star2' /><label htmlFor='star2'>
-                    </label>
-                    <input type='radio' name='star' id='star3' /><label htmlFor='star3'>
-                    </label>
-                    <input type='radio' name='star' id='star4' /><label htmlFor='star4'>
-                    </label>
-                    <input type='radio' name='star' id='star5' /><label htmlFor='star5'>
-                    </label>
-                    
-                </Rewiewstars>
+                    {starsRating.map((star, i) => {
+                        let classe = (stars <= 0) ? 'dark-star' : 'rating';
+                        stars--;
+
+                        return (
+                            <b className={classe} />
+                        )
+                    })}
+
+                </RewiewstarStatic>
             </RewieHeader>
             <div className="card-body">
-                <h4 className="card-title">Title?</h4>
-                <p className="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Consequuntur hic alias deleniti earum ad ipsam libero odio aut voluptatem
-                    enim, magnam quae repellat illum qui mollitia, cum neque tempora quam?
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Consequuntur hic alias deleniti earum ad ipsam libero odio aut voluptatem
-                    enim, magnam quae repellat illum qui mollitia, cum neque tempora quam?
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Consequuntur hic alias deleniti earum ad ipsam libero odio aut voluptatem
-                    enim, magnam quae repellat illum qui mollitia, cum neque tempora quam? </p>
+                <h4 className="card-title">{title ? title : ''}</h4>
+                <p className="card-text">{texto ? texto : ''} </p>
             </div>
         </RewiewContainer>
     )

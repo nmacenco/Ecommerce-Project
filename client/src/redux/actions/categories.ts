@@ -35,6 +35,38 @@ export function createCategories(category: Category) {
 
 export function createSubcategories(subcategory: FORM_SUB) {
   return async function (dispatch: Dispatch) {
+    console.log(subcategory)
     await axios.post(URL + "/subcategories", subcategory)
+  }
+}
+
+export const resetSubcategories = () => {
+  try {
+    return ({
+      type: TYPES_CATEGORIES.RESET_SUBCATEGORIES,
+      payload: []
+    });
+  } catch (error) {
+    alert(error);
+  }
+};
+
+export const deleteCategory = (id: string) => {
+  try {
+    return async function (dispatch: Dispatch) {
+      await axios.delete(URL + `/categories/${id}`)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteSubcategory = (id: string) => {
+  try {
+    return async function (dispatch: Dispatch) {
+      await axios.delete(URL + `/subcategories/${id}`)
+    }
+  } catch (error) {
+    console.log(error)
   }
 }

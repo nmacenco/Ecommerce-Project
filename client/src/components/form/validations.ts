@@ -59,6 +59,10 @@ export function errorsCheck(props: ProductForm): Errors | Boolean{
     flag = true;
     errors.price = "Price required.";
   }
+  if (props.price > 99999) {
+    flag = true;
+    errors.price = "Max price is $100.000.";
+  }
 
   //PRICE
   if (!props.SubcategoryId) {

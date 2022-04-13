@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Filter from "./filter/Filter";
 import { CardsContainer, ReactPaginateContainer } from "./CardsStyles";
-// import Pagination from "./pagination/Pagination";
-// import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
 import { getProducts } from "../../../redux/actions/products";
@@ -14,11 +12,12 @@ import AdminModeCard from "./card/AdminModeCard";
 import NotFound from "../../notFound/NotFound";
 import Pagination from "./pagination/Pagination";
 import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
+import { deleteProduct } from "../../../redux/actions/admin";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
   orders: (typeorder: string) => void;
-  AdmOrders: (typeorder: string) => void;
+  AdmOrders: (typeorder: number) => void;
 }
 
 const AdminModeCards = (): JSX.Element => {
@@ -40,7 +39,7 @@ const AdminModeCards = (): JSX.Element => {
     setCurrentPage(numberOfPage);
   };
   const orders = (typeorder: string): void => {
-    if (typeorder !== 'asc-price order' && typeorder !== 'des-price order' && typeorder !== 'des-name order' && typeorder !== 'asc-name order' && typeorder !== 'Order by order') {
+    if (typeorder !== 'isActive order' && typeorder !== 'notActive order' && typeorder !== 'asc-price order' && typeorder !== 'des-price order' && typeorder !== 'des-name order' && typeorder !== 'asc-name order' && typeorder !== 'Order by order' && typeorder !== 'Active or Not order') {
       let existCat = allSubcategories.filter((e: Subcategory) => e.name === typeorder)
       if (existCat.length === 1) {
         setFilterBox({ ...filterBox, subcategory: typeorder })
@@ -65,20 +64,19 @@ const AdminModeCards = (): JSX.Element => {
   const AdmOrders = (typeorder: string): void => {
     setAdmOrders(typeorder);
   };
+
   useEffect(() => {
-    // if (!productsList.length) {
     dispatch(getProducts());
-    // }
   }, [Admorders]);
+
+
 
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
-  // newProductsList = productsList.slice(firstProduct, finalProduct);
-  // let newProductsList: Product[] = [];
   filteredProductList.length > 0
     ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
-    : (newProductsList = productsList.slice(firstProduct, finalProduct));
+    : (newProductsList = copyProductsList.slice(firstProduct, finalProduct));
 
   const handlePageClick = (data: Data_Paginate) => {
     setCurrentPage(data.selected + 1);
@@ -133,11 +131,13 @@ const AdminModeCards = (): JSX.Element => {
                       <th scope="col">Image</th>
                       <th scope="col">Product Name</th>
                       <th scope="col">Price</th>
+                      <th scope="col">State</th>
                       <th scope="col">Delete</th>
                       <th scope="col">Edit </th>
                     </tr>
                   </thead>
                   {newProductsList.map((e: Product) => {
+
                     return (
                       <AdminModeCard
                         name={e.name}
@@ -145,6 +145,7 @@ const AdminModeCards = (): JSX.Element => {
                         price={e.price}
                         key={e.id}
                         id={e.id}
+                        isActive={e.isActive}
                         AdmOrders={AdmOrders}
                         page={page}
                       />
@@ -158,130 +159,14 @@ const AdminModeCards = (): JSX.Element => {
                   productList={filteredProductList.length}
                   handlePageClick={handlePageClick}
                 ></Pagination>
-                {/* <ReactPaginate
-                  pageCount={productsList.length / 32}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                ></ReactPaginate> */}
               </ReactPaginateContainer>
             </>
           ) : (
             <NotFound eliminateFilters={eliminateFilters}></NotFound>
           )}
-
-          {/* {filteredProductList.length !== 0 ? (
-            <>
-              <div className="">
-                <table className="table table-hover ">
-                  <thead>
-                    <tr>
-                      <th scope="col">Image</th>
-                      <th scope="col">Product Name</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Delete</th>
-                      <th scope="col">Edit </th>
-                    </tr>
-                  </thead>
-                  {newProductsList.map((e: Product) => {
-                    return (
-                      <AdminModeCard
-                        name={e.name}
-                        image={e.image}
-                        price={e.price}
-                        id={e.id}
-                        AdmOrders={AdmOrders}
-                        page={page}
-                      />
-                    );
-                  })}
-                </table>
-                );
-              </div>
-              <ReactPaginateContainer>
-                <ReactPaginate
-                  pageCount={filteredProductList.length / 32}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                ></ReactPaginate>
-              </ReactPaginateContainer>
-            </>
-          ) : newProductsList.length !== 0 ? (
-            <>
-              <div className="">
-                <table className="table table-hover ">
-                  <thead>
-                    <tr>
-                      <th scope="col">Image</th>
-                      <th scope="col">Product Name</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Delete</th>
-                      <th scope="col">Edit </th>
-                    </tr>
-                  </thead>
-                  {newProductsList.map((e: Product) => {
-                    return (
-                      <AdminModeCard
-                        name={e.name}
-                        image={e.image}
-                        price={e.price}
-                        id={e.id}
-                        AdmOrders={AdmOrders}
-                        page={page}
-                      />
-                    );
-                  })}
-                </table>
-              </div>
-              <ReactPaginateContainer>
-                <ReactPaginate
-                  pageCount={productsList.length / 32}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                ></ReactPaginate>
-              </ReactPaginateContainer>
-            </>
-          ) : (
-            <Loading></Loading>
-          )} */}
         </CardsContainer>
       </div>
     </ProductsContainer>
-  );
+  )
 };
 export default AdminModeCards;

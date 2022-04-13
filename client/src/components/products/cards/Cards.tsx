@@ -15,6 +15,7 @@ import { ProductsContainer } from "../ProductsStyles";
 import NotFound from "../../notFound/NotFound";
 import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 import { execPath } from "process";
+import { getSubcategories } from "../../../redux/actions/categories";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -34,6 +35,7 @@ const Cards = (): JSX.Element => {
   const copyProductsList = useSelector((state: State) => state.products.copyProducts)
   const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
   const allSubcategories = useSelector((state: State) => state.categories.subcategories);
+  let count: string[] = []
 
   const page = (numberOfPage: number): void => {
     setCurrentPage(numberOfPage);
@@ -66,16 +68,25 @@ const Cards = (): JSX.Element => {
   }
 
   useEffect(() => {
+    dispatch(getSubcategories())
+    dispatch(chargeFilter(copyProductsList))
+  }, [filteredProductList.length > copyProductsList.length])
+
+  useEffect(() => {
     setTimeout(() => {
       LoadCharge(true)
     }, 500)
   }, [setLoad])
+
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
-  filteredProductList.length > 0
-    ? (newProductsList = filteredProductList.slice(firstProduct, finalProduct))
-    : (newProductsList = productsList.slice(firstProduct, finalProduct))
+  let activeProductsList: Product[] = []
+  if (filteredProductList.length > 0) {
+    newProductsList = filteredProductList.filter(product => product.isActive)
+    activeProductsList = newProductsList.slice(firstProduct, finalProduct)
+  }
+  else (activeProductsList = productsList.slice(firstProduct, finalProduct))
 
   // implementing react paginate
 
@@ -100,7 +111,6 @@ const Cards = (): JSX.Element => {
       brand: ""
     })
   }
-
   return (
     <ProductsContainer className="row row-cols-xl-2 row-cols-md-1 mx-auto">
       <div className="col-xl-3 col-sm-12">
@@ -114,15 +124,17 @@ const Cards = (): JSX.Element => {
             load === false ?
               <Loading></Loading>
               :
-              filteredProductList.length > 0 ?
+              newProductsList.length > 0 ?
                 <>
                   {filterBox.subcategory.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.subcategory)} className="btn btn-primary mt-2 mr-2">{filterBox.subcategory}</button></span> : ""}
                   {filterBox.brand.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.brand)} className="btn btn-primary mt-2 mr-2">{filterBox.brand}</button></span> : ""}
                   <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
-                    {newProductsList.map((e: Product) => {
+                    {activeProductsList.map((e: Product) => {
                       return (
                         <div className="col" key={e.id}>
                           <Card
+                            product={e}
+                            stock={e.stock}
                             name={e.name}
                             image={e.image}
                             price={e.price}
@@ -137,40 +149,14 @@ const Cards = (): JSX.Element => {
                       productList={filteredProductList.length}
                       handlePageClick={handlePageClick}
                     ></Pagination>
-                    {/* <ReactPaginate
-                  pageCount={Math.ceil(productsList.length / 32)}
-                  nextLabel={">"}
-                  previousLabel={"<"}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                ></ReactPaginate> */}
                   </ReactPaginateContainer>
                 </> : (
                   <NotFound eliminateFilters={eliminateFilters}></NotFound>
                 )
-
           }
         </CardsContainer>
       </div>
     </ProductsContainer>
-  );
+  )
 };
 export default Cards;
-// function removeFilter(brand: any): any {
-//   throw new Error("Function not implemented.");
-// }
-
-// function chargeFilter(copyProductsList: Product[]): any {
-//   throw new Error("Function not implemented.");
-// }
-

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import swal from "sweetalert";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
 import { postProduct } from "../../redux/actions/admin";
 import { getBrands } from "../../redux/actions/brands";
 import {
@@ -9,6 +10,7 @@ import {
   getSubcategories,
 } from "../../redux/actions/categories";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
+import { resetPoducts } from "../../redux/actions/products";
 import {
   Brand,
   Category,
@@ -18,7 +20,7 @@ import {
 import { State } from "../../redux/reducers";
 import { Textarea } from "../detail/edit/EditProductStyles";
 import { FormContainer } from "./FormCreateStyles";
-import { Errors, errorsCheck, } from "./validations";
+import { errorsCheck } from "./validations";
 
 export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
@@ -46,6 +48,8 @@ export default function FromCreate(): JSX.Element {
   const [subcategoriesFiltered, setSubcategoriesFiltered] = useState<
     Subcategory[]
   >([]);
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+
 
   useEffect(() => {
     dispatch(getCategories());
@@ -77,13 +81,20 @@ export default function FromCreate(): JSX.Element {
     let errors = errorsCheck(product);
     setErrorsList(errors)
     if (errors === false) {
-      dispatch(postProduct(product));
-      dispatch(resetFilterProducts())
+      dispatch(postProduct(product , userInStorage.token));
       swal({
         title: "Product created successfully",
-        icon: "success"
+        icon: "success",
+        buttons: {
+          confirm: true,
+        },
+      }).then((value) => {
+        if (value) {
+          dispatch(resetFilterProducts())
+          dispatch(resetPoducts())
+          navigate("/products")
+        }
       })
-      navigate("/products")
     } else {
       swal({
         title: "Complete the form properly.",
@@ -168,7 +179,7 @@ export default function FromCreate(): JSX.Element {
                 return <option value={category.id}>{category.name}</option>;
               })}
             </select>
-            
+
           </div>
           <div className="form-group flex-fill ms-2">
             <label className="form-label mt-4">Subcategory</label>
