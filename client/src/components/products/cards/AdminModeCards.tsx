@@ -162,7 +162,7 @@ const AdminModeCards = (): JSX.Element => {
               </ReactPaginateContainer>
             </>
           ) : (
-            <NotFound eliminateFilters={eliminateFilters}></NotFound>
+            <NotFound ></NotFound>
           )}
         </CardsContainer>
       </div>

@@ -11,6 +11,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation()
   const user = useSelector((state: State) => state.user);
+  const allProducts = useSelector((state: State) => state.products.products);
   const filteredProducts = useSelector((state: State) => state.filteredProducts.filteredProducts);
   let counter: any[] = []
   useEffect(() => {
@@ -19,8 +20,11 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
 
   function handleSort(e: React.ChangeEvent<HTMLSelectElement>): void {
     e.preventDefault();
-    // dispatch(productNotFound(false))
-    dispatch(orderProducts(e.target.value, filteredProducts))
+    dispatch(productNotFound(false))
+    filteredProducts.length > 0 ? 
+    dispatch(orderProducts(e.target.value, filteredProducts)) :
+    dispatch(orderProducts(e.target.value, allProducts));
+
     page(1)
     orders(`${e.target.value} order`);
 

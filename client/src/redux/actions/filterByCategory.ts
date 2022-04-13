@@ -23,22 +23,22 @@ export const removeFilter = (event: string) => {
   }
 }
 
-export const filterProducts = (event: string) => {
+export const filterProducts = (value: string) => {
   try {
     return ({
-      type: TYPES_PRODUCT.FILTERED_CAT_PRODUCTS,
-      payload: event
+      type: TYPES_PRODUCT.FILTERED_PRODUCTS,
+      payload: value
     });
   } catch (error) {
     alert(error);
   }
 };
 
-export const filterByBrand = (event: string) => {
+export const filterByBrand = (value: string) => {
   try {
     return ({
-      type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS,
-      payload: event
+      type: TYPES_PRODUCT.FILTER_BY_BRAND,
+      payload: value
     });
   } catch (error) {
     alert(error);
