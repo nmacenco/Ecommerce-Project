@@ -21,6 +21,8 @@ import AdminUserMode from "./components/users/AdminPanel/AdminModeUsers";
 import EmailResetPassword from './components/users/EmailResetPassword'
 import { ResetPwd } from "./components/users/ResetPwd";
 import UserProfile from "./components/users/profile/UserProfile";
+import WishList from "./components/users/wishList/WishList";
+import DeleteCategories from "./components/products/categories/delete/DeleteCategories";
 import ValidateAccount from "./components/users/ValidateAccount";
 import OrdersHistory from "./components/users/ordersHistory/OrdersHistory";
 
@@ -57,8 +59,10 @@ function App(): JSX.Element {
           <Route path="/emailReset" element={<EmailResetPassword />} />
           <Route path="/resetpwd" element={<ResetPwd />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/validateAccount/:id" element={<ValidateAccount />} /> 
           <Route path="/ordersHistory" element={<OrdersHistory/>}/>
+          <Route path="/wishList" element={<WishList />} />
+          <Route path="/deleteCategory" element={<DeleteCategories />} />
+          <Route path="/validateAccount/:id" element={<ValidateAccount />} />
         </Routes>
       </BrowserRouter>
     </div>

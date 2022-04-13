@@ -39,7 +39,7 @@ const AdminModeCards = (): JSX.Element => {
     setCurrentPage(numberOfPage);
   };
   const orders = (typeorder: string): void => {
-    if (typeorder !== 'asc-price order' && typeorder !== 'des-price order' && typeorder !== 'des-name order' && typeorder !== 'asc-name order' && typeorder !== 'Order by order') {
+    if (typeorder !== 'isActive order' && typeorder !== 'notActive order' && typeorder !== 'asc-price order' && typeorder !== 'des-price order' && typeorder !== 'des-name order' && typeorder !== 'asc-name order' && typeorder !== 'Order by order' && typeorder !== 'Active or Not order') {
       let existCat = allSubcategories.filter((e: Subcategory) => e.name === typeorder)
       if (existCat.length === 1) {
         setFilterBox({ ...filterBox, subcategory: typeorder })
@@ -137,19 +137,19 @@ const AdminModeCards = (): JSX.Element => {
                     </tr>
                   </thead>
                   {newProductsList.map((e: Product) => {
-                    
-                      return (
-                        <AdminModeCard
-                          name={e.name}
-                          image={e.image}
-                          price={e.price}
-                          key={e.id}
-                          id={e.id}
-                          isActive = {e.isActive}
-                          AdmOrders={AdmOrders}
-                          page={page}
-                        />
-                      );
+
+                    return (
+                      <AdminModeCard
+                        name={e.name}
+                        image={e.image}
+                        price={e.price}
+                        key={e.id}
+                        id={e.id}
+                        isActive={e.isActive}
+                        AdmOrders={AdmOrders}
+                        page={page}
+                      />
+                    );
                   })}
                 </table>
                 );
@@ -167,6 +167,6 @@ const AdminModeCards = (): JSX.Element => {
         </CardsContainer>
       </div>
     </ProductsContainer>
-  );
+  )
 };
 export default AdminModeCards;

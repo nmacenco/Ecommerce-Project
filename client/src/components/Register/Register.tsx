@@ -14,8 +14,8 @@ interface Inputs {
   lastname: string;
   email: string;
   passUser: string;
-  billing_address: string;
-  default_shipping_address: string;
+  // billing_address: string;
+  // default_shipping_address: string;
   countryId: string;
 }
 
@@ -30,8 +30,8 @@ const Register = (): JSX.Element => {
     lastname: "",
     name: "",
     passUser: "",
-    billing_address: "",
-    default_shipping_address: "",
+    // billing_address: "",
+    // default_shipping_address: "",
     countryId: "",
   });
   const [error, setError] = useState<Inputs>({
@@ -39,8 +39,8 @@ const Register = (): JSX.Element => {
     lastname: "",
     name: "",
     passUser: "",
-    billing_address: "",
-    default_shipping_address: "",
+    // billing_address: "",
+    // default_shipping_address: "",
     countryId: "",
   });
   // const [countries, setCountries] = useState<Array<any>>([])
@@ -62,7 +62,6 @@ const Register = (): JSX.Element => {
   const RegisterFetch = (event: any) => {
     event.preventDefault();
     const res = validateForms(error, inputs);
-    // alert("envio de info");
 
     if (res) {
       return alert(res);
@@ -72,28 +71,20 @@ const Register = (): JSX.Element => {
       surname: inputs.lastname,
       email: inputs.email,
       password: inputs.passUser,
-      billing_address: inputs.billing_address,
-      default_shipping_address: inputs.default_shipping_address,
+      // billing_address: inputs.billing_address,
+      // default_shipping_address: inputs.default_shipping_address,
       CountryId: Number(inputs.countryId),
     };
-    // console.log('USUARIO: ', newUser);
     if (!user) {
       dispatch(
         CreateUser(newUser, () => {
-            navigate("/login");
         })
         );
           swal({
             text: "Please check your inbox to validate your account",
             icon: "success",
-            buttons: {
-              confirm: true,
-            },
-          }).then((value) => {
-            if (value) {
-            }
-        });
-
+          })
+          navigate("/login")
     }
   };
 
@@ -107,13 +98,6 @@ const Register = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(getCountries());
-    // fetch('http://localhost:3001/api/countries')
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         // console.log(data.countries)
-    //         data.countries && setCountries(data.countries);
-    //     })
-    //     .catch(error => console.log(error))
   }, []);
 
   return (
@@ -142,9 +126,6 @@ const Register = (): JSX.Element => {
           )}
         </div>
         <div>
-          {/* <input type='text' placeholder='Country id' name='countryId' onChange={FormChange} className={checkError(error.countryId)} />
-                    {error.countryId && <b className='invalid-feedback'>{error.countryId}</b>} */}
-          {/* <div className="form-group"> */}
           <select
             className="form-select"
             id="select"
@@ -152,7 +133,7 @@ const Register = (): JSX.Element => {
             onChange={FormChange}
           >
             {countries.length &&
-              countries.map((country, i) => {
+              countries.map((country : any, i : number) => {
                 return (
                   <option value={country.id} key={country.id}>
                     {country.name}
@@ -160,7 +141,6 @@ const Register = (): JSX.Element => {
                 );
               })}
           </select>
-          {/* </div> */}
         </div>
       </div>
       <div className="div-inputs">
@@ -188,7 +168,7 @@ const Register = (): JSX.Element => {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <input
           type="text"
           placeholder="Shipping Address..."
@@ -199,8 +179,8 @@ const Register = (): JSX.Element => {
         {error.billing_address && (
           <b className="invalid-feedback">{error.billing_address}</b>
         )}
-      </div>
-      <div>
+      </div> */}
+      {/* <div>
         <input
           type="text"
           placeholder="Default shipping address..."
@@ -211,21 +191,21 @@ const Register = (): JSX.Element => {
         {error.default_shipping_address && (
           <b className="invalid-feedback">{error.default_shipping_address}</b>
         )}
-      </div>
+      </div> */}
       <div className="google form-log" onClick={SinUpGoogle}>
         <div>
           <img src="https://freesvg.org/img/1534129544.png" />
         </div>
         <span>Continue with Google</span>
       </div>
-      <article>
+      <div className="text-center m-3">
         {validateForms(error, inputs).length ? (
-          <button className="btn btn-primary button-links link-Router" disabled>
+          <button className="btn btn-primary button-links link-Router mx-2" disabled>
             Submit
           </button>
         ) : (
           <button
-            className="btn btn-primary button-links link-Router"
+            className="btn btn-primary button-links link-Router mx-2"
             onClick={RegisterFetch}
           >
             Submit
@@ -233,11 +213,11 @@ const Register = (): JSX.Element => {
         )}
         <Link
           to="/login"
-          className="btn btn-secondary link-Router button-links"
+          className="btn btn-secondary link-Router button-links mx-2"
         >
           Login
         </Link>
-      </article>
+      </div>
     </Form>
   );
 };

@@ -109,6 +109,9 @@ export default function Detail() {
                       Add to cart
                     </button>
                   )}
+                  <button className="btn btn-danger disabled wish">
+                    Add to WishList
+                  </button>
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
                       <button
