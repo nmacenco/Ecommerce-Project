@@ -16,7 +16,7 @@ const { isLoggedIn, isAdmin } = require("../middleware/auth");
 const orderRouter = express.Router();
 
 //user
-orderRouter.post("/auth/orders/", createOrder);
+orderRouter.post("/auth/orders/", createOrder); //a new product is added to the cart here
 
 orderRouter.put("/auth/orders/:id", isLoggedIn, updateOrderState);
 orderRouter.get("/auth/orders/user/:id", isLoggedIn, getUserOrdersServer);
