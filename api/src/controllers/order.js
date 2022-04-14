@@ -34,8 +34,8 @@ const getOrders = async (req, res) => {
         detail:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-              return { detail };
-            })
+                return { detail };
+              })
             : [],
       };
     });
@@ -71,8 +71,7 @@ const getUserOrdersServer = async (req, res) => {
           },
         ],
       });
-
-      if (Orders.length <= 0) {
+      if (!Orders.length) {
         res.status(404).send({ errorMsg: "Oders not found." });
       }
       Orders = Orders.map((Order) => {
@@ -86,8 +85,8 @@ const getUserOrdersServer = async (req, res) => {
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                return { detail };
-              })
+                  return { detail };
+                })
               : [],
         };
       });
@@ -108,6 +107,7 @@ const getUserOrdersServer = async (req, res) => {
 
 const createOrder = async (req, res) => {
   const UserId = req.userID;
+  // const { UserId } = req.params;
   try {
     let { allProductsOrder } = req.body;
 
@@ -136,11 +136,7 @@ const createOrder = async (req, res) => {
             allProductsOrder[index].amount
           );
         }
-<<<<<<< HEAD
-      } 
-=======
       }
->>>>>>> cdadf85a7615308d6ea9f4659d28c0d0e704f307
       res.status(201).send({
         successMsg: "Here are your new order.",
         data: newOrderCreated,
@@ -217,8 +213,8 @@ const getActiveOrder = async (req, res) => {
       detail:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-            return { detail };
-          })
+              return { detail };
+            })
           : [],
     };
     res
@@ -421,8 +417,8 @@ const orderuseractive = async (id) => {
       detail:
         activeUserOrder.Order_details.length > 0
           ? activeUserOrder.Order_details.map((detail) => {
-            return { detail };
-          })
+              return { detail };
+            })
           : [],
     };
     return { activeUserOrder };
@@ -455,7 +451,7 @@ const getUserOrders = async (id) => {
           },
         ],
       });
-      if (dataOrders.length <= 0) {
+      if (!dataOrders.length) {
         return "This user has no orders.";
       }
       dataOrders = dataOrders.map((Order) => {
@@ -469,8 +465,8 @@ const getUserOrders = async (id) => {
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                return { detail };
-              })
+                  return { detail };
+                })
               : [],
         };
       });
