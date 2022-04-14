@@ -54,7 +54,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
         page(1)
         AdmOrders(stringId)
         swal({
-          text: "Product deleted",
+          text: "Product not active",
           icon: "success"
         })
       }
@@ -62,8 +62,32 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
 
   }
   function activateHandler (e: React.MouseEvent<HTMLButtonElement>) : void {
-    const data = {isActive:true}
-    dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
+    e.preventDefault();
+    swal({
+      title: "Are you sure?",
+      text: "This product is now going to be active!",
+      icon: "success",
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: true
+      }
+    }).then((value) => {
+      if (value) {
+        const data = {isActive:true}
+        dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
+        setTimeout(()=> {
+          dispatch(resetPoducts())
+        },200)
+        page(1)
+        AdmOrders(stringId)
+        swal({
+          text: "Product active",
+          icon: "success"
+        })
+      }
+    })
+
   }
 
 

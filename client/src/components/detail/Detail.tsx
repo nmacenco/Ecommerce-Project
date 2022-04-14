@@ -59,8 +59,9 @@ export default function Detail() {
       },
     }).then((value) => {
       if (value) {
-        dispatch(deleteProduct(id, userInStorage.token));
-        dispatch(resetFilterProducts())
+        const data = {isActive : false}
+        dispatch(deleteProduct(id,data, userInStorage.token));
+        // dispatch(resetFilterProducts())
         dispatch(resetPoducts())
         navigate("/products");
         swal({

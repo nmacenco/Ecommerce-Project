@@ -22,7 +22,7 @@ export const postProduct = (product: ProductForm, theToken: string) => {
 export const deleteProduct = (id: string | undefined, data : any , theToken: string ) => {
   try {
     return async (dispatch: Dispatch) => {
-      await axios.put( `${URL}${id}`, data ,  {
+      await axios.put( `${URL}del/${id}`, data ,  {
         headers: {
           "auth-token":
             theToken,
