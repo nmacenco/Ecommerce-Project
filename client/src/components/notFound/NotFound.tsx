@@ -6,19 +6,19 @@ export interface NOT_FOUND {
     eliminateFilters: () => void;
 }
 
-const NotFound = (props: NOT_FOUND) => {
+const NotFound = () => {
     const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(productNotFound(true))
-        setTimeout(function () {
-            props.eliminateFilters()
-            dispatch(productNotFound(false))
-        }, 3000);
-    }, [])
+    // useEffect(() => {
+    //     dispatch(productNotFound(true))
+    //     setTimeout(function () {
+    //         props.eliminateFilters()
+    //         dispatch(productNotFound(false))
+    //     }, 3000);
+    // }, [])
 
     return (
         <NotFoundContainer>
-            <h1>No se encontro el Producto</h1>
+            <h1>No products found</h1>
         </NotFoundContainer>
     )
 }

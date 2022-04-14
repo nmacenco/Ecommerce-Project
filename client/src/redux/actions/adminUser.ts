@@ -1,8 +1,9 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { TYPES_ADMIN_USER, USERSAXIOSDATA } from "../interface";
+import { TYPES_ADMIN_USER } from "../interface";
 
 const URL = "http://localhost:3001/api/admin/users";
+const URLRESET = "http://localhost:3001/api/forcedPasswordReset"
 
 export const adminGetUsers = (theToken:any) => {
   try {
@@ -13,7 +14,7 @@ export const adminGetUsers = (theToken:any) => {
             theToken,
         },
       });
-      // console.log(allUsers.data.users);
+      console.log(allUsers.data.users);
       
       return dispatch({
         type: TYPES_ADMIN_USER.GET_USERS,
@@ -43,6 +44,24 @@ export const adminEditUser = (id : any  , UserToUpdate : any , theToken : any) =
       });
     };
   } catch (error) {
+    alert(error);
+  }
+};
+export const adminForcedPasswordReset = (email : any  , theToken : string) => {
+  // console.log(UserToUpdate);
+  try {
+    // console.log(theToken);
+    return async (dispatch: Dispatch) => {
+       await axios.post(`${URLRESET}`, email ,  {
+         headers: {
+           "auth-token":
+           theToken,
+          },
+      });
+    };
+  } catch (error) {
+    console.log(error);
+    
     alert(error);
   }
 };

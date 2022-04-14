@@ -9,6 +9,7 @@ require("../auth/passport-setup");
 const createUser = async (req, res) => {
   try {
     let { name, surname, email, password, CountryId } = req.body;
+    console.log(req.body);
     if (!name || !surname || !email || !CountryId || !password) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
@@ -22,39 +23,57 @@ const createUser = async (req, res) => {
         res.status(400).send({ errorMsg: "Email already exists." });
       } else {
         password = await bcrypt.hash(password, 8);
+        const isActive = false;
         const newUser = await User.create({
           name,
           surname,
           email,
           password,
           CountryId,
+          isActive,
         });
         const token = jwt.sign({ id: newUser.id }, process.env.SECRET_KEY);
-        await User.update(
-          {
-            tokens: sequelize.fn(
-              "array_append",
-              sequelize.col("tokens"),
-              token
-            ),
-          },
-          { where: { id: newUser.id } }
+        await newUser.update({ activationToken: token });
+        await sendMailPassword(
+          email,
+          "Please activate your account to continue.",
+          `<p>Click <a href="http://localhost:3000/validateAccount/${token}">here</a> to activate your account.</p>`
         );
-        res
-          .status(201)
-          .header("auth-token", token)
-          .send({
-            successMsg: "User successfully created.",
-            data: { name: newUser.name, role: newUser.role },
-          });
+        res.status(201).send({
+          successMsg: "User activation email sent.",
+        });
       }
     }
   } catch (error) {
+    console.log("ERROR EN USER: ", error);
     res.status(500).json({ errorMsg: error.message });
   }
 };
 
+const activateAccount = async (req, res) => {
+  try {
+    let  activationToken  = req.params.id;
+    if (!activationToken) {
+      return res.status(400).send({ errorMsg: "Invalid activation token" });
+    }
+    const payload = jwt.verify(activationToken, process.env.SECRET_KEY);
+    await User.update(
+      { isActive: true, activationToken: null },
+      {
+        where: {
+          id: payload.id,
+          activationToken,
+        },
+      }
+    );
+    res.status(200).send({ successMsg: "User successfully activated." });
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
+
 const updateUser = async (req, res) => {
+  console.log("entro");
   const id = req.userID;
   if (!id) {
     return res.status(400).send({ errorMsg: "Id not provided." });
@@ -266,6 +285,7 @@ const logOut = async (req, res) => {
 const passwordReset = async (req, res) => {
   try {
     let id = req.userID;
+    console.log(id);
     let { password, passwordConfirm, actualPassword } = req.body;
     const user = await User.findByPk(id);
     if (!user) {
@@ -351,6 +371,7 @@ const sendForcedPasswordResetMail = async (req, res) => {
 const forgotAndForcedResetPassword = async (req, res) => {
   try {
     let token = req.params.id;
+    console.log(token);
     if (!token) {
       return res.status(400).send({ errorMsg: "No token provided." });
     }
@@ -401,4 +422,5 @@ module.exports = {
   sendPasswordResetMail,
   forgotAndForcedResetPassword,
   sendForcedPasswordResetMail,
+  activateAccount,
 };

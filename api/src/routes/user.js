@@ -10,6 +10,7 @@ const {
   googleUpdateProfile,
   passwordReset,
   forgotAndForcedResetPassword,
+  activateAccount,
 } = require("../controllers/user.js");
 const {
   adminGetUsers,
@@ -40,6 +41,7 @@ userRouter.put("/auth/users/passwordReset", isLoggedIn, passwordReset);
 userRouter.put("/submitPasswordReset/:id", forgotAndForcedResetPassword);
 userRouter.post("/signUp", createUser);
 userRouter.post("/signIn", signIn);
+userRouter.get("/activateAccount/:id", activateAccount);
 
 //guest google sign in/login in and log out
 userRouter.get(
@@ -48,7 +50,9 @@ userRouter.get(
 );
 userRouter.get(
   "/signInWithGoogle/callback",
-  passport.authenticate("google", { successRedirect: "http://localhost:3000/home" }),
+  passport.authenticate("google", {
+    successRedirect: "http://localhost:3000/home",
+  }),
   googleLogIn
 );
 userRouter.get("/googleLogOut", isLoggedIn, googleLogOut);

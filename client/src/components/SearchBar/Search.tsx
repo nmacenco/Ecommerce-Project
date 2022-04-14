@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import searchIcon from "../../icons/search-symbol.png";
-import { productNotFound, selectProducts } from "../../redux/actions/products";
+import { productNotFound, resetPoducts, selectProducts } from "../../redux/actions/products";
 import { setPage } from "../../redux/actions/setPage";
 import { Product } from "../../redux/interface";
 import { State } from "../../redux/reducers";
@@ -10,6 +10,8 @@ import { SearchForm } from "./SBar";
 const Search = (): JSX.Element => {
   const dispatch = useDispatch();
   const table = useSelector((state: State) => state.products.productSearch);
+  // const table = useSelector((state: State) => state.products.productSearch); asi funciona bien 
+  
   const artefacts = useSelector((state: State) => state.products.copyProducts);
 
   const [products, setProducts] = useState<string[]>([]);
@@ -24,19 +26,17 @@ const Search = (): JSX.Element => {
         return product;
       }
     });
-    dispatch(setPage(1))
     if (selectArtefacts.length > 0) {
-      dispatch(selectProducts(selectArtefacts))
+      dispatch(selectProducts(selectArtefacts));
+      dispatch(setPage(1));
+      dispatch(resetPoducts())
     } else {
-      dispatch(productNotFound(true))
+      dispatch(productNotFound(true));
       setTimeout(function () {
-        dispatch(productNotFound(false))
+        dispatch(productNotFound(false));
       }, 3000);
     }
-    // selectArtefacts.length > 0 ? dispatch(selectProducts(selectArtefacts)) : dispatch(productNotFound(true))
-
     setValue("");
-
   };
 
   const SearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {

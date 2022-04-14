@@ -12,7 +12,7 @@ const {
   reviewsRouter,
   questionsRouter,
   mailRouter,
-  orderDetailRouter,
+  wishlistRouter,
 } = require("./routes/allRoutes.js");
 const server = express();
 const cors = require("cors");
@@ -22,7 +22,7 @@ require("dotenv").config();
 
 //Adding middleware and configuring server
 server.name = "API";
-const allowedOrigin= process.env.ORIGIN;
+const allowedOrigin = process.env.ORIGIN;
 const options = {
   origin: allowedOrigin,
   methods: "GET,HEAD,PUT,POST,DELETE",
@@ -59,7 +59,7 @@ server.use("/api", orderRouter);
 server.use("/api", reviewsRouter);
 server.use("/api", questionsRouter);
 server.use("/api", mailRouter);
-
+server.use("/api", wishlistRouter);
 
 // Error catching endware.
 server.use((err, req, res, next) => {

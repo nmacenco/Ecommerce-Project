@@ -2,43 +2,39 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "../SearchBar/Search";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
-import { Link, Route } from "react-router-dom";
+import { Routes, Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
-import { LogoutUser } from "../../redux/actions/user";
-import {
-  getProducts,
-  productNotFound,
-  resetPoducts,
-} from "../../redux/actions/products";
+import { getProducts,productNotFound,resetPoducts,} from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
-import { Routes } from "react-router-dom";
-import { Product } from "../../redux/interface";
 import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";
+import { setPage } from "../../redux/actions/setPage";
+import {NavBar} from "./NavStyles"
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.user);
-  const productsCart = useSelector((state: State) => state.cart.cart);
+  const userState = useSelector((state: State) => state.user);
+  const page = useSelector((state: State) => state.page);
+  // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
 
-  const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
-    event.preventDefault();
-    dispatch(LogoutUser());
-  };
+  function handleClickLogIn() {
+    dispatch(setPage(1));
+  }
 
   function handleClickProducts() {
     dispatch(productNotFound(false));
     dispatch(resetFilterProducts());
     dispatch(resetPoducts());
-    // dispatch(resetPoducts())
     dispatch(deleteProductDetail());
     dispatch(getProducts());
+    // dispatch(resetPoducts())
   }
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
-      <div className="flex-grow-1 d-lg-flex">
-        <Link className="navbar-brand pt-3" to="/home">
+    <NavBar className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
+      <div className="flex-grow-1 d-lg-flex align-items-center">
+        <Link className="navbar-brand " to="/home">
           PCSHOP
         </Link>
         <div className="collapse navbar-collapse" id="navbarColor01">
@@ -62,22 +58,23 @@ const Nav = (): JSX.Element => {
           </div>
           <Routes>
             <Route path="/products" element={<Search />} />
-            <Route path="/adminMode" element={<Search />} />
+            <Route path="/productsAdminMode" element={<Search />} />
           </Routes>
-
-          {/* Dependiendo de que TIPO de usuario sea: */}
-          <AdminDropdown />
-          {/* <UserDropdown />	 */}
-
-          {/* Una vez iniciada la sesion este boton no deberia aparecer */}
-          {!user && (
-            <Link
-              to="/login"
-              className="nav-item btn btn-secondary my-2 link-Router"
-            >
-              Login
-            </Link>
-          )}
+          <div className="me-5">
+            {userState && userState.role === "admin" && <AdminDropdown />}
+            {userState && userState.role === "user" && <UserDropdown />}
+            {!userState && page === 1 ? (
+              <Link
+                to="/login"
+                className="nav-item btn btn-secondary my-2 link-Router"
+                onClick={() => {
+                  handleClickLogIn();
+                }}
+              >
+                Login
+              </Link>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -99,7 +96,7 @@ const Nav = (): JSX.Element => {
           <span className="navbar-toggler-icon"></span>
         </button>
       </div>
-    </nav>
+    </NavBar>
   );
 };
 

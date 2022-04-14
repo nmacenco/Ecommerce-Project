@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import swal from 'sweetalert';
+import swal from 'sweetalert'
 import { createCategories, createSubcategories, getCategories, resetSubcategories } from '../../../../redux/actions/categories';
 import { Category } from '../../../../redux/interface';
 import { State } from '../../../../redux/reducers';
@@ -14,7 +14,7 @@ interface FORM_CAT {
 
 export interface FORM_SUB {
     name: string,
-    CategoryId: number
+    CategoryId: any
 }
 
 
@@ -42,29 +42,33 @@ export default function CreateCategories(): JSX.Element {
             ...newCategory,
             name: e.target.value,
         })
-        setNewSubcategory({
-            ...newSubcategory,
-            CategoryId: e.target.selectedIndex
-        })
+
     }
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault()
+
         setNewCategory({
             ...newCategory,
             name: e.target.value,
-        })
-        setNewSubcategory({
-            ...newSubcategory,
-            CategoryId: allCategories.length + 1
         })
     }
 
     const handleChangeSubcategory = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault()
+        let sett: any
+        const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
+        if (putId.length > 0) {
+            console.log('entre aca')
+            sett = putId[0].id
+        }
+        else {
+            sett = allCategories.length + 1
+        }
         setNewSubcategory({
             ...newSubcategory,
-            name: e.target.value
+            name: e.target.value,
+            CategoryId: sett
         })
         setNewCategory({
             ...newCategory,
@@ -72,21 +76,26 @@ export default function CreateCategories(): JSX.Element {
         })
     }
 
-    const  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (newCategory.name !== "") {
             const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
-            if (putId.length === 0)  dispatch(createCategories(newCategory))
+            if (putId.length === 0) dispatch(createCategories(newCategory))
 
             if (newSubcategory.name.length !== 0) {
-                await dispatch(createSubcategories(newSubcategory))
-                dispatch(resetSubcategories())
+                console.log(newSubcategory)
+                setTimeout(()=> {
+                    dispatch(createSubcategories(newSubcategory))
+                    dispatch(resetSubcategories())
+                }, 300)
             }
             swal({
                 title: "Create successfully",
-                icon: "success"
+                icon: "success",
+                buttons: {
+                    confirm: true,
+                  },
             })
-            navigate('/products')
         } else {
             swal({
                 title: "Form needs all fields",
@@ -98,11 +107,11 @@ export default function CreateCategories(): JSX.Element {
     return (
         <FormContainer>
             <form onSubmit={handleSubmit}>
-                <h3 className="text-center">Create Category</h3>
+                <h3 className="text-center mt-5 pt-2">Create Category</h3>
                 <div className='d-flex'>
-                    <div className="form-group flex-fill">
-                        <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
-                            Category name
+                    <div className="form-group flex-fill ms-2">
+                        <label htmlFor="staticEmail" className=" form-label mt-4">
+                            New Category
                         </label>
                         <input
                             type="text"
@@ -116,14 +125,14 @@ export default function CreateCategories(): JSX.Element {
                     </div>
 
                     <div className="form-group flex-fill ms-2">
-                        <label className="form-label mt-4">Existing categories</label>
+                        <label className="form-label mt-4">Existing Categories</label>
                         <select
                             onChange={(e) => handleChange(e)}
-                            className="form-select mt-3"
+                            className="form-select"
                             id="exampleSelect1"
                             name="category"
                         >
-                            <option hidden>Select categories exist</option>
+                            <option hidden>Select category</option>
                             {
                                 allCategories.length > 0
                                     ? allCategories.map((e: Category) => { return <option key={e.id} >{e.name}</option> })
@@ -133,10 +142,10 @@ export default function CreateCategories(): JSX.Element {
                     </div>
                 </div>
 
-                <h3 className="text-center mt-4">Create subcategory</h3>
+                <h3 className="text-center mt-5 pt-5">Create subcategory</h3>
                 <div className="form-group mr-1 mr-md-2">
                     <label htmlFor="exampleTextarea" className="form-label mt-4">
-                        Subcategory name
+                        New Subcategory 
                     </label>
                     <input
                         type="text"

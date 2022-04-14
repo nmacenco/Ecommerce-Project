@@ -3,11 +3,14 @@ export enum TYPES_USER {
   GET_USER,
   LOGOUT_USER,
   FIND_USER,
+  SIGNIN_GOOGLE = "SIGNIN_GOOGLE",
+  SIGNUP_GOOGLE = "SIGNUP_GOOGLE=",
+  GET_SINGLE_USER = "GET_SINGLE_USER",
 }
 export enum TYPES_ADMIN_USER {
-  GET_USERS = 'GET_USERS',
-  RESET_USERS = 'RESET_USERS',
-  UPDATE_USER = 'UPDATE_USER'
+  GET_USERS = "GET_USERS",
+  RESET_USERS = "RESET_USERS",
+  UPDATE_USER = "UPDATE_USER",
 }
 
 export enum TYPES_DETAIL {
@@ -25,7 +28,7 @@ export enum TYPES_ADMIN {
 export enum TYPES_CATEGORIES {
   GET_CATEGORIES = "GET_CATEGORIES",
   GET_SUBCATEGORIES = "GET_SUBCATEGORIES",
-  RESET_SUBCATEGORIES = 'RESET_SUBCATEGORIES'
+  RESET_SUBCATEGORIES = "RESET_SUBCATEGORIES",
 }
 
 export enum TYPES_BRANDS {
@@ -45,8 +48,9 @@ export enum TYPES_PRODUCT {
   FILTERED_BRAND_PRODUCTS = "FILTERED_BRAND_PRODUCTS",
   RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS",
   RESET_PRODUCTS = "RESET_PRODUCTS",
-  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND',
+  PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
   FILTER_BY_BRAND = "FILTER_BY_BRAND",
+  FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
 }
 
 export enum TYPES_CART {
@@ -54,14 +58,16 @@ export enum TYPES_CART {
   REMOVE_PRODUCT = "REMOVE_PRODUCT",
 }
 
-
+export enum TYPES_COUNTRIES {
+  GET_COUNTRIES = "GET_COUNTRIES",
+}
 
 //=======================
 // Objects Interfaces
 
 export type Page = number;
 
-// dicson fijate si este User te sirve si no borralo por fa, se usa en una action por eso no lo borro 
+// dicson fijate si este User te sirve si no borralo por fa, se usa en una action por eso no lo borro
 
 export interface User {
   name: string;
@@ -69,10 +75,11 @@ export interface User {
   password: string;
   email: string;
   token: string;
+  role: string;
 }
 
 export interface Users {
-  CountryId : number
+  CountryId: number;
   countryCode: string;
   country: string;
   email: string;
@@ -85,7 +92,7 @@ export interface Users {
   role: string;
   isActive: boolean;
   tokens: string[];
-  needsPasswordReset : boolean;
+  needsPasswordReset: boolean;
 }
 
 export interface ProductForm {
@@ -106,7 +113,6 @@ export interface Brand {
   id: number;
 }
 
-
 export interface Product {
   SubcategoryId: number;
   id?: number;
@@ -125,19 +131,20 @@ export interface Product {
   count: number;
   questions: any[];
   reviews: any[];
+  isActive: boolean;
 }
 
-export interface Question{
-  id?:number,
-  title:string,
-  description:string,
-  answer:string
+export interface Question {
+  id?: number;
+  title: string;
+  description: string;
+  answer: string;
 }
 export interface Rewie {
   id?: number;
   title: string;
   description: string;
-  ProductId:number
+  ProductId: number;
 }
 
 export interface Category {
@@ -151,12 +158,12 @@ export interface Subcategory {
 }
 
 export interface Data_Paginate {
-  selected: number
+  selected: number;
 }
 
 export interface FILTER_BOX {
-  subcategory: string,
-  brand: string
+  subcategory: string;
+  brand: string;
 }
 
 export interface IData {
@@ -164,6 +171,21 @@ export interface IData {
   page: (numberOfPage: number) => void;
 }
 
+export interface ICountries {
+  name: string;
+  code: string;
+  id: number;
+}
+
+export interface IUser_Detail {
+  name: string;
+  surname: string;
+  email: string;
+  billing_address: string;
+  default_shipping_address: string;
+  country: string;
+  countryCode: number;
+}
 
 //=======================
 // User Actions
@@ -184,17 +206,36 @@ export interface FIND_USER {
   type: TYPES_USER.FIND_USER;
   payload: User;
 }
+export interface GET_SINGLE_USER {
+  type: TYPES_USER.GET_SINGLE_USER;
+  payload: any;
+}
+export interface SIGNUP_GOOGLE {
+  type: TYPES_USER.SIGNUP_GOOGLE;
+  payload: User;
+}
+
+export interface SIGNIN_GOOGLE {
+  type: TYPES_USER.SIGNIN_GOOGLE;
+  payload: User;
+}
 
 //=======================
+// Countries Actions
+
+export interface GET_COUNTRIES {
+  type: TYPES_COUNTRIES.GET_COUNTRIES;
+  payload: ICountries[];
+}
 // Admin User Actions
 
 export interface ADMIN_USER {
-  type : TYPES_ADMIN_USER.GET_USERS,
-  payload: Users[]
+  type: TYPES_ADMIN_USER.GET_USERS;
+  payload: Users[];
 }
 export interface ADMIN_RESET_USER {
-  type : TYPES_ADMIN_USER.RESET_USERS,
-  payload: []
+  type: TYPES_ADMIN_USER.RESET_USERS;
+  payload: [];
 }
 
 //=======================
@@ -249,6 +290,11 @@ export interface PRODUCT_DETAIL {
 
 export interface ORDER_PRODUCTS {
   type: TYPES_PRODUCT.ORDER_PRODUCTS;
+  //aca deberia ir un objeto con value(strinfg) y products(array de productos)
+  payload: any;
+}
+export interface FILTER_PRODUCTS {
+  type: TYPES_PRODUCT.FILTERED_PRODUCTS;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
   payload: any;
 }
@@ -312,12 +358,12 @@ export interface CREATE_REWIE {
   payload: any;
 }
 
-export interface UPDATE_QUESTION{
-  type:TYPES_DETAIL.UPDATE_QUESTION,
-  payload:{
-    id:number,
-    answer:string
-  }
+export interface UPDATE_QUESTION {
+  type: TYPES_DETAIL.UPDATE_QUESTION;
+  payload: {
+    id: number;
+    answer: string;
+  };
 }
 
 //======================
@@ -343,14 +389,35 @@ export type Actions =
   | CREATE_REWIE
   | UPDATE_QUESTION;
 
-export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER;
+export type UserActions =
+  | SIGNIN_GOOGLE
+  | SIGNUP_GOOGLE
+  | CREATE_USER
+  | GET_USER
+  | LOGOUT_USER
+  | FIND_USER
+  | GET_SINGLE_USER;
 
-export type AdminUserActions = ADMIN_USER | ADMIN_RESET_USER ;
+export type AdminUserActions = ADMIN_USER | ADMIN_RESET_USER;
 
+export type ProductActions =
+  | GET_PRODUCTS
+  | ORDER_PRODUCTS
+  | FILTER_PRODUCTS
+  | CHARGE_FILTERS
+  | REMOVE_FILTER
+  | FILTERED_CAT_PRODUCTS
+  | FILTERED_BRAND_PRODUCTS
+  | RESET_FILTERED_PRODUCTS
+  | SEARCH_PRODUCTS
+  | RESET_PRODUCTS
+  | PRODUCT_NOT_FOUND
+  | FILTER_BY_BRAND;
 
-export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | CHARGE_FILTERS | REMOVE_FILTER | FILTERED_CAT_PRODUCTS | FILTERED_BRAND_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
-
-export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES | RESET_SUBCATEGORIES ;
+export type CategoriesActions =
+  | GET_CATEGORIES
+  | GET_SUBCATEGORIES
+  | RESET_SUBCATEGORIES;
 
 export type BrandsActions = GET_BRANDS;
 
@@ -359,3 +426,5 @@ export type AdminActions = DELETE_PRODUCT;
 export type SetPage = SET_PAGE;
 
 export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT;
+
+export type CountriesActions = GET_COUNTRIES;
