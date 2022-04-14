@@ -18,6 +18,7 @@ import TrashIMG from "../../icons/white-trash.png"
 import EditIMG from "../../icons/edit.png"
 import { resetPoducts } from "../../redux/actions/products";
 import { deleteProduct } from "../../redux/actions/admin";
+import { createWish } from "../../helpers/wishsActions";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -25,18 +26,29 @@ export default function Detail() {
   const { id } = useParams<{ id?: string }>();
   const product = useSelector((state: State) => state.productDetail);
   const user = useSelector((state: State) => state.user);
+  const wishes = useSelector((state: State) => state.products.wishList);
   const productsCart = useSelector((state: State) => state.cart.cart);
   const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const productInCart = productsCart.find((x: Product) => x.id === product.id);
 
+
+  const AddWishList = () => {
+    alert('add to wishList 😉')
+    if (user) {
+      createWish(Number(id), user!.token);
+    }
+  }
+
   useEffect(() => {
     dispatch(getProductDetail(id));
+
     return () => {
       dispatch(deleteProductDetail());
       dispatch(resetFilterProducts());
       dispatch(resetPoducts());
+
     };
-  }, []);
+  }, [wishes]);
 
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     const count = productInCart ? productInCart.count + 1 : 1;
@@ -73,6 +85,7 @@ export default function Detail() {
 
   return (
     <DetailContainer>
+      {console.log('renderizado')}
       {product.name.length > 0 ? (
         <Box>
           <div>
@@ -109,9 +122,16 @@ export default function Detail() {
                       Add to cart
                     </button>
                   )}
-                  <button className="btn btn-danger disabled wish">
-                    Add to WishList
-                  </button>
+                  {console.log('WISHESSS:  ', wishes)}
+                  {
+                    wishes.find(wish => wish.id === Number(id))
+                      ?
+                      null
+                      :
+                      <button className="btn btn-danger wish" onClick={AddWishList}>
+                        Add to WishList
+                      </button>
+                  }
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
                       <button

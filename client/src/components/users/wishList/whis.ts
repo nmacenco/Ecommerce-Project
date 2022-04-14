@@ -9,6 +9,38 @@ export const WishContainer = styled.article`
   padding: 10px;
   display: grid;
   grid-template-rows: 60px 1fr;
+  text-align: center;
+
+  .title {
+    padding: 10px 0px;
+    i {
+      font-weight: 700;
+    }
+  }
+
+  th,
+  td {
+    /* width: 86px; */
+    /* border-left: 2px solid gray; */
+  }
+  td {
+    height: 50px;
+  }
+  tr {
+    border-top: 2px solid gray;
+  }
+  tr:nth-last-child(1) {
+    border-bottom: 2px solid gray;
+  }
+
+  td:nth-child(1),
+  th:nth-child(1) {
+    border-left: 2px solid gray;
+  }
+  td:nth-child(5),
+  th:nth-child(5) {
+    border-right: 2px solid gray;
+  }
 
   header {
     width: 100%;
@@ -29,29 +61,13 @@ export const WishContainer = styled.article`
     align-items: center;
   }
 
-  .item-borders {
-    width: 100%;
-    height: 100%;
-    /* border-top: 1px solid black; */
-    border-bottom: 1px solid gray;
-  }
-
   .not-content {
     height: 300px;
   }
 `;
 
-export const WishGrid = styled.section`
+export const WishGrid = styled.table`
   width: 100%;
-  display: grid;
-  border-top: 1px solid gray;
-  border-right: 1px solid gray;
-  border-left: 1px solid gray;
-  grid-template-columns: repeat(5, minmax(80px, 1fr));
-  grid-template-rows: 70px repeat(auto-fit, minmax(100px, 1fr));
-  align-items: center;
-  justify-items: center;
-  text-align: center;
   position: relative;
 
   h3 {
@@ -59,55 +75,48 @@ export const WishGrid = styled.section`
     transform: translate(10%, 50%);
   }
 
-  span.title {
-    background-color: #e2e2e2;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid gray;
-    font-weight: bold;
-  }
-
   img {
     width: 80%;
     height: 80%;
   }
-`;
+  .anchor-wish {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-export const DivButtons = styled.article`
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  align-items: center;
-  justify-items: center;
+  .items-buttons {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  button {
-    /* width: 150px; */
-    height: 30px;
-    border: none;
-    border-radius: 3px;
-    text-align: center;
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: white;
-    letter-spacing: 2px;
-  }
-  button:nth-child(1) {
-    background-color: #66a09c;
-    margin-bottom: -30px;
-  }
-  button:nth-child(2) {
-    background-color: #d17d7d;
-    margin-top: -30px;
-  }
-  button:nth-child(1):focus {
-    box-shadow: 0px 0px 0px 4px #b3dcd982;
-  }
-  button:nth-child(2):focus {
-    box-shadow: 0px 0px 0px 4px #dea7a770;
+    button {
+      border: none;
+      border-radius: 3px;
+      text-align: center;
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: white;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+    button:nth-child(1) {
+      background-color: #66a09c;
+    }
+    button:nth-child(2) {
+      background-color: #d17d7d;
+    }
+    button:nth-child(1):focus {
+      box-shadow: 0px 0px 0px 4px #b3dcd982;
+    }
+    button:nth-child(2):focus {
+      box-shadow: 0px 0px 0px 4px #dea7a770;
+    }
   }
 `;
