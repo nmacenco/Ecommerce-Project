@@ -275,10 +275,13 @@ const getProducts = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const id = req.params.id;
+
+    const { isActive } = req.body;
+
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
-      Product.update({ isActive: false }, { where: { id: id } });
+      Product.update({ isActive: isActive }, { where: { id: id } });
       res.status(200).send({
         successMsg: "Product deleted in Database",
         data: `Product id: ${id}`,
