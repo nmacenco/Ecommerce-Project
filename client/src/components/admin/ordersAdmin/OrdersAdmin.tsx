@@ -1,13 +1,20 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
+import OrderAdminRow from "./orderAdminRow/OrderAdminRow";
 import { Table } from "./OrderAdminStyles";
+
+
+const orders = [
+  
+]
 
 const OrdersAdmin = (): JSX.Element => {
     const dispatch = useDispatch()
     useEffect (()=>{
         dispatch(getOrdersAdmin())
     } , [])
+
     return (
       <div className="container d-flex flex-column">
         <h3 className="text-center mt-5">Orders History</h3>
@@ -21,9 +28,9 @@ const OrdersAdmin = (): JSX.Element => {
             </tr>
           </thead>
           <tbody>
-            {/* <OrderRow />
-            <OrderRow />
-            <OrderRow /> */}
+            <OrderAdminRow />
+            <OrderAdminRow />
+            <OrderAdminRow />
           </tbody>
         </Table>
       </div>
