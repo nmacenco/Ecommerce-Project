@@ -28,7 +28,7 @@ const WishList = (): JSX.Element => {
         if (user && !wishes.length) {
             dispatch(getWish(user!.token));
         }
-    })
+    }, [])
 
     const addProductToCart = (event: any) => {
 
