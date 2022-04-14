@@ -6,11 +6,9 @@ export interface CART {
 
 const INITIAL_STATE = {
   cart: localStorage.getItem("cart")
-    ? JSON.parse(localStorage.getItem("cart") || '{}')
+    ? JSON.parse(localStorage.getItem("cart") || "{}")
     : [],
 };
-
-
 
 export const reducerCart = (
   state: CART = INITIAL_STATE,
@@ -22,6 +20,9 @@ export const reducerCart = (
       const existProduct = state.cart.find(
         (product: Product) => product.id === newProduct.id
       );
+      console.log("PRODUCTO NUEVO: ", newProduct);
+      console.log("PRODUCTO EXISTE?: ", existProduct);
+
       const cartItems = existProduct
         ? //if the product is already in the cart we update it
           state.cart.map((product: Product) =>

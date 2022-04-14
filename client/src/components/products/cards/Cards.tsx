@@ -16,7 +16,7 @@ import NotFound from "../../notFound/NotFound";
 // import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 import { execPath } from "process";
 import { getSubcategories } from "../../../redux/actions/categories";
-import { getProducts } from "../../../redux/actions/products";
+import { getProducts, getWish } from "../../../redux/actions/products";
 import { setPage } from "../../../redux/actions/setPage";
 
 export interface ORDER {
@@ -32,6 +32,7 @@ const Cards = (): JSX.Element => {
 
   const productsList = useSelector((state: State) => state.products.products);
   const notFound = useSelector((state: State) => state.products.not_found);
+  const user = useSelector((state: State) => state.user);
   // const allSubcategories = useSelector((state: State) => state.categories.subcategories);
   // let count: string[] = []
 
@@ -51,6 +52,9 @@ const Cards = (): JSX.Element => {
   useEffect(() => {
     dispatch(getSubcategories())
     dispatch(getProducts());
+    if (user) {
+      dispatch(getWish(user.token))
+    }
   }, [])
 
   // useEffect(() => {
@@ -99,9 +103,9 @@ const Cards = (): JSX.Element => {
           <Filter page={page} orders={orders} />
 
           {
-            notFound ? 
-            <NotFound></NotFound>
-            :
+            notFound ?
+              <NotFound></NotFound>
+              :
               newProductsList.length > 0 ?
                 <>
                   {/* {filterBox.subcategory.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.subcategory)} className="btn btn-primary mt-2 mr-2">{filterBox.subcategory}</button></span> : ""}
@@ -129,7 +133,7 @@ const Cards = (): JSX.Element => {
                     ></Pagination>
                   </ReactPaginateContainer>
                 </> : (
-                    <Loading></Loading>
+                  <Loading></Loading>
                 )
           }
         </CardsContainer>

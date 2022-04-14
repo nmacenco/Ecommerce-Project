@@ -40,6 +40,9 @@ export enum TYPES_PAGE {
 }
 
 export enum TYPES_PRODUCT {
+  DELETE_WISHE = "DELETE_WISHE",
+  CREATE_WISHE = "CREATE_WISHE",
+  GET_WISHES = "GET_WISHES",
   SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
@@ -339,6 +342,20 @@ export interface GET_PRODUCTS {
   type: TYPES_PRODUCT.GET_PRODUCTS;
   payload: Product[];
 }
+
+export interface GET_WISHES {
+  type: TYPES_PRODUCT.GET_WISHES;
+  payload: any[];
+}
+export interface CREATE_WISHE {
+  type: TYPES_PRODUCT.CREATE_WISHE;
+  payload: any;
+}
+export interface DELETE_WISHE {
+  type: TYPES_PRODUCT.DELETE_WISHE;
+  payload: number;
+}
+
 export interface RESET_PRODUCTS {
   type: TYPES_PRODUCT.RESET_PRODUCTS;
   payload: [];
@@ -428,7 +445,10 @@ export type ProductActions =
   | SEARCH_PRODUCTS
   | RESET_PRODUCTS
   | PRODUCT_NOT_FOUND
-  | FILTER_BY_BRAND;
+  | FILTER_BY_BRAND
+  | GET_WISHES
+  | CREATE_WISHE
+  | DELETE_WISHE;
 
 export type CategoriesActions =
   | GET_CATEGORIES
