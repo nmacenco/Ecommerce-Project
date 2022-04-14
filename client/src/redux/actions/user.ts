@@ -12,6 +12,8 @@ const URLVALIDATE = "http://localhost:3001/api/activateAccount/";
 
 const USER_STORAGE = "USER_LOGGED";
 
+const defaultCb = () => {};
+
 /**
  *
  * @param user  ,{ name, surname, email, password, CountryId }
@@ -147,23 +149,30 @@ export const LogoutUser = () => {
  * @returns
  */
 
-export const RegisterWithGoogle = (user: any, cb: any) => {
+export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post(URL_USER + "/signUpGoogle", user);
+      const response = await axios.post(URL_USER + "/signUpWithGoogle", user);
 
       if (response.data.errorMsg) {
         throw new Error("Error in google: ", response.data.errorMsg);
       }
 
       const TOKEN = response.headers["auth-token"];
-
+      console.log(response.data.data);
+      const newUser = {
+        name: user.name,
+        email: user.email,
+        token: TOKEN,
+        role: response.data.data.role,
+      };
+      console.log(newUser);
       dispatch({
         type: TYPES_USER.GET_USER,
-        payload: response.data,
+        payload: newUser,
       });
       //LO GUARADAMOS EN EL LOCAL STORAGE:
-      window.localStorage.setItem(USER_STORAGE, response.data);
+      window.localStorage.setItem(USER_STORAGE, JSON.stringify(newUser));
 
       cb(); //ejecutamos el callback
     } catch (error) {
@@ -178,21 +187,32 @@ export const RegisterWithGoogle = (user: any, cb: any) => {
  * @param cb callback
  */
 
-export const LoginWithGoogle = (email: string, cb: any) => {
+export const LoginWithGoogle = (email: string, cb = defaultCb) => {
   return async (dispatch: Dispatch) => {
     try {
-      const { data } = await axios.post(URL_USER + "/sigInGoogle", { email });
+      const response = await axios.post(URL_USER + "//signInWithGoogle", {
+        email,
+      });
 
-      if (data.errorMsg) {
-        console.log(data.errorMsg);
+      if (response.data.errorMsg) {
+        console.log(response.data.errorMsg);
         return alert("ERROR MESSAGE: ");
       }
+      const TOKEN = response.headers["auth-token"];
+      const USER = {
+        name: response.data.data.name,
+        role: response.data.data.role,
+        token: TOKEN,
+        email,
+      };
+      console.log(USER);
       dispatch({
         type: TYPES_USER.SIGNIN_GOOGLE,
-        payload: data.data,
+        payload: USER,
       });
+      cb();
       //GUARDAR EN EL LOCAL STORAGE:
-      window.localStorage.setItem(USER_STORAGE, data.data);
+      window.localStorage.setItem(USER_STORAGE, JSON.stringify(USER));
     } catch (error) {
       console.log("ERROR EN LOGIN WITH GOOGLE: ", error);
     }
