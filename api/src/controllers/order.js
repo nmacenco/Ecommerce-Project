@@ -151,9 +151,9 @@ const updateOrderState = async (req, res) => {
     if (!id) {
       res.status(404).send({ errorMsg: "Missing id." });
     } else {
-      let orderState = await Order.update({status:status},
-        {where: {id: id}})
-     if (!orderState) {
+      let orderState = await Order.update({ status: status },
+        { where: { id: id } });
+      if (!orderState) {
         res.status(404).send({ errorMsg: "order not found" });
       } else {
         res
@@ -269,6 +269,23 @@ const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
   }
 };
 
+const createOrderDetailFront = async (req, res) => {
+  let { amount, quantity, OrderId, ProductId, } = req.body;
+  try {
+    const newOrderDetail = await Order_detail.create({
+      amount,
+      quantity,
+      OrderId,
+      ProductId,
+    });
+    res
+    .status(201)
+    .send({ successMsg: "Here are your new order.", data: newOrderDetail });
+    } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+    }
+};
+
 const getUserOrders = async (id) => {
   try {
     if (id) {
@@ -304,6 +321,7 @@ module.exports = {
   getActiveOrder,
   updateOrderState,
   getUserOrdersServer,
+  getUserOrders,
   updateOrderDetail,
   deleteOrderDetail,
   createOrderDetail
