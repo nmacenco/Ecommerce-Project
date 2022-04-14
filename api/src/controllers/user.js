@@ -4,12 +4,10 @@ const jwt = require("jsonwebtoken");
 const sequelize = require("sequelize");
 const { sendMailPassword } = require("./mailer");
 require("dotenv").config();
-require("../auth/passport-setup");
 
 const createUser = async (req, res) => {
   try {
     let { name, surname, email, password, CountryId } = req.body;
-    console.log(req.body);
     if (!name || !surname || !email || !CountryId || !password) {
       res.status(400).send({ errorMsg: "Missing data." });
     } else {
@@ -45,14 +43,13 @@ const createUser = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log("ERROR EN USER: ", error);
     res.status(500).json({ errorMsg: error.message });
   }
 };
 
 const activateAccount = async (req, res) => {
   try {
-    let  activationToken  = req.params.id;
+    let activationToken = req.params.id;
     if (!activationToken) {
       return res.status(400).send({ errorMsg: "Invalid activation token" });
     }
@@ -73,7 +70,6 @@ const activateAccount = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  console.log("entro");
   const id = req.userID;
   if (!id) {
     return res.status(400).send({ errorMsg: "Id not provided." });
@@ -170,42 +166,63 @@ const getSingleUser = async (req, res) => {
   }
 };
 
-const googleLogIn = (req, res) => {
+const googleSignIn = async (req, res) => {
   try {
-    const data = req.user.dataValues;
-    const tokens = data.tokens;
-    const token = tokens[tokens.length - 1];
+    const { email } = req.body;
+    const user = await User.findOne({
+      where: { email, signedInWithGoogle: true },
+    });
+    if (!user) {
+      return res.status(404).send({ errorMsg: "User not found." });
+    }
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+    await User.update(
+      { tokens: sequelize.fn("array_append", sequelize.col("tokens"), token) },
+      { where: { id: user.id } }
+    );
     res.header("auth-token", token).send({
-      successMsg: "User authenticated with google.",
-      data: { name: data.name, role: data.role },
+      successMsg: "You signed in successfully.",
+      data: { name: user.name, role: user.role },
     });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
 };
 
-const googleLogOut = async (req, res) => {
+const googleSignUp = async (req, res) => {
   try {
-    req.session = null;
-    let id = req.userID;
-    let token = req.token;
-    let loggedOutUser = await User.findOne({
-      where: { id, signedInWithGoogle: true },
+    const { email, name, surname } = req.body;
+    const isCreated = await User.findOne({
+      where: { email, signedInWithGoogle: true },
     });
-    let tokens = loggedOutUser.tokens;
-    tokens = tokens.filter((tok) => tok !== token);
-    await User.update(
-      {
-        tokens,
+    if (isCreated) {
+      return res.status(400).send({ errorMsg: "User already exists." });
+    }
+    const isActive = true;
+    const signedInWithGoogle = true;
+    const CountryId = 1;
+    const [user /*created*/] = await User.findOrCreate({
+      where: {
+        email,
+        name,
+        surname,
+        isActive,
+        signedInWithGoogle,
+        CountryId,
       },
-      {
-        where: {
-          id: loggedOutUser.id,
-        },
-      }
+    });
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+    await User.update(
+      { tokens: sequelize.fn("array_append", sequelize.col("tokens"), token) },
+      { where: { id: user.id } }
     );
-    req.logout();
-    res.send({ successMsg: "You have been logged out." });
+    res
+      .header("auth-token", token)
+      .status(201)
+      .send({
+        successMsg: "User has been created.",
+        data: { role: user.role, name: user.name },
+      });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -285,7 +302,6 @@ const logOut = async (req, res) => {
 const passwordReset = async (req, res) => {
   try {
     let id = req.userID;
-    console.log(id);
     let { password, passwordConfirm, actualPassword } = req.body;
     const user = await User.findByPk(id);
     if (!user) {
@@ -371,7 +387,6 @@ const sendForcedPasswordResetMail = async (req, res) => {
 const forgotAndForcedResetPassword = async (req, res) => {
   try {
     let token = req.params.id;
-    console.log(token);
     if (!token) {
       return res.status(400).send({ errorMsg: "No token provided." });
     }
@@ -415,12 +430,12 @@ module.exports = {
   getSingleUser,
   signIn,
   logOut,
-  googleLogIn,
-  googleLogOut,
   googleUpdateProfile,
   passwordReset,
   sendPasswordResetMail,
   forgotAndForcedResetPassword,
   sendForcedPasswordResetMail,
   activateAccount,
+  googleSignIn,
+  googleSignUp,
 };

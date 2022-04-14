@@ -4,10 +4,12 @@ const { getCategories, createCategory, deleteCategory } = require("../controller
 //Creating routes and adding the controllers.
 
 const categoryRouter = express.Router();
+const { isLoggedIn, isAdmin } = require("../middleware/auth");
 
 categoryRouter.get("/categories", getCategories);
 
-categoryRouter.post("/categories", createCategory);
-categoryRouter.delete("/categories/:id", deleteCategory);
+categoryRouter.post("/admin/categories", isLoggedIn, isAdmin, createCategory);
+categoryRouter.delete("/admin/categories/:id",isLoggedIn, isAdmin, deleteCategory);
+
 
 module.exports = categoryRouter;

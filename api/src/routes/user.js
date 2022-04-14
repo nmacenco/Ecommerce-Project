@@ -5,12 +5,12 @@ const {
   getSingleUser,
   signIn,
   logOut,
-  googleLogIn,
-  googleLogOut,
   googleUpdateProfile,
   passwordReset,
   forgotAndForcedResetPassword,
   activateAccount,
+  googleSignIn,
+  googleSignUp,
 } = require("../controllers/user.js");
 const {
   adminGetUsers,
@@ -18,8 +18,6 @@ const {
   adminUpdateUser,
   adminCreateUser,
 } = require("../controllers/admin");
-require("../auth/passport-setup");
-const passport = require("passport");
 const { isAdmin, isLoggedIn } = require("../middleware/auth");
 
 //Creating routes and adding the controllers.
@@ -37,25 +35,15 @@ userRouter.put("/auth/users", isLoggedIn, updateUser);
 userRouter.delete("/auth/logOut", isLoggedIn, logOut);
 userRouter.put("/auth/users/passwordReset", isLoggedIn, passwordReset);
 
-//guest local sign in, sign up and sign out
+//guest
 userRouter.put("/submitPasswordReset/:id", forgotAndForcedResetPassword);
 userRouter.post("/signUp", createUser);
 userRouter.post("/signIn", signIn);
 userRouter.get("/activateAccount/:id", activateAccount);
 
-//guest google sign in/login in and log out
-userRouter.get(
-  "/signInWithGoogle",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-userRouter.get(
-  "/signInWithGoogle/callback",
-  passport.authenticate("google", {
-    successRedirect: "http://localhost:3000/home",
-  }),
-  googleLogIn
-);
-userRouter.get("/googleLogOut", isLoggedIn, googleLogOut);
+//google
+userRouter.post("/signInWithGoogle", googleSignIn);
+userRouter.post("/signUpWithGoogle", googleSignUp);
 userRouter.put("/updateGoogleProfile", isLoggedIn, googleUpdateProfile);
 
 module.exports = userRouter;
