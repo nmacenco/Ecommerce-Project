@@ -5,14 +5,73 @@ import OrderAdminRow from "./orderAdminRow/OrderAdminRow";
 import { Table } from "./OrderAdminStyles";
 
 
-const orders = [
-  
+const ordenes = [
+  {
+    id: 1 ,
+    total_amount: 125,
+    email_address: 'prueba@hotmail.com' ,
+    status: 'Confirmed' , 
+    user: 'Prueba Pruebita' , 
+    billing_address: 'Una calle me separa',
+    detail: [ 
+      
+    ]
+
+  },
+  {
+    id: 2 ,
+    total_amount: 125,
+    email_address: 'prueba@hotmail.com' ,
+    status: 'Confirmed' , 
+    user: 'Prueba Pruebita' , 
+    billing_address: 'Una calle me separa',
+    detail: [ 
+      
+    ]
+
+  },
+  {
+    id: 3 ,
+    total_amount: 125,
+    email_address: 'prueba@hotmail.com' ,
+    status: 'Confirmed' , 
+    user: 'Prueba Pruebita' , 
+    billing_address: 'Una calle me separa',
+    detail: [ 
+      
+    ]
+
+  },
+  {
+    id: 4 ,
+    total_amount: 125,
+    email_address: 'prueba@hotmail.com' ,
+    status: 'Confirmed' , 
+    user: 'Prueba Pruebita' , 
+    billing_address: 'Una calle me separa',
+    detail: [ 
+      
+    ]
+
+  },
+  {
+    id: 5 ,
+    total_amount: 125,
+    email_address: 'prueba@hotmail.com' ,
+    status: 'Confirmed' , 
+    user: 'Prueba Pruebita' , 
+    billing_address: 'Una calle me separa',
+    detail: [ 
+      
+    ]
+
+  },
 ]
 
 const OrdersAdmin = (): JSX.Element => {
     const dispatch = useDispatch()
     useEffect (()=>{
-        dispatch(getOrdersAdmin())
+        // dispatch(getOrdersAdmin())
     } , [])
 
     return (
@@ -28,9 +87,22 @@ const OrdersAdmin = (): JSX.Element => {
             </tr>
           </thead>
           <tbody>
-            <OrderAdminRow />
-            <OrderAdminRow />
-            <OrderAdminRow />
+            {
+              ordenes && ordenes.map((order , i) => {
+                return (
+                  <OrderAdminRow 
+                    key = {i} 
+                    id = {order.id}
+                    status = {order.status}
+                    total = {order.total_amount}
+                    detail = {order.detail}
+                  />
+
+                )
+
+              })
+            }
+
           </tbody>
         </Table>
       </div>
