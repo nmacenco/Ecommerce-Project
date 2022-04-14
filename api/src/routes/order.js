@@ -15,8 +15,16 @@ const { isLoggedIn, isAdmin } = require("../middleware/auth");
 
 const orderRouter = express.Router();
 
-//user
+// //user
 orderRouter.post("/auth/orders/", createOrder); //a new product is added to the cart here
+
+// orderRouter.put("/auth/orders/:id",  updateOrderState);
+// orderRouter.get("/auth/orders/user/:id",  getUserOrdersServer);
+// orderRouter.put("/auth/orders/add/:id",  addproductsOrder);// add one more existing product +
+// orderRouter.put("/auth/orders/remuve/:id",  remuveproductsOrder);//remuve one more existing product -
+// orderRouter.delete("/auth/orders/delete/:id",  deleteproductsOrder);
+// orderRouter.get("/auth/orders/:id",  getActiveOrder);
+
 
 orderRouter.put("/auth/orders/:id", isLoggedIn, updateOrderState);
 orderRouter.get("/auth/orders/user/:id", isLoggedIn, getUserOrdersServer);
@@ -27,7 +35,7 @@ orderRouter.get("/auth/orders/:id", isLoggedIn, getActiveOrder);
 
 //admin
 orderRouter.get("/admin/orders", getOrders);
-orderRouter.get("/admin/orders", getUserOrders); //is all your status
+orderRouter.get("/admin/orders/userall/:id", getUserOrders); //is all your status
 //make route for admin to see specifically user orders.
 
 module.exports = orderRouter;

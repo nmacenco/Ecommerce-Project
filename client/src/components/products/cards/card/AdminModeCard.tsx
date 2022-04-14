@@ -33,7 +33,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
     e.preventDefault();
     swal({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this product!",
+      text: "This product is now going to be inactive!",
       icon: "warning",
       dangerMode: true,
       buttons: {
@@ -41,13 +41,14 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
         confirm: true
       }
     }).then((value) => {
-
       if (value) {
         dispatch(deleteProduct(stringId, userInStorage.token));
-        dispatch(resetFilterProducts())
-        dispatch(resetPoducts())
-        let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
-        dispatch(chargeFilter(deleted))
+        // dispatch(resetFilterProducts())
+        setTimeout(()=> {
+          dispatch(resetPoducts())
+        },200)
+        // let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
+        // dispatch(chargeFilter(deleted))
         page(1)
         AdmOrders(stringId)
         swal({

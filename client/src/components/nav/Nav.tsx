@@ -19,7 +19,7 @@ const Nav = (): JSX.Element => {
   // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
 
   function handleClickLogIn() {
-    dispatch(setPage(0));
+    dispatch(setPage(1));
   }
 
   function handleClickProducts() {
@@ -58,12 +58,12 @@ const Nav = (): JSX.Element => {
           </div>
           <Routes>
             <Route path="/products" element={<Search />} />
-            <Route path="/adminMode" element={<Search />} />
+            <Route path="/productsAdminMode" element={<Search />} />
           </Routes>
           <div className="me-5">
             {userState && userState.role === "admin" && <AdminDropdown />}
             {userState && userState.role === "user" && <UserDropdown />}
-            {!userState && page === 0 ? (
+            {!userState && page === 1 ? (
               <Link
                 to="/login"
                 className="nav-item btn btn-secondary my-2 link-Router"
