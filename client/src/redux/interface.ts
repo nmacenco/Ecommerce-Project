@@ -72,7 +72,7 @@ export interface User {
   password: string;
   email: string;
   token: string;
-  role : string
+  role: string
 }
 
 export interface Users {
@@ -129,7 +129,7 @@ export interface Product {
   count: number;
   questions: any[];
   reviews: any[];
-  isActive : boolean ; 
+  isActive: boolean;
 }
 
 export interface Question {
