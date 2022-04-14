@@ -23,6 +23,7 @@ export enum TYPES_DETAIL {
 
 export enum TYPES_ADMIN {
   DELETE_PRODUCTS = "DELETE_PRODUCTS",
+  GET_ORDERS = 'GET_ORDERS'
 }
 
 export enum TYPES_CATEGORIES {
@@ -42,10 +43,10 @@ export enum TYPES_PRODUCT {
   SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
-  CHARGE_FILTERS = "CHARGE_FILTERS",
-  REMOVE_FILTER = "REMOVE_FILTER",
-  FILTERED_CAT_PRODUCTS = "FILTERED_CAT_PRODUCTS",
-  FILTERED_BRAND_PRODUCTS = "FILTERED_BRAND_PRODUCTS",
+  // CHARGE_FILTERS = "CHARGE_FILTERS",
+  // REMOVE_FILTER = "REMOVE_FILTER",
+  // FILTERED_CAT_PRODUCTS = "FILTERED_CAT_PRODUCTS",
+  // FILTERED_BRAND_PRODUCTS = "FILTERED_BRAND_PRODUCTS",
   RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS",
   RESET_PRODUCTS = "RESET_PRODUCTS",
   PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
@@ -132,6 +133,15 @@ export interface Product {
   questions: any[];
   reviews: any[];
   isActive: boolean;
+}
+export interface Order {
+  id: number,
+  total_amount: number,
+  email_address: string,
+  status: string,
+  user: string,
+  billing_address: string,
+  detail: any[]
 }
 
 export interface Question {
@@ -298,23 +308,23 @@ export interface FILTER_PRODUCTS {
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
   payload: any;
 }
-export interface CHARGE_FILTERS {
-  type: TYPES_PRODUCT.CHARGE_FILTERS;
-  payload: Product[];
-}
-export interface REMOVE_FILTER {
-  type: TYPES_PRODUCT.REMOVE_FILTER;
-  payload: Product[];
-}
-export interface FILTERED_CAT_PRODUCTS {
-  type: TYPES_PRODUCT.FILTERED_CAT_PRODUCTS;
-  //aca deberia ir un objeto con value(strinfg) y products(array de productos)
-  payload: Product[];
-}
-export interface FILTERED_BRAND_PRODUCTS {
-  type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS;
-  payload: Product[];
-}
+// export interface CHARGE_FILTERS {
+//   type: TYPES_PRODUCT.CHARGE_FILTERS;
+//   payload: Product[];
+// }
+// export interface REMOVE_FILTER {
+//   type: TYPES_PRODUCT.REMOVE_FILTER;
+//   payload: Product[];
+// }
+// export interface FILTERED_CAT_PRODUCTS {
+//   type: TYPES_PRODUCT.FILTERED_CAT_PRODUCTS;
+//   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
+//   payload: Product[];
+// }
+// export interface FILTERED_BRAND_PRODUCTS {
+//   type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS;
+//   payload: Product[];
+// }
 export interface RESET_FILTERED_PRODUCTS {
   type: TYPES_PRODUCT.RESET_FILTERED_PRODUCTS;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
@@ -372,6 +382,12 @@ export interface DELETE_PRODUCT {
   type: TYPES_ADMIN.DELETE_PRODUCTS;
   payload: number;
 }
+export interface GET_ORDERS {
+  type: TYPES_ADMIN.GET_ORDERS;
+  payload: Order[];
+}
+
+
 
 export interface AXIOSDATA {
   successMsg: string;
@@ -404,10 +420,10 @@ export type ProductActions =
   | GET_PRODUCTS
   | ORDER_PRODUCTS
   | FILTER_PRODUCTS
-  | CHARGE_FILTERS
-  | REMOVE_FILTER
-  | FILTERED_CAT_PRODUCTS
-  | FILTERED_BRAND_PRODUCTS
+  // | CHARGE_FILTERS
+  // | REMOVE_FILTER
+  // | FILTERED_CAT_PRODUCTS
+  // | FILTERED_BRAND_PRODUCTS
   | RESET_FILTERED_PRODUCTS
   | SEARCH_PRODUCTS
   | RESET_PRODUCTS
@@ -421,7 +437,7 @@ export type CategoriesActions =
 
 export type BrandsActions = GET_BRANDS;
 
-export type AdminActions = DELETE_PRODUCT;
+export type AdminActions = DELETE_PRODUCT | GET_ORDERS;
 
 export type SetPage = SET_PAGE;
 
