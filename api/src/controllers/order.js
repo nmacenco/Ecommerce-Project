@@ -114,13 +114,12 @@ const createOrder = async (req, res) => {
     if (!UserId) {
       res.status(402).send({ errorMsg: "Missing data." });
     } else {
-      let singleOrder = await Order.findOne({
+      let newOrderCreated = await Order.findOne({
         where: {
           UserId,
           status: "PENDING",
         },
       });
-      let newOrderCreated = singleOrder;
       if (!newOrderCreated) {
         let newOrder = await Order.create({
           UserId,
@@ -138,7 +137,6 @@ const createOrder = async (req, res) => {
           );
         }
       }
-      console.log("PASE POR ACA");
       res.status(201).send({
         successMsg: "Here are your new order.",
         data: newOrderCreated,
@@ -279,7 +277,7 @@ const addproductsOrder = async (req, res) => {
   }
 };
 
-const remuveproductsOrder = async (req, res) => {
+const removeproductsOrder = async (req, res) => {
   const id = req.userID;
   // const { id } = req.params;
   try {
@@ -485,7 +483,7 @@ module.exports = {
   updateOrderState,
   getUserOrdersServer,
   addproductsOrder,
-  remuveproductsOrder,
+  removeproductsOrder,
   deleteproductsOrder,
   getUserOrders,
 };
