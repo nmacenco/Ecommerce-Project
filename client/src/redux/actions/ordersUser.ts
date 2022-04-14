@@ -5,7 +5,7 @@ import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 // import interfaces from '....'
 const URL = "http://localhost:3001/api";
 
-export const getProducts = () => {
+export const getAllOrders = () => {
   try {
     return async (dispatch: Dispatch) => {
       const allProducts = await axios.get<AXIOSDATA>(`${URL}/products`);
@@ -18,6 +18,20 @@ export const getProducts = () => {
     alert(error);
   }
 };
+
+export const getOrdersUser = () => {
+    try {
+      return async (dispatch: Dispatch) => {
+        const allProducts = await axios.get<AXIOSDATA>(`${URL}/products`);
+        return dispatch({
+          type: TYPES_PRODUCT.GET_PRODUCTS,
+          payload: allProducts.data.data,
+        });
+      };
+    } catch (error) {
+      alert(error);
+    }
+  };
 
 export const orderProducts = (value: string, products: Product[]) => {
   try {
