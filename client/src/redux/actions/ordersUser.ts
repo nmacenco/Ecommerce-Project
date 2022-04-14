@@ -1,70 +1,38 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 
-import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
-// import interfaces from '....'
-const URL = "http://localhost:3001/api";
+import { Product, TYPES_ORDERS_USER } from "../interface";
+const URL = "http://localhost:3001/api/auth/orders";
 
-export const getAllOrders = () => {
+export const getOrdersUser = (id: string, token: string) => {
   try {
     return async (dispatch: Dispatch) => {
-      const allProducts = await axios.get<AXIOSDATA>(`${URL}/products`);
+      const userOrders = await axios.get(`${URL}/user/` + id,{
+        headers: {
+          "auth-token": token,
+        },
+      });
+
       return dispatch({
-        type: TYPES_PRODUCT.GET_PRODUCTS,
-        payload: allProducts.data.data,
+        type: TYPES_ORDERS_USER.GET_ORDERS,
+        payload: userOrders.data.data,
       });
     };
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 };
 
-export const getOrdersUser = () => {
-    try {
-      return async (dispatch: Dispatch) => {
-        const allProducts = await axios.get<AXIOSDATA>(`${URL}/products`);
-        return dispatch({
-          type: TYPES_PRODUCT.GET_PRODUCTS,
-          payload: allProducts.data.data,
-        });
-      };
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-export const orderProducts = (value: string, products: Product[]) => {
+export const createOrderUser = (token: string, cart: Product[]) => {
   try {
     return async (dispatch: Dispatch) => {
-      return dispatch({
-        type: TYPES_PRODUCT.ORDER_PRODUCTS,
-        payload: {
-          value,
-          products,
+      await axios.post(URL,cart,{
+        headers: {
+          "auth-token": token,
         },
       });
     };
   } catch (error) {
-    alert(error);
+    console.log(error); 
   }
-};
-
-export const selectProducts = (products: Product[]) => {
-  // console.log("SELECT PRODUCTS DISPATCH");
-  return {
-    type: TYPES_PRODUCT.SEARCH_PRODUCTS,
-    payload: products
-  };
-};
-export const resetPoducts = () => {
-  return {
-    type: TYPES_PRODUCT.RESET_PRODUCTS,
-    payload: []
-  };
-};
-export const productNotFound = (data: boolean) => {
-  return {
-    type: TYPES_PRODUCT.PRODUCT_NOT_FOUND,
-    payload: data
-  };
 };

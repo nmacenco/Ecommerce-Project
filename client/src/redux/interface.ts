@@ -63,6 +63,10 @@ export enum TYPES_COUNTRIES {
   GET_COUNTRIES = "GET_COUNTRIES",
 }
 
+export enum TYPES_ORDERS_USER {
+  GET_ORDERS = "GET_ORDER",
+}
+
 //=======================
 // Objects Interfaces
 
@@ -387,6 +391,10 @@ export interface GET_ORDERS {
   payload: Order[];
 }
 
+export interface GET_ORDERS_USER {
+  type: TYPES_ORDERS_USER.GET_ORDERS;
+  payload: Order[];
+}
 
 
 export interface AXIOSDATA {
@@ -444,3 +452,5 @@ export type SetPage = SET_PAGE;
 export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT;
 
 export type CountriesActions = GET_COUNTRIES;
+
+export type UserOrdersActions = GET_ORDERS_USER;

@@ -3,7 +3,7 @@ import { DropdownMenu } from "./UserDropdownStyle";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers";
 import { Link, useNavigate } from "react-router-dom";
-import { getSingleUser, LogoutUser } from "../../../redux/actions/user";
+import { LogoutUser } from "../../../redux/actions/user";
 
 const UserDropdown = () => {
   const dispatch = useDispatch()
@@ -18,6 +18,7 @@ const UserDropdown = () => {
     event.preventDefault();
     navigate('/products')
     dispatch(LogoutUser());
+    localStorage.removeItem('cart')
   };
 
   return (

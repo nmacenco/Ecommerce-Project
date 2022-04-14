@@ -50,15 +50,13 @@ const Login = (): JSX.Element => {
     const LoginFetch = (event: any) => {
         event.preventDefault();
         const res = validateForms(error, inputs);
-
         if (res) {
             return alert(res);
         }
-
         if (!user) {
             dispatch(
                 GetUSer(inputs.email, inputs.passUser, () => {
-                    navigate("/products");
+                    navigate("/products");            
                 })
             );
         }
@@ -66,7 +64,7 @@ const Login = (): JSX.Element => {
 
     const responseGoogle = (data: any) => {
 
-        console.log(data.profileObj);
+        // console.log(data.profileObj);
         const { email } = data.profileObj;
         // console.log({ givenName, familyName, email })
         // { name, surname, email, password, CountryId }
@@ -84,7 +82,7 @@ const Login = (): JSX.Element => {
     }
     const rejectGoogle = (error: any) => {
         console.log(error);
-        alert('Algo paso amigos mios')
+        alert('Something happened')
 
     }
 

@@ -16,6 +16,7 @@ const AdminDropdown = (): JSX.Element => {
     event.preventDefault();
     dispatch(LogoutUser());
     navigate("/products");
+    localStorage.removeItem('cart')
   };
 
   return (
