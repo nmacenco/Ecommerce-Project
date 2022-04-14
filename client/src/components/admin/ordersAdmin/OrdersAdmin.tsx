@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 import { Table } from "./OrderAdminStyles";
 
 const OrdersAdmin = (): JSX.Element => {
+    const dispatch = useDispatch()
+    useEffect (()=>{
+        dispatch(getOrdersAdmin())
+    } , [])
     return (
       <div className="container d-flex flex-column">
         <h3 className="text-center mt-5">Orders History</h3>

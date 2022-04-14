@@ -13,7 +13,7 @@ import Loading from "../../loading/Loading";
 import Categories from "../categories/Categories";
 import { ProductsContainer } from "../ProductsStyles";
 import NotFound from "../../notFound/NotFound";
-import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
+// import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 import { execPath } from "process";
 import { getSubcategories } from "../../../redux/actions/categories";
 import { getProducts } from "../../../redux/actions/products";
