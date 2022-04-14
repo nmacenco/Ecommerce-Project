@@ -277,7 +277,6 @@ const deleteProduct = async (req, res) => {
     const id = req.params.id;
 
     const { isActive } = req.body;
-    
 
     if (!id) {
       res.status(400).send({ errorMsg: "Missing data." });

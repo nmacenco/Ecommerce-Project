@@ -4,9 +4,11 @@ const { getSubCategories, createSubCategory,deleteSubcategory } = require("../co
 //Creating routes and adding the controllers.
 
 const subCategoryRouter = express.Router();
+const { isLoggedIn, isAdmin } = require("../middleware/auth");
+
 
 subCategoryRouter.get("/subcategories", getSubCategories);
-subCategoryRouter.post("/subcategories", createSubCategory);
-subCategoryRouter.delete("/subcategories/:id", deleteSubcategory);
+subCategoryRouter.post("/admin/subcategories", isLoggedIn, isAdmin, createSubCategory);
+subCategoryRouter.delete("admin/subcategories/:id",isLoggedIn, isAdmin, deleteSubcategory);
 
 module.exports = subCategoryRouter;
