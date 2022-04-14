@@ -50,7 +50,7 @@ export default function Detail() {
     e.preventDefault();
     swal({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this product!",
+      text: "This product is now going to be inactive!",
       icon: "warning",
       dangerMode: true,
       buttons: {

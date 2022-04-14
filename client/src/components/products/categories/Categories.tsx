@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { CategoriesContainer } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
-import { chargeFilter, filterProducts } from "../../../redux/actions/filterByCategory";
+import { chargeFilter, filterByBrand, filterProducts } from "../../../redux/actions/filterByCategory";
 import { ORDER } from "../cards/Cards";
 import { getBrands } from "../../../redux/actions/brands";
+import { productNotFound } from "../../../redux/actions/products";
 
 const Categories = ({ page, orders }: ORDER): JSX.Element => {
   const dispatch = useDispatch();
@@ -19,17 +20,21 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
     dispatch(getBrands());
   }, []);
 
-  useEffect(() => {
-    dispatch(chargeFilter(allProducts))
-  }, [allProducts.length > 0])
+  // useEffect(() => {
+  //   dispatch(chargeFilter(allProducts))
+  // }, [allProducts.length > 0])
 
-  function handleFilter(e: string): void {
-    orders(e)
+  function handleFilter(e: any): void {
+    dispatch(productNotFound(false))
+    dispatch(filterProducts(e.target.value));
+    orders(e.target.value)
     page(1);
   }
 
-  function handlerFIlterByBrand(e: string): void {
-    orders(e)
+  function handlerFIlterByBrand(e: any): void {
+    dispatch(productNotFound(false))
+    dispatch(filterByBrand(e.target.innerHTML));
+    orders(e.target.value)
     page(1);
   }
 
@@ -88,7 +93,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                               className="btn p-1 text-start"
                               key={i}
                               value={subcategory.name}
-                              onClick={() => handleFilter(subcategory.name)}
+                              onClick={(e) => handleFilter(e)}
                             >
                               {subcategory.name}
                             </button>
@@ -162,7 +167,7 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
                       key={i}
                       aria-controls={brand.name.replace(/ /g, "")}
                       value={brand.name}
-                      onClick={() => handlerFIlterByBrand(brand.name)}
+                      onClick={(e) => handlerFIlterByBrand(e)}
                     >
                       {brand.name}
                     </button>

@@ -86,8 +86,8 @@ export default function CreateCategories(): JSX.Element {
                 console.log(newSubcategory)
                 setTimeout(() => {
                     dispatch(createSubcategories(newSubcategory))
-                    // dispatch(resetSubcategories())
-                }, 400)
+                    dispatch(resetSubcategories())
+                }, 300)
             }
             swal({
                 title: "Create successfully",

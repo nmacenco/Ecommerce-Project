@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
-import { CreateUser, IdentGoogle } from "../../redux/actions/user";
+import { CreateUser, RegisterWithGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
 import { useNavigate } from "react-router";
 import { getCountries } from "../../redux/actions/countries";
 import swal from "sweetalert";
+import GoogleLogin from "react-google-login";
 
 interface Inputs {
   name: string;
@@ -62,7 +63,6 @@ const Register = (): JSX.Element => {
   const RegisterFetch = (event: any) => {
     event.preventDefault();
     const res = validateForms(error, inputs);
-    // alert("envio de info");
 
     if (res) {
       return alert(res);
@@ -76,36 +76,43 @@ const Register = (): JSX.Element => {
       // default_shipping_address: inputs.default_shipping_address,
       CountryId: Number(inputs.countryId),
     };
-    // console.log('USUARIO: ', newUser);
     if (!user) {
       dispatch(
         CreateUser(newUser, () => {
         })
-        );
-          swal({
-            text: "Please check your inbox to validate your account",
-            icon: "success",
-          })
+      );
+      swal({
+        text: "Please check your inbox to validate your account",
+        icon: "success",
+      })
+      navigate("/login")
     }
   };
 
-  const SinUpGoogle = () => {
-    dispatch(
-      IdentGoogle("/signInWithGoogle", () => {
-        navigate("/products");
-      })
-    );
-  };
+  const responseGoogle = (data: any) => {
+    // console.log(data);
+    const { givenName, familyName, email } = data.profileObj;
+    // console.log({ givenName, familyName, email });
+    let newUser = {
+      name: givenName ? givenName : '',
+      surname: familyName ? familyName : '',
+      email: email,
+      CountryId: 1,
+      password: null
+    };
+
+    dispatch(RegisterWithGoogle(newUser, () => {
+      navigate('/products');
+    }));
+  }
+  const rejectGoogle = (error: any) => {
+    console.log(error);
+    alert('ERROR en REGISTER WITH GOOGLE');
+
+  }
 
   useEffect(() => {
     dispatch(getCountries());
-    // fetch('http://localhost:3001/api/countries')
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         // console.log(data.countries)
-    //         data.countries && setCountries(data.countries);
-    //     })
-    //     .catch(error => console.log(error))
   }, []);
 
   return (
@@ -134,9 +141,6 @@ const Register = (): JSX.Element => {
           )}
         </div>
         <div>
-          {/* <input type='text' placeholder='Country id' name='countryId' onChange={FormChange} className={checkError(error.countryId)} />
-                    {error.countryId && <b className='invalid-feedback'>{error.countryId}</b>} */}
-          {/* <div className="form-group"> */}
           <select
             className="form-select"
             id="select"
@@ -144,7 +148,7 @@ const Register = (): JSX.Element => {
             onChange={FormChange}
           >
             {countries.length &&
-              countries.map((country : any, i : number) => {
+              countries.map((country: any, i: number) => {
                 return (
                   <option value={country.id} key={country.id}>
                     {country.name}
@@ -152,7 +156,6 @@ const Register = (): JSX.Element => {
                 );
               })}
           </select>
-          {/* </div> */}
         </div>
       </div>
       <div className="div-inputs">
@@ -204,20 +207,24 @@ const Register = (): JSX.Element => {
           <b className="invalid-feedback">{error.default_shipping_address}</b>
         )}
       </div> */}
-      <div className="google form-log" onClick={SinUpGoogle}>
-        <div>
-          <img src="https://freesvg.org/img/1534129544.png" />
-        </div>
-        <span>Continue with Google</span>
+      <div className="form-log" >
+        <GoogleLogin
+          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+          buttonText="Register"
+          onSuccess={responseGoogle}
+          onFailure={rejectGoogle}
+          cookiePolicy={'single_host_origin'}
+          style={{ width: '100% !important' }}
+        />
       </div>
-      <article>
+      <div className="text-center m-3">
         {validateForms(error, inputs).length ? (
-          <button className="btn btn-primary button-links link-Router" disabled>
+          <button className="btn btn-primary button-links link-Router mx-2" disabled>
             Submit
           </button>
         ) : (
           <button
-            className="btn btn-primary button-links link-Router"
+            className="btn btn-primary button-links link-Router mx-2"
             onClick={RegisterFetch}
           >
             Submit
@@ -225,11 +232,11 @@ const Register = (): JSX.Element => {
         )}
         <Link
           to="/login"
-          className="btn btn-secondary link-Router button-links"
+          className="btn btn-secondary link-Router button-links mx-2"
         >
           Login
         </Link>
-      </article>
+      </div>
     </Form>
   );
 };
