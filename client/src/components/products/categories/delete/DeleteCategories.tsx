@@ -60,7 +60,7 @@ export default function DeleteCateogires(): JSX.Element {
         if (categories.subcategory !== 0) {
             dispatch(deleteSubcategory(String(categories.subcategory)))
             swal({
-                title: 'Deleted categorie',
+                title: 'Deleted subcategorie',
                 icon: 'success'
             })
             navigate('/products')
@@ -68,7 +68,7 @@ export default function DeleteCateogires(): JSX.Element {
         else if (categories.category !== 0) {
             dispatch(deleteCategory(String(categories.category)))
             swal({
-                title: 'Deleted subcategorie',
+                title: 'Deleted categorie',
                 icon: 'success'
             })
             navigate('/products')

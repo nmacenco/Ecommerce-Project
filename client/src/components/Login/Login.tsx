@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
-import { GetUSer, IdentGoogle } from "../../redux/actions/user";
+import { CreateUser, GetUSer, LoginWithGoogle, RegisterWithGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
 import { useNavigate } from "react-router";
 import { Forgot } from "../form/SLogin";
 import { setPage } from "../../redux/actions/setPage";
+import { GoogleLogin } from 'react-google-login';
 
 interface Inputs {
     email: string;
@@ -20,14 +21,13 @@ const Login = (): JSX.Element => {
     const navigate = useNavigate();
 
 
-    useEffect(()=> {
-        dispatch(setPage(1))
-        return ()=> {
-        //   console.log('se seteo en 0');
-          
-          dispatch(setPage(0))
+    useEffect(() => {
+        dispatch(setPage(0))
+        return () => {
+
+            dispatch(setPage(1))
         }
-      }, [])
+    }, [])
 
     const [inputs, setInputs] = useState<Inputs>({
         email: "",
@@ -64,13 +64,32 @@ const Login = (): JSX.Element => {
         }
     };
 
-    const SinInGoogle = () => {
-        dispatch(
-            IdentGoogle("/signInWithGoogle/callback", () => {
-                navigate("/products");
-            })
-        );
-    };
+    const responseGoogle = (data: any) => {
+
+        console.log(data.profileObj);
+        const { email } = data.profileObj;
+        // console.log({ givenName, familyName, email })
+        // { name, surname, email, password, CountryId }
+        // let newUser = {
+        //     name: givenName ? givenName : '',
+        //     surname: familyName ? familyName : '',
+        //     email: email,
+        //     CountryId: 1,
+        //     password: null
+        // };
+
+        dispatch(LoginWithGoogle(email, () => {
+            navigate('/products');
+        }))
+    }
+    const rejectGoogle = (error: any) => {
+        console.log(error);
+        alert('Algo paso amigos mios')
+
+    }
+
+
+
     const forgotPassword = () => {
         navigate("/emailReset");
     };
@@ -108,25 +127,24 @@ const Login = (): JSX.Element => {
                 Forgot Password?
             </Forgot>
 
-            <div className="google mt-2" >
-                <div>
-                    <img src="https://freesvg.org/img/1534129544.png" />
-                </div>
-                <span>
-                    <a href='http://localhost:3001/api/signInWithGoogle/callback' target='_blank'>
-                        Continue with Google
-                    </a>
-                </span>
+            <div className="form-log" >
+                <GoogleLogin
+                    clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+                    buttonText="Login"
+                    onSuccess={responseGoogle}
+                    onFailure={rejectGoogle}
+                    cookiePolicy={'single_host_origin'}
+                />
             </div>
 
-            <article>
+            <div className="text-center m-3">
                 {validateForms(error, inputs).length ? (
-                    <button className="btn btn-primary button-links link-Router" disabled>
+                    <button className="btn btn-primary button-links link-Router mx-2" disabled>
                         SUBMIT
                     </button>
                 ) : (
                     <button
-                        className="btn btn-primary button-links link-Router"
+                        className="btn btn-primary button-links link-Router mx-2"
                         onClick={LoginFetch}
                     >
                         SUBMIT
@@ -134,11 +152,11 @@ const Login = (): JSX.Element => {
                 )}
                 <Link
                     to="/register"
-                    className="btn btn-secondary link-Router button-links"
+                    className="btn btn-secondary link-Router button-links mx-2"
                 >
                     REGISTER
                 </Link>
-            </article>
+            </div>
         </Form>
     );
 };
