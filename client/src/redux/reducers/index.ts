@@ -25,7 +25,7 @@ interface GLOBAL_STATE {
   products: PRODUCTS;
   categories: CATEGORIES;
   orderedProducts: ORDER_STATE;
-  filteredProducts: FILTERED_STATE;
+  // filteredProducts: FILTERED_STATE;
   brands: BRANDS;
   adminUsers: ADMIN_USERS;
   page: PAGE;
@@ -41,7 +41,7 @@ export const rootReducer = combineReducers<GLOBAL_STATE>({
   products: reducerProduct,
   categories: reducerCategories,
   orderedProducts: reducerOrderProducts,
-  filteredProducts: reducerFilterProducts,
+  // filteredProducts: reducerFilterProducts,
   brands: reducerBrands,
   page: setPageReducer,
   cart: reducerCart,

@@ -14,6 +14,7 @@ import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 import TrashIMG from "../../../../icons/white-trash.png"
 import EditIMG from "../../../../icons/edit.png"
 import CheckIMG from "../../../../icons/check.png"
+import { setPage } from "../../../../redux/actions/setPage";
 interface props {
   name: string;
   image: string;
@@ -45,13 +46,13 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
       if (value) {
         const data = {isActive:false}
         dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
-        // dispatch(resetFilterProducts())
-        setTimeout(()=> {
-          dispatch(resetPoducts())
-        },200)
+        // dispatch(resetPoducts())
+        // setTimeout(()=> {
+        // },300)
         // let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
         // dispatch(chargeFilter(deleted))
         page(1)
+        dispatch(setPage(1))
         AdmOrders(stringId)
         swal({
           text: "Product not active",
@@ -63,6 +64,8 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
   }
   function activateHandler (e: React.MouseEvent<HTMLButtonElement>) : void {
     e.preventDefault();
+    const data = {isActive:true}
+    dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
     swal({
       title: "Are you sure?",
       text: "This product is now going to be active!",
@@ -74,11 +77,11 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
       }
     }).then((value) => {
       if (value) {
-        const data = {isActive:true}
-        dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
-        setTimeout(()=> {
-          dispatch(resetPoducts())
-        },200)
+  
+        // dispatch(resetPoducts())
+        // setTimeout(()=> {
+        // },200)
+        dispatch(setPage(1))
         page(1)
         AdmOrders(stringId)
         swal({
