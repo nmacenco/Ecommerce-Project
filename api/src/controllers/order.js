@@ -20,7 +20,7 @@ const getOrders = async (req, res) => {
         },
       ],
     });
-    if (!Orders.length) {
+    if (Orders.length <= 0) {
       return res.status(404).send({ errorMsg: "Orders not found." });
     }
     Orders = Orders.map((Order) => {
@@ -34,8 +34,8 @@ const getOrders = async (req, res) => {
         detail:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-                return { detail };
-              })
+              return { detail };
+            })
             : [],
       };
     });
@@ -100,6 +100,7 @@ const getUserOrdersServer = async (req, res) => {
 //Fine
 const createOrder = async (req, res) => {
   const UserId = req.userID;
+  // const { UserId } = req.params;
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
@@ -215,8 +216,8 @@ const getActiveOrder = async (req, res) => {
       detail:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-              return { detail };
-            })
+            return { detail };
+          })
           : [],
     };
     res
@@ -419,8 +420,8 @@ const orderuseractive = async (id) => {
       detail:
         activeUserOrder.Order_details.length > 0
           ? activeUserOrder.Order_details.map((detail) => {
-              return { detail };
-            })
+            return { detail };
+          })
           : [],
     };
     return { activeUserOrder };
@@ -453,7 +454,7 @@ const getUserOrders = async (id) => {
           },
         ],
       });
-      if (!dataOrders.length) {
+      if (dataOrders.length <= 0) {
         return "This user has no orders.";
       }
       dataOrders = dataOrders.map((Order) => {
@@ -467,8 +468,8 @@ const getUserOrders = async (id) => {
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                  return { detail };
-                })
+                return { detail };
+              })
               : [],
         };
       });
