@@ -89,6 +89,9 @@ Category.hasMany(Subcategory);
 Subcategory.belongsTo(Category);
 Country.hasMany(User);
 User.belongsTo(Country);
+Product.belongsToMany(User, { through: "Wish_List" });
+User.belongsToMany(Product, { through: "Wish_List" });
+
 
 module.exports = {
   ...sequelize.models,
