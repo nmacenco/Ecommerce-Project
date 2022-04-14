@@ -108,7 +108,6 @@ const getUserOrdersServer = async (req, res) => {
 
 const createOrder = async (req, res) => {
   const UserId = req.userID;
-  // const { UserId } = req.params;
   try {
     let { allProductsOrder } = req.body;
 
@@ -137,7 +136,11 @@ const createOrder = async (req, res) => {
             allProductsOrder[index].amount
           );
         }
+<<<<<<< HEAD
+      } 
+=======
       }
+>>>>>>> cdadf85a7615308d6ea9f4659d28c0d0e704f307
       res.status(201).send({
         successMsg: "Here are your new order.",
         data: newOrderCreated,
