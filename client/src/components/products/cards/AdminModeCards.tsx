@@ -111,7 +111,7 @@ const AdminModeCards = (): JSX.Element => {
                       <th scope="col">Product Name</th>
                       <th scope="col">Price</th>
                       <th scope="col">State</th>
-                      <th scope="col">Delete</th>
+                      <th scope="col">Edit State</th>
                       <th scope="col">Edit </th>
                     </tr>
                   </thead>

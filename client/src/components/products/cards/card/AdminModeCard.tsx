@@ -13,6 +13,7 @@ import { Product } from "../../../../redux/interface";
 import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 import TrashIMG from "../../../../icons/white-trash.png"
 import EditIMG from "../../../../icons/edit.png"
+import CheckIMG from "../../../../icons/check.png"
 interface props {
   name: string;
   image: string;
@@ -42,7 +43,8 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
       }
     }).then((value) => {
       if (value) {
-        dispatch(deleteProduct(stringId, userInStorage.token));
+        const data = {isActive:false}
+        dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
         // dispatch(resetFilterProducts())
         setTimeout(()=> {
           dispatch(resetPoducts())
@@ -58,6 +60,10 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
       }
     })
 
+  }
+  function activateHandler (e: React.MouseEvent<HTMLButtonElement>) : void {
+    const data = {isActive:true}
+    dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
   }
 
 
@@ -105,12 +111,12 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
               </button>
               :
               <button
-                disabled
-                onClick={(e) => { deleteHandler(e) }}
+                // disabled
+                onClick={(e) => { activateHandler(e) }}
                 type="button"
-                className="btn btn-danger btn-sm  "
+                className="btn btn-success btn-sm  "
               >
-                <img src={TrashIMG} alt="delete"></img>
+                <img src={CheckIMG} alt="delete" width={'100%'}></img>
               </button>
 
           }
