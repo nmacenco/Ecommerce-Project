@@ -107,7 +107,7 @@ const getUserOrdersServer = async (req, res) => {
 
 const createOrder = async (req, res) => {
   const UserId = req.userID;
-// const {UserId} = req.params
+  // const { UserId } = req.params;
   try {
     let { allProductsOrder } = req.body;
 
@@ -127,6 +127,7 @@ const createOrder = async (req, res) => {
         });
         newOrderCreated = newOrder;
       }
+
       if (allProductsOrder) {
         for (let index = 0; index < allProductsOrder.length; index++) {
           createOrderDetail(
@@ -137,17 +138,20 @@ const createOrder = async (req, res) => {
           );
         }
       }
+      console.log("PASE POR ACA");
+      res.status(201).send({
+        successMsg: "Here are your new order.",
+        data: newOrderCreated,
+      });
     }
-    res
-      .status(201)
-      .send({ successMsg: "Here are your new order.", data: newOrderCreated });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
 };
 
 const updateOrderState = async (req, res) => {
-  const id = req.params.id;
+  // const id = req.params.id;
+  const id = req.userID;
   let { status } = req.body;
   try {
     if (!id) {
@@ -240,22 +244,35 @@ const addproductsOrder = async (req, res) => {
         },
       });
       const { activeUserOrder } = await orderuseractive(id);
+
       let orderDetail = await Order_detail.findOne({
         where: {
           OrderId: activeUserOrder.id,
           ProductId: Productid,
         },
       });
-    
-      const amountoltal = product.price * orderDetail.quantity + 1;
-      let UpdatedOrderDetail = await orderDetail.update({
-        amount: amountoltal,
-        quantity: orderDetail.quantity + 1,
-      });
-      res.status(201).send({
-        successMsg: "Order has been updated",
-        data: UpdatedOrderDetail,
-      });
+
+      if (!orderDetail) {
+        const newOrderProduct = await createOrderDetail(
+          activeUserOrder.id,
+          Productid,
+          (quantity = 1)
+        );
+        res.status(200).send({
+          successMsg: "Order has been CREATE",
+          data: newOrderProduct,
+        });
+      } else {
+        const amountoltal = product.price * orderDetail.quantity + 1;
+        let UpdatedOrderDetail = await orderDetail.update({
+          amount: amountoltal,
+          quantity: orderDetail.quantity + 1,
+        });
+        res.status(201).send({
+          successMsg: "Order has been updated",
+          data: UpdatedOrderDetail,
+        });
+      }
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
@@ -264,7 +281,7 @@ const addproductsOrder = async (req, res) => {
 
 const remuveproductsOrder = async (req, res) => {
   const id = req.userID;
-    // const { id } = req.params;
+  // const { id } = req.params;
   try {
     const { Productid } = req.body;
     let product = await Product.findOne({
@@ -280,7 +297,7 @@ const remuveproductsOrder = async (req, res) => {
       },
     });
     const amountoltal = product.price * orderDetail.quantity - 1;
-    console.log(amountoltal);
+
     let UpdatedOrderDetail = await orderDetail.update({
       amount: amountoltal,
       quantity: orderDetail.quantity - 1,
@@ -296,7 +313,7 @@ const remuveproductsOrder = async (req, res) => {
 
 const deleteproductsOrder = async (req, res) => {
   const id = req.userID;
-  // const { id } = req.params;
+  // // const { id } = req.params;
   try {
     const { Productid } = req.body;
     if (!Productid) {
@@ -309,7 +326,7 @@ const deleteproductsOrder = async (req, res) => {
           ProductId: Productid,
         },
       });
-      deleteOrderDetail(orderDetail.id)
+      deleteOrderDetail(orderDetail.id);
       res.status(201).send({
         successMsg: "Order has been delete",
       });
@@ -340,14 +357,21 @@ const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
         ProductId,
       },
     });
+    let product = await Product.findOne({
+      where: {
+        id: ProductId,
+      },
+    });
+
     if (!orderDetailyet) {
       const newOrderProduct = await Order_detail.create({
-        amount,
+        amount: product.price * quantity,
         quantity,
         OrderId,
         ProductId,
       });
-    }else{
+      return newOrderProduct;
+    } else {
       await orderDetailyet.update({
         amount: orderDetailyet.amount + amount,
         quantity: orderDetailyet.quantity + quantity,
@@ -357,8 +381,6 @@ const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
     console.log(error.message);
   }
 };
-
-
 
 const orderuseractive = async (id) => {
   try {
@@ -465,5 +487,5 @@ module.exports = {
   addproductsOrder,
   remuveproductsOrder,
   deleteproductsOrder,
-  getUserOrders
+  getUserOrders,
 };
