@@ -20,3 +20,19 @@ export const getOrdersAdmin = () => {
       alert(error);
     }
   };
+export const updateOrderStatus = () => {
+    try {
+      return async (dispatch: Dispatch) => {
+        const allOrders = await axios.get(`${URL}/auth/orders/:id`);
+        console.log(allOrders);
+        
+        return dispatch({
+          type: TYPES_ADMIN.GET_ORDERS,
+          payload: allOrders.data.data,
+        });
+      };
+    } catch (error) {
+      alert(error);
+    }
+  };
+

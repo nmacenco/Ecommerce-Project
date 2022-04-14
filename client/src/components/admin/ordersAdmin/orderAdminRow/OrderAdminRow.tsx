@@ -20,13 +20,11 @@ const OrderAdminRow = ({ id, status, total, detail }: Props): JSX.Element => {
           {/* <option disabled hidden>
           {`${status}`}
           </option> */}
-          {
-              statusArray.map ( s => {
-                    
-                      return <option value = {`${s}`} > {s} </option>
-              })
-
-            }
+        {
+            statusArray.map ( s => {
+                    return <option value = {`${s}`} > {s} </option>
+            })
+        }
 
         </Select>
 

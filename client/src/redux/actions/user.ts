@@ -95,6 +95,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             token: TOKEN,
             name: response.data.data.name,
             role: response.data.data.role,
+            google : false 
           },
         });
         window.localStorage.setItem(
@@ -104,6 +105,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             token: TOKEN,
             name: response.data.data.name,
             role: response.data.data.role,
+            google : false 
           })
         );
         cb(); //Ejecutamos un callback wajajaj
@@ -165,6 +167,7 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
         email: user.email,
         token: TOKEN,
         role: response.data.data.role,
+        google : true 
       };
       console.log(newUser);
       dispatch({
@@ -204,6 +207,7 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
         role: response.data.data.role,
         token: TOKEN,
         email,
+        google : true
       };
       console.log(USER);
       dispatch({
@@ -214,7 +218,16 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
       //GUARDAR EN EL LOCAL STORAGE:
       window.localStorage.setItem(USER_STORAGE, JSON.stringify(USER));
     } catch (error) {
-      console.log("ERROR EN LOGIN WITH GOOGLE: ", error);
+      swal({
+        title: "Wrong data",
+        text: "It seems you didn't register yet",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          confirm: true,
+        },
+      });
+
     }
   };
 };
