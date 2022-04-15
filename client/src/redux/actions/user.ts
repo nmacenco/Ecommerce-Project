@@ -217,7 +217,7 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
       });
 
       if (response.data.errorMsg) {
-        console.log(response.data.errorMsg);
+        // console.log(response.data.errorMsg);
         // return alert("ERROR MESSAGE: ");
         cb(response.data.errorMsg);
         return null;
@@ -231,7 +231,7 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
         email,
         google: true,
       };
-      console.log(USER);
+      // console.log(USER);
       dispatch({
         type: TYPES_USER.SIGNIN_GOOGLE,
         payload: USER,
@@ -320,7 +320,7 @@ export const resetForgotPassword = (id: any, password: RESET_PASSWORD) => {
   }
 };
 export const validateAccount = (id: any) => {
-  console.log(id);
+  // console.log(id);
 
   try {
     return async (dispatch: Dispatch) => {
