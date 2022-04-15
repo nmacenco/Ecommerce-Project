@@ -17,11 +17,11 @@ const getOrders = async (req, res) => {
         },
         {
           model: Order_detail,
-          attributes: ["price", "quantity"],
+          attributes: ["amount", "quantity"],
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
@@ -44,11 +44,12 @@ const getOrders = async (req, res) => {
             ? Order.Order_details.map((detail) => {
                 return {
                   id: detail.id,
-                  price: detail.price,
+                  amount: detail.amount,
                   quantity: detail.quantity,
                   productName: detail.Product.name,
                   productId: detail.Product.id,
                   image: detail.Product.image,
+                  price: detail.Product.price,
                 };
               })
             : [],
@@ -74,11 +75,11 @@ const getUserOrdersServer = async (req, res) => {
         },
         {
           model: Order_detail,
-          attributes: ["price", "quantity", "id"],
+          attributes: ["amount", "quantity", "id"],
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
@@ -101,11 +102,12 @@ const getUserOrdersServer = async (req, res) => {
             ? Order.Order_details.map((detail) => {
                 return {
                   id: detail.id,
-                  price: detail.price,
+                  amount: detail.amount,
                   quantity: detail.quantity,
                   productName: detail.Product.name,
                   productId: detail.Product.id,
                   image: detail.Product.image,
+                  price: detail.Product.price,
                 };
               })
             : [],
@@ -145,19 +147,19 @@ const createOrder = async (req, res) => {
         });
       }
       for (let product of allProductsOrder) {
-        const price = product.count * product.price;
+        const amount = product.count * product.price;
         await createOrderDetail(
           newOrder.id,
           product.id,
           product.count,
-          price
+          amount
         );
       }
       let orderDetails = await Order_detail.findAll({
         where: { OrderId: newOrder.id },
       });
       const totalAmount = orderDetails.reduce((a, detail) => {
-        return a + detail.dataValues.price;
+        return a + detail.dataValues.amount;
       }, 0);
       await newOrder.update({
         total_amount: totalAmount,
@@ -181,7 +183,7 @@ const updateOrderState = async (req, res) => {
     } else {
       let orderState = await Order.update(
         { status: status },
-        { where: { id: id } }
+        { where: { id } }
       );
       if (!orderState) {
         res.status(404).send({ errorMsg: "order not found" });
@@ -196,7 +198,6 @@ const updateOrderState = async (req, res) => {
   }
 };
 
-
 const updateOrder = async (req, res) => {
   const id = req.params.id;
   let { shipping_address } = req.body;
@@ -206,7 +207,7 @@ const updateOrder = async (req, res) => {
     } else {
       let orderShipping = await Order.update(
         { shipping_address: shipping_address },
-        { where: { id: id } }
+        { where: { id } }
       );
       if (!orderShipping) {
         res.status(404).send({ errorMsg: "order not found" });
@@ -236,11 +237,11 @@ const getActiveOrder = async (req, res) => {
         },
         {
           model: Order_detail,
-          attributes: ["price", "quantity"],
+          attributes: ["amount", "quantity"],
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
@@ -257,18 +258,19 @@ const getActiveOrder = async (req, res) => {
       email_address: activeOrder.email_address,
       status: activeOrder.status,
       user: activeOrder.User.name + " " + activeOrder.User.surname,
-      userID: Order.User.id,
+      userID: activeOrder.User.id,
       billing_address: activeOrder.billing_address,
       details:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
               return {
                 id: detail.id,
-                price: detail.price,
+                amount: detail.amount,
                 quantity: detail.quantity,
                 productName: detail.Product.name,
                 productId: detail.Product.id,
                 image: detail.Product.image,
+                price: detail.Product.price,
               };
             })
           : [],
@@ -287,44 +289,57 @@ const getActiveOrder = async (req, res) => {
 const addProductsOrder = async (req, res) => {
   const id = req.userID;
   try {
-    const { Productid } = req.body;
-    if (!Productid) {
-      return res.status(404).send({ errorMsg: "You don't have any products." });
+    const { ProductId } = req.body;
+    if (!ProductId) {
+      return res.status(404).send({ errorMsg: "Missing product ID." });
     } else {
       let product = await Product.findOne({
         where: {
-          id: Productid,
+          id: ProductId,
         },
       });
-      const { activeUserOrder } = await userActiveOrder(id);
-
+      const activeUserOrder = await Order.findOne({
+        where: {
+          UserId: id,
+          status: "PENDING",
+        },
+      });
       let orderDetail = await Order_detail.findOne({
         where: {
           OrderId: activeUserOrder.id,
-          ProductId: Productid,
+          ProductId,
         },
       });
-
       if (!orderDetail) {
-        const newOrderProduct = await createOrderDetail(
+        const newOrderDetail = await createOrderDetail(
           activeUserOrder.id,
-          Productid,
-          (quantity = 1)
-          //no le paso amount...
+          ProductId,
+          1,
+          product.price
         );
-        res.status(200).send({
-          successMsg: "Order has been CREATE",
-          data: newOrderProduct,
-        });
-      } else {
-        const amountoltal = product.price * orderDetail.quantity + 1;
-        //No actualiza total amount de la order...
-        let UpdatedOrderDetail = await orderDetail.update({
-          price: amountoltal,
-          quantity: orderDetail.quantity + 1,
+        await activeUserOrder.update({
+          total_amount: activeUserOrder.total_amount + product.price,
         });
         res.status(201).send({
-          successMsg: "Order has been updated",
+          successMsg: "Product has been successfully added.",
+          data: newOrderDetail,
+        });
+      } else {
+        if (product.stock === orderDetail.quantity) {
+          return res
+            .status(400)
+            .send({ errorMsg: "Exceeded available stock." });
+        }
+        const amount = product.price * (orderDetail.quantity + 1);
+        let UpdatedOrderDetail = await orderDetail.update({
+          amount,
+          quantity: orderDetail.quantity + 1,
+        });
+        await activeUserOrder.update({
+          total_amount: activeUserOrder.total_amount + product.price,
+        });
+        res.status(200).send({
+          successMsg: "Product has been successfully added.",
           data: UpdatedOrderDetail,
         });
       }
@@ -336,26 +351,43 @@ const addProductsOrder = async (req, res) => {
 
 const removeProductsOrder = async (req, res) => {
   const id = req.userID;
-  // const { id } = req.params;
   try {
-    const { Productid } = req.body;
+    const { ProductId } = req.body;
     let product = await Product.findOne({
       where: {
-        id: Productid,
+        id: ProductId,
       },
     });
-    const { activeUserOrder } = await userActiveOrder(id);
+    const activeUserOrder = await Order.findOne({
+      where: {
+        UserId: id,
+        status: "PENDING",
+      },
+    });
     let orderDetail = await Order_detail.findOne({
       where: {
         OrderId: activeUserOrder.id,
-        ProductId: Productid,
+        ProductId,
       },
     });
-    const amountoltal = product.price * orderDetail.quantity - 1;
-
+    if (orderDetail.quantity === 1) {
+      return res
+        .status(400)
+        .send({ errorMsg: "Cannot have less than one product." });
+    }
+    const amount = product.price * (orderDetail.quantity - 1);
     let UpdatedOrderDetail = await orderDetail.update({
-      price: amountoltal,
+      amount,
       quantity: orderDetail.quantity - 1,
+    });
+    let orderDetails = await Order_detail.findAll({
+      where: { OrderId: activeUserOrder.id },
+    });
+    const totalAmount = orderDetails.reduce((a, detail) => {
+      return a + detail.dataValues.amount;
+    }, 0);
+    await activeUserOrder.update({
+      total_amount: totalAmount,
     });
     res.status(201).send({
       successMsg: "Order has been updated",
@@ -367,22 +399,43 @@ const removeProductsOrder = async (req, res) => {
 };
 
 const deleteProductsOrder = async (req, res) => {
-  const id = req.userID;
   try {
-    const { Productid } = req.body;
-    if (!Productid) {
-      return res.status(404).send({ errorMsg: "You don't have any products." });
+    const id = req.userID;
+    const { ProductId } = req.body;
+    if (!ProductId) {
+      return res.status(404).send({ errorMsg: "Missing product ID" });
     } else {
-      const { activeUserOrder } = await userActiveOrder(id);
+      const activeUserOrder = await Order.findOne({
+        where: {
+          UserId: id,
+          status: "PENDING",
+        },
+      });
       let orderDetail = await Order_detail.findOne({
         where: {
           OrderId: activeUserOrder.id,
-          ProductId: Productid,
+          ProductId,
         },
       });
-      await deleteOrderDetail(orderDetail.id);
+      if (!orderDetail) {
+        return res.status(404).send({ errorMsg: "Order detail not found." });
+      }
+      await Order_detail.destroy({
+        where: {
+          id: orderDetail.id,
+        },
+      });
+      let orderDetails = await Order_detail.findAll({
+        where: { OrderId: activeUserOrder.id },
+      });
+      const totalAmount = orderDetails.reduce((a, detail) => {
+        return a + detail.dataValues.amount;
+      }, 0);
+      await activeUserOrder.update({
+        total_amount: totalAmount,
+      });
       res.status(201).send({
-        successMsg: "Order has been deleted",
+        successMsg: "Order detail has been deleted",
       });
     }
   } catch (error) {
@@ -390,21 +443,8 @@ const deleteProductsOrder = async (req, res) => {
   }
 };
 
-//PRODUCT ID
-const deleteOrderDetail = async (id) => {
-  try {
-    await Order_detail.destroy({
-      where: {
-        id,
-      },
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
 //Fine
-const createOrderDetail = async (OrderId, ProductId, quantity, price) => {
+const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
   try {
     let product = await Product.findOne({
       where: {
@@ -418,77 +458,42 @@ const createOrderDetail = async (OrderId, ProductId, quantity, price) => {
       where: { OrderId, ProductId },
     });
     if (isOrderDetailCreated) {
-      await isOrderDetailCreated.update({
-        quantity: isOrderDetailCreated.quantity + quantity,
-        price: isOrderDetailCreated.price + price,
-      });
+      if (product.stock < isOrderDetailCreated.quantity + quantity) {
+        let amount = product.price * product.stock;
+        await isOrderDetailCreated.update({
+          quantity: product.stock,
+          amount,
+        });
+      } else {
+        await isOrderDetailCreated.update({
+          quantity: isOrderDetailCreated.quantity + quantity,
+          amount: isOrderDetailCreated.amount + amount,
+        });
+      }
       return isOrderDetailCreated;
     } else {
-      let newOrderDetail = await Order_detail.create({
-        OrderId,
-        ProductId,
-        quantity,
-        price,
-      });
-      return newOrderDetail;
+      if (product.stock < quantity) {
+        let amount = product.price * product.stock;
+        let quantity = product.stock;
+        let newOrderDetail = await Order_detail.create({
+          OrderId,
+          ProductId,
+          quantity,
+          amount,
+        });
+        return newOrderDetail;
+      } else {
+        let newOrderDetail = await Order_detail.create({
+          OrderId,
+          ProductId,
+          quantity,
+          amount,
+        });
+        return newOrderDetail;
+      }
     }
   } catch (error) {
     console.log(error.message);
-  }
-};
-
-const userActiveOrder = async (id) => {
-  try {
-    let activeUserOrder = await Order.findOne({
-      where: {
-        UserId: id,
-        status: "PENDING",
-      },
-      include: [
-        {
-          model: User,
-          attributes: ["id", "name", "surname", "email"],
-        },
-        {
-          model: Order_detail,
-          attributes: ["price", "quantity"],
-          include: [
-            {
-              model: Product,
-              attributes: ["name", "id", "image"],
-            },
-          ],
-        },
-      ],
-    });
-    if (!activeUserOrder) {
-      return "no active orders";
-    }
-    activeUserOrder = {
-      id: activeUserOrder.id,
-      total_amount: activeUserOrder.total_amount,
-      email_address: activeUserOrder.email_address,
-      status: activeUserOrder.status,
-      user: activeUserOrder.User.name + " " + activeUserOrder.User.surname,
-      userID: activeUserOrder.User.id,
-      billing_address: activeUserOrder.billing_address,
-      detail:
-        activeUserOrder.Order_details.length > 0
-          ? activeUserOrder.Order_details.map((detail) => {
-              return {
-                id: detail.id,
-                price: detail.price,
-                quantity: detail.quantity,
-                productName: detail.Product.name,
-                productId: detail.Product.id,
-                image: detail.Product.image,
-              };
-            })
-          : [],
-    };
-    return { activeUserOrder };
-  } catch (error) {
-    return error.message;
   }
 };
 
@@ -506,11 +511,11 @@ const getUserOrders = async (id) => {
           },
           {
             model: Order_detail,
-            attributes: ["price", "quantity"],
+            attributes: ["amount", "quantity"],
             include: [
               {
                 model: Product,
-                attributes: ["name", "id", "image"],
+                attributes: ["name", "id", "image", "price"],
               },
             ],
           },
@@ -532,11 +537,12 @@ const getUserOrders = async (id) => {
               ? Order.Order_details.map((detail) => {
                   return {
                     id: detail.id,
-                    price: detail.price,
+                    amount: detail.amount,
                     quantity: detail.quantity,
                     productName: detail.Product.name,
                     productId: detail.Product.id,
                     image: detail.Product.image,
+                    price: detail.Product.price,
                   };
                 })
               : [],
