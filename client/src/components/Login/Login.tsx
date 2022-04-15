@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
 import { CreateUser, GetUSer, LoginWithGoogle, RegisterWithGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
-import { useNavigate } from "react-router";
 import { Forgot } from "../form/SLogin";
 import { setPage } from "../../redux/actions/setPage";
 import { GoogleLogin } from 'react-google-login';
