@@ -29,7 +29,7 @@ const Search = (): JSX.Element => {
     if (selectArtefacts.length > 0) {
       dispatch(selectProducts(selectArtefacts));
       dispatch(setPage(1));
-      dispatch(resetPoducts())
+      // dispatch(resetPoducts())
     } else {
       dispatch(productNotFound(true));
       setTimeout(function () {
