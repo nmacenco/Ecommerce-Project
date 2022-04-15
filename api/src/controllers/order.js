@@ -1,4 +1,9 @@
 const { Order, User, Order_detail, Product } = require("../db");
+require("dotenv").config();
+const { ORDER_STATUS_PENDING,
+  ORDER_STATUS_BILLED,
+  ORDER_STATUS_DELIVERED,
+  ORDER_STATUS_FINISHED } = process.env;
 
 const getOrders = async (req, res) => {
   try {
@@ -150,8 +155,7 @@ const createOrder = async (req, res) => {
 };
 
 const updateOrderState = async (req, res) => {
-  // const id = req.params.id;
-  const id = req.userID;
+  const id = req.params.id;
   let { status } = req.body;
   try {
     if (!id) {
@@ -478,6 +482,33 @@ const getUserOrders = async (id) => {
     console.log(error.message);
   }
 };
+
+const updatePaypalOrder = async (req, res) => {
+  let { paymentMethod } = req.body;
+  try {
+    let orderPaypal = await Order.findById(req.params.id);
+    if (!orderPaypal) {
+      res.status(401).send({ message: 'Order Not Found' });
+    } else {
+      let updatedOrder = await orderPaypal.update(
+        {
+          status: ORDER_STATUS_BILLED,
+          isPaid: true,
+          paidAt: Date.now(),
+          paymentMethod: paymentMethod,
+          shippingPrice: shippingPrice,
+          taxPrice: taxPrice,
+          isDelivered: false,
+          email_address: email_address,
+          billing_address: billing_address
+        },
+      );
+      res.status(201).send({ successMsg: 'Order Paid', data: updatedOrder });
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 module.exports = {
   getOrders,
   createOrder,
@@ -488,4 +519,5 @@ module.exports = {
   removeproductsOrder,
   deleteproductsOrder,
   getUserOrders,
+  updatePaypalOrder,
 };
