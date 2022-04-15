@@ -20,8 +20,8 @@ export const reducerCart = (
       const existProduct = state.cart.find(
         (product: Product) => product.id === newProduct.id
       );
-      console.log("PRODUCTO NUEVO: ", newProduct);
-      console.log("PRODUCTO EXISTE?: ", existProduct);
+      // console.log("PRODUCTO NUEVO: ", newProduct);
+      // console.log("PRODUCTO EXISTE?: ", existProduct);
 
       const cartItems = existProduct
         ? //if the product is already in the cart we update it
@@ -33,6 +33,7 @@ export const reducerCart = (
           )
         : //if it is null it means it is a new product
           [...state.cart, newProduct];
+      // console.log("ITEMS OF THE CARD: ", cartItems);
       localStorage.setItem("cart", JSON.stringify(cartItems));
       return { ...state, cart: cartItems };
 
