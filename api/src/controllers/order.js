@@ -21,7 +21,7 @@ const getOrders = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
@@ -49,6 +49,7 @@ const getOrders = async (req, res) => {
                   productName: detail.Product.name,
                   productId: detail.Product.id,
                   image: detail.Product.image,
+                  price: detail.Product.price,
                 };
               })
             : [],
@@ -78,7 +79,7 @@ const getUserOrdersServer = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
@@ -106,6 +107,7 @@ const getUserOrdersServer = async (req, res) => {
                   productName: detail.Product.name,
                   productId: detail.Product.id,
                   image: detail.Product.image,
+                  price: detail.Product.price,
                 };
               })
             : [],
@@ -216,7 +218,7 @@ const getActiveOrder = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
@@ -245,6 +247,7 @@ const getActiveOrder = async (req, res) => {
                 productName: detail.Product.name,
                 productId: detail.Product.id,
                 image: detail.Product.image,
+                price: detail.Product.price,
               };
             })
           : [],
@@ -431,7 +434,7 @@ const userActiveOrder = async (id) => {
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
@@ -458,6 +461,7 @@ const userActiveOrder = async (id) => {
                 productName: detail.Product.name,
                 productId: detail.Product.id,
                 image: detail.Product.image,
+                price: detail.Product.price,
               };
             })
           : [],
@@ -486,7 +490,7 @@ const getUserOrders = async (id) => {
             include: [
               {
                 model: Product,
-                attributes: ["name", "id", "image"],
+                attributes: ["name", "id", "image", "price"],
               },
             ],
           },
@@ -513,6 +517,7 @@ const getUserOrders = async (id) => {
                     productName: detail.Product.name,
                     productId: detail.Product.id,
                     image: detail.Product.image,
+                    price: detail.Product.price,
                   };
                 })
               : [],
