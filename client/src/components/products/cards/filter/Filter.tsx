@@ -40,7 +40,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
           <option disabled hidden>Order by</option>
           <option value="asc-price">Higher price</option>
           <option value="des-price">Lower price</option>
-          <div className="dropdown-divider"></div>
+          {/* <div className="dropdown-divider"></div> */}
           <option value="asc-name">A - Z</option>
           <option value="des-name">Z - A</option>
         </Select>

@@ -33,9 +33,13 @@ export default function Detail() {
 
 
   const AddWishList = () => {
-    alert('add to wishList 😉')
+    
     if (user) {
       createWish(Number(id), user!.token);
+      swal({
+        text: "Product added to your wishlist",
+        icon: "success",
+      })
     }
   }
 
@@ -71,8 +75,9 @@ export default function Detail() {
       },
     }).then((value) => {
       if (value) {
-        dispatch(deleteProduct(id, userInStorage.token));
-        dispatch(resetFilterProducts())
+        const data = {isActive : false}
+        dispatch(deleteProduct(id,data, userInStorage.token));
+        // dispatch(resetFilterProducts())
         dispatch(resetPoducts())
         navigate("/products");
         swal({
@@ -123,14 +128,15 @@ export default function Detail() {
                     </button>
                   )}
                   {console.log('WISHESSS:  ', wishes)}
-                  {
-                    wishes.find(wish => wish.id === Number(id))
+                  { user !== null  && (
+                    wishes.find((wish : any) => wish.id === Number(id))
                       ?
                       null
                       :
                       <button className="btn btn-danger wish" onClick={AddWishList}>
                         Add to WishList
                       </button>
+                  )
                   }
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>

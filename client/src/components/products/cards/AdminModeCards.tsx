@@ -11,7 +11,7 @@ import { ProductsContainer } from "../ProductsStyles";
 import AdminModeCard from "./card/AdminModeCard";
 import NotFound from "../../notFound/NotFound";
 import Pagination from "./pagination/Pagination";
-import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
+// import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 import { deleteProduct } from "../../../redux/actions/admin";
 import { setPage } from "../../../redux/actions/setPage";
 
@@ -111,7 +111,7 @@ const AdminModeCards = (): JSX.Element => {
                       <th scope="col">Product Name</th>
                       <th scope="col">Price</th>
                       <th scope="col">State</th>
-                      <th scope="col">Delete</th>
+                      <th scope="col">Edit State</th>
                       <th scope="col">Edit </th>
                     </tr>
                   </thead>

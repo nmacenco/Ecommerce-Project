@@ -25,6 +25,7 @@ import WishList from "./components/users/wishList/WishList";
 import DeleteCategories from "./components/products/categories/delete/DeleteCategories";
 import ValidateAccount from "./components/users/ValidateAccount";
 import OrdersHistory from "./components/users/ordersHistory/OrdersHistory";
+import OrdersAdmin from "./components/admin/ordersAdmin/OrdersAdmin";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ function App(): JSX.Element {
           <Route path="/wishList" element={<WishList />} />
           <Route path="/deleteCategory" element={<DeleteCategories />} />
           <Route path="/validateAccount/:id" element={<ValidateAccount />} />
+          <Route path="/ordersAdmin" element={<OrdersAdmin />} />
         </Routes>
       </BrowserRouter>
     </div>
