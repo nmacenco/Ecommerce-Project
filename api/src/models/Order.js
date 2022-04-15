@@ -12,7 +12,11 @@ module.exports = (sequelize) => {
     total_amount: {
       type: DataTypes.FLOAT,
       allowNull: false,
-      defaultValue:0,
+      defaultValue: 0,
+    },
+    orderIdPayment: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     email_address: {
       type: DataTypes.STRING,
@@ -22,7 +26,29 @@ module.exports = (sequelize) => {
     billing_address: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    shipping_address: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },    
+    paymentSource: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    shippingPrice: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    taxPrice: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    paidAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.STRING,
       allowNull: false,

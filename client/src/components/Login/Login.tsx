@@ -66,7 +66,7 @@ const Login = (): JSX.Element => {
 
     const responseGoogle = (data: any) => {
 
-        console.log(data.profileObj);
+        // console.log(data.profileObj);
         const { email } = data.profileObj;
         dispatch(LoginWithGoogle(email, (error: any) => {
             if (error) {
