@@ -68,7 +68,7 @@ const Login = (): JSX.Element => {
 
         console.log(data.profileObj);
         const { email } = data.profileObj;
-        dispatch(LoginWithGoogle(email, (error) => {
+        dispatch(LoginWithGoogle(email, (error: any) => {
             if (error) {
                 swal({
                     title: 'Opps! an error ocurred',
