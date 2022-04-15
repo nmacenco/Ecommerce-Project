@@ -5,7 +5,7 @@ import { deleteProduct } from "../../../../redux/actions/admin";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, resetPoducts } from "../../../../redux/actions/products";
 import { ORDER } from "../Cards";
-import { chargeFilter, resetFilterProducts } from "../../../../redux/actions/filterByCategory";
+// import { chargeFilter, resetFilterProducts } from "../../../../redux/actions/filterByCategory";
 import { getProductDetail } from "../../../../redux/actions/productDetail";
 import swal from "sweetalert";
 import { State } from "../../../../redux/reducers";
@@ -13,6 +13,8 @@ import { Product } from "../../../../redux/interface";
 import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 import TrashIMG from "../../../../icons/white-trash.png"
 import EditIMG from "../../../../icons/edit.png"
+import CheckIMG from "../../../../icons/check.png"
+import { setPage } from "../../../../redux/actions/setPage";
 interface props {
   name: string;
   image: string;
@@ -42,17 +44,48 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
       }
     }).then((value) => {
       if (value) {
-        dispatch(deleteProduct(stringId, userInStorage.token));
-        // dispatch(resetFilterProducts())
-        setTimeout(()=> {
-          dispatch(resetPoducts())
-        },200)
+        const data = {isActive:false}
+        dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
+        // dispatch(resetPoducts())
+        // setTimeout(()=> {
+        // },300)
         // let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
         // dispatch(chargeFilter(deleted))
         page(1)
+        dispatch(setPage(1))
         AdmOrders(stringId)
         swal({
-          text: "Product deleted",
+          text: "Product not active",
+          icon: "success"
+        })
+      }
+    })
+
+  }
+  function activateHandler (e: React.MouseEvent<HTMLButtonElement>) : void {
+    e.preventDefault();
+    const data = {isActive:true}
+    dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
+    swal({
+      title: "Are you sure?",
+      text: "This product is now going to be active!",
+      icon: "success",
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: true
+      }
+    }).then((value) => {
+      if (value) {
+  
+        // dispatch(resetPoducts())
+        // setTimeout(()=> {
+        // },200)
+        dispatch(setPage(1))
+        page(1)
+        AdmOrders(stringId)
+        swal({
+          text: "Product active",
           icon: "success"
         })
       }
@@ -105,12 +138,12 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
               </button>
               :
               <button
-                disabled
-                onClick={(e) => { deleteHandler(e) }}
+                // disabled
+                onClick={(e) => { activateHandler(e) }}
                 type="button"
-                className="btn btn-danger btn-sm  "
+                className="btn btn-success btn-sm  "
               >
-                <img src={TrashIMG} alt="delete"></img>
+                <img src={CheckIMG} alt="delete" width={'100%'}></img>
               </button>
 
           }

@@ -12,6 +12,8 @@ const URLVALIDATE = "http://localhost:3001/api/activateAccount/";
 
 const USER_STORAGE = "USER_LOGGED";
 
+const defaultCb = () => {};
+
 /**
  *
  * @param user  ,{ name, surname, email, password, CountryId }
@@ -30,13 +32,13 @@ export const CreateUser = (user: any, cb: any) => {
         return alert("ALgo paso!");
       }
 
-      const newUser = {
-        name: user.name,
-        email: user.email,
-        token: response.headers["auth-token"],
-        role: response.data.data.role,
-      };
-      console.log(response);
+      // const newUser = {
+      //   name: user.name,
+      //   email: user.email,
+      //   token: response.headers["auth-token"],
+      //   role: response.data.data.role,
+      // };
+      // console.log(response);
 
       dispatch({
         type: TYPES_USER.CREATE_USER,
@@ -45,14 +47,14 @@ export const CreateUser = (user: any, cb: any) => {
       // console.log('despachando el usuario');
       cb(user);
 
-      window.localStorage.setItem(
-        USER_STORAGE,
-        JSON.stringify({
-          ...newUser,
-          name: response.data.data.name,
-          role: response.data.data.role,
-        })
-      ); // Cambiar cuando exista un usuario
+      // window.localStorage.setItem(
+      //   USER_STORAGE,
+      //   JSON.stringify({
+      //     ...newUser,
+      //     name: response.data.data.name,
+      //     role: response.data.data.role,
+      //   })
+      // ); // Cambiar cuando exista un usuario
     } catch (error) {
       swal({
         title: "Wrong data",
@@ -93,6 +95,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             token: TOKEN,
             name: response.data.data.name,
             role: response.data.data.role,
+            google : false 
           },
         });
         window.localStorage.setItem(
@@ -102,6 +105,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             token: TOKEN,
             name: response.data.data.name,
             role: response.data.data.role,
+            google : false 
           })
         );
         cb(); //Ejecutamos un callback wajajaj
@@ -147,23 +151,31 @@ export const LogoutUser = () => {
  * @returns
  */
 
-export const RegisterWithGoogle = (user: any, cb: any) => {
+export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post(URL_USER + "/signUpGoogle", user);
+      const response = await axios.post(URL_USER + "/signUpWithGoogle", user);
 
       if (response.data.errorMsg) {
         throw new Error("Error in google: ", response.data.errorMsg);
       }
 
       const TOKEN = response.headers["auth-token"];
-
+      console.log(response.data.data);
+      const newUser = {
+        name: user.name,
+        email: user.email,
+        token: TOKEN,
+        role: response.data.data.role,
+        google : true 
+      };
+      console.log(newUser);
       dispatch({
         type: TYPES_USER.GET_USER,
-        payload: response.data,
+        payload: newUser,
       });
       //LO GUARADAMOS EN EL LOCAL STORAGE:
-      window.localStorage.setItem(USER_STORAGE, response.data);
+      window.localStorage.setItem(USER_STORAGE, JSON.stringify(newUser));
 
       cb(); //ejecutamos el callback
     } catch (error) {
@@ -178,23 +190,44 @@ export const RegisterWithGoogle = (user: any, cb: any) => {
  * @param cb callback
  */
 
-export const LoginWithGoogle = (email: string, cb: any) => {
+export const LoginWithGoogle = (email: string, cb = defaultCb) => {
   return async (dispatch: Dispatch) => {
     try {
-      const { data } = await axios.post(URL_USER + "/sigInGoogle", { email });
+      const response = await axios.post(URL_USER + "//signInWithGoogle", {
+        email,
+      });
 
-      if (data.errorMsg) {
-        console.log(data.errorMsg);
+      if (response.data.errorMsg) {
+        console.log(response.data.errorMsg);
         return alert("ERROR MESSAGE: ");
       }
+      const TOKEN = response.headers["auth-token"];
+      const USER = {
+        name: response.data.data.name,
+        role: response.data.data.role,
+        token: TOKEN,
+        email,
+        google : true
+      };
+      console.log(USER);
       dispatch({
         type: TYPES_USER.SIGNIN_GOOGLE,
-        payload: data.data,
+        payload: USER,
       });
+      cb();
       //GUARDAR EN EL LOCAL STORAGE:
-      window.localStorage.setItem(USER_STORAGE, data.data);
+      window.localStorage.setItem(USER_STORAGE, JSON.stringify(USER));
     } catch (error) {
-      console.log("ERROR EN LOGIN WITH GOOGLE: ", error);
+      swal({
+        title: "Wrong data",
+        text: "It seems you didn't register yet",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          confirm: true,
+        },
+      });
+
     }
   };
 };

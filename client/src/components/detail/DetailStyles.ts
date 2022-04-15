@@ -9,6 +9,7 @@ export const DetailContainer = styled.div`
 
   .wish {
     margin-top: 10px;
+    cursor: pointer;
   }
 `;
 
