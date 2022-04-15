@@ -61,5 +61,14 @@
   },
   "devDependencies": {
     "@types/react-router": "^5.1.18"
+  },
+  "prettier":{
+    "useTabs": false,
+    "trailingComma": "es5",
+    "singleQuote": false,
+    "bracketSpacing": true
+
+
   }
+
 }

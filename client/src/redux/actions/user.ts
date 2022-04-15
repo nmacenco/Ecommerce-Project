@@ -12,7 +12,9 @@ const URLVALIDATE = "http://localhost:3001/api/activateAccount/";
 
 const USER_STORAGE = "USER_LOGGED";
 
-const defaultCb = () => {};
+const defaultCb = (error: any) => {
+  alert(error);
+};
 
 /**
  *
@@ -95,7 +97,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             token: TOKEN,
             name: response.data.data.name,
             role: response.data.data.role,
-            google : false 
+            google: false,
           },
         });
         window.localStorage.setItem(
@@ -105,10 +107,12 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             token: TOKEN,
             name: response.data.data.name,
             role: response.data.data.role,
-            google : false 
+            google: false,
           })
         );
         cb(); //Ejecutamos un callback wajajaj
+      } else {
+        cb();
       }
     } catch (error) {
       swal({
@@ -162,24 +166,38 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
 
       const TOKEN = response.headers["auth-token"];
       console.log(response.data.data);
-      const newUser = {
-        name: user.name,
-        email: user.email,
-        token: TOKEN,
-        role: response.data.data.role,
-        google : true 
-      };
-      console.log(newUser);
-      dispatch({
-        type: TYPES_USER.GET_USER,
-        payload: newUser,
-      });
-      //LO GUARADAMOS EN EL LOCAL STORAGE:
-      window.localStorage.setItem(USER_STORAGE, JSON.stringify(newUser));
 
-      cb(); //ejecutamos el callback
+      if (response.status < 300) {
+        const newUser = {
+          name: user.name,
+          email: user.email,
+          token: TOKEN,
+          role: response.data.data.role,
+          google: true,
+        };
+        console.log(newUser);
+        dispatch({
+          type: TYPES_USER.GET_USER,
+          payload: newUser,
+        });
+        //LO GUARADAMOS EN EL LOCAL STORAGE:
+        window.localStorage.setItem(USER_STORAGE, JSON.stringify(newUser));
+
+        cb(null); //ejecutamos el callback
+      } else {
+        cb(response.data.errorMsg);
+      }
     } catch (error) {
       console.log("Error en sign in google: ", error);
+      swal({
+        title: "Wrong data",
+        text: "It seems you didn't register yet",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          confirm: true,
+        },
+      });
     }
   };
 };
@@ -199,22 +217,25 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
 
       if (response.data.errorMsg) {
         console.log(response.data.errorMsg);
-        return alert("ERROR MESSAGE: ");
+        // return alert("ERROR MESSAGE: ");
+        cb(response.data.errorMsg);
+        return null;
       }
+
       const TOKEN = response.headers["auth-token"];
       const USER = {
         name: response.data.data.name,
         role: response.data.data.role,
         token: TOKEN,
         email,
-        google : true
+        google: true,
       };
       console.log(USER);
       dispatch({
         type: TYPES_USER.SIGNIN_GOOGLE,
         payload: USER,
       });
-      cb();
+      cb(null);
       //GUARDAR EN EL LOCAL STORAGE:
       window.localStorage.setItem(USER_STORAGE, JSON.stringify(USER));
     } catch (error) {
@@ -227,7 +248,6 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
           confirm: true,
         },
       });
-
     }
   };
 };
