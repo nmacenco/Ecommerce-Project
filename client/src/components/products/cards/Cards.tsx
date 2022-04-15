@@ -63,6 +63,9 @@ const Cards = (): JSX.Element => {
   //   }, 500)
   // }, [setLoad])
 
+  useEffect(() => {
+    dispatch(getSubcategories())
+  }, [dispatch])
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];

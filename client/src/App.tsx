@@ -25,6 +25,7 @@ import WishList from "./components/users/wishList/WishList";
 import DeleteCategories from "./components/products/categories/delete/DeleteCategories";
 import ValidateAccount from "./components/users/ValidateAccount";
 import OrdersHistory from "./components/users/ordersHistory/OrdersHistory";
+import About from "./components/nav/about/About";
 import OrdersAdmin from "./components/admin/ordersAdmin/OrdersAdmin";
 
 function App(): JSX.Element {
@@ -60,10 +61,11 @@ function App(): JSX.Element {
           <Route path="/emailReset" element={<EmailResetPassword />} />
           <Route path="/resetpwd" element={<ResetPwd />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/ordersHistory" element={<OrdersHistory/>}/>
+          <Route path="/ordersHistory" element={<OrdersHistory />} />
           <Route path="/wishList" element={<WishList />} />
           <Route path="/deleteCategory" element={<DeleteCategories />} />
           <Route path="/validateAccount/:id" element={<ValidateAccount />} />
+          <Route path="/about" element={<About />} />
           <Route path="/ordersAdmin" element={<OrdersAdmin />} />
         </Routes>
       </BrowserRouter>

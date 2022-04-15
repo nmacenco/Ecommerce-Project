@@ -2,12 +2,14 @@ import { CartActions, Product, TYPES_CART } from "../interface";
 
 export interface CART {
   cart: Product[];
+  ordersHistory: Product[];
 }
 
 const INITIAL_STATE = {
   cart: localStorage.getItem("cart")
     ? JSON.parse(localStorage.getItem("cart") || "{}")
     : [],
+  ordersHistory: [],
 };
 
 export const reducerCart = (
@@ -33,7 +35,6 @@ export const reducerCart = (
           )
         : //if it is null it means it is a new product
           [...state.cart, newProduct];
-      // console.log("ITEMS OF THE CARD: ", cartItems);
       localStorage.setItem("cart", JSON.stringify(cartItems));
       return { ...state, cart: cartItems };
 
