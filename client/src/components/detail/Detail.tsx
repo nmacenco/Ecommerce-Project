@@ -143,14 +143,14 @@ export default function Detail() {
                     </button>
                   )}
                   {console.log('WISHESSS:  ', wishes)}
-                  {user !== null && (wishEncountered || isWish)
+                  {user != null && ((wishEncountered || isWish)
                     ?
                     null
                     :
                     <button className="btn btn-danger wish" onClick={AddWishList}>
                       Add to WishList
                     </button>
-
+)
                   }
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>

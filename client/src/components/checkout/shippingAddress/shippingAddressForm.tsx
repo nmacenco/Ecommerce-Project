@@ -12,7 +12,13 @@ export default function ShippingAddressForm(): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const countries = useSelector((state: State) => state.countries.countries);
-
+    const [adress , setAdress] = useState({
+        name : '',
+        address : '',
+        city : '',
+        postalCode : '',
+        country : ''
+    })
   useEffect(() => {
     dispatch(getCountries());
   }, [dispatch]);
@@ -59,9 +65,9 @@ export default function ShippingAddressForm(): JSX.Element {
             type="text"
             className="form-control"
             id="staticEmail"
-            name="name"
+            name="address"
             //   value={product.name}
-            placeholder="Enter name"
+            placeholder="Enter address"
             onChange={(e) => handleChange(e)}
           />
           {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
@@ -74,9 +80,9 @@ export default function ShippingAddressForm(): JSX.Element {
             type="text"
             className="form-control"
             id="staticEmail"
-            name="name"
+            name="city"
             //   value={product.name}
-            placeholder="Enter name"
+            placeholder="Enter city"
             onChange={(e) => handleChange(e)}
           />
           {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
@@ -89,9 +95,9 @@ export default function ShippingAddressForm(): JSX.Element {
             type="text"
             className="form-control"
             id="staticEmail"
-            name="name"
+            name="postalCode"
             //   value={product.name}
-            placeholder="Enter name"
+            placeholder="Enter postal code"
             onChange={(e) => handleChange(e)}
           />
           {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
