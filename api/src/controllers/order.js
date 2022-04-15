@@ -39,6 +39,7 @@ const getOrders = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
+        shipping_address:Order.shipping_address,
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
@@ -96,6 +97,7 @@ const getUserOrdersServer = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
+        shipping_address:activeOrder.shipping_address,
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
@@ -259,6 +261,7 @@ const getActiveOrder = async (req, res) => {
       user: activeOrder.User.name + " " + activeOrder.User.surname,
       userID: Order.User.id,
       billing_address: activeOrder.billing_address,
+      shipping_address:activeOrder.shipping_address,
       details:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
