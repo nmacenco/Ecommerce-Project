@@ -61,16 +61,11 @@ const Login = (): JSX.Element => {
             title: "Successfully logged in",
             icon: "success",
           });
+          navigate("/products");
         }
       })
     );
   };
-
-  if (user) {
-    dispatch(createOrderUser(user.token, productsCart));
-    dispatch(getPendingOrder(user.token));
-    navigate("/products");
-  }
 
   const responseGoogle = (data: any) => {
     const { email } = data.profileObj;
@@ -103,6 +98,11 @@ const Login = (): JSX.Element => {
 
   let emailStyle = error.email ? "form-control is-invalid" : "form-control";
   let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
+
+  if (user) {
+    dispatch(createOrderUser(user.token, productsCart));
+    dispatch(getPendingOrder(user.token));
+  }
 
   return (
     <Form title="Login">

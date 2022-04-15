@@ -3,9 +3,9 @@ import { CardComponent, CardFooter, ProductIMG } from "./CardStyles";
 import cartIcon from "../../../../icons/cart-icon.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Product } from "../../../../redux/interface";
+import { Product, User } from "../../../../redux/interface";
 import { State } from "../../../../redux/reducers";
-import { addProductCart } from "../../../../redux/actions/cart";
+import { addProductCart, addProductOrder } from "../../../../redux/actions/cart";
 
 interface props {
   name: string;
@@ -19,6 +19,7 @@ interface props {
 const Card = ({ name, image, price, id, stock, product }: props) => {
   const dispatch = useDispatch();
   const productsCart = useSelector((state: State) => state.cart.cart);
+  const user = useSelector((state: State) => state.user)
   const productInCart = productsCart.find((x: Product) => x.id === product.id);
 
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
@@ -29,6 +30,7 @@ const Card = ({ name, image, price, id, stock, product }: props) => {
     if (Number(quantity) <= Number(stock)) {
       product.quantity = quantity;
       dispatch(addProductCart(product));
+      user && id && dispatch(addProductOrder(user.token,id))
     }
   }
 

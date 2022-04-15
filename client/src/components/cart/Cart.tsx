@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addProductCart, removeProductCart } from "../../redux/actions/cart";
+import { addProductCart, removeProductCart, removeProductOrder } from "../../redux/actions/cart";
 import { Product } from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import CartProduct from "./cartProduct/CartProduct";
@@ -10,6 +10,7 @@ import { CartContainer } from "./CartStyles";
 const Cart = (): JSX.Element => {
   const dispatch = useDispatch();
   const productsCart = useSelector((state: State) => state.cart.cart);
+  const user = useSelector((state: State) => state.user)
 
   async function updateQuantityHandler(
     product: Product,
@@ -23,6 +24,7 @@ const Cart = (): JSX.Element => {
 
   function removeProductHandler(product: Product): void {
     dispatch(removeProductCart(product));
+    user && product.id && dispatch(removeProductOrder(user.token,product.id))
   }
 
   return (

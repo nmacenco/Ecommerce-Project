@@ -313,7 +313,7 @@ export const resetForgotPassword = (id: any, password: RESET_PASSWORD) => {
   }
 };
 export const validateAccount = (id: any) => {
-  console.log(id);
+  // console.log(id);
 
   try {
     return async (dispatch: Dispatch) => {

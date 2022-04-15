@@ -75,6 +75,7 @@ const WishList = (): JSX.Element => {
                         <th className='title'><i>Status stock</i></th>
                         <th className='title'><i>Actions</i></th>
                     </tr>
+                    {console.log(wishes)}
 
                     {
                         wishes.map((wish, i) => {

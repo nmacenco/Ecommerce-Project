@@ -49,8 +49,7 @@ export const reducerCart = (
       return { ...state, cart: [] };
 
     case TYPES_CART.GET_ACTIVEORDER:
-      const activeOrder = action.payload
-      const pendingOrderProducts = action.payload.detail
+      const pendingOrderProducts = action.payload.details
       return { ...state, cart: pendingOrderProducts };
 
     default: {
