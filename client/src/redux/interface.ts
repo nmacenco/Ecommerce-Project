@@ -138,7 +138,7 @@ export interface Product {
   subcategory: string;
   CategoryId: number;
   category: number;
-  count: number;
+  quantity: number;
   questions: any[];
   reviews: any[];
   isActive: boolean;

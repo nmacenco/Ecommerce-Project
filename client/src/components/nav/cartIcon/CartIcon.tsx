@@ -14,7 +14,7 @@ const CartIcon = () => {
       <CartIMG src={cartIcon} />
       <span className="badge rounded-pill bg-light text-dark fs-5">
         {productsCart.reduce(
-          (a: number, product: Product) => a + product.count,
+          (a: number, product: Product) => a + product.quantity,
           0
         )}
       </span>

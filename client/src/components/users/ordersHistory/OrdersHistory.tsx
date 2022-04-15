@@ -40,7 +40,7 @@ const OrdersHistory = (): JSX.Element => {
               order.status !== "PENDING" && (
                 <OrderRow
                   id={order.id}
-                  total={order.total_amount}
+                  totalAmount={order.total_amount}
                   status={order.status}
                 />
               );

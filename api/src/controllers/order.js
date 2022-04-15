@@ -1,4 +1,11 @@
 const { Order, User, Order_detail, Product } = require("../db");
+require("dotenv").config();
+const {
+  ORDER_STATUS_PENDING,
+  ORDER_STATUS_BILLED,
+  ORDER_STATUS_DELIVERED,
+  ORDER_STATUS_FINISHED,
+} = process.env;
 
 const getOrders = async (req, res) => {
   try {
@@ -14,7 +21,7 @@ const getOrders = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name"],
+              attributes: ["name", "id", "image"],
             },
           ],
         },
@@ -30,12 +37,20 @@ const getOrders = async (req, res) => {
         email_address: Order.email_address,
         status: Order.status,
         user: Order.User.name + " " + Order.User.surname,
+        userID: Order.User.id,
         billing_address: Order.billing_address,
-        detail:
+        details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-              return { detail };
-            })
+                return {
+                  id: detail.id,
+                  amount: detail.amount,
+                  quantity: detail.quantity,
+                  productName: detail.Product.name,
+                  productId: detail.Product.id,
+                  image: detail.Product.image,
+                };
+              })
             : [],
       };
     });
@@ -59,11 +74,11 @@ const getUserOrdersServer = async (req, res) => {
         },
         {
           model: Order_detail,
-          attributes: ["amount", "quantity"],
+          attributes: ["amount", "quantity", "id"],
           include: [
             {
               model: Product,
-              attributes: ["name"],
+              attributes: ["name", "id", "image"],
             },
           ],
         },
@@ -79,11 +94,19 @@ const getUserOrdersServer = async (req, res) => {
         email_address: Order.email_address,
         status: Order.status,
         user: Order.User.name + " " + Order.User.surname,
+        userID: Order.User.id,
         billing_address: Order.billing_address,
-        detail:
+        details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-                return { detail };
+                return {
+                  id: detail.id,
+                  amount: detail.amount,
+                  quantity: detail.quantity,
+                  productName: detail.Product.name,
+                  productId: detail.Product.id,
+                  image: detail.Product.image,
+                };
               })
             : [],
       };
@@ -100,8 +123,6 @@ const getUserOrdersServer = async (req, res) => {
 //Fine
 const createOrder = async (req, res) => {
   const UserId = req.userID;
-  // const { UserId } = req.params;
-  
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
@@ -152,8 +173,7 @@ const createOrder = async (req, res) => {
 };
 
 const updateOrderState = async (req, res) => {
-  // const id = req.params.id;
-  const id = req.userID;
+  const id = req.params.id;
   let { status } = req.body;
   try {
     if (!id) {
@@ -196,7 +216,7 @@ const getActiveOrder = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name"],
+              attributes: ["name", "id", "image"],
             },
           ],
         },
@@ -213,12 +233,20 @@ const getActiveOrder = async (req, res) => {
       email_address: activeOrder.email_address,
       status: activeOrder.status,
       user: activeOrder.User.name + " " + activeOrder.User.surname,
+      userID: Order.User.id,
       billing_address: activeOrder.billing_address,
-      detail:
+      details:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-            return { detail };
-          })
+              return {
+                id: detail.id,
+                amount: detail.amount,
+                quantity: detail.quantity,
+                productName: detail.Product.name,
+                productId: detail.Product.id,
+                image: detail.Product.image,
+              };
+            })
           : [],
     };
     res
@@ -232,7 +260,7 @@ const getActiveOrder = async (req, res) => {
 // *******add and remove a product from the detail******
 
 //Add order detail, delete order detail or modify order detail (use aux functions)
-const addproductsOrder = async (req, res) => {
+const addProductsOrder = async (req, res) => {
   const id = req.userID;
   try {
     const { Productid } = req.body;
@@ -244,7 +272,7 @@ const addproductsOrder = async (req, res) => {
           id: Productid,
         },
       });
-      const { activeUserOrder } = await orderuseractive(id);
+      const { activeUserOrder } = await userActiveOrder(id);
 
       let orderDetail = await Order_detail.findOne({
         where: {
@@ -258,6 +286,7 @@ const addproductsOrder = async (req, res) => {
           activeUserOrder.id,
           Productid,
           (quantity = 1)
+          //no le paso amount...
         );
         res.status(200).send({
           successMsg: "Order has been CREATE",
@@ -265,6 +294,7 @@ const addproductsOrder = async (req, res) => {
         });
       } else {
         const amountoltal = product.price * orderDetail.quantity + 1;
+        //No actualiza total amount de la order...
         let UpdatedOrderDetail = await orderDetail.update({
           amount: amountoltal,
           quantity: orderDetail.quantity + 1,
@@ -280,7 +310,7 @@ const addproductsOrder = async (req, res) => {
   }
 };
 
-const removeproductsOrder = async (req, res) => {
+const removeProductsOrder = async (req, res) => {
   const id = req.userID;
   // const { id } = req.params;
   try {
@@ -290,7 +320,7 @@ const removeproductsOrder = async (req, res) => {
         id: Productid,
       },
     });
-    const { activeUserOrder } = await orderuseractive(id);
+    const { activeUserOrder } = await userActiveOrder(id);
     let orderDetail = await Order_detail.findOne({
       where: {
         OrderId: activeUserOrder.id,
@@ -312,24 +342,23 @@ const removeproductsOrder = async (req, res) => {
   }
 };
 
-const deleteproductsOrder = async (req, res) => {
+const deleteProductsOrder = async (req, res) => {
   const id = req.userID;
-  // // const { id } = req.params;
   try {
     const { Productid } = req.body;
     if (!Productid) {
       return res.status(404).send({ errorMsg: "You don't have any products." });
     } else {
-      const { activeUserOrder } = await orderuseractive(id);
+      const { activeUserOrder } = await userActiveOrder(id);
       let orderDetail = await Order_detail.findOne({
         where: {
           OrderId: activeUserOrder.id,
           ProductId: Productid,
         },
       });
-      deleteOrderDetail(orderDetail.id);
+      await deleteOrderDetail(orderDetail.id);
       res.status(201).send({
-        successMsg: "Order has been delete",
+        successMsg: "Order has been deleted",
       });
     }
   } catch (error) {
@@ -340,7 +369,7 @@ const deleteproductsOrder = async (req, res) => {
 //PRODUCT ID
 const deleteOrderDetail = async (id) => {
   try {
-    let deletedOrderDetail = await Order_detail.destroy({
+    await Order_detail.destroy({
       where: {
         id,
       },
@@ -384,7 +413,7 @@ const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
   }
 };
 
-const orderuseractive = async (id) => {
+const userActiveOrder = async (id) => {
   try {
     let activeUserOrder = await Order.findOne({
       where: {
@@ -402,7 +431,7 @@ const orderuseractive = async (id) => {
           include: [
             {
               model: Product,
-              attributes: ["name"],
+              attributes: ["name", "id", "image"],
             },
           ],
         },
@@ -417,12 +446,20 @@ const orderuseractive = async (id) => {
       email_address: activeUserOrder.email_address,
       status: activeUserOrder.status,
       user: activeUserOrder.User.name + " " + activeUserOrder.User.surname,
+      userID: activeUserOrder.User.id,
       billing_address: activeUserOrder.billing_address,
       detail:
         activeUserOrder.Order_details.length > 0
           ? activeUserOrder.Order_details.map((detail) => {
-            return { detail };
-          })
+              return {
+                id: detail.id,
+                amount: detail.amount,
+                quantity: detail.quantity,
+                productName: detail.Product.name,
+                productId: detail.Product.id,
+                image: detail.Product.image,
+              };
+            })
           : [],
     };
     return { activeUserOrder };
@@ -449,7 +486,7 @@ const getUserOrders = async (id) => {
             include: [
               {
                 model: Product,
-                attributes: ["name"],
+                attributes: ["name", "id", "image"],
               },
             ],
           },
@@ -464,13 +501,20 @@ const getUserOrders = async (id) => {
           total_amount: Order.total_amount,
           email_address: Order.email_address,
           billing_address: Order.billing_address,
-          UserId: Order.UserId,
+          UserID: Order.User.id,
           status: Order.status,
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                return { detail };
-              })
+                  return {
+                    id: detail.id,
+                    amount: detail.amount,
+                    quantity: detail.quantity,
+                    productName: detail.Product.name,
+                    productId: detail.Product.id,
+                    image: detail.Product.image,
+                  };
+                })
               : [],
         };
       });
@@ -480,14 +524,40 @@ const getUserOrders = async (id) => {
     console.log(error.message);
   }
 };
+
+const updatePaypalOrder = async (req, res) => {
+  let { paymentMethod } = req.body;
+  try {
+    let orderPaypal = await Order.findById(req.params.id);
+    if (!orderPaypal) {
+      res.status(401).send({ message: "Order Not Found" });
+    } else {
+      let updatedOrder = await orderPaypal.update({
+        status: ORDER_STATUS_BILLED,
+        isPaid: true,
+        paidAt: Date.now(),
+        paymentMethod: paymentMethod,
+        shippingPrice: shippingPrice,
+        taxPrice: taxPrice,
+        isDelivered: false,
+        email_address: email_address,
+        billing_address: billing_address,
+      });
+      res.status(201).send({ successMsg: "Order Paid", data: updatedOrder });
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 module.exports = {
   getOrders,
   createOrder,
   getActiveOrder,
   updateOrderState,
   getUserOrdersServer,
-  addproductsOrder,
-  removeproductsOrder,
-  deleteproductsOrder,
+  addProductsOrder,
+  removeProductsOrder,
+  deleteProductsOrder,
   getUserOrders,
+  updatePaypalOrder,
 };

@@ -11,12 +11,12 @@ const Cart = (): JSX.Element => {
   const dispatch = useDispatch();
   const productsCart = useSelector((state: State) => state.cart.cart);
 
-  async function updateCountHandler(
+  async function updateQuantityHandler(
     product: Product,
-    count: number
+    quantity: number
   ): Promise<void> {
-    if (count <= Number(product.stock) && count > 0) {
-      product.count = count;
+    if (quantity <= Number(product.stock) && quantity > 0) {
+      product.quantity = quantity;
       dispatch(addProductCart(product));
     }
   }
@@ -43,9 +43,9 @@ const Cart = (): JSX.Element => {
                 id={product.id}
                 name={product.name}
                 image={product.image}
-                count={product.count}
+                quantity={product.quantity}
                 price={product.price}
-                updateCountHandler={updateCountHandler}
+                updateQuantityHandler={updateQuantityHandler}
                 removeProductHandler={removeProductHandler}
                 product={product}
               />
@@ -54,10 +54,10 @@ const Cart = (): JSX.Element => {
           <div className="d-flex flex-column flex-md-row justify-content-between mt-4 align-items-center mb-5">
             <div className="d-flex flex-column">
               <h4 className="text-center">
-                total: ${productsCart.reduce((a: number, product: Product) =>a + product.price * product.count,0)}
+                total: ${productsCart.reduce((a: number, product: Product) =>a + product.price * product.quantity,0)}
               </h4>
               <h4 className="text-center mb-4 mb-md-0">
-                ({productsCart.reduce((a: number, product: Product) => a + product.count,0)} products)
+                ({productsCart.reduce((a: number, product: Product) => a + product.quantity,0)} products)
               </h4>
             </div>
             <div>
