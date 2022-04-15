@@ -45,6 +45,9 @@ export const reducerCart = (
       localStorage.setItem("cart", JSON.stringify(cartItemsFiltered));
       return { ...state, cart: cartItemsFiltered };
 
+      case TYPES_CART.CLEAR_CART:
+            return {...state,cart: []}
+
     default: {
       return {
         ...state,

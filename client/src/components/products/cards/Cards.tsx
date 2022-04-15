@@ -47,8 +47,6 @@ const Cards = (): JSX.Element => {
     setOrder(typeorder);
   };
 
-
-
   useEffect(() => {
     dispatch(getSubcategories())
     dispatch(getProducts());

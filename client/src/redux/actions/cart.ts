@@ -18,3 +18,10 @@ export function removeProductCart(product: Product) {
     payload: product,
   };
 }
+
+export const clearCart = () => {
+  return {
+    type: TYPES_CART.CLEAR_CART,
+    payload: null,
+  };
+};

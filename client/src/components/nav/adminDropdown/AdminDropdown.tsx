@@ -3,8 +3,6 @@ import { DropdownMenu } from "./AdminDropdownStyle";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../../redux/actions/user";
-import { adminresetUsers } from "../../../redux/actions/adminUser";
-import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { State } from "../../../redux/reducers";
 
 const AdminDropdown = (): JSX.Element => {
@@ -15,6 +13,8 @@ const AdminDropdown = (): JSX.Element => {
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
+    localStorage.removeItem('cart')
+    dispatch(cartClear())
     navigate("/products");
   };
 
@@ -58,3 +58,7 @@ const AdminDropdown = (): JSX.Element => {
 };
 
 export default AdminDropdown;
+function cartClear(): any {
+  throw new Error("Function not implemented.");
+}
+
