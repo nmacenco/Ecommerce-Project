@@ -100,7 +100,6 @@ const getUserOrdersServer = async (req, res) => {
 //Fine
 const createOrder = async (req, res) => {
   const UserId = req.userID;
-  // const { UserId } = req.params;
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
