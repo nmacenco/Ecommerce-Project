@@ -17,7 +17,7 @@ const getOrders = async (req, res) => {
         },
         {
           model: Order_detail,
-          attributes: ["amount", "quantity"],
+          attributes: ["price", "quantity"],
           include: [
             {
               model: Product,
@@ -44,7 +44,7 @@ const getOrders = async (req, res) => {
             ? Order.Order_details.map((detail) => {
                 return {
                   id: detail.id,
-                  amount: detail.amount,
+                  price: detail.price,
                   quantity: detail.quantity,
                   productName: detail.Product.name,
                   productId: detail.Product.id,
@@ -74,7 +74,7 @@ const getUserOrdersServer = async (req, res) => {
         },
         {
           model: Order_detail,
-          attributes: ["amount", "quantity", "id"],
+          attributes: ["price", "quantity", "id"],
           include: [
             {
               model: Product,
@@ -101,7 +101,7 @@ const getUserOrdersServer = async (req, res) => {
             ? Order.Order_details.map((detail) => {
                 return {
                   id: detail.id,
-                  amount: detail.amount,
+                  price: detail.price,
                   quantity: detail.quantity,
                   productName: detail.Product.name,
                   productId: detail.Product.id,
@@ -145,19 +145,19 @@ const createOrder = async (req, res) => {
         });
       }
       for (let product of allProductsOrder) {
-        const amount = product.count * product.price;
+        const price = product.count * product.price;
         await createOrderDetail(
           newOrder.id,
           product.ProductId,
           product.count,
-          amount
+          price
         );
       }
       let orderDetails = await Order_detail.findAll({
         where: { OrderId: newOrder.id },
       });
       const totalAmount = orderDetails.reduce((a, detail) => {
-        return a + detail.dataValues.amount;
+        return a + detail.dataValues.price;
       }, 0);
       await newOrder.update({
         total_amount: totalAmount,
@@ -196,6 +196,30 @@ const updateOrderState = async (req, res) => {
   }
 };
 
+
+const updateOrder = async (req, res) => {
+  const id = req.params.id;
+  let { shipping_address } = req.body;
+  try {
+    if (!id) {
+      res.status(404).send({ errorMsg: "Missing id." });
+    } else {
+      let orderShipping = await Order.update(
+        { shipping_address: shipping_address },
+        { where: { id: id } }
+      );
+      if (!orderShipping) {
+        res.status(404).send({ errorMsg: "order not found" });
+      } else {
+        res
+          .status(201)
+          .send({ successMsg: "Order has been updated", data: orderShipping });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 //send actual order (cart) with it's order-details included.
 const getActiveOrder = async (req, res) => {
   try {
@@ -212,7 +236,7 @@ const getActiveOrder = async (req, res) => {
         },
         {
           model: Order_detail,
-          attributes: ["amount", "quantity"],
+          attributes: ["price", "quantity"],
           include: [
             {
               model: Product,
@@ -240,7 +264,7 @@ const getActiveOrder = async (req, res) => {
           ? activeOrder.Order_details.map((detail) => {
               return {
                 id: detail.id,
-                amount: detail.amount,
+                price: detail.price,
                 quantity: detail.quantity,
                 productName: detail.Product.name,
                 productId: detail.Product.id,
@@ -296,7 +320,7 @@ const addProductsOrder = async (req, res) => {
         const amountoltal = product.price * orderDetail.quantity + 1;
         //No actualiza total amount de la order...
         let UpdatedOrderDetail = await orderDetail.update({
-          amount: amountoltal,
+          price: amountoltal,
           quantity: orderDetail.quantity + 1,
         });
         res.status(201).send({
@@ -330,7 +354,7 @@ const removeProductsOrder = async (req, res) => {
     const amountoltal = product.price * orderDetail.quantity - 1;
 
     let UpdatedOrderDetail = await orderDetail.update({
-      amount: amountoltal,
+      price: amountoltal,
       quantity: orderDetail.quantity - 1,
     });
     res.status(201).send({
@@ -380,7 +404,7 @@ const deleteOrderDetail = async (id) => {
 };
 
 //Fine
-const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
+const createOrderDetail = async (OrderId, ProductId, quantity, price) => {
   try {
     let product = await Product.findOne({
       where: {
@@ -396,7 +420,7 @@ const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
     if (isOrderDetailCreated) {
       await isOrderDetailCreated.update({
         quantity: isOrderDetailCreated.quantity + quantity,
-        amount: isOrderDetailCreated.amount + amount,
+        price: isOrderDetailCreated.price + price,
       });
       return isOrderDetailCreated;
     } else {
@@ -404,7 +428,7 @@ const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
         OrderId,
         ProductId,
         quantity,
-        amount,
+        price,
       });
       return newOrderDetail;
     }
@@ -427,7 +451,7 @@ const userActiveOrder = async (id) => {
         },
         {
           model: Order_detail,
-          attributes: ["amount", "quantity"],
+          attributes: ["price", "quantity"],
           include: [
             {
               model: Product,
@@ -453,7 +477,7 @@ const userActiveOrder = async (id) => {
           ? activeUserOrder.Order_details.map((detail) => {
               return {
                 id: detail.id,
-                amount: detail.amount,
+                price: detail.price,
                 quantity: detail.quantity,
                 productName: detail.Product.name,
                 productId: detail.Product.id,
@@ -482,7 +506,7 @@ const getUserOrders = async (id) => {
           },
           {
             model: Order_detail,
-            attributes: ["amount", "quantity"],
+            attributes: ["price", "quantity"],
             include: [
               {
                 model: Product,
@@ -508,7 +532,7 @@ const getUserOrders = async (id) => {
               ? Order.Order_details.map((detail) => {
                   return {
                     id: detail.id,
-                    amount: detail.amount,
+                    price: detail.price,
                     quantity: detail.quantity,
                     productName: detail.Product.name,
                     productId: detail.Product.id,
@@ -560,4 +584,5 @@ module.exports = {
   deleteProductsOrder,
   getUserOrders,
   updatePaypalOrder,
+  updateOrder,
 };
