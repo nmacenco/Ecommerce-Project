@@ -12,7 +12,6 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={state}>
       <PayPalScriptProvider  deferLoading={true} options={{ "client-id": "sb" }}>
-      {/* <PayPalScriptProvider  deferLoading={true} options={{ "client-id": "sb" |  (process.env.REACT_APP_PAYPAL_CLIENT_ID)    }}> */}
         <App />
       </PayPalScriptProvider>
     </Provider>
