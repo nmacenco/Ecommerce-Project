@@ -7,7 +7,9 @@ const {
   getUserOrdersServer,
   addproductsOrder,
   removeproductsOrder,
-  deleteproductsOrder,getUserOrders
+  deleteproductsOrder,
+  getUserOrders,
+  updatePaypalOrder
 } = require("../controllers/order");
 const { isLoggedIn, isAdmin } = require("../middleware/auth");
 
@@ -25,13 +27,13 @@ orderRouter.post("/auth/orders",isLoggedIn, createOrder); //a new product is add
 // orderRouter.delete("/auth/orders/delete/:id",  deleteproductsOrder);
 // orderRouter.get("/auth/orders/:id",  getActiveOrder);
 
-
-orderRouter.put("/auth/orders/:id", isLoggedIn, updateOrderState);
+orderRouter.put("/admin/orders/:id", isLoggedIn, isAdmin,updateOrderState);
 orderRouter.get("/auth/orders/user/:id", isLoggedIn, getUserOrdersServer);
 orderRouter.put("/auth/orders/add/:id", isLoggedIn, addproductsOrder);// add one more existing product +
 orderRouter.put("/auth/orders/remove/:id", isLoggedIn, removeproductsOrder);//remuve one more existing product -
 orderRouter.delete("/auth/orders/delete/:id", isLoggedIn, deleteproductsOrder);
 orderRouter.get("/auth/orders/:id", isLoggedIn, getActiveOrder);
+orderRouter.put('/auth/:id/pay', isLoggedIn, updatePaypalOrder )
 
 //admin
 orderRouter.get("/admin/orders", getOrders);
