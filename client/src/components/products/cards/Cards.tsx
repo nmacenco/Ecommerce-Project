@@ -18,7 +18,6 @@ import { execPath } from "process";
 import { getSubcategories } from "../../../redux/actions/categories";
 import { getProducts } from "../../../redux/actions/products";
 import { setPage } from "../../../redux/actions/setPage";
-import { createOrderUser } from "../../../redux/actions/ordersUser";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -35,8 +34,6 @@ const Cards = (): JSX.Element => {
   const notFound = useSelector((state: State) => state.products.not_found);
   // const allSubcategories = useSelector((state: State) => state.categories.subcategories);
   // let count: string[] = []
-  const user = useSelector((state: State) => state.user);
-  const productsCart = useSelector((state: State) => state.cart.cart);
 
   const page = (numberOfPage: number): void => {
     // if (typeorder !== 'asc-price order' && typeorder !== 'des-price order' && typeorder !== 'des-name order' && typeorder !== 'asc-name order' && typeorder !== 'Order by order') {
@@ -52,9 +49,9 @@ const Cards = (): JSX.Element => {
   useEffect(() => {
     dispatch(getSubcategories())
     dispatch(getProducts());
-    if(user){
-      dispatch(createOrderUser(user.token, productsCart))
-    }
+    // if(user){
+    //   dispatch(createOrderUser(user.token, productsCart))
+    // }
   }, [])
 
   // useEffect(() => {

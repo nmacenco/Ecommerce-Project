@@ -7,7 +7,7 @@ const URL = "http://localhost:3001/api/auth/orders";
 export const getOrdersUser = (id: string, token: string) => {
   try {
     return async (dispatch: Dispatch) => {
-      const userOrders = await axios.get(`${URL}/user/` + id,{
+      const userOrders = await axios.get(`${URL}/user/`,{
         headers: {
           "auth-token": token,
         },

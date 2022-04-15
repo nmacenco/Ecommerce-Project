@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
-import { CreateUser, GetUSer, LoginWithGoogle, RegisterWithGoogle } from "../../redux/actions/user";
+import { CreateUser, GetUSer, LoginWithGoogle, LogoutUser, RegisterWithGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
 import { useNavigate } from "react-router";
 import { Forgot } from "../form/SLogin";
 import { setPage } from "../../redux/actions/setPage";
 import { GoogleLogin } from 'react-google-login';
+import { createOrderUser } from "../../redux/actions/ordersUser";
 
 interface Inputs {
     email: string;
@@ -18,13 +19,15 @@ interface Inputs {
 const Login = (): JSX.Element => {
     const dispatch = useDispatch();
     const user = useSelector((state: State) => state.user);
+    const [userLoaded,setUserLoaded] = useState<boolean>(false)
     const navigate = useNavigate();
+    const productsCart = useSelector((state: State) => state.cart.cart);
 
 
     useEffect(() => {
         dispatch(setPage(0))
+        dispatch(LogoutUser())
         return () => {
-
             dispatch(setPage(1))
         }
     }, [])
@@ -50,17 +53,15 @@ const Login = (): JSX.Element => {
     const LoginFetch = (event: any) => {
         event.preventDefault();
         const res = validateForms(error, inputs);
-        if (res) {
-            return alert(res);
-        }
-        if (!user) {
-            dispatch(
-                GetUSer(inputs.email, inputs.passUser, () => {
-                    navigate("/products");            
-                })
-            );
-        }
+        if (res) { return alert(res) }
+        dispatch(GetUSer(inputs.email, inputs.passUser, "")); 
+        setUserLoaded(!userLoaded)
     };
+    
+    if(user){
+        dispatch(createOrderUser(user.token, productsCart))
+        navigate("/products")
+    }
 
     const responseGoogle = (data: any) => {
 

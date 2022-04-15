@@ -101,6 +101,7 @@ const getUserOrdersServer = async (req, res) => {
 const createOrder = async (req, res) => {
   const UserId = req.userID;
   // const { UserId } = req.params;
+  
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
@@ -126,7 +127,7 @@ const createOrder = async (req, res) => {
         const amount = product.count * product.price;
         await createOrderDetail(
           newOrder.id,
-          product.ProductId,
+          product.id,
           product.count,
           amount
         );

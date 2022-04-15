@@ -15,8 +15,9 @@ const AdminDropdown = (): JSX.Element => {
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
-    navigate("/products");
     localStorage.removeItem('cart')
+    dispatch(cartClear())
+    navigate("/products");
   };
 
   return (
@@ -56,3 +57,7 @@ const AdminDropdown = (): JSX.Element => {
 };
 
 export default AdminDropdown;
+function cartClear(): any {
+  throw new Error("Function not implemented.");
+}
+

@@ -57,6 +57,7 @@ export enum TYPES_PRODUCT {
 export enum TYPES_CART {
   ADD_PRODUCT = "ADD_PRODUCT",
   REMOVE_PRODUCT = "REMOVE_PRODUCT",
+  CLEAR_CART = "CLEAR_CART",
 }
 
 export enum TYPES_COUNTRIES {
@@ -295,6 +296,11 @@ export interface REMOVE_PRODUCT {
   payload: Product;
 }
 
+export interface CLEAR_CART {
+  type: TYPES_CART.CLEAR_CART;
+  payload: null;
+}
+
 //=====================
 //Products Actions
 export interface PRODUCT_DETAIL {
@@ -449,7 +455,7 @@ export type AdminActions = DELETE_PRODUCT | GET_ORDERS;
 
 export type SetPage = SET_PAGE;
 
-export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT;
+export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART;
 
 export type CountriesActions = GET_COUNTRIES;
 

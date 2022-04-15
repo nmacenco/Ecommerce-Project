@@ -24,10 +24,8 @@ export const CreateUser = (user: any, cb: any) => {
       const response = await axios.post(URL_USER + "/signUp", user);
       const data = response.data;
 
-      console.log(response.headers);
-      console.log("data: ", data);
       if (data.errorMsg) {
-        return alert("ALgo paso!");
+        return alert("Something happened");
       }
 
       const newUser = {

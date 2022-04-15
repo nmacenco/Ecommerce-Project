@@ -10,8 +10,6 @@ const INITIAL_STATE = {
     : [],
 };
 
-
-
 export const reducerCart = (
   state: CART = INITIAL_STATE,
   action: CartActions
@@ -41,6 +39,9 @@ export const reducerCart = (
       );
       localStorage.setItem("cart", JSON.stringify(cartItemsFiltered));
       return { ...state, cart: cartItemsFiltered };
+
+      case TYPES_CART.CLEAR_CART:
+            return {cart: []}
 
     default: {
       return {
