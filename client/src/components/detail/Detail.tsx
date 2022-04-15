@@ -16,9 +16,8 @@ import { Product } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import TrashIMG from "../../icons/white-trash.png"
 import EditIMG from "../../icons/edit.png"
-import { resetPoducts } from "../../redux/actions/products";
+import { createWish, resetPoducts } from "../../redux/actions/products";
 import { deleteProduct } from "../../redux/actions/admin";
-import { createWish } from "../../helpers/wishsActions";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -37,7 +36,8 @@ export default function Detail() {
   const AddWishList = () => {
 
     if (user) {
-      createWish(Number(id), user!.token, (error, data) => {
+
+      dispatch(createWish(Number(id), user!.token, (error) => {
         if (error) {
           swal({
             text: error,
@@ -52,7 +52,7 @@ export default function Detail() {
             icon: "success",
           })
         }
-      });
+      }))
 
 
     }

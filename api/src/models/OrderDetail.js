@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       autoIncrement: true,
     },
-    amount: {
+    price: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },

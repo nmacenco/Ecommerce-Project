@@ -23,7 +23,7 @@ export enum TYPES_DETAIL {
 
 export enum TYPES_ADMIN {
   DELETE_PRODUCTS = "DELETE_PRODUCTS",
-  GET_ORDERS = 'GET_ORDERS',
+  GET_ORDERS = "GET_ORDERS",
 }
 
 export enum TYPES_CATEGORIES {
@@ -144,13 +144,13 @@ export interface Product {
   isActive: boolean;
 }
 export interface Order {
-  id: number,
-  total_amount: number,
-  email_address: string,
-  status: string,
-  user: string,
-  billing_address: string,
-  detail: any[]
+  id: number;
+  total_amount: number;
+  email_address: string;
+  status: string;
+  user: string;
+  billing_address: string;
+  detail: any[];
 }
 
 export interface Question {
@@ -360,7 +360,7 @@ export interface GET_WISHES {
 }
 export interface CREATE_WISHE {
   type: TYPES_PRODUCT.CREATE_WISHE;
-  payload: any;
+  payload: number;
 }
 export interface DELETE_WISHE {
   type: TYPES_PRODUCT.DELETE_WISHE;

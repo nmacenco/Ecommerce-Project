@@ -80,16 +80,19 @@ export const reducerProduct = (
         wishList: action.payload,
       };
     case TYPES_PRODUCT.CREATE_WISHE:
+      const newWish = state.products.find(
+        (product) => product.id == action.payload
+      );
       return {
         ...state,
-        wishList: state.wishList.concat(action.payload),
+        wishList: state.wishList.concat(newWish),
       };
 
     case TYPES_PRODUCT.DELETE_WISHE:
       //
-      console.log(
-        state.wishList.filter((wish) => wish.id !== Number(action.payload))
-      );
+      // console.log(
+      //   state.wishList.filter((wish) => wish.id !== Number(action.payload))
+      // );
       return {
         ...state,
         wishList: [
