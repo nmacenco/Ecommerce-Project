@@ -179,6 +179,30 @@ const updateOrderState = async (req, res) => {
   }
 };
 
+
+const updateOrder = async (req, res) => {
+  const id = req.params.id;
+  let { shipping_address } = req.body;
+  try {
+    if (!id) {
+      res.status(404).send({ errorMsg: "Missing id." });
+    } else {
+      let orderShipping = await Order.update(
+        { shipping_address: shipping_address },
+        { where: { id: id } }
+      );
+      if (!orderShipping) {
+        res.status(404).send({ errorMsg: "order not found" });
+      } else {
+        res
+          .status(201)
+          .send({ successMsg: "Order has been updated", data: orderShipping });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 //send actual order (cart) with it's order-details included.
 const getActiveOrder = async (req, res) => {
   try {
@@ -521,4 +545,5 @@ module.exports = {
   deleteproductsOrder,
   getUserOrders,
   updatePaypalOrder,
+  updateOrder,
 };
