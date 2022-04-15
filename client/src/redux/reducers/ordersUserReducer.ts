@@ -16,10 +16,6 @@ export const ordersUserReducer = (state: ORDERS_USER = INITIAL_STATE, action: Us
         case TYPES_ORDERS_USER.GET_ORDERS :
             return  {...state, userOrders:action.payload}
 
-        case TYPES_ORDERS_USER.GET_ACTIVEORDER:
-            console.log("activeorder: "+ action.payload.detail)
-            return {...state, activeOrder:action.payload}
-
         default: {
             return {
                 ...state

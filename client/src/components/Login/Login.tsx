@@ -8,11 +8,9 @@ import Form from "../form/Form";
 import { Forgot } from "../form/SLogin";
 import { setPage } from "../../redux/actions/setPage";
 import { GoogleLogin } from "react-google-login";
-import {
-  createOrderUser,
-  getActiveOrder,
-} from "../../redux/actions/ordersUser";
+import { createOrderUser } from "../../redux/actions/ordersUser";
 import swal from "sweetalert";
+import { getPendingOrder } from "../../redux/actions/cart";
 
 interface Inputs {
   email: string;
@@ -55,7 +53,7 @@ const Login = (): JSX.Element => {
   const LoginFetch = (event: any) => {
     event.preventDefault();
     validateForms(error, inputs);
-
+    setUserLoaded(true);
     dispatch(
       GetUSer(inputs.email, inputs.passUser, (error: any) => {
         if (!error) {
@@ -66,13 +64,12 @@ const Login = (): JSX.Element => {
         }
       })
     );
-    setUserLoaded(!userLoaded);
   };
 
   if (user) {
-    navigate("/products");
     dispatch(createOrderUser(user.token, productsCart));
-    dispatch(getActiveOrder(user.token));
+    dispatch(getPendingOrder(user.token));
+    navigate("/products");
   }
 
   const responseGoogle = (data: any) => {

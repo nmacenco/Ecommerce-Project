@@ -45,8 +45,13 @@ export const reducerCart = (
       localStorage.setItem("cart", JSON.stringify(cartItemsFiltered));
       return { ...state, cart: cartItemsFiltered };
 
-      case TYPES_CART.CLEAR_CART:
-            return {...state,cart: []}
+    case TYPES_CART.CLEAR_CART:
+      return { ...state, cart: [] };
+
+    case TYPES_CART.GET_ACTIVEORDER:
+      const activeOrder = action.payload
+      const pendingOrderProducts = action.payload.detail
+      return { ...state, cart: pendingOrderProducts };
 
     default: {
       return {
