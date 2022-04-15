@@ -1,3 +1,4 @@
+import swal from "sweetalert";
 import axios from "axios";
 import { Dispatch } from "redux";
 
@@ -6,6 +7,21 @@ import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 const URL = "http://localhost:3001/api";
 
 const URL_WISH = "http://localhost:3001/api/wishList";
+
+const defaultCallback = (error: any) => {
+  if (error) {
+    swal({
+      text: "Oops! An error has occurred",
+      content: error,
+      icon: "error",
+    });
+  } else {
+    swal({
+      title: "Successfully removed",
+      icon: "success",
+    });
+  }
+};
 
 export const getProducts = () => {
   try {
@@ -95,8 +111,13 @@ export const getWish = (token: string) => {
  *
  * @param id User id: productId
  * @param token User token : "fgjoytnsis..."
+ * @param callback error handling to display a message
  */
-export const deleteWish = (id: number, token: string) => {
+export const deleteWish = (
+  id: number,
+  token: string,
+  callback = defaultCallback
+) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await fetch(URL_WISH + `/${id}`, {
@@ -109,11 +130,13 @@ export const deleteWish = (id: number, token: string) => {
 
       if (data.errorMsg) {
         console.log("error data: ", data.errorMsg);
+        callback(data.errorMsg);
       } else {
         dispatch({
           type: TYPES_PRODUCT.DELETE_WISHE,
           payload: id,
         });
+        callback(null);
       }
     } catch (error) {
       console.log("ERROR EN POST WISHS: ", error);

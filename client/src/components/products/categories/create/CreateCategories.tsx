@@ -84,7 +84,7 @@ export default function CreateCategories(): JSX.Element {
 
             if (newSubcategory.name.length !== 0) {
                 console.log(newSubcategory)
-                setTimeout(()=> {
+                setTimeout(() => {
                     dispatch(createSubcategories(newSubcategory))
                     dispatch(resetSubcategories())
                 }, 300)
@@ -94,7 +94,7 @@ export default function CreateCategories(): JSX.Element {
                 icon: "success",
                 buttons: {
                     confirm: true,
-                  },
+                },
             })
         } else {
             swal({
@@ -145,7 +145,7 @@ export default function CreateCategories(): JSX.Element {
                 <h3 className="text-center mt-5 pt-5">Create subcategory</h3>
                 <div className="form-group mr-1 mr-md-2">
                     <label htmlFor="exampleTextarea" className="form-label mt-4">
-                        New Subcategory 
+                        New Subcategory
                     </label>
                     <input
                         type="text"

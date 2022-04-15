@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import validator, { validateForms } from "../../helpers/validateForm";
 import { CreateUser, GetUSer, LoginWithGoogle, RegisterWithGoogle } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
-import { useNavigate } from "react-router";
 import { Forgot } from "../form/SLogin";
 import { setPage } from "../../redux/actions/setPage";
 import { GoogleLogin } from 'react-google-login';
+import swal from "sweetalert";
 
 interface Inputs {
     email: string;
@@ -68,8 +68,20 @@ const Login = (): JSX.Element => {
 
         console.log(data.profileObj);
         const { email } = data.profileObj;
-        dispatch(LoginWithGoogle(email, () => {
-            navigate('/products');
+        dispatch(LoginWithGoogle(email, (error) => {
+            if (error) {
+                swal({
+                    title: 'Opps! an error ocurred',
+                    text: error,
+                    icon: 'error'
+                })
+            } else {
+                navigate('/products');
+                swal({
+                    title: 'Successfully logged in',
+                    icon: 'success'
+                })
+            }
         }))
     }
     const rejectGoogle = (error: any) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 import { addProductCart } from '../../../redux/actions/cart';
 import { deleteWish, getWish } from '../../../redux/actions/products';
 import { State } from '../../../redux/reducers';
@@ -35,9 +36,27 @@ const WishList = (): JSX.Element => {
         let index = event.target.id;
         const encountered = products.find(product => product.id === Number(index));
         if (encountered) {
+            // console.log('PRODUCT COUNT: ', encountered.count);
+            encountered.count = 1;
 
             dispatch(addProductCart(encountered));
-            dispatch(deleteWish(Number(index), user!.token))
+            dispatch(deleteWish(Number(index), user!.token, (error) => {
+
+                if (error) {
+                    swal({
+                        text: "Oops! An error has occurred",
+                        content: error,
+                        icon: "error",
+                    });
+                } else {
+                    swal({
+                        title: "Success",
+                        text: 'added to cart',
+                        icon: "success",
+                    });
+                }
+
+            }))
         } else {
             alert('The product not exist! 🤔')
         }
