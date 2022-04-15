@@ -37,17 +37,17 @@ module.exports = (sequelize) => {
     },
     shippingPrice: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 0,
     },
     taxPrice: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 0,
     },
     paidAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     status: {
       type: DataTypes.STRING,
