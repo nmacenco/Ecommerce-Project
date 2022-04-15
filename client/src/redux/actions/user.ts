@@ -89,7 +89,10 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
       const TOKEN = response.headers["auth-token"];
       // console.log('TOKEN: ',TOKEN);
       // console.log(response.data.data);
-      if (response.status == 200) {
+      console.log(response.data);
+      if (response.data.errorMsg) {
+        cb(); //Ejecutamos un callback wajajaj
+      } else {
         dispatch({
           type: TYPES_USER.GET_USER,
           payload: {
@@ -110,8 +113,6 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             google: false,
           })
         );
-        cb(); //Ejecutamos un callback wajajaj
-      } else {
         cb();
       }
     } catch (error) {
@@ -211,12 +212,12 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
 export const LoginWithGoogle = (email: string, cb = defaultCb) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post(URL_USER + "//signInWithGoogle", {
+      const response = await axios.post(URL_USER + "/signInWithGoogle", {
         email,
       });
 
       if (response.data.errorMsg) {
-        console.log(response.data.errorMsg);
+        // console.log(response.data.errorMsg);
         // return alert("ERROR MESSAGE: ");
         cb(response.data.errorMsg);
         return null;
@@ -230,7 +231,7 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
         email,
         google: true,
       };
-      console.log(USER);
+      // console.log(USER);
       dispatch({
         type: TYPES_USER.SIGNIN_GOOGLE,
         payload: USER,
@@ -319,7 +320,7 @@ export const resetForgotPassword = (id: any, password: RESET_PASSWORD) => {
   }
 };
 export const validateAccount = (id: any) => {
-  console.log(id);
+  // console.log(id);
 
   try {
     return async (dispatch: Dispatch) => {
