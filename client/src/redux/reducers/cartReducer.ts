@@ -2,12 +2,14 @@ import { CartActions, Product, TYPES_CART } from "../interface";
 
 export interface CART {
   cart: Product[];
+  ordersHistory: Product[];
 }
 
 const INITIAL_STATE = {
   cart: localStorage.getItem("cart")
-    ? JSON.parse(localStorage.getItem("cart") || '{}')
+    ? JSON.parse(localStorage.getItem("cart") || "{}")
     : [],
+  ordersHistory: [],
 };
 
 export const reducerCart = (
@@ -20,6 +22,9 @@ export const reducerCart = (
       const existProduct = state.cart.find(
         (product: Product) => product.id === newProduct.id
       );
+      // console.log("PRODUCTO NUEVO: ", newProduct);
+      // console.log("PRODUCTO EXISTE?: ", existProduct);
+
       const cartItems = existProduct
         ? //if the product is already in the cart we update it
           state.cart.map((product: Product) =>
@@ -41,7 +46,7 @@ export const reducerCart = (
       return { ...state, cart: cartItemsFiltered };
 
       case TYPES_CART.CLEAR_CART:
-            return {cart: []}
+            return {...state,cart: []}
 
     default: {
       return {

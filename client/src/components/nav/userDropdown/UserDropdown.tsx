@@ -11,16 +11,12 @@ const UserDropdown = () => {
   const userState = useSelector((state: State) => state.user);
   const navigate = useNavigate()
 
-  function handleClickProfile() {
-    // dispatch(getSingleUser(userInStorage.token))
-  }
-
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
-    navigate('/products')
     dispatch(LogoutUser());
     dispatch(clearCart());
     localStorage.removeItem('cart')
+    navigate('/products')
   };
 
   return (
@@ -35,7 +31,7 @@ const UserDropdown = () => {
         {userState && userState.name}
       </a>
       <DropdownMenu className="dropdown-menu">
-        <Link onClick={() => { handleClickProfile() }} to={"/profile"} className="dropdown-item">
+        <Link to={"/profile"} className="dropdown-item">
           Profile
         </Link>
         <Link to={"/ordersHistory"} className="dropdown-item">

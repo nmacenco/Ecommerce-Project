@@ -23,7 +23,7 @@ export enum TYPES_DETAIL {
 
 export enum TYPES_ADMIN {
   DELETE_PRODUCTS = "DELETE_PRODUCTS",
-  GET_ORDERS = 'GET_ORDERS'
+  GET_ORDERS = 'GET_ORDERS',
 }
 
 export enum TYPES_CATEGORIES {
@@ -40,6 +40,9 @@ export enum TYPES_PAGE {
 }
 
 export enum TYPES_PRODUCT {
+  DELETE_WISHE = "DELETE_WISHE",
+  CREATE_WISHE = "CREATE_WISHE",
+  GET_WISHES = "GET_WISHES",
   SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
@@ -66,6 +69,7 @@ export enum TYPES_COUNTRIES {
 
 export enum TYPES_ORDERS_USER {
   GET_ORDERS = "GET_ORDER",
+  GET_ACTIVEORDER = "GET_ACTIVEORDER",
 }
 
 //=======================
@@ -349,6 +353,20 @@ export interface GET_PRODUCTS {
   type: TYPES_PRODUCT.GET_PRODUCTS;
   payload: Product[];
 }
+
+export interface GET_WISHES {
+  type: TYPES_PRODUCT.GET_WISHES;
+  payload: any[];
+}
+export interface CREATE_WISHE {
+  type: TYPES_PRODUCT.CREATE_WISHE;
+  payload: any;
+}
+export interface DELETE_WISHE {
+  type: TYPES_PRODUCT.DELETE_WISHE;
+  payload: number;
+}
+
 export interface RESET_PRODUCTS {
   type: TYPES_PRODUCT.RESET_PRODUCTS;
   payload: [];
@@ -397,6 +415,11 @@ export interface GET_ORDERS {
   payload: Order[];
 }
 
+export interface GET_ACTIVEORDER {
+  type: TYPES_ORDERS_USER.GET_ACTIVEORDER;
+  payload: Order;
+}
+
 export interface GET_ORDERS_USER {
   type: TYPES_ORDERS_USER.GET_ORDERS;
   payload: Order[];
@@ -442,7 +465,10 @@ export type ProductActions =
   | SEARCH_PRODUCTS
   | RESET_PRODUCTS
   | PRODUCT_NOT_FOUND
-  | FILTER_BY_BRAND;
+  | FILTER_BY_BRAND
+  | GET_WISHES
+  | CREATE_WISHE
+  | DELETE_WISHE;
 
 export type CategoriesActions =
   | GET_CATEGORIES
@@ -459,4 +485,4 @@ export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART;
 
 export type CountriesActions = GET_COUNTRIES;
 
-export type UserOrdersActions = GET_ORDERS_USER;
+export type UserOrdersActions = GET_ORDERS_USER | GET_ACTIVEORDER;

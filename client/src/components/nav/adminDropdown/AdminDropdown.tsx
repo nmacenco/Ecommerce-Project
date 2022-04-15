@@ -3,8 +3,6 @@ import { DropdownMenu } from "./AdminDropdownStyle";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../../redux/actions/user";
-import { adminresetUsers } from "../../../redux/actions/adminUser";
-import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { State } from "../../../redux/reducers";
 
 const AdminDropdown = (): JSX.Element => {
@@ -40,6 +38,9 @@ const AdminDropdown = (): JSX.Element => {
         </Link>
         <Link className="dropdown-item" to="/deleteCategory">
           Delete category
+        </Link>
+        <Link to={"/ordersAdmin"} className="dropdown-item">
+          Admin orders
         </Link>
         <Link to={"/productsAdminMode"} className="dropdown-item">
           Admin products

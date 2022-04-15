@@ -36,3 +36,21 @@ export const createOrderUser = (token: string, cart: Product[]) => {
     console.log(error); 
   }
 };
+
+export const getActiveOrder = (token: string) => {
+  try {
+    return async (dispatch: Dispatch) => {
+      const activeOrder = await axios.get(`${URL}/`+token,{
+        headers: {
+          "auth-token": token,
+        },
+      });
+      return dispatch({
+        type: TYPES_ORDERS_USER.GET_ACTIVEORDER,
+        payload: activeOrder.data.data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};

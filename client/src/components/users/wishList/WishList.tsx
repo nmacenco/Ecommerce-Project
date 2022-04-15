@@ -1,66 +1,116 @@
 import React, { useEffect, useState } from 'react';
-import { getWish, Wish } from './typesWish';
-import { DivButtons, WishContainer, WishGrid } from './whis';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
+import { addProductCart } from '../../../redux/actions/cart';
+import { deleteWish, getWish } from '../../../redux/actions/products';
+import { State } from '../../../redux/reducers';
+import { WishContainer, WishGrid } from './whis';
 
 
+let nombres = ['dikson', 'yampier', 'other nombre'];
 
 const WishList = (): JSX.Element => {
 
-    const [wishes, setWish] = useState<Wish[]>([]);
+    const dispatch = useDispatch();
+    const user = useSelector((state: State) => state.user);
+    const wishes = useSelector((state: State) => state.products.wishList);
+    const products = useSelector((state: State) => state.products.products);
 
+    const WishDelete = (event: any) => {
 
+        // console.log(event.target.id)
+        if (user) {
+            dispatch(deleteWish(event.target.id, user!.token));
+        }
+
+    }
     useEffect(() => {
+        if (user && !wishes.length) {
+            dispatch(getWish(user!.token));
+        }
+    }, [])
 
-        getWish((data: Wish[]) => {
-            console.log('LOS WISHES: ', data);
-            setWish(data);
-        });
+    const addProductToCart = (event: any) => {
 
-    }, []);
+        let index = event.target.id;
+        const encountered = products.find(product => product.id === Number(index));
+        if (encountered) {
+            // console.log('PRODUCT COUNT: ', encountered.count);
+            encountered.count = 1;
 
+            dispatch(addProductCart(encountered));
+            dispatch(deleteWish(Number(index), user!.token, (error) => {
+
+                if (error) {
+                    swal({
+                        text: "Oops! An error has occurred",
+                        content: error,
+                        icon: "error",
+                    });
+                } else {
+                    swal({
+                        title: "Success",
+                        text: 'added to cart',
+                        icon: "success",
+                    });
+                }
+
+            }))
+        } else {
+            alert('The product not exist! 🤔')
+        }
+
+    }
 
     return (
         <WishContainer>
             <header>WishList</header>
-            <WishGrid className={wishes.length ? '' : 'not-content'}>
-                <span className='title'>Product</span>
-                <span className='title'>Product name</span>
-                <span className='title'>Price</span>
-                <span className='title'>Status stock</span>
-                <span className='title'>Actions</span>
+            <WishGrid className={wishes.length ? '' : ''}>
+                <tbody>
+                    <tr>
+                        <th className='title'><i>Product</i></th>
+                        <th className='title'><i>Product name</i></th>
+                        <th className='title'><i>Price</i></th>
+                        <th className='title'><i>Status stock</i></th>
+                        <th className='title'><i>Actions</i></th>
+                    </tr>
 
-                {/* Aca empizan los productos wajaja */}
+                    {
+                        wishes.map((wish, i) => {
+                            // console.log(wish)
+                            return (
+                                <tr key={wish.id.toString()}>
+                                    <td className='item-borders'>
+                                        <Link to={`/detail/${wish.id}`} className='anchor-wish'>
+                                            <img src={wish.image} />
+                                        </Link>
+                                    </td>
+                                    <td className='item-borders'><i>{wish.name.slice(0, 30)}</i></td>
+                                    <td className='item-borders'><i>{wish.price}</i></td>
+                                    <td className='item-borders'><i>{wish.stock ? 'In Stock' : 'Not stock'}</i></td>
+                                    <td >
+                                        <div className='items-buttons'>
+                                            <button id={wish.id} onClick={addProductToCart}>
+                                                ADD CART
+                                            </button>
+                                            <button onClick={WishDelete} id={wish.id.toString()}>
+                                                REMOVE
+                                            </button>
+                                        </div>
 
-                {
-                    wishes.length ?
-
-                        wishes.map((wish: Wish, i) => {
-                            <>
-                                <div className='item-borders'>
-                                    <img src={wish.img} />
-                                </div>
-                                <div className='item-borders'><i>{wish.name}</i></div>
-                                <div className='item-borders'><i>{wish.price}</i></div>
-                                <div className='item-borders'><i>{wish.stock}</i></div>
-                                <DivButtons className='item-borders'>
-                                    <button>
-                                        ADD CART
-                                    </button>
-                                    <button>
-                                        REMOVE
-                                    </button>
-                                </DivButtons>
-
-
-                            </>
-
+                                    </td>
+                                </tr>
+                            )
                         })
-                        :
-                        <h3>NOT CONTENT</h3>
-                }
+                    }
 
 
-                {/* // <div className='item-borders'>
+
+
+
+
+                    {/* // <div className='item-borders'>
                 //     <img src='https://xiaomitiendaperu.com/wp-content/uploads/2020/12/Haylou-Smart-Watch-2-xiaomitiendaperu.jpg' />
                 // </div>
                 // <div className='item-borders'><i>SmartWatch</i></div>
@@ -74,9 +124,9 @@ const WishList = (): JSX.Element => {
                 //         REMOVE
                 //     </button>
                 // </DivButtons> */}
-
+                </tbody>
             </WishGrid>
-        </WishContainer>
+        </WishContainer >
     )
 
 }
