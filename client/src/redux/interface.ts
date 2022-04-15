@@ -107,12 +107,12 @@ export interface Users {
 }
 
 export interface ProductForm {
-  id?: number;
+  productId?: number;
   name: string;
   price: number;
   description: string;
   image: string;
-  weight: number;
+  weight:number;
   stock: number;
   soldCount: number;
   SubcategoryId: number;

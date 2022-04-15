@@ -40,9 +40,9 @@ const Cart = (): JSX.Element => {
       ) : (
         <div>
           <div className="mt-5">
-            {productsCart.map((product: Product) => (
+            {productsCart.map((product: any) => (
               <CartProduct
-                id={product.id}
+                productId={product.productId}
                 name={product.name}
                 image={product.image}
                 quantity={product.quantity}

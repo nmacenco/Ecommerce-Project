@@ -1,4 +1,11 @@
 const { Order, User, Order_detail, Product } = require("../db");
+require("dotenv").config();
+const {
+  ORDER_STATUS_PENDING,
+  ORDER_STATUS_BILLED,
+  ORDER_STATUS_DELIVERED,
+  ORDER_STATUS_FINISHED,
+} = process.env;
 
 const getOrders = async (req, res) => {
   try {
@@ -14,13 +21,13 @@ const getOrders = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
       ],
     });
-    if (!Orders.length) {
+    if (Orders.length <= 0) {
       return res.status(404).send({ errorMsg: "Orders not found." });
     }
     Orders = Orders.map((Order) => {
@@ -30,11 +37,20 @@ const getOrders = async (req, res) => {
         email_address: Order.email_address,
         status: Order.status,
         user: Order.User.name + " " + Order.User.surname,
+        userID: Order.User.id,
         billing_address: Order.billing_address,
-        detail:
+        details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-                return { detail };
+                return {
+                  id: detail.id,
+                  amount: detail.amount,
+                  quantity: detail.quantity,
+                  productName: detail.Product.name,
+                  productId: detail.Product.id,
+                  image: detail.Product.image,
+                  price: detail.Product.price,
+                };
               })
             : [],
       };
@@ -46,57 +62,59 @@ const getOrders = async (req, res) => {
 };
 
 const getUserOrdersServer = async (req, res) => {
-  const id = req.userID;
-
   try {
-    if (id) {
-      let Orders = await Order.findAll({
-        where: {
-          UserId: id,
+    const id = req.userID;
+    let Orders = await Order.findAll({
+      where: {
+        UserId: id,
+      },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "name", "surname", "email"],
         },
-        include: [
-          {
-            model: User,
-            attributes: ["id", "name", "surname", "email"],
-          },
-          {
-            model: Order_detail,
-            attributes: ["amount", "quantity"],
-            include: [
-              {
-                model: Product,
-                attributes: ["name"],
-              },
-            ],
-          },
-        ],
-      });
-      if (!Orders.length) {
-        res.status(404).send({ errorMsg: "Oders not found." });
-      }
-      Orders = Orders.map((Order) => {
-        return {
-          id: Order.id,
-          total_amount: Order.total_amount,
-          email_address: Order.email_address,
-          status: Order.status,
-          user: Order.User.name + " " + Order.User.surname,
-          billing_address: Order.billing_address,
-          detail:
-            Order.Order_details.length > 0
-              ? Order.Order_details.map((detail) => {
-                  return { detail };
-                })
-              : [],
-        };
-      });
-
-      res
-        .status(200)
-        .send({ successMsg: "Here are your Orders.", data: Orders });
-    } else {
-      res.status(404).send({ errorMsg: "Missing id." });
+        {
+          model: Order_detail,
+          attributes: ["amount", "quantity", "id"],
+          include: [
+            {
+              model: Product,
+              attributes: ["name", "id", "image", "price"],
+            },
+          ],
+        },
+      ],
+    });
+    if (!Orders.length) {
+      return res.status(404).send({ errorMsg: "You don't have orders." });
     }
+    Orders = Orders.map((Order) => {
+      return {
+        id: Order.id,
+        total_amount: Order.total_amount,
+        email_address: Order.email_address,
+        status: Order.status,
+        user: Order.User.name + " " + Order.User.surname,
+        userID: Order.User.id,
+        billing_address: Order.billing_address,
+        details:
+          Order.Order_details.length > 0
+            ? Order.Order_details.map((detail) => {
+                return {
+                  id: detail.id,
+                  amount: detail.amount,
+                  quantity: detail.quantity,
+                  productName: detail.Product.name,
+                  productId: detail.Product.id,
+                  image: detail.Product.image,
+                  price: detail.Product.price,
+                };
+              })
+            : [],
+      };
+    });
+
+    res.status(200).send({ successMsg: "Here are your orders.", data: Orders });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -104,44 +122,51 @@ const getUserOrdersServer = async (req, res) => {
 
 //create order (when user creates account, or if there are no pending orders)
 //Possible status: PENDING BILLED DELIVERED COMPLETED
-
+//Fine
 const createOrder = async (req, res) => {
   const UserId = req.userID;
-  // const { UserId } = req.params;
   try {
-    let { allProductsOrder } = req.body;
-
+    let allProductsOrder = req.body;
     if (!UserId) {
-      res.status(402).send({ errorMsg: "Missing data." });
+      res.status(400).send({ errorMsg: "Missing data." });
     } else {
-      let singleOrder = await Order.findOne({
-        where: {
-          UserId,
-          status: "PENDING",
-        },
+      let user = await User.findOne({ where: { id: UserId } });
+      let [newOrder, created] = await Order.findOrCreate({
+        where: { UserId, status: "PENDING" },
       });
-      let newOrderCreated = singleOrder;
-      if (!newOrderCreated) {
-        let newOrder = await Order.create({
-          UserId,
+      if (created) {
+        await newOrder.update({
+          email_address: user.email,
+          billing_address: user.billing_address,
         });
-        newOrderCreated = newOrder;
       }
-
-      if (allProductsOrder) {
-        for (let index = 0; index < allProductsOrder.length; index++) {
-          createOrderDetail(
-            newOrderCreated.id,
-            allProductsOrder[index].ProductId,
-            allProductsOrder[index].quantity,
-            allProductsOrder[index].amount
-          );
-        }
+      if (!allProductsOrder.length) {
+        return res.status(200).send({
+          successMsg: "Order successfully created/updated.",
+          data: newOrder,
+        });
       }
-      console.log("PASE POR ACA");
+      for (let product of allProductsOrder) {
+        const amount = product.count * product.price;
+        await createOrderDetail(
+          newOrder.id,
+          product.ProductId,
+          product.count,
+          amount
+        );
+      }
+      let orderDetails = await Order_detail.findAll({
+        where: { OrderId: newOrder.id },
+      });
+      const totalAmount = orderDetails.reduce((a, detail) => {
+        return a + detail.dataValues.amount;
+      }, 0);
+      await newOrder.update({
+        total_amount: totalAmount,
+      });
       res.status(201).send({
-        successMsg: "Here are your new order.",
-        data: newOrderCreated,
+        successMsg: "Order successfully created/updated.",
+        data: newOrder,
       });
     }
   } catch (error) {
@@ -150,8 +175,7 @@ const createOrder = async (req, res) => {
 };
 
 const updateOrderState = async (req, res) => {
-  // const id = req.params.id;
-  const id = req.userID;
+  const id = req.params.id;
   let { status } = req.body;
   try {
     if (!id) {
@@ -159,7 +183,7 @@ const updateOrderState = async (req, res) => {
     } else {
       let orderState = await Order.update(
         { status: status },
-        { where: { id: id } }
+        { where: { id } }
       );
       if (!orderState) {
         res.status(404).send({ errorMsg: "order not found" });
@@ -174,6 +198,29 @@ const updateOrderState = async (req, res) => {
   }
 };
 
+const updateOrder = async (req, res) => {
+  const id = req.params.id;
+  let { shipping_address } = req.body;
+  try {
+    if (!id) {
+      res.status(404).send({ errorMsg: "Missing id." });
+    } else {
+      let orderShipping = await Order.update(
+        { shipping_address: shipping_address },
+        { where: { id } }
+      );
+      if (!orderShipping) {
+        res.status(404).send({ errorMsg: "order not found" });
+      } else {
+        res
+          .status(201)
+          .send({ successMsg: "Order has been updated", data: orderShipping });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 //send actual order (cart) with it's order-details included.
 const getActiveOrder = async (req, res) => {
   try {
@@ -194,7 +241,7 @@ const getActiveOrder = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name"],
+              attributes: ["name", "id", "image", "price"],
             },
           ],
         },
@@ -211,11 +258,20 @@ const getActiveOrder = async (req, res) => {
       email_address: activeOrder.email_address,
       status: activeOrder.status,
       user: activeOrder.User.name + " " + activeOrder.User.surname,
+      userID: activeOrder.User.id,
       billing_address: activeOrder.billing_address,
-      detail:
+      details:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-              return { detail };
+              return {
+                id: detail.id,
+                amount: detail.amount,
+                quantity: detail.quantity,
+                productName: detail.Product.name,
+                productId: detail.Product.id,
+                image: detail.Product.image,
+                price: detail.Product.price,
+              };
             })
           : [],
     };
@@ -223,6 +279,7 @@ const getActiveOrder = async (req, res) => {
       .status(200)
       .send({ successMsg: "Here is your order.", data: activeOrder });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -230,77 +287,109 @@ const getActiveOrder = async (req, res) => {
 // *******add and remove a product from the detail******
 
 //Add order detail, delete order detail or modify order detail (use aux functions)
-const addproductsOrder = async (req, res) => {
+const addProductsOrder = async (req, res) => {
   const id = req.userID;
-  // const { id } = req.params;
   try {
-    const { Productid } = req.body;
-    if (!Productid) {
-      return res.status(404).send({ errorMsg: "You don't have any products." });
+    const {ProductId}  = req.body;
+    if (!ProductId) {
+      return res.status(404).send({ errorMsg: "Missing product ID." });
     } else {
       let product = await Product.findOne({
         where: {
-          id: Productid,
+          id: ProductId,
         },
       });
-      const { activeUserOrder } = await orderuseractive(id);
-
+      const activeUserOrder = await Order.findOne({
+        where: {
+          UserId: id,
+          status: "PENDING",
+        },
+      });
       let orderDetail = await Order_detail.findOne({
         where: {
           OrderId: activeUserOrder.id,
-          ProductId: Productid,
+          ProductId,
         },
       });
-
       if (!orderDetail) {
-        const newOrderProduct = await createOrderDetail(
+        const newOrderDetail = await createOrderDetail(
           activeUserOrder.id,
-          Productid,
-          (quantity = 1)
+          ProductId,
+          1,
+          product.price
         );
-        res.status(200).send({
-          successMsg: "Order has been CREATE",
-          data: newOrderProduct,
-        });
-      } else {
-        const amountoltal = product.price * orderDetail.quantity + 1;
-        let UpdatedOrderDetail = await orderDetail.update({
-          amount: amountoltal,
-          quantity: orderDetail.quantity + 1,
+        await activeUserOrder.update({
+          total_amount: activeUserOrder.total_amount + product.price,
         });
         res.status(201).send({
-          successMsg: "Order has been updated",
+          successMsg: "Product has been successfully added.",
+          data: newOrderDetail,
+        });
+      } else {
+        if (product.stock === orderDetail.quantity) {
+          return res
+            .status(400)
+            .send({ errorMsg: "Exceeded available stock." });
+        }
+        const amount = product.price * (orderDetail.quantity + 1);
+        let UpdatedOrderDetail = await orderDetail.update({
+          amount,
+          quantity: orderDetail.quantity + 1,
+        });
+        await activeUserOrder.update({
+          total_amount: activeUserOrder.total_amount + product.price,
+        });
+        res.status(200).send({
+          successMsg: "Product has been successfully added.",
           data: UpdatedOrderDetail,
         });
       }
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send({ errorMsg: error.message });
   }
 };
 
-const remuveproductsOrder = async (req, res) => {
+const removeProductsOrder = async (req, res) => {
   const id = req.userID;
-  // const { id } = req.params;
   try {
-    const { Productid } = req.body;
+    const { ProductId } = req.body;
     let product = await Product.findOne({
       where: {
-        id: Productid,
+        id: ProductId,
       },
     });
-    const { activeUserOrder } = await orderuseractive(id);
+    const activeUserOrder = await Order.findOne({
+      where: {
+        UserId: id,
+        status: "PENDING",
+      },
+    });
     let orderDetail = await Order_detail.findOne({
       where: {
         OrderId: activeUserOrder.id,
-        ProductId: Productid,
+        ProductId,
       },
     });
-    const amountoltal = product.price * orderDetail.quantity - 1;
-
+    if (orderDetail.quantity === 1) {
+      return res
+        .status(400)
+        .send({ errorMsg: "Cannot have less than one product." });
+    }
+    const amount = product.price * (orderDetail.quantity - 1);
     let UpdatedOrderDetail = await orderDetail.update({
-      amount: amountoltal,
+      amount,
       quantity: orderDetail.quantity - 1,
+    });
+    let orderDetails = await Order_detail.findAll({
+      where: { OrderId: activeUserOrder.id },
+    });
+    const totalAmount = orderDetails.reduce((a, detail) => {
+      return a + detail.dataValues.amount;
+    }, 0);
+    await activeUserOrder.update({
+      total_amount: totalAmount,
     });
     res.status(201).send({
       successMsg: "Order has been updated",
@@ -311,24 +400,44 @@ const remuveproductsOrder = async (req, res) => {
   }
 };
 
-const deleteproductsOrder = async (req, res) => {
-  const id = req.userID;
-  // // const { id } = req.params;
+const deleteProductsOrder = async (req, res) => {
   try {
-    const { Productid } = req.body;
-    if (!Productid) {
-      return res.status(404).send({ errorMsg: "You don't have any products." });
+    const id = req.userID;
+    const {ProductId}  = req.params;
+    if (!ProductId) {
+      return res.status(404).send({ errorMsg: "Missing product ID" });
     } else {
-      const { activeUserOrder } = await orderuseractive(id);
+      const activeUserOrder = await Order.findOne({
+        where: {
+          UserId: id,
+          status: "PENDING",
+        },
+      });
       let orderDetail = await Order_detail.findOne({
         where: {
           OrderId: activeUserOrder.id,
-          ProductId: Productid,
+          ProductId,
         },
       });
-      deleteOrderDetail(orderDetail.id);
+      if (!orderDetail) {
+        return res.status(404).send({ errorMsg: "Order detail not found." });
+      }
+      await Order_detail.destroy({
+        where: {
+          id: orderDetail.id,
+        },
+      });
+      let orderDetails = await Order_detail.findAll({
+        where: { OrderId: activeUserOrder.id },
+      });
+      const totalAmount = orderDetails.reduce((a, detail) => {
+        return a + detail.dataValues.amount;
+      }, 0);
+      await activeUserOrder.update({
+        total_amount: totalAmount,
+      });
       res.status(201).send({
-        successMsg: "Order has been delete",
+        successMsg: "Order detail has been deleted",
       });
     }
   } catch (error) {
@@ -336,96 +445,57 @@ const deleteproductsOrder = async (req, res) => {
   }
 };
 
-//                           PRODUCT ID
-const deleteOrderDetail = async (id) => {
-  try {
-    let deletedOrderDetail = await Order_detail.destroy({
-      where: {
-        id,
-      },
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
+//Fine
 const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
   try {
-    const orderDetailyet = await Order_detail.findOne({
-      where: {
-        OrderId,
-        ProductId,
-      },
-    });
     let product = await Product.findOne({
       where: {
         id: ProductId,
       },
     });
-
-    if (!orderDetailyet) {
-      const newOrderProduct = await Order_detail.create({
-        amount: product.price * quantity,
-        quantity,
-        OrderId,
-        ProductId,
-      });
-      return newOrderProduct;
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    let isOrderDetailCreated = await Order_detail.findOne({
+      where: { OrderId, ProductId },
+    });
+    if (isOrderDetailCreated) {
+      if (product.stock < isOrderDetailCreated.quantity + quantity) {
+        let amount = product.price * product.stock;
+        await isOrderDetailCreated.update({
+          quantity: product.stock,
+          amount,
+        });
+      } else {
+        await isOrderDetailCreated.update({
+          quantity: isOrderDetailCreated.quantity + quantity,
+          amount: isOrderDetailCreated.amount + amount,
+        });
+      }
+      return isOrderDetailCreated;
     } else {
-      await orderDetailyet.update({
-        amount: orderDetailyet.amount + amount,
-        quantity: orderDetailyet.quantity + quantity,
-      });
+      if (product.stock < quantity) {
+        let amount = product.price * product.stock;
+        let quantity = product.stock;
+        let newOrderDetail = await Order_detail.create({
+          OrderId,
+          ProductId,
+          quantity,
+          amount,
+        });
+        return newOrderDetail;
+      } else {
+        let newOrderDetail = await Order_detail.create({
+          OrderId,
+          ProductId,
+          quantity,
+          amount,
+        });
+        return newOrderDetail;
+      }
     }
   } catch (error) {
     console.log(error.message);
-  }
-};
-
-const orderuseractive = async (id) => {
-  try {
-    let activeUserOrder = await Order.findOne({
-      where: {
-        UserId: id,
-        status: "PENDING",
-      },
-      include: [
-        {
-          model: User,
-          attributes: ["id", "name", "surname", "email"],
-        },
-        {
-          model: Order_detail,
-          attributes: ["amount", "quantity"],
-          include: [
-            {
-              model: Product,
-              attributes: ["name"],
-            },
-          ],
-        },
-      ],
-    });
-    if (!activeUserOrder) {
-      return "no active orders";
-    }
-    activeUserOrder = {
-      id: activeUserOrder.id,
-      total_amount: activeUserOrder.total_amount,
-      email_address: activeUserOrder.email_address,
-      status: activeUserOrder.status,
-      user: activeUserOrder.User.name + " " + activeUserOrder.User.surname,
-      billing_address: activeUserOrder.billing_address,
-      detail:
-        activeUserOrder.Order_details.length > 0
-          ? activeUserOrder.Order_details.map((detail) => {
-              return { detail };
-            })
-          : [],
-    };
-    return { activeUserOrder };
-  } catch (error) {
-    return error.message;
   }
 };
 
@@ -447,13 +517,13 @@ const getUserOrders = async (id) => {
             include: [
               {
                 model: Product,
-                attributes: ["name"],
+                attributes: ["name", "id", "image", "price"],
               },
             ],
           },
         ],
       });
-      if (!dataOrders.length) {
+      if (dataOrders.length <= 0) {
         return "This user has no orders.";
       }
       dataOrders = dataOrders.map((Order) => {
@@ -462,12 +532,20 @@ const getUserOrders = async (id) => {
           total_amount: Order.total_amount,
           email_address: Order.email_address,
           billing_address: Order.billing_address,
-          UserId: Order.UserId,
+          UserID: Order.User.id,
           status: Order.status,
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                  return { detail };
+                  return {
+                    id: detail.id,
+                    amount: detail.amount,
+                    quantity: detail.quantity,
+                    productName: detail.Product.name,
+                    productId: detail.Product.id,
+                    image: detail.Product.image,
+                    price: detail.Product.price,
+                  };
                 })
               : [],
         };
@@ -478,14 +556,41 @@ const getUserOrders = async (id) => {
     console.log(error.message);
   }
 };
+
+const updatePaypalOrder = async (req, res) => {
+  let { paymentMethod } = req.body;
+  try {
+    let orderPaypal = await Order.findById(req.params.id);
+    if (!orderPaypal) {
+      res.status(401).send({ message: "Order Not Found" });
+    } else {
+      let updatedOrder = await orderPaypal.update({
+        status: ORDER_STATUS_BILLED,
+        isPaid: true,
+        paidAt: Date.now(),
+        paymentMethod: paymentMethod,
+        shippingPrice: shippingPrice,
+        taxPrice: taxPrice,
+        isDelivered: false,
+        email_address: email_address,
+        billing_address: billing_address,
+      });
+      res.status(201).send({ successMsg: "Order Paid", data: updatedOrder });
+    }
+  } catch (error) {
+    res.status(500).send({ errorMsg: error.message });
+  }
+};
 module.exports = {
   getOrders,
   createOrder,
   getActiveOrder,
   updateOrderState,
   getUserOrdersServer,
-  addproductsOrder,
-  remuveproductsOrder,
-  deleteproductsOrder,
+  addProductsOrder,
+  removeProductsOrder,
+  deleteProductsOrder,
   getUserOrders,
+  updatePaypalOrder,
+  updateOrder,
 };

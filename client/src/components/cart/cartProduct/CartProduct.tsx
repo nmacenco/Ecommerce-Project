@@ -14,7 +14,7 @@ import { Product } from "../../../redux/interface";
 import { Link } from "react-router-dom";
 
 interface Props {
-  id?: number;
+  productId?: number;
   name: string;
   price: number;
   image: string;
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const CartProduct = ({
-  id,
+  productId,
   name,
   price,
   image,
@@ -37,7 +37,7 @@ const CartProduct = ({
   return (
     <ProductContainer className="mt-2 d-flex flex-column flex-md-row justify-content-md-between align-items-center">
       <Link
-        to={`../detail/${id}`}
+        to={`../detail/${productId}`}
         className="text-decoration-none d-flex align-items-center flex-column flex-md-row my-4 my-md-0 "
       >
         <ProductIMG src={image} alt="..."></ProductIMG>
