@@ -101,8 +101,22 @@ const Register = (): JSX.Element => {
       password: null
     };
 
-    dispatch(RegisterWithGoogle(newUser, () => {
-      navigate('/products');
+    dispatch(RegisterWithGoogle(newUser, (error) => {
+      if (error) {
+        swal({
+          title: 'Oops! an error occurred',
+          text: error,
+          icon: 'error'
+        })
+
+      } else {
+        swal({
+          title: 'successfully registered user',
+          icon: 'success'
+        })
+        navigate('/products');
+
+      }
     }));
   }
   const rejectGoogle = (error: any) => {

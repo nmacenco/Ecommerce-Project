@@ -39,6 +39,9 @@ const AdminDropdown = (): JSX.Element => {
         <Link className="dropdown-item" to="/deleteCategory">
           Delete category
         </Link>
+        <Link to={"/ordersAdmin"} className="dropdown-item">
+          Admin orders
+        </Link>
         <Link to={"/productsAdminMode"} className="dropdown-item">
           Admin products
         </Link>

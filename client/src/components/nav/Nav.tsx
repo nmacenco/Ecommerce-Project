@@ -5,12 +5,12 @@ import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Routes, Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
-import { getProducts,productNotFound,resetPoducts,} from "../../redux/actions/products";
+import { getProducts, productNotFound, resetPoducts, } from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
 import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";
 import { setPage } from "../../redux/actions/setPage";
-import {NavBar} from "./NavStyles"
+import { NavBar } from "./NavStyles"
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const Nav = (): JSX.Element => {
               </Link>
             </div>
             <div className="nav-item">
-              <Link className="nav-link" to={"/products"}>
+              <Link className="nav-link" to={"/about"}>
                 About
               </Link>
             </div>
