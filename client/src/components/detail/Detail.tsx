@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductDetail, deleteProductDetail } from "../../redux/actions/productDetail";
 import { State } from "../../redux/reducers/index";
@@ -30,16 +30,31 @@ export default function Detail() {
   const productsCart = useSelector((state: State) => state.cart.cart);
   const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const productInCart = productsCart.find((x: Product) => x.id === product.id);
+  const [isWish, setWish] = useState<boolean>(false);
 
+  const wishEncountered = wishes.find((wish: any) => wish.id === Number(id));
 
   const AddWishList = () => {
-    
+
     if (user) {
-      createWish(Number(id), user!.token);
-      swal({
-        text: "Product added to your wishlist",
-        icon: "success",
-      })
+      createWish(Number(id), user!.token, (error, data) => {
+        if (error) {
+          swal({
+            text: error,
+            icon: "error",
+          })
+          setWish(!isWish);
+
+        } else {
+          setWish(!isWish);
+          swal({
+            text: "Product added to your wishlist",
+            icon: "success",
+          })
+        }
+      });
+
+
     }
   }
 
@@ -75,8 +90,8 @@ export default function Detail() {
       },
     }).then((value) => {
       if (value) {
-        const data = {isActive : false}
-        dispatch(deleteProduct(id,data, userInStorage.token));
+        const data = { isActive: false }
+        dispatch(deleteProduct(id, data, userInStorage.token));
         // dispatch(resetFilterProducts())
         dispatch(resetPoducts())
         navigate("/products");
@@ -128,15 +143,14 @@ export default function Detail() {
                     </button>
                   )}
                   {console.log('WISHESSS:  ', wishes)}
-                  { user !== null  && (
-                    wishes.find((wish : any) => wish.id === Number(id))
-                      ?
-                      null
-                      :
-                      <button className="btn btn-danger wish" onClick={AddWishList}>
-                        Add to WishList
-                      </button>
-                  )
+                  {user !== null && (wishEncountered || isWish)
+                    ?
+                    null
+                    :
+                    <button className="btn btn-danger wish" onClick={AddWishList}>
+                      Add to WishList
+                    </button>
+
                   }
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
