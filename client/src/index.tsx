@@ -6,12 +6,15 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import state from './redux/store/store';
 import './Global.css';
-
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={state}>
-      <App />
+      <PayPalScriptProvider  deferLoading={true} options={{ "client-id": "sb" }}>
+      {/* <PayPalScriptProvider  deferLoading={true} options={{ "client-id": "sb" |  (process.env.REACT_APP_PAYPAL_CLIENT_ID)    }}> */}
+        <App />
+      </PayPalScriptProvider>
     </Provider>
   </React.StrictMode>,
 

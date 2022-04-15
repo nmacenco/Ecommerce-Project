@@ -2,22 +2,27 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { getCountries } from "../../../redux/actions/countries";
 import { State } from "../../../redux/reducers";
-import { errorsCheck } from "../../form/validations";
+import { errorsCheck } from "./validations";
 import { FormContainer } from "./shippingAdressFormStyles";
+import swal from "sweetalert";
 
 export default function ShippingAddressForm(): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userState = useSelector((state: State) => state.user);
+  const activeOrder = useSelector((state: State) => state.activeOrder);
   const countries = useSelector((state: State) => state.countries.countries);
-    const [adress , setAdress] = useState({
+
+  const [errorsList, setErrorsList] = useState<any>(false)
+
+    const [address , setAdress] = useState({
         name : '',
         address : '',
         city : '',
         postalCode : '',
-        country : ''
+        // country : ''
     })
   useEffect(() => {
     dispatch(getCountries());
@@ -28,14 +33,39 @@ export default function ShippingAddressForm(): JSX.Element {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ): void => {
-    //   setProduct({
-    //     ...product,
-    //     [e.target.name]: e.target.value,
-    //   });
+      setAdress({
+        ...address,
+        [e.target.name]: e.target.value,
+      });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    let errors = errorsCheck(address);
+    setErrorsList(errors)
+    if (errors === false) {
+      const shipping_address = {shipping_address : `${address.name}-${address.address}-${address.city}-${address.postalCode}`}
+      console.log(address);
+      console.log(shipping_address);
+      // dispatch(updateOrderUser(activeOrder.id , shipping_address, userState.token )) falta el id cuando tengamos la active order 
+      swal({
+        title: "Address correctly created",
+        icon: "success",
+        buttons: {
+          confirm: true,
+        },
+      }).then((value) => {
+        if (value) {
+
+        }
+      })
+    } else {
+      swal({
+        title: "All field are required.",
+        icon: "error"
+      })
+    }
+
   };
 
   return (
@@ -101,26 +131,6 @@ export default function ShippingAddressForm(): JSX.Element {
             onChange={(e) => handleChange(e)}
           />
           {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
-        </div>
-        <div className="form-group">
-          <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
-            Country
-          </label>
-          <select
-            className="form-select"
-            id="select"
-            name="countryId"
-            // onChange={FormChange}
-          >
-            {countries.length &&
-              countries.map((country: any, i: number) => {
-                return (
-                  <option value={country.id} key={country.id}>
-                    {country.name}
-                  </option>
-                );
-              })}
-          </select>
         </div>
 
         <div className="text-center">
