@@ -26,6 +26,7 @@ import DeleteCategories from "./components/products/categories/delete/DeleteCate
 import ValidateAccount from "./components/users/ValidateAccount";
 import OrdersHistory from "./components/users/ordersHistory/OrdersHistory";
 import About from "./components/nav/about/About";
+import OrdersAdmin from "./components/admin/ordersAdmin/OrdersAdmin";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ function App(): JSX.Element {
           <Route path="/deleteCategory" element={<DeleteCategories />} />
           <Route path="/validateAccount/:id" element={<ValidateAccount />} />
           <Route path="/about" element={<About />} />
+          <Route path="/ordersAdmin" element={<OrdersAdmin />} />
         </Routes>
       </BrowserRouter>
     </div>
