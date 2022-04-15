@@ -34,7 +34,11 @@ const WishList = (): JSX.Element => {
     const addProductToCart = (event: any) => {
 
         let index = event.target.id;
+        console.log('ID_PRODUCT: ', index);
+        console.log('ALL PRODUCTS: ', products);
+
         const encountered = products.find(product => product.id === Number(index));
+        console.log('PRODUCTO ENCONTRADO?: ', encountered);
         if (encountered) {
             // console.log('PRODUCT COUNT: ', encountered.count);
             encountered.count = 1;
