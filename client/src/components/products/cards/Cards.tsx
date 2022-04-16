@@ -18,6 +18,7 @@ import { execPath } from "process";
 import { getSubcategories } from "../../../redux/actions/categories";
 import { getProducts, getWish } from "../../../redux/actions/products";
 import { setPage } from "../../../redux/actions/setPage";
+import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -50,9 +51,11 @@ const Cards = (): JSX.Element => {
   useEffect(() => {
     dispatch(getSubcategories())
     dispatch(getProducts());
+
     if (user) {
       dispatch(getWish(user.token))
     }
+
   }, [])
 
   // useEffect(() => {
@@ -61,9 +64,6 @@ const Cards = (): JSX.Element => {
   //   }, 500)
   // }, [setLoad])
 
-  useEffect(() => {
-    dispatch(getSubcategories())
-  }, [dispatch])
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];

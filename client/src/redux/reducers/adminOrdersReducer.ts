@@ -11,7 +11,9 @@ const INITIAL_STATE = {
 export const ordersAdminReducer = (state: ORDERS = INITIAL_STATE, action: AdminActions): any => {
     switch (action.type) {
         case TYPES_ADMIN.GET_ORDERS :
-            return  action.payload           
+            return {
+                ...state ,
+                orders : action.payload }          
         default: {
             return {
                 ...state

@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 import OrderAdminRow from "./orderAdminRow/OrderAdminRow";
 import { Table } from "./OrderAdminStyles";
-
+import { State } from "../../../redux/reducers";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const ordenes = [
   {
@@ -70,10 +71,17 @@ const ordenes = [
 
 const OrdersAdmin = (): JSX.Element => {
     const dispatch = useDispatch()
+    const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
+
+    const adminOrders = useSelector((state: State) => state.ordersAdmin.orders)
+    
     useEffect (()=>{
-        // dispatch(getOrdersAdmin())
+
+      dispatch(getOrdersAdmin( userInStorage.token ))
     } , [])
 
+    
+    console.log(adminOrders);
     return (
       <div className="container d-flex flex-column">
         <h3 className="text-center mt-5">Orders History</h3>
@@ -82,11 +90,34 @@ const OrdersAdmin = (): JSX.Element => {
             <tr>
               <th scope="col">ID</th>
               <th scope="col">STATUS</th>
+              <th scope="col">EMAIL</th>
               <th scope="col">TOTAL</th>
               <th scope="col">DETAIL</th>
             </tr>
           </thead>
           <tbody>
+            {
+              adminOrders.length > 0  && adminOrders.map((order , i) => {
+                if (order.status !== 'PENDING') {
+                  return (
+                    <OrderAdminRow 
+                      key = {i} 
+                      id = {order.id}
+                      status = {order.status}
+                      total = {order.total_amount}
+                      email_address = {order.email_address}
+                      // detail = {order.detail}
+                    />
+  
+                  )
+
+                }
+
+              })
+            }
+
+          </tbody>
+          {/* <tbody>
             {
               ordenes && ordenes.map((order , i) => {
                 return (
@@ -103,7 +134,7 @@ const OrdersAdmin = (): JSX.Element => {
               })
             }
 
-          </tbody>
+          </tbody> */}
         </Table>
       </div>
     );

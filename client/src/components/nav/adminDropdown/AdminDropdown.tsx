@@ -4,18 +4,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../../redux/actions/user";
 import { State } from "../../../redux/reducers";
+import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 
 const AdminDropdown = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userState = useSelector((state: State) => state.user);
-
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
     localStorage.removeItem('cart')
-    dispatch(cartClear())
+    // dispatch(cartClear())
     navigate("/products");
+  };
+  const getOrders = (event: React.MouseEvent<HTMLSpanElement>) => {
+    event.preventDefault();
+    setTimeout(()=> {
+      navigate("/ordersAdmin");
+
+    } , 200 )
   };
 
   return (
@@ -39,7 +46,7 @@ const AdminDropdown = (): JSX.Element => {
         <Link className="dropdown-item" to="/deleteCategory">
           Delete category
         </Link>
-        <Link to={"/ordersAdmin"} className="dropdown-item">
+        <Link onClick={getOrders} to={""} className="dropdown-item">
           Admin orders
         </Link>
         <Link to={"/productsAdminMode"} className="dropdown-item">
@@ -58,7 +65,5 @@ const AdminDropdown = (): JSX.Element => {
 };
 
 export default AdminDropdown;
-function cartClear(): any {
-  throw new Error("Function not implemented.");
-}
+
 
