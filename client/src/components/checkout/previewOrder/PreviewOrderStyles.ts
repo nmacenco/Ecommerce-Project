@@ -9,3 +9,8 @@ export const Previewcontainer = styled.div`
   padding: 15px;
   width: 100vw;
 `;
+
+
+export const AdminProductIMG = styled.img`
+    width: 70px;
+`;

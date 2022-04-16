@@ -56,7 +56,7 @@ export default function ShippingAddressForm(): JSX.Element {
         },
       }).then((value) => {
         if (value) {
-
+          navigate('/previewOrder')
         }
       })
     } else {
