@@ -1,9 +1,3 @@
-/**
- * import .... from 'interface'
- *
- *
- */
-
 import { User, UserActions, TYPES_USER } from "../interface";
 
 type USER = null | User;

@@ -70,9 +70,9 @@ export default function Detail() {
   }, [wishes]);
 
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
-    const count = productInCart ? productInCart.count + 1 : 1;
-    if (Number(count) <= Number(product.stock)) {
-      product.count = count;
+    const quantity = productInCart ? productInCart.quantity + 1 : 1;
+    if (Number(quantity) <= Number(product.stock)) {
+      product.quantity = quantity;
       dispatch(addProductCart(product));
     }
   }
@@ -125,7 +125,7 @@ export default function Detail() {
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
 
-                  {product.count === product.stock || productInCart && productInCart.count === product.stock ? (
+                  {product.quantity === product.stock || productInCart && productInCart.quantity === product.stock ? (
                     <button
                       type="button"
                       className="btn btn-primary btn"
@@ -143,14 +143,14 @@ export default function Detail() {
                     </button>
                   )}
                   {console.log('WISHESSS:  ', wishes)}
-                  {user !== null && (wishEncountered || isWish)
+                  {user != null && ((wishEncountered || isWish)
                     ?
                     null
                     :
                     <button className="btn btn-danger wish" onClick={AddWishList}>
                       Add to WishList
                     </button>
-
+)
                   }
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
