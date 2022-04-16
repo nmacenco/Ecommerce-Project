@@ -63,7 +63,9 @@ const Cart = (): JSX.Element => {
               </h4>
             </div>
             <div>
-              <button className="btn btn-primary">Confirm order</button>
+              <Link to={'/shippingAddress'}>
+                <button className="btn btn-primary"> Confirm order </button>
+              </Link>
             </div>
           </div>
         </div>

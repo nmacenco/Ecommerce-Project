@@ -30,4 +30,14 @@ const sendMailPassword = async (emailToAddress,emailToSubject,emailToBody) => {
     });
 };
 
-module.exports = { sendMail, sendMailPassword };
+const sendMailOrder = async (emailToAddress,emailToSubject,emailToBody) => {
+  let info = await mailer.sendMail({
+    from: 'E-commerce Henry PF" <pcshop.ecommerce@gmail.com>',
+    to: emailToAddress,
+    subject: emailToSubject,
+    html: emailToBody,
+  });
+};
+
+
+module.exports = { sendMail, sendMailPassword, sendMailOrder };

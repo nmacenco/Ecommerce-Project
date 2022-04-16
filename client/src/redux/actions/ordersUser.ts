@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import swal from "sweetalert";
 
-import { Product, ProductCart, TYPES_ORDERS_USER } from "../interface";
+import { Product, ProductCart, TYPES_ORDERS_USER , TYPES_CART} from "../interface";
 const URL = "http://localhost:3001/api/auth/orders";
 
 export const getOrdersUser = (id: string, token: string) => {
@@ -37,3 +38,61 @@ export const createOrderUser = (token: string, cart: ProductCart[]) => {
   }
 };
 
+export const getActiveOrder = (token: string) => {
+  try {
+    return async (dispatch: Dispatch) => {
+      const activeOrder = await axios.get(`${URL}/`+token,{
+        headers: {
+          "auth-token": token,
+        },
+      });
+      return dispatch({
+        type: TYPES_CART.GET_ACTIVEORDER,
+        payload: activeOrder.data.data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const updateOrderUser = (id: any, shipping_address : any, token : string) => {
+  try {
+    return async (dispatch: Dispatch) => {
+      await axios.put(`${URL}/info/${id}`,shipping_address,{
+        headers: {
+          "auth-token": token,
+        },
+      });
+    };
+  } catch (error) {
+    console.log(error); 
+  }
+};
+  export const updatePayPal = (id: any, info : any, token : string) => {
+    try {
+      console.log('paso por aca');
+      
+      return async (dispatch: Dispatch) => {
+        await axios.put(`${URL}/pay/${id}`,info,{
+          headers: {
+            "auth-token": token,
+          },
+        });
+      };
+      
+      
+    } catch (error) {
+      swal({
+        title: "Wrong",
+        text: "Something went wrong with the payment",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          confirm: true,
+        },
+      });
+      console.log(error); 
+    }
+  };
