@@ -16,7 +16,7 @@ const activeOrder = {
   user: "Nicolas Macenco",
   userID: 5,
   billing_address: "billingAddress",
-  shipping_address: "shippingAdress",
+  shipping_address: "la direccion mas cheta de todas ",
   details: [
     {
       id: 15,
@@ -100,10 +100,10 @@ export default function PreviewOrder(): JSX.Element {
                 </tr>
               </thead>
               {activeOrder &&
-                activeOrder.details.map((product) => {
+                activeOrder.details.map((product , i ) => {
                   return (
-                    <tbody>
-                      <tr className="table-light">
+                    <tbody key={i}>
+                      <tr  className="table-light">
                         <th scope="row">
                           <AdminProductIMG
                             src={product.image}

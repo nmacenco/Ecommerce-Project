@@ -18,8 +18,8 @@ justify-content: center;
 width: 100%;
 
 @media (max-width: 1200px) {
+  /* border: solid red ; */
     flex-direction: column;
-    border: solid red ;
     align-items: center;
   }
 

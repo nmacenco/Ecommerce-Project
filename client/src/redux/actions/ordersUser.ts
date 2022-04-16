@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import swal from "sweetalert";
 
 import { Product, TYPES_ORDERS_USER } from "../interface";
 const URL = "http://localhost:3001/api/auth/orders";
@@ -69,16 +70,25 @@ export const updateOrderUser = (id: any, shipping_address : any, token : string)
     console.log(error); 
   }
 };
-  // export const updatePayPal = (id: any, shipping_address : any, token : string) => {
-  //   try {
-  //     return async (dispatch: Dispatch) => {
-  //       await axios.put(`${URL}/info/${id}`,shipping_address,{
-  //         headers: {
-  //           "auth-token": token,
-  //         },
-  //       });
-  //     };
-  //   } catch (error) {
-  //     console.log(error); 
-  //   }
-  // };
+  export const updatePayPal = (id: any, info : any, token : string) => {
+    try {
+      return async (dispatch: Dispatch) => {
+        await axios.put(`${URL}/pay/${id}`,info,{
+          headers: {
+            "auth-token": token,
+          },
+        });
+      };
+    } catch (error) {
+      swal({
+        title: "Wrong",
+        text: "Something went wrong with the payment",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          confirm: true,
+        },
+      });
+      console.log(error); 
+    }
+  };
