@@ -1,10 +1,11 @@
 const { Order, User, Order_detail, Product } = require("../db");
-const { sendMailOrder } = require("./mailer");
+const { sendMailOrder,sendMailState } = require("./mailer");
 require("dotenv").config();
 const {
   ORDER_STATUS_PENDING,
   ORDER_STATUS_BILLED,
   ORDER_STATUS_DELIVERED,
+  ORDER_STATUS_DISPATCHED,
   ORDER_STATUS_FINISHED,
 } = process.env;
 
@@ -179,7 +180,7 @@ const createOrder = async (req, res) => {
 
 const updateOrderState = async (req, res) => {
   const id = req.params.id;
-  let { status } = req.body;
+  let { status,email_address } = req.body;
   try {
     if (!id) {
       res.status(404).send({ errorMsg: "Missing id." });
@@ -191,6 +192,13 @@ const updateOrderState = async (req, res) => {
       if (!orderState) {
         res.status(404).send({ errorMsg: "order not found" });
       } else {
+        if (status === ORDER_STATUS_DISPATCHED){
+         await sendMailState(
+            email_address,
+            "Dispatch Order advice",
+            `<p>Your order number ${id} has been dispatched. </p>`
+          );
+        }
         res
           .status(201)
           .send({ successMsg: "Order has been updated", data: orderState });
