@@ -3,7 +3,7 @@ import { CardComponent, CardFooter, ProductIMG } from "./CardStyles";
 import cartIcon from "../../../../icons/cart-icon.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Product, ProductForm, User } from "../../../../redux/interface";
+import { Product, ProductCart } from "../../../../redux/interface";
 import { State } from "../../../../redux/reducers";
 import { addProductCart, addProductOrder } from "../../../../redux/actions/cart";
 
@@ -13,19 +13,19 @@ interface props {
   price: number;
   id?: number;
   stock: number;
-  product: ProductForm;
+  product: ProductCart
 }
 
 const Card = ({ name, image, price, id, stock, product }: props) => {
   const dispatch = useDispatch();
   const productsCart = useSelector((state: State) => state.cart.cart);
   const user = useSelector((state: State) => state.user)
-  const productInCart = productsCart.find((x: Product) => x.id === product.productId);
+  const productInCart = productsCart.find((x: ProductCart) => x.productId === product.productId);
 
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
-    const productInCart = productsCart.find(
-      (x: Product) => x.id === product.productId
-    );
+    // const productInCart = productsCart.find(
+    //   (x: Product) => x.id === product.id
+    // );
     const quantity = productInCart ? productInCart.quantity + 1 : 1;
     if (Number(quantity) <= Number(stock)) {
       product.quantity = quantity;

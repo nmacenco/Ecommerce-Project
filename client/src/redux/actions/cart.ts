@@ -1,15 +1,15 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { Product, ProductForm, TYPES_CART } from "../interface";
+import { ProductCart, TYPES_CART } from "../interface";
 
-export function addProductCart(product: ProductForm) {
+export function addProductCart(product: ProductCart) {
   return {
     type: TYPES_CART.ADD_PRODUCT,
     payload: product,
   };
 }
 
-export function removeProductCart(product: ProductForm) {
+export function removeProductCart(product: ProductCart) {
   return {
     type: TYPES_CART.REMOVE_PRODUCT,
     payload: product,

@@ -10,7 +10,7 @@ import {
 import minusIMG from "../../../icons/minus.png";
 import plusIMG from "../../../icons/plus.png";
 import trashIMG from "../../../icons/trash.png";
-import { Product } from "../../../redux/interface";
+import { Product, ProductCart } from "../../../redux/interface";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -21,7 +21,7 @@ interface Props {
   quantity: number;
   updateQuantityHandler: any;
   removeProductHandler: any;
-  product: Product;
+  product: ProductCart;
 }
 
 const CartProduct = ({

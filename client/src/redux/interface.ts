@@ -106,8 +106,17 @@ export interface Users {
   needsPasswordReset: boolean;
 }
 
-export interface ProductForm {
+export interface ProductCart {
   productId?: number;
+  name: string;
+  price: number;
+  image: string;
+  stock: number;
+  quantity: number;
+}
+
+export interface ProductForm {
+  id?: number;
   name: string;
   price: number;
   description: string;
@@ -293,12 +302,12 @@ export interface SET_PAGE {
 //Cart Actions
 export interface ADD_PRODUCT {
   type: TYPES_CART.ADD_PRODUCT;
-  payload: Product;
+  payload: ProductCart;
 }
 
 export interface REMOVE_PRODUCT {
   type: TYPES_CART.REMOVE_PRODUCT;
-  payload: Product;
+  payload: ProductCart;
 }
 
 export interface CLEAR_CART {

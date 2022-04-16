@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addProductCart, removeProductCart, removeProductOrder } from "../../redux/actions/cart";
-import { Product } from "../../redux/interface";
+import { Product, ProductCart, ProductForm} from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import CartProduct from "./cartProduct/CartProduct";
 import { CartContainer } from "./CartStyles";
@@ -13,7 +13,7 @@ const Cart = (): JSX.Element => {
   const user = useSelector((state: State) => state.user)
 
   async function updateQuantityHandler(
-    product: Product,
+    product: ProductCart,
     quantity: number
   ): Promise<void> {
     if (quantity <= Number(product.stock) && quantity > 0) {
@@ -22,9 +22,9 @@ const Cart = (): JSX.Element => {
     }
   }
 
-  function removeProductHandler(product: Product): void {
+  function removeProductHandler(product: ProductCart): void {
     dispatch(removeProductCart(product));
-    user && product.id && dispatch(removeProductOrder(user.token,product.id))
+    user && product.productId && dispatch(removeProductOrder(user.token,product.productId))
   }
 
   return (
@@ -56,10 +56,10 @@ const Cart = (): JSX.Element => {
           <div className="d-flex flex-column flex-md-row justify-content-between mt-4 align-items-center mb-5">
             <div className="d-flex flex-column">
               <h4 className="text-center">
-                total: ${productsCart.reduce((a: number, product: Product) =>a + product.price * product.quantity,0)}
+                total: ${productsCart.reduce((a: number, product: ProductCart) => a + product.price * product.quantity,0)}
               </h4>
               <h4 className="text-center mb-4 mb-md-0">
-                ({productsCart.reduce((a: number, product: Product) => a + product.quantity,0)} products)
+                ({productsCart.reduce((a: number, product: ProductCart) => a + product.quantity,0)} products)
               </h4>
             </div>
             <div>
