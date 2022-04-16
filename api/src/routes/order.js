@@ -7,7 +7,9 @@ const {
   getUserOrdersServer,
   addproductsOrder,
   remuveproductsOrder,
-  deleteproductsOrder,getUserOrders
+  deleteproductsOrder,
+  getUserOrders,
+  detailAllOrdersUser,
 } = require("../controllers/order");
 const { isLoggedIn, isAdmin } = require("../middleware/auth");
 
@@ -16,7 +18,7 @@ const { isLoggedIn, isAdmin } = require("../middleware/auth");
 const orderRouter = express.Router();
 
 // //user
-orderRouter.post("/auth/orders/", createOrder); //a new product is added to the cart here
+orderRouter.post("/auth/orders/:UserId", createOrder); //a new product is added to the cart here
 
 // orderRouter.put("/auth/orders/:id",  updateOrderState);
 // orderRouter.get("/auth/orders/user/:id",  getUserOrdersServer);
@@ -25,13 +27,13 @@ orderRouter.post("/auth/orders/", createOrder); //a new product is added to the 
 // orderRouter.delete("/auth/orders/delete/:id",  deleteproductsOrder);
 // orderRouter.get("/auth/orders/:id",  getActiveOrder);
 
-
 orderRouter.put("/auth/orders/:id", isLoggedIn, updateOrderState);
 orderRouter.get("/auth/orders/user/:id", isLoggedIn, getUserOrdersServer);
-orderRouter.put("/auth/orders/add/:id", isLoggedIn, addproductsOrder);// add one more existing product +
-orderRouter.put("/auth/orders/remuve/:id", isLoggedIn, remuveproductsOrder);//remuve one more existing product -
+orderRouter.put("/auth/orders/add/:id", isLoggedIn, addproductsOrder); // add one more existing product +
+orderRouter.put("/auth/orders/remuve/:id", isLoggedIn, remuveproductsOrder); //remuve one more existing product -
 orderRouter.delete("/auth/orders/delete/:id", isLoggedIn, deleteproductsOrder);
 orderRouter.get("/auth/orders/:id", isLoggedIn, getActiveOrder);
+orderRouter.get("/auth/orders/userOrders/:id", isLoggedIn, detailAllOrdersUser);
 
 //admin
 orderRouter.get("/admin/orders", getOrders);
