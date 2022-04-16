@@ -72,7 +72,7 @@ export default function Detail() {
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     const productToAdd = {
       productId: product.id,
-      name: product.name,
+      productName: product.name,
       price: product.price,
       image: product.image,
       stock: product.stock,

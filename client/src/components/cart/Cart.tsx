@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addProductCart, removeProductCart, removeProductOrder } from "../../redux/actions/cart";
-import { Product, ProductCart, ProductForm} from "../../redux/interface";
+import { addProductCart, addProductOrder, getPendingOrder, removeProductCart, removeProductOrder, restProductOrder } from "../../redux/actions/cart";
+import { ProductCart} from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import CartProduct from "./cartProduct/CartProduct";
 import { CartContainer } from "./CartStyles";
@@ -12,13 +12,22 @@ const Cart = (): JSX.Element => {
   const productsCart = useSelector((state: State) => state.cart.cart);
   const user = useSelector((state: State) => state.user)
 
+  useEffect(() => {
+    user && dispatch(getPendingOrder(user.token));
+  },[])
+
   async function updateQuantityHandler(
     product: ProductCart,
-    quantity: number
+    quantity: number,
+    instruction:string
   ): Promise<void> {
     if (quantity <= Number(product.stock) && quantity > 0) {
       product.quantity = quantity;
       dispatch(addProductCart(product));
+      if (user && product.productId) {
+        instruction == "add" && dispatch(addProductOrder(user.token,product.productId))
+        instruction == "remove" && dispatch(restProductOrder(user.token,product.productId))
+      }
     }
   }
 
@@ -43,7 +52,7 @@ const Cart = (): JSX.Element => {
             {productsCart.map((product: any) => (
               <CartProduct
                 productId={product.productId}
-                name={product.name}
+                name={product.productName}
                 image={product.image}
                 quantity={product.quantity}
                 price={product.price}

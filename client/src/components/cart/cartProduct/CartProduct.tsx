@@ -46,14 +46,14 @@ const CartProduct = ({
       <div className="d-flex align-items-center ">
         <CountContainer>
           <ProductButton
-            onClick={() => updateQuantityHandler(product, product.quantity - 1)}
+            onClick={() => updateQuantityHandler(product, product.quantity - 1,"remove")}
             disabled={product.quantity === 1}
           >
             <img src={minusIMG} alt="minus"></img>
           </ProductButton>
           <h5 className="mx-3 pt-2">{quantity}</h5>
           <ProductButton
-            onClick={() => updateQuantityHandler(product, product.quantity + 1)}
+            onClick={() => updateQuantityHandler(product, product.quantity + 1, "add")}
             disabled={product.quantity === product.stock}
           >
             <img src={plusIMG} alt="plus"></img>

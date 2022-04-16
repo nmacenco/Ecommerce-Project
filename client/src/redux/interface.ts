@@ -108,7 +108,7 @@ export interface Users {
 
 export interface ProductCart {
   productId?: number;
-  name: string;
+  productName: string;
   price: number;
   image: string;
   stock: number;

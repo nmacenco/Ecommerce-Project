@@ -47,7 +47,6 @@ export const getPendingOrder = (token: string) => {
 export const addProductOrder = (token: string, ProductId: number) => {
   try {   
     return async (dispatch: Dispatch) => {
-      console.log("ADD PRODUCT"+token+" "+ProductId)
       await axios.put(`${URL_ORDER}/add`,{ProductId},{
         headers: {
           "auth-token": token,
@@ -62,8 +61,21 @@ export const addProductOrder = (token: string, ProductId: number) => {
 export const removeProductOrder = (token: string, ProductId: number) => {
   try {   
     return async (dispatch: Dispatch) => {
-      console.log("REMOVE PRODUCT"+token+"  "+ProductId)
       await axios.delete(`${URL_ORDER}/delete/`+String(ProductId),{
+        headers: {
+          "auth-token": token,
+        },
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const restProductOrder = (token: string, ProductId: number) => {
+  try {   
+    return async (dispatch: Dispatch) => {
+      await axios.put(`${URL_ORDER}/remove`,{ProductId},{
         headers: {
           "auth-token": token,
         },

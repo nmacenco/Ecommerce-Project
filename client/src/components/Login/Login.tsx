@@ -53,7 +53,7 @@ const Login = (): JSX.Element => {
   const LoginFetch = (event: any) => {
     event.preventDefault();
     validateForms(error, inputs);
-    setUserLoaded(true);
+
     dispatch(
       GetUSer(inputs.email, inputs.passUser, (error: any) => {
         if (!error) {
@@ -62,6 +62,7 @@ const Login = (): JSX.Element => {
             icon: "success",
           });
           navigate("/products");
+          setUserLoaded(true);
         }
       })
     );

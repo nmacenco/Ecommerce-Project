@@ -6,7 +6,7 @@ interface Props {
     status: string;
   }
 
-const OrderRow = ({id,totalAmount,status}: Props): JSX.Element => {
+const OrderRow  = ({id,totalAmount,status}: Props): JSX.Element => {
     return(
         <tr>
             <th scope="row">{id}</th>
