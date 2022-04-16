@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { getCountries } from "../../../redux/actions/countries";
 import { State } from "../../../redux/reducers";
 import { errorsCheck } from "./validations";
-import { FormContainer } from "./shippingAdressFormStyles";
+import { Form, FormContainer } from "./shippingAdressFormStyles";
 import swal from "sweetalert";
 
 export default function ShippingAddressForm(): JSX.Element {
@@ -18,7 +18,7 @@ export default function ShippingAddressForm(): JSX.Element {
   const [errorsList, setErrorsList] = useState<any>(false)
 
     const [address , setAdress] = useState({
-        name : '',
+        // name : '',
         address : '',
         city : '',
         postalCode : '',
@@ -44,7 +44,7 @@ export default function ShippingAddressForm(): JSX.Element {
     let errors = errorsCheck(address);
     setErrorsList(errors)
     if (errors === false) {
-      const shipping_address = {shipping_address : `${address.name}-${address.address}-${address.city}-${address.postalCode}`}
+      const shipping_address = {shipping_address : `${address.address}-${address.city}-${address.postalCode}`}
       console.log(address);
       console.log(shipping_address);
       // dispatch(updateOrderUser(activeOrder.id , shipping_address, userState.token )) falta el id cuando tengamos la active order 
@@ -70,9 +70,10 @@ export default function ShippingAddressForm(): JSX.Element {
 
   return (
     <FormContainer>
-      <form className="w-25" onSubmit={handleSubmit}>
+      {/* <Form className="w-25" onSubmit={handleSubmit}> */}
+      <form className="" onSubmit={handleSubmit}>
         <h3 className="text-center">Shipping Address</h3>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             Name
           </label>
@@ -85,8 +86,8 @@ export default function ShippingAddressForm(): JSX.Element {
             placeholder="Enter name"
             onChange={(e) => handleChange(e)}
           />
-          {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
-        </div>
+          <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p>
+        </div> */}
         <div className="form-group">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             Address

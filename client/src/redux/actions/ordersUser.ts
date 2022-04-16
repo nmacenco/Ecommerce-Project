@@ -69,3 +69,16 @@ export const updateOrderUser = (id: any, shipping_address : any, token : string)
     console.log(error); 
   }
 };
+  // export const updatePayPal = (id: any, shipping_address : any, token : string) => {
+  //   try {
+  //     return async (dispatch: Dispatch) => {
+  //       await axios.put(`${URL}/info/${id}`,shipping_address,{
+  //         headers: {
+  //           "auth-token": token,
+  //         },
+  //       });
+  //     };
+  //   } catch (error) {
+  //     console.log(error); 
+  //   }
+  // };
