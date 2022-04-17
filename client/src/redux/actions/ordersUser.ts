@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 
-import { Product, ProductCart, TYPES_ORDERS_USER } from "../interface";
+import {  ProductCart, TYPES_ORDERS_USER } from "../interface";
 const URL = "http://localhost:3001/api/auth/orders";
 
 export const getOrdersUser = (id: string, token: string) => {

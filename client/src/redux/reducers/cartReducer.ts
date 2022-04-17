@@ -50,6 +50,7 @@ export const reducerCart = (
 
     case TYPES_CART.GET_ACTIVEORDER:
       const pendingOrderProducts = action.payload.details
+      localStorage.setItem("cart", JSON.stringify(pendingOrderProducts));
       return { ...state, cart: pendingOrderProducts };
 
     default: {

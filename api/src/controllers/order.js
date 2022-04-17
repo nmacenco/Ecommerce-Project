@@ -241,7 +241,7 @@ const getActiveOrder = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image", "price"],
+              attributes: ["name", "id", "image", "price","stock"],
             },
           ],
         },
@@ -271,6 +271,7 @@ const getActiveOrder = async (req, res) => {
                 productId: detail.Product.id,
                 image: detail.Product.image,
                 price: detail.Product.price,
+                stock: detail.Product.stock
               };
             })
           : [],
