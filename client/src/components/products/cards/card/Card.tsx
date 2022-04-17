@@ -25,9 +25,9 @@ const Card = ({ name, image, price, id, stock, product }: props) => {
     const productInCart = productsCart.find(
       (x: Product) => x.id === product.id
     );
-    const count = productInCart ? productInCart.count + 1 : 1;
-    if (Number(count) <= Number(stock)) {
-      product.count = count;
+    const quantity = productInCart ? productInCart.quantity + 1 : 1;
+    if (Number(quantity) <= Number(stock)) {
+      product.quantity = quantity;
       dispatch(addProductCart(product));
     }
   }
@@ -53,7 +53,7 @@ const Card = ({ name, image, price, id, stock, product }: props) => {
 
       <CardFooter className="card-footer d-flex align-items-end justify-content-between">
         <h5 className="m-3">${price}</h5>
-        {product.count === stock || productInCart && productInCart.count === stock ? (
+        {product.quantity === stock || productInCart && productInCart.quantity === stock ? (
           <button type="button" className="btn btn-primary h-100" disabled>
             <img src={cartIcon} alt=""></img>
           </button>

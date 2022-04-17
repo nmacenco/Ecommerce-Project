@@ -60,10 +60,16 @@ export enum TYPES_PRODUCT {
 export enum TYPES_CART {
   ADD_PRODUCT = "ADD_PRODUCT",
   REMOVE_PRODUCT = "REMOVE_PRODUCT",
+  CLEAR_CART = "CLEAR_CART",
 }
 
 export enum TYPES_COUNTRIES {
   GET_COUNTRIES = "GET_COUNTRIES",
+}
+
+export enum TYPES_ORDERS_USER {
+  GET_ORDERS = "GET_ORDER",
+  GET_ACTIVEORDER = "GET_ACTIVEORDER",
 }
 
 //=======================
@@ -132,7 +138,7 @@ export interface Product {
   subcategory: string;
   CategoryId: number;
   category: number;
-  count: number;
+  quantity: number;
   questions: any[];
   reviews: any[];
   isActive: boolean;
@@ -294,6 +300,11 @@ export interface REMOVE_PRODUCT {
   payload: Product;
 }
 
+export interface CLEAR_CART {
+  type: TYPES_CART.CLEAR_CART;
+  payload: null;
+}
+
 //=====================
 //Products Actions
 export interface PRODUCT_DETAIL {
@@ -404,6 +415,17 @@ export interface GET_ORDERS {
   payload: Order[];
 }
 
+export interface GET_ACTIVEORDER {
+  type: TYPES_ORDERS_USER.GET_ACTIVEORDER;
+  payload: Order;
+}
+
+export interface GET_ORDERS_USER {
+  type: TYPES_ORDERS_USER.GET_ORDERS;
+  payload: Order[];
+}
+
+
 export interface AXIOSDATA {
   successMsg: string;
   data: Product[];
@@ -459,6 +481,8 @@ export type AdminActions = DELETE_PRODUCT | GET_ORDERS;
 
 export type SetPage = SET_PAGE;
 
-export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT;
+export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART;
 
 export type CountriesActions = GET_COUNTRIES;
+
+export type UserOrdersActions = GET_ORDERS_USER | GET_ACTIVEORDER;
