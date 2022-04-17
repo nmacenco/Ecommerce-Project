@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 import OrderAdminRow from "./orderAdminRow/OrderAdminRow";
-import { Table } from "./OrderAdminStyles";
+import { Container, Table } from "./OrderAdminStyles";
 import { State } from "../../../redux/reducers";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
@@ -86,8 +86,9 @@ const OrdersAdmin = (): JSX.Element => {
   }, [])
 
   return (
-    // <div className="container d-flex flex-column">
-    <div className="accordion" id="accordionExample">
+    <Container>
+     {/* <div className="container d-flex flex-column"> */}
+    <div className="accordion w-75" id="accordionExample">
       <h3 className="text-center mt-5">Orders History</h3>
       <Table className="table table-hover mt-5">
         <thead>
@@ -113,6 +114,8 @@ const OrdersAdmin = (): JSX.Element => {
         }
       </Table>
     </div>
+
+    </Container>
   );
 };
 

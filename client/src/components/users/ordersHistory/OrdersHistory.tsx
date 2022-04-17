@@ -5,7 +5,7 @@ import { getOrdersUser } from "../../../redux/actions/ordersUser";
 import { Order } from "../../../redux/interface";
 import { State } from "../../../redux/reducers";
 import OrderRow from "./orderRow/OrderRow";
-import { Table } from "./OrdersHistoryStyle";
+import { Container, Table } from "./OrdersHistoryStyle";
 
 const OrdersHistory = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -105,8 +105,11 @@ const OrdersHistory = (): JSX.Element => {
   ]
 
   return (
-    <div className="accordion" id="accordionExample">
-      <Table className="table table-hover mt-5">
+    <Container>
+
+    <div className="accordion w-75" id="accordionExample">
+    <h3 className="text-center mt-5">Orders History</h3>
+      <Table className="table table-hover mt-5 ">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -131,6 +134,7 @@ const OrdersHistory = (): JSX.Element => {
 
       </Table>
     </div >
+    </Container>
   );
 };
 
