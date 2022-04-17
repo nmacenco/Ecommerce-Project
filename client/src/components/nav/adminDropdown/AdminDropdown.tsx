@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../../redux/actions/user";
 import { State } from "../../../redux/reducers";
 import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
+import { clearCart } from "../../../redux/actions/cart";
 
 const AdminDropdown = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const AdminDropdown = (): JSX.Element => {
     event.preventDefault();
     dispatch(LogoutUser());
     localStorage.removeItem('cart')
-    // dispatch(cartClear())
+    dispatch(clearCart())
     navigate("/products");
   };
   const getOrders = (event: React.MouseEvent<HTMLSpanElement>) => {
