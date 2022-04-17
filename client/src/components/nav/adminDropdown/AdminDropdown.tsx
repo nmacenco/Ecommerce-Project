@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../../redux/actions/user";
 import { State } from "../../../redux/reducers";
+import { clearCart } from "../../../redux/actions/cart";
 
 const AdminDropdown = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const AdminDropdown = (): JSX.Element => {
     event.preventDefault();
     dispatch(LogoutUser());
     localStorage.removeItem('cart')
-    dispatch(cartClear())
+    dispatch(clearCart())
     navigate("/products");
   };
 
@@ -58,7 +59,4 @@ const AdminDropdown = (): JSX.Element => {
 };
 
 export default AdminDropdown;
-function cartClear(): any {
-  throw new Error("Function not implemented.");
-}
 
