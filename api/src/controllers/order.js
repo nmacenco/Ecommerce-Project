@@ -152,7 +152,7 @@ const createOrder = async (req, res) => {
         const amount = product.count * product.price;
         await createOrderDetail(
           newOrder.id,
-          product.id,
+          product.ProductId,
           product.count,
           amount
         );
@@ -243,7 +243,7 @@ const getActiveOrder = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image", "price"],
+              attributes: ["name", "id", "image", "price","stock"],
             },
           ],
         },
@@ -274,6 +274,7 @@ const getActiveOrder = async (req, res) => {
                 productId: detail.Product.id,
                 image: detail.Product.image,
                 price: detail.Product.price,
+                stock: detail.Product.stock
               };
             })
           : [],
@@ -282,6 +283,7 @@ const getActiveOrder = async (req, res) => {
       .status(200)
       .send({ successMsg: "Here is your order.", data: activeOrder });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -292,7 +294,7 @@ const getActiveOrder = async (req, res) => {
 const addProductsOrder = async (req, res) => {
   const id = req.userID;
   try {
-    const { ProductId } = req.body;
+    const {ProductId}  = req.body;
     if (!ProductId) {
       return res.status(404).send({ errorMsg: "Missing product ID." });
     } else {
@@ -348,6 +350,7 @@ const addProductsOrder = async (req, res) => {
       }
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -404,7 +407,7 @@ const removeProductsOrder = async (req, res) => {
 const deleteProductsOrder = async (req, res) => {
   try {
     const id = req.userID;
-    const { ProductId } = req.body;
+    const {ProductId}  = req.params;
     if (!ProductId) {
       return res.status(404).send({ errorMsg: "Missing product ID" });
     } else {

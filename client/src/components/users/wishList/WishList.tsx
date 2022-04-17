@@ -2,46 +2,48 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
-import { addProductCart } from '../../../redux/actions/cart';
+import { addProductCart, addProductOrder } from '../../../redux/actions/cart';
 import { deleteWish, getWish } from '../../../redux/actions/products';
 import { State } from '../../../redux/reducers';
 import { WishContainer, WishGrid } from './whis';
 
-
 let nombres = ['dikson', 'yampier', 'other nombre'];
 
 const WishList = (): JSX.Element => {
-
     const dispatch = useDispatch();
     const user = useSelector((state: State) => state.user);
     const wishes = useSelector((state: State) => state.products.wishList);
     const products = useSelector((state: State) => state.products.products);
 
-    const WishDelete = (event: any) => {
-
-        // console.log(event.target.id)
-        if (user) {
-            dispatch(deleteWish(event.target.id, user!.token));
-        }
-
-    }
     useEffect(() => {
         if (user && !wishes.length) {
             dispatch(getWish(user!.token));
         }
     }, [])
 
-    const addProductToCart = (event: any) => {
+    const WishDelete = (event: any) => {
+        if (user) {
+            dispatch(deleteWish(event.target.id, user!.token));
+        }
+    }
 
+    const addProductToCart = (event: any) => {
         let index = event.target.id;
         const encountered = products.find(product => product.id === Number(index));
         if (encountered) {
-            // console.log('PRODUCT COUNT: ', encountered.quantity);
-            encountered.quantity = 1;
+            const productToAdd = {
+                productId: encountered.id,
+                productName: encountered.name,
+                price: encountered.price,
+                image: encountered.image,
+                stock: encountered.stock,
+                quantity:1
+            }
+            productToAdd.quantity = 1;
+            dispatch(addProductCart(productToAdd));
+            productToAdd.productId && dispatch(addProductOrder(user!.token,productToAdd.productId))
 
-            dispatch(addProductCart(encountered));
             dispatch(deleteWish(Number(index), user!.token, (error) => {
-
                 if (error) {
                     swal({
                         text: "Oops! An error has occurred",
@@ -55,12 +57,10 @@ const WishList = (): JSX.Element => {
                         icon: "success",
                     });
                 }
-
             }))
         } else {
-            alert('The product not exist! 🤔')
+            alert('The product does not exist')
         }
-
     }
 
     return (
@@ -75,8 +75,6 @@ const WishList = (): JSX.Element => {
                         <th className='title'><i>Status stock</i></th>
                         <th className='title'><i>Actions</i></th>
                     </tr>
-                    {console.log(wishes)}
-
                     {
                         wishes.map((wish, i) => {
                             // console.log(wish)
@@ -105,31 +103,9 @@ const WishList = (): JSX.Element => {
                             )
                         })
                     }
-
-
-
-
-
-
-                    {/* // <div className='item-borders'>
-                //     <img src='https://xiaomitiendaperu.com/wp-content/uploads/2020/12/Haylou-Smart-Watch-2-xiaomitiendaperu.jpg' />
-                // </div>
-                // <div className='item-borders'><i>SmartWatch</i></div>
-                // <div className='item-borders'><i>20.00</i></div>
-                // <div className='item-borders'><i>In stock</i></div>
-                // <DivButtons className='item-borders'>
-                //     <button>
-                //         ADD CART
-                //     </button>
-                //     <button>
-                //         REMOVE
-                //     </button>
-                // </DivButtons> */}
                 </tbody>
             </WishGrid>
         </WishContainer >
     )
-
 }
-
 export default WishList;

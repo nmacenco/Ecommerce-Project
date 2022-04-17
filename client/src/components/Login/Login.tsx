@@ -8,11 +8,9 @@ import Form from "../form/Form";
 import { Forgot } from "../form/SLogin";
 import { setPage } from "../../redux/actions/setPage";
 import { GoogleLogin } from "react-google-login";
-import {
-  createOrderUser,
-  getActiveOrder,
-} from "../../redux/actions/ordersUser";
+import { createOrderUser } from "../../redux/actions/ordersUser";
 import swal from "sweetalert";
+import { getPendingOrder } from "../../redux/actions/cart";
 
 interface Inputs {
   email: string;
@@ -63,16 +61,17 @@ const Login = (): JSX.Element => {
             title: "Successfully logged in",
             icon: "success",
           });
+          navigate("/products");
+          setUserLoaded(true);
         }
       })
     );
-    setUserLoaded(!userLoaded);
   };
 
   if (user) {
     navigate("/products");
     dispatch(createOrderUser(user.token, productsCart));
-    dispatch(getActiveOrder(user.token));
+    dispatch(getPendingOrder(user.token));
   }
 
   // const responseGoogle = (data: any) => {
@@ -203,6 +202,11 @@ const Login = (): JSX.Element => {
 
   // let emailStyle = error.email ? "form-control is-invalid" : "form-control";
   // let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
+
+  if (user) {
+    dispatch(createOrderUser(user.token, productsCart));
+    dispatch(getPendingOrder(user.token));
+  }
 
   return (
     <Form title="Login">

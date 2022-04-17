@@ -3,9 +3,9 @@ import { CardComponent, CardFooter, ProductIMG } from "./CardStyles";
 import cartIcon from "../../../../icons/cart-icon.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Product } from "../../../../redux/interface";
+import { Product, ProductCart } from "../../../../redux/interface";
 import { State } from "../../../../redux/reducers";
-import { addProductCart } from "../../../../redux/actions/cart";
+import { addProductCart, addProductOrder } from "../../../../redux/actions/cart";
 
 interface props {
   name: string;
@@ -13,22 +13,28 @@ interface props {
   price: number;
   id?: number;
   stock: number;
-  product: Product;
 }
 
-const Card = ({ name, image, price, id, stock, product }: props) => {
+const Card = ({ name, image, price, id, stock}: props) => {
   const dispatch = useDispatch();
   const productsCart = useSelector((state: State) => state.cart.cart);
-  const productInCart = productsCart.find((x: Product) => x.id === product.id);
+  const user = useSelector((state: State) => state.user)
+  const productInCart = productsCart.find((x: ProductCart) => x.productId === id);
 
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
-    const productInCart = productsCart.find(
-      (x: Product) => x.id === product.id
-    );
+    const productToAdd = {
+      productId: id,
+      productName: name,
+      price: price,
+      image: image,
+      stock: stock,
+      quantity:0
+    }
     const quantity = productInCart ? productInCart.quantity + 1 : 1;
     if (Number(quantity) <= Number(stock)) {
-      product.quantity = quantity;
-      dispatch(addProductCart(product));
+      productToAdd.quantity = quantity;
+      dispatch(addProductCart(productToAdd));
+      user && id && dispatch(addProductOrder(user.token,id))
     }
   }
 
@@ -53,7 +59,7 @@ const Card = ({ name, image, price, id, stock, product }: props) => {
 
       <CardFooter className="card-footer d-flex align-items-end justify-content-between">
         <h5 className="m-3">${price}</h5>
-        {product.quantity === stock || productInCart && productInCart.quantity === stock ? (
+        {productInCart && productInCart.quantity === stock ? (
           <button type="button" className="btn btn-primary h-100" disabled>
             <img src={cartIcon} alt=""></img>
           </button>

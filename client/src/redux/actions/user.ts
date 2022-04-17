@@ -86,13 +86,7 @@ export const GetUSer = (email: string, pass: string, cb = defaultCb) => {
       });
       const TOKEN = response.headers["auth-token"];
       
-      // if (response.status == 200) {
-      // console.log('TOKEN: ',TOKEN);
-      // console.log(response.data.data);
-      console.log(response.data);
-      if (response.data.errorMsg) {
-        // cb(); //Ejecutamos un callback wajajaj
-      } else {
+      if (response.status == 200) {
         dispatch({
           type: TYPES_USER.GET_USER,
           payload: {
@@ -114,10 +108,9 @@ export const GetUSer = (email: string, pass: string, cb = defaultCb) => {
           })
         );
         cb(null); 
-      } 
-      // else {
-      //   cb(response.data.errorMsg);
-      // }
+      } else {
+        cb(response.data.errorMsg);
+      }
     } catch (error) {
       swal({
         title: "Wrong data",

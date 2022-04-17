@@ -61,6 +61,7 @@ export enum TYPES_CART {
   ADD_PRODUCT = "ADD_PRODUCT",
   REMOVE_PRODUCT = "REMOVE_PRODUCT",
   CLEAR_CART = "CLEAR_CART",
+  GET_ACTIVEORDER = "GET_ACTIVEORDER",
 }
 
 export enum TYPES_COUNTRIES {
@@ -69,7 +70,7 @@ export enum TYPES_COUNTRIES {
 
 export enum TYPES_ORDERS_USER {
   GET_ORDERS = "GET_ORDER",
-  GET_ACTIVEORDER = "GET_ACTIVEORDER",
+
 }
 
 //=======================
@@ -105,13 +106,22 @@ export interface Users {
   needsPasswordReset: boolean;
 }
 
+export interface ProductCart {
+  productId?: number;
+  productName: string;
+  price: number;
+  image: string;
+  stock: number;
+  quantity: number;
+}
+
 export interface ProductForm {
   id?: number;
   name: string;
   price: number;
   description: string;
   image: string;
-  weight: number;
+  weight:number;
   stock: number;
   soldCount: number;
   SubcategoryId: number;
@@ -150,7 +160,7 @@ export interface Order {
   status: string;
   user: string;
   billing_address: string;
-  detail: any[];
+  details: any[];
 }
 
 export interface Question {
@@ -292,12 +302,12 @@ export interface SET_PAGE {
 //Cart Actions
 export interface ADD_PRODUCT {
   type: TYPES_CART.ADD_PRODUCT;
-  payload: Product;
+  payload: ProductCart;
 }
 
 export interface REMOVE_PRODUCT {
   type: TYPES_CART.REMOVE_PRODUCT;
-  payload: Product;
+  payload: ProductCart;
 }
 
 export interface CLEAR_CART {
@@ -416,7 +426,7 @@ export interface GET_ORDERS {
 }
 
 export interface GET_ACTIVEORDER {
-  type: TYPES_ORDERS_USER.GET_ACTIVEORDER;
+  type: TYPES_CART.GET_ACTIVEORDER;
   payload: Order;
 }
 
@@ -481,8 +491,8 @@ export type AdminActions = DELETE_PRODUCT | GET_ORDERS;
 
 export type SetPage = SET_PAGE;
 
-export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART;
+export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART  | GET_ACTIVEORDER;
 
 export type CountriesActions = GET_COUNTRIES;
 
-export type UserOrdersActions = GET_ORDERS_USER | GET_ACTIVEORDER;
+export type UserOrdersActions = GET_ORDERS_USER;

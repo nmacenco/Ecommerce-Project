@@ -23,7 +23,7 @@ orderRouter.put("/auth/orders/info/:id", isLoggedIn, updateOrder);
 orderRouter.get("/auth/orders/user", isLoggedIn, getUserOrdersServer);
 orderRouter.put("/auth/orders/add", isLoggedIn, addProductsOrder); // add one more existing product +
 orderRouter.put("/auth/orders/remove", isLoggedIn, removeProductsOrder); //remove one more existing product -
-orderRouter.delete("/auth/orders/delete", isLoggedIn, deleteProductsOrder);
+orderRouter.delete("/auth/orders/delete/:ProductId", isLoggedIn, deleteProductsOrder);
 orderRouter.get("/auth/orders", isLoggedIn, getActiveOrder);
 orderRouter.put("/auth/:id/pay", isLoggedIn, updatePaypalOrder);
 
