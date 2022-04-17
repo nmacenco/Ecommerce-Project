@@ -123,7 +123,7 @@ export const GetUSer = (email: string, pass: string, cb = defaultCb) => {
         },
       });
     }
-  };
+  }
 };
 
 export const FindUSer = () => {

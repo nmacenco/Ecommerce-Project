@@ -37,3 +37,35 @@ export const createOrderUser = (token: string, cart: ProductCart[]) => {
   }
 };
 
+// export const getActiveOrder = (token: string) => {
+//   try {
+//     return async (dispatch: Dispatch) => {
+//       const activeOrder = await axios.get(`${URL}/`+token,{
+//         headers: {
+//           "auth-token": token,
+//         },
+//       });
+//       return dispatch({
+//         type: TYPES_ORDERS_USER.GET_ACTIVEORDER,
+//         payload: activeOrder.data.data,
+//       });
+//     };
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+export const updateOrderUser = (id: any, shipping_address : any, token : string) => {
+  try {
+    return async (dispatch: Dispatch) => {
+      await axios.put(`${URL}/info/${id}`,shipping_address,{
+        headers: {
+          "auth-token": token,
+        },
+      });
+    };
+  } catch (error) {
+    console.log(error); 
+  }
+};

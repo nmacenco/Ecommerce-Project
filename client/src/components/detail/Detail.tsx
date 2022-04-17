@@ -12,7 +12,7 @@ import swal from "sweetalert";
 import Question from "./questions/Question";
 import NewQ from "./questions/NewQ";
 import { addProductCart, addProductOrder } from "../../redux/actions/cart";
-import { Product, ProductCart } from "../../redux/interface";
+import { ProductCart } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import TrashIMG from "../../icons/white-trash.png"
 import EditIMG from "../../icons/edit.png"
@@ -152,14 +152,14 @@ export default function Detail() {
                     </button>
                   )}
                   {console.log('WISHESSS:  ', wishes)}
-                  {user !== null && (wishEncountered || isWish)
+                  {user != null && ((wishEncountered || isWish)
                     ?
                     null
                     :
                     <button className="btn btn-danger wish" onClick={AddWishList}>
                       Add to WishList
                     </button>
-
+)
                   }
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
