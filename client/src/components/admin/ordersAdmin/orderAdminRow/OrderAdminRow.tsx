@@ -30,7 +30,7 @@ export interface STATUS {
   email_address : string ;
 }
 
-const statusArray: string[] = ['BILLED', 'CANCELED', 'DISPATCHED', 'DISPATCHED', 'DELIVERED' ,'FINISHED']
+const statusArray: string[] = ['BILLED', 'CANCELED', 'DISPATCHED', 'DELIVERED' ,'FINISHED']
 // const OrderAdminRow = ({ id, status, total, detail }: Props): JSX.Element => {
 
 
@@ -48,14 +48,13 @@ const OrderAdminRow = ({ id, status, total, billing_address, detail ,email_addre
     statusOrder.status = e.target.value ; 
     
     swal({
-      title: "Product created successfully",
-      icon: "error",
+      title: "Order status changed",
+      icon: "success",
       buttons: {
         confirm: true,
       },
     }).then((value) => {
       if (value) {
-        console.log(statusOrder)
 
         dispatch(updateOrderStatus(userInStorage.token, statusOrder, id.toString()))
       }
@@ -64,31 +63,7 @@ const OrderAdminRow = ({ id, status, total, billing_address, detail ,email_addre
     }
   }
   return (
-    // <tr>
-    //   <th scope="row"> {id} </th>
-    //   <td>
-    // <Select
-    //   defaultValue={`${status}`}
-    //   className="form-select"
-    //   onChange={(e) => handleChange(e)}
-    // >
-    //   {/* <option disabled hidden>
-    //   {`${status}`}
-    //   </option> */}
-    //   {
-    //     statusArray.map((s, i: number) => {
-    //       return <option key={i} value={`${s}`} > {s} </option>
-    //     })
-    //   }
 
-    // </Select>
-
-    //   </td>
-    //   <td> {total} </td>
-    //   <td>
-    //     <button className="btn btn-outline-primary">Detail</button>
-    //   </td>
-    // </tr>
     <tbody>
       <tr>
         <th scope="row">{id}</th>

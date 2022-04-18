@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getcurrentOrder, updatePayPal } from "../../../redux/actions/ordersUser";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { useNavigate } from "react-router";
+import { clearCart } from "../../../redux/actions/cart";
 // import { getError } from '../helpers/utils';
 
 export default function PayPalCheckoutButtons(props: any) {
@@ -57,11 +58,11 @@ export default function PayPalCheckoutButtons(props: any) {
       
       dispatch(updatePayPal(activeOrder.id, info, user!.token));
       //if response is success
-
-      navigate('/products')
-      // setTimeout(()=> {
-      //   dispatch(getcurrentOrder(userInStorage.token))
-      // } , 500)
+      setTimeout(()=> {
+        dispatch(clearCart());
+        localStorage.removeItem('cart')
+        navigate('/products')
+      } , 500)
       setPaidFor(true);
     } catch (error) {
       // swal({

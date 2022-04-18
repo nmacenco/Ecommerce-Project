@@ -14,6 +14,10 @@ export const ordersAdminReducer = (state: ORDERS = INITIAL_STATE, action: AdminA
             return {
                 ...state ,
                 orders : action.payload }          
+        case TYPES_ADMIN.RESET_ORDERS :
+            return {
+                ...state ,
+                orders : action.payload }          
         default: {
             return {
                 ...state

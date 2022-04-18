@@ -25,6 +25,18 @@ export const getOrdersAdmin = (token : string) => {
     alert(error);
   }
 };
+export const resetOrdersAdmin = () => {
+  try {
+    return async (dispatch: Dispatch) => {
+      return dispatch({
+        type: TYPES_ADMIN.RESET_ORDERS,
+        payload: [],
+      });
+    };
+  } catch (error) {
+    alert(error);
+  }
+};
 export const updateOrderStatus = (token: string, status: STATUS, id: string) => {
   try {
     return async (dispatch: Dispatch) => {
