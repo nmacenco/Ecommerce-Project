@@ -9,17 +9,17 @@ import { Container, Table } from "./OrdersHistoryStyle";
 
 const OrdersHistory = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [userInStorage, /* setUserInStorage */] = useLocalStorage("USER_LOGGED", "");
+  // const [userInStorage, setUserInStorage] = useLocalStorage("USER_LOGGED", "");
   const Orders = useSelector((state: State) => state.ordersUser.userOrders);
+  const User = useSelector((state: State) => state.user)
 
   useEffect(() => {
-    dispatch(getOrdersUser(userInStorage.token, userInStorage.token));
+    User && dispatch(getOrdersUser(User.token));
   }, []);
 
   const filteredOrders = Orders.filter(
     (order: Order) => order.status !== "PENDING"
   );
-
 
   const objOrder = [
     {

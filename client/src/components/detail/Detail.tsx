@@ -12,7 +12,7 @@ import swal from "sweetalert";
 import Question from "./questions/Question";
 import NewQ from "./questions/NewQ";
 import { addProductCart, addProductOrder } from "../../redux/actions/cart";
-import { Product, ProductCart } from "../../redux/interface";
+import { ProductCart } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import TrashIMG from "../../icons/white-trash.png"
 import EditIMG from "../../icons/edit.png"
@@ -72,7 +72,7 @@ export default function Detail() {
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     const productToAdd = {
       productId: product.id,
-      name: product.name,
+      productName: product.name,
       price: product.price,
       image: product.image,
       stock: product.stock,

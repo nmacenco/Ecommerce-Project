@@ -53,7 +53,6 @@ const Login = (): JSX.Element => {
   const LoginFetch = (event: any) => {
     event.preventDefault();
     validateForms(error, inputs);
-    setUserLoaded(true);
     dispatch(
       GetUSer(inputs.email, inputs.passUser, (error: any) => {
         if (!error) {
@@ -61,45 +60,43 @@ const Login = (): JSX.Element => {
             title: "Successfully logged in",
             icon: "success",
           });
-          navigate("/products");
+          setUserLoaded(true);
         }
       })
     );
   };
 
-  const responseGoogle = (data: any) => {
-    const { email } = data.profileObj;
-    dispatch(
-      LoginWithGoogle(email, (error: any) => {
-        if (error) {
-          swal({
-            title: "Opps! an error ocurred",
-            text: error,
-            icon: "error",
-          });
-        } else {
-          navigate("/products");
-          swal({
-            title: "Successfully logged in",
-            icon: "success",
-          });
-        }
-      })
-    );
-  };
-  const rejectGoogle = (error: any) => {
-    console.log(error);
-    alert("Something happened");
-  };
+    const responseGoogle = (data: any) => {
+        const { email } = data.profileObj;
+        dispatch(LoginWithGoogle(email, (error) => {
+            if (error) {
+                swal({
+                    title: 'Opps! an error ocurred',
+                    text: error,
+                    icon: 'error'
+                })
+            } else {
+                swal({
+                    title: 'Successfully logged in',
+                    icon: 'success'
+                })
+                setUserLoaded(true);
+            }
+        }))
+    }
+    const rejectGoogle = (error: any) => {
+        alert('Something happened.')
+    }
 
-  // const forgotPassword = () => {
-  //   navigate("/emailReset");
-  // };
+    const forgotPassword = () => {
+        navigate("/emailReset");
+    };
 
-  // let emailStyle = error.email ? "form-control is-invalid" : "form-control";
-  // let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
+    let emailStyle = error.email ? "form-control is-invalid" : "form-control";
+    let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
 
   if (user) {
+    navigate("/products");
     dispatch(createOrderUser(user.token, productsCart));
     dispatch(getPendingOrder(user.token));
   }
