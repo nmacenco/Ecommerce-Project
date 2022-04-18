@@ -1,9 +1,11 @@
 const { Order, User, Order_detail, Product } = require("../db");
+const { sendMailOrder,sendMailState } = require("./mailer");
 require("dotenv").config();
 const {
   ORDER_STATUS_PENDING,
   ORDER_STATUS_BILLED,
   ORDER_STATUS_DELIVERED,
+  ORDER_STATUS_DISPATCHED,
   ORDER_STATUS_FINISHED,
 } = process.env;
 
@@ -39,20 +41,20 @@ const getOrders = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
-        shipping_address:Order.shipping_address,
+        shipping_address: Order.shipping_address,
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-                return {
-                  id: detail.id,
-                  amount: detail.amount,
-                  quantity: detail.quantity,
-                  productName: detail.Product.name,
-                  productId: detail.Product.id,
-                  image: detail.Product.image,
-                  price: detail.Product.price,
-                };
-              })
+              return {
+                id: detail.id,
+                amount: detail.amount,
+                quantity: detail.quantity,
+                productName: detail.Product.name,
+                productId: detail.Product.id,
+                image: detail.Product.image,
+                price: detail.Product.price,
+              };
+            })
             : [],
       };
     });
@@ -98,20 +100,20 @@ const getUserOrdersServer = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
-        shipping_address:activeOrder.shipping_address,
+        shipping_address: activeOrder.shipping_address,
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-                return {
-                  id: detail.id,
-                  amount: detail.amount,
-                  quantity: detail.quantity,
-                  productName: detail.Product.name,
-                  productId: detail.Product.id,
-                  image: detail.Product.image,
-                  price: detail.Product.price,
-                };
-              })
+              return {
+                id: detail.id,
+                amount: detail.amount,
+                quantity: detail.quantity,
+                productName: detail.Product.name,
+                productId: detail.Product.id,
+                image: detail.Product.image,
+                price: detail.Product.price,
+              };
+            })
             : [],
       };
     });
@@ -178,7 +180,7 @@ const createOrder = async (req, res) => {
 
 const updateOrderState = async (req, res) => {
   const id = req.params.id;
-  let { status } = req.body;
+  let { status,email_address } = req.body;
   try {
     if (!id) {
       res.status(404).send({ errorMsg: "Missing id." });
@@ -190,6 +192,13 @@ const updateOrderState = async (req, res) => {
       if (!orderState) {
         res.status(404).send({ errorMsg: "order not found" });
       } else {
+        if (status === ORDER_STATUS_DISPATCHED){
+         await sendMailState(
+            email_address,
+            "Dispatch Order advice",
+            `<p>Your order number ${id} has been dispatched. </p>`
+          );
+        }
         res
           .status(201)
           .send({ successMsg: "Order has been updated", data: orderState });
@@ -262,20 +271,20 @@ const getActiveOrder = async (req, res) => {
       user: activeOrder.User.name + " " + activeOrder.User.surname,
       userID: activeOrder.User.id,
       billing_address: activeOrder.billing_address,
-      shipping_address:activeOrder.shipping_address,
+      shipping_address: activeOrder.shipping_address,
       details:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-              return {
-                id: detail.id,
-                amount: detail.amount,
-                quantity: detail.quantity,
-                productName: detail.Product.name,
-                productId: detail.Product.id,
-                image: detail.Product.image,
-                price: detail.Product.price,
-              };
-            })
+            return {
+              id: detail.id,
+              amount: detail.amount,
+              quantity: detail.quantity,
+              productName: detail.Product.name,
+              productId: detail.Product.id,
+              image: detail.Product.image,
+              price: detail.Product.price,
+            };
+          })
           : [],
     };
     res
@@ -538,16 +547,16 @@ const getUserOrders = async (id) => {
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                  return {
-                    id: detail.id,
-                    amount: detail.amount,
-                    quantity: detail.quantity,
-                    productName: detail.Product.name,
-                    productId: detail.Product.id,
-                    image: detail.Product.image,
-                    price: detail.Product.price,
-                  };
-                })
+                return {
+                  id: detail.id,
+                  amount: detail.amount,
+                  quantity: detail.quantity,
+                  productName: detail.Product.name,
+                  productId: detail.Product.id,
+                  image: detail.Product.image,
+                  price: detail.Product.price,
+                };
+              })
               : [],
         };
       });
@@ -559,9 +568,12 @@ const getUserOrders = async (id) => {
 };
 
 const updatePaypalOrder = async (req, res) => {
-  let { paymentMethod } = req.body;
+  let id = req.params.id;
+  let { paymentMethod, shippingPrice, taxPrice, orderIdPayment, email_address } = req.body;
   try {
-    let orderPaypal = await Order.findById(req.params.id);
+    let orderPaypal = await Order.findOne({
+      where: { id, },
+    });
     if (!orderPaypal) {
       res.status(401).send({ message: "Order Not Found" });
     } else {
@@ -572,10 +584,16 @@ const updatePaypalOrder = async (req, res) => {
         paymentMethod: paymentMethod,
         shippingPrice: shippingPrice,
         taxPrice: taxPrice,
+        orderIdPayment: orderIdPayment,
         isDelivered: false,
-        email_address: email_address,
-        billing_address: billing_address,
       });
+
+      await sendMailOrder(
+        email_address,
+        "Confirmation Order Advice",
+        `<p>Your purchase order number ${id} has been canceled with the Paypal order ${orderIdPayment}. </p>`
+      );
+
       res.status(201).send({ successMsg: "Order Paid", data: updatedOrder });
     }
   } catch (error) {
