@@ -70,9 +70,9 @@ export default function ShippingAddressForm(): JSX.Element {
 
   return (
     <FormContainer>
-      <form className="w-25" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <h3 className="text-center">Shipping Address</h3>
-        <div className="form-group">
+        <div className="form-group mt-4">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             Name
           </label>
@@ -87,7 +87,7 @@ export default function ShippingAddressForm(): JSX.Element {
           />
           {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
         </div>
-        <div className="form-group">
+        <div className="form-group mt-4">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             Address
           </label>
@@ -102,7 +102,7 @@ export default function ShippingAddressForm(): JSX.Element {
           />
           {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
         </div>
-        <div className="form-group">
+        <div className="form-group mt-4">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             City
           </label>
@@ -117,8 +117,8 @@ export default function ShippingAddressForm(): JSX.Element {
           />
           {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
         </div>
-        <div className="form-group">
-          <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
+        <div className="form-group mt-4">
+          <label htmlFor="staticEmail" className="col-form-label">
             Postal Code 
           </label>
           <input
@@ -133,7 +133,7 @@ export default function ShippingAddressForm(): JSX.Element {
           {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
         </div>
 
-        <div className="text-center">
+        <div className="text-center mb-4">
           <button type="submit" className="btn btn-outline-primary mt-5 ">
             Submit
           </button>
