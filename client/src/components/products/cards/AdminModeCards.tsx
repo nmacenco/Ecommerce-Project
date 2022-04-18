@@ -3,7 +3,7 @@ import Filter from "./filter/Filter";
 import { CardsContainer, ReactPaginateContainer } from "./CardsStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux/reducers/index";
-import { getProducts } from "../../../redux/actions/products";
+import { getProducts, productNotFound, resetPoducts } from "../../../redux/actions/products";
 import { Data_Paginate, FILTER_BOX, Product, Subcategory } from "../../../redux/interface";
 import Loading from "../../loading/Loading";
 import Categories from "../categories/Categories";
@@ -14,6 +14,7 @@ import Pagination from "./pagination/Pagination";
 // import { chargeFilter, filterByBrand, filterProducts, removeFilter } from "../../../redux/actions/filterByCategory";
 import { deleteProduct } from "../../../redux/actions/admin";
 import { setPage } from "../../../redux/actions/setPage";
+import { filterByBrand, filterProducts } from "../../../redux/actions/filterByCategory";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -26,12 +27,16 @@ const AdminModeCards = (): JSX.Element => {
   // const [currentPage, setCurrentPage] = useState<number>(1);
   let currentPage = useSelector((state: State) => state.page);
   const [order, setOrder] = useState<string>("");
-  // const [load, setLoad] = useState<boolean>(false)
+  const [load, setLoad] = useState<boolean>(false)
+  const [filterBox, setFilterBox] = useState<FILTER_BOX>({
+    subcategory: "",
+    brand: ""
+  })
   const [Admorders, setAdmOrders] = useState<string>("");
   const productsList = useSelector((state: State) => state.products.products);
   const notFound = useSelector((state: State) => state.products.not_found);
+  const allSubcategories = useSelector((state: State) => state.categories.subcategories);
   // const copyProductsList = useSelector((state: State) => state.products.copyProducts)
-  // const allSubcategories = useSelector((state: State) => state.categories.subcategories);
   // const filteredProductList = useSelector((state: State) => state.filteredProducts.filteredProducts);
 
   const page = (numberOfPage: number): void => {
@@ -39,7 +44,26 @@ const AdminModeCards = (): JSX.Element => {
     dispatch(setPage(numberOfPage))
   };
   const orders = (typeorder: string): void => {
-
+    if (typeorder !== 'isActive order' && typeorder !== 'notActive order' && typeorder !== 'asc-price order' && typeorder !== 'des-price order' && typeorder !== 'des-name order' && typeorder !== 'asc-name order' && typeorder !== 'Order by order') {
+      console.log(typeorder)
+      let existCat = allSubcategories.filter((e: Subcategory) => e.name === typeorder)
+      if (existCat.length === 1) {
+        setFilterBox({ ...filterBox, subcategory: typeorder })
+        dispatch(resetPoducts())
+        if (filterBox.brand.length !== 0) {
+          dispatch(filterByBrand(filterBox.brand))
+        }
+        dispatch(filterProducts(typeorder))
+      }
+      else {
+        setFilterBox({ ...filterBox, brand: typeorder })
+        dispatch(resetPoducts())
+        if (filterBox.subcategory.length !== 0) {
+          dispatch(filterProducts(filterBox.subcategory))
+        }
+        dispatch(filterByBrand(typeorder))
+      }
+    }
     setOrder(typeorder);
   };
 
@@ -51,7 +75,10 @@ const AdminModeCards = (): JSX.Element => {
     dispatch(getProducts());
   }, [Admorders]);
 
-
+  useEffect(() => {
+    dispatch(productNotFound(true))
+    eliminateFilters()
+  }, [productsList.length === 0])
 
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
@@ -66,29 +93,40 @@ const AdminModeCards = (): JSX.Element => {
     dispatch(setPage(data.selected + 1))
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     LoadCharge(true)
-  //   }, 500)
-  // }, [setLoad])
+  useEffect(() => {
+    setTimeout(() => {
+      LoadCharge(true)
+    }, 500)
+  }, [setLoad])
 
-  // const resetFilter = (e: string): void => {
-  //   if (filterBox.subcategory.length === 0 || filterBox.brand.length === 0) {
-  //     dispatch(chargeFilter(copyProductsList))
-  //   } else if (filterBox.subcategory === e) dispatch(removeFilter(filterBox.brand))
-  //   else dispatch(removeFilter(filterBox.subcategory))
-  //   let existCat = allSubcategories.filter((s: any) => s.name === e)
-  //   if (existCat.length === 0) setFilterBox({ ...filterBox, brand: "" })
-  //   else setFilterBox({ ...filterBox, subcategory: "" })
-  // }
+  const LoadCharge = (bool: boolean): void => {
+    setLoad(bool)
+  }
 
-  // const eliminateFilters = (): void => {
-  //   setFilterBox({
-  //     ...filterBox,
-  //     subcategory: "",
-  //     brand: ""
-  //   })
-  // }
+  const resetFilter = (e: string): void => {
+    if (filterBox.subcategory.length === 0 || filterBox.brand.length === 0) {
+      dispatch(resetPoducts())
+      console.log('reset')
+    } else if (filterBox.subcategory === e) {
+      dispatch(resetPoducts())
+      dispatch(filterByBrand(filterBox.brand))
+    }
+    else {
+      dispatch(resetPoducts())
+      dispatch(filterProducts(filterBox.subcategory))
+    }
+    let existCat = allSubcategories.filter((s: any) => s.name === e)
+    if (existCat.length === 0) setFilterBox({ ...filterBox, brand: "" })
+    else setFilterBox({ ...filterBox, subcategory: "" })
+  }
+
+  const eliminateFilters = (): void => {
+    setFilterBox({
+      ...filterBox,
+      subcategory: "",
+      brand: ""
+    })
+  }
 
   return (
     <ProductsContainer className="row row-cols-lg-2 row-cols-md-1 mx-auto">
@@ -99,10 +137,12 @@ const AdminModeCards = (): JSX.Element => {
         <CardsContainer className="w-100 ">
           <Filter page={page} orders={orders} />
 
-          {notFound ? (
-            <NotFound></NotFound>
+          {!load ? (
+            <Loading></Loading>
           ) : newProductsList.length > 0 ? (
             <>
+              {filterBox.subcategory.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.subcategory)} className="btn btn-primary mt-2 mr-2">{filterBox.subcategory}</button></span> : ""}
+              {filterBox.brand.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.brand)} className="btn btn-primary mt-2 mr-2">{filterBox.brand}</button></span> : ""}
               <div className="" >
                 <table className="table table-hover ">
                   <thead>
@@ -125,13 +165,13 @@ const AdminModeCards = (): JSX.Element => {
                         key={e.id}
                         id={e.id}
                         isActive={e.isActive}
-                        AdmOrders={AdmOrders}
+                        orders={orders}
                         page={page}
+                        eliminateFilters={eliminateFilters}
                       />
                     );
                   })}
                 </table>
-                );
               </div>
               <ReactPaginateContainer>
                 <Pagination
@@ -141,7 +181,7 @@ const AdminModeCards = (): JSX.Element => {
               </ReactPaginateContainer>
             </>
           ) : (
-            <Loading></Loading>
+            <NotFound></NotFound>
           )}
         </CardsContainer>
       </div>
