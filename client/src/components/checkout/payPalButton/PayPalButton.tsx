@@ -4,66 +4,72 @@ import swal from "sweetalert";
 import { toast } from "react-toastify";
 import { State } from "../../../redux/reducers";
 import { useDispatch, useSelector } from "react-redux";
-import { updatePayPal } from "../../../redux/actions/ordersUser";
+import { getcurrentOrder, updatePayPal } from "../../../redux/actions/ordersUser";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
 // import { getError } from '../helpers/utils';
-const activeOrder = {
-  id: 1,
-  total_amount: 5000,
-  email_address: "nicolasmacenco@gmail.com",
-  status: "Pending",
-  user: "Nicolas Macenco",
-  userID: 5,
-  billing_address: "billingAddress",
-  shipping_address: "shippingAdress",
-  details: [
-    {
-      id: 15,
-      amount: 253,
-      quantity: 2,
-      productName: "Mouse",
-      productId: 254,
-      image:
-        "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-      price: 41,
-    },
-    {
-      id: 15,
-      amount: 253,
-      quantity: 2,
-      productName: "Mouse",
-      productId: 254,
-      image:
-        "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-      price: 41,
-    },
-    {
-      id: 15,
-      amount: 253,
-      quantity: 2,
-      productName: "Mouse",
-      productId: 254,
-      image:
-        "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-      price: 41,
-    },
-    // {
-    //   id: 15,
-    //   amount: 253,
-    //   quantity: 2,
-    //   productName: "Mouse",
-    //   productId: 254,
-    //   image:
-    //     "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-    //   price: 41,
-    // },
-  ],
-};
+// const activeOrder = {
+//   id: 1,
+//   total_amount: 5000,
+//   email_address: "nicolasmacenco@gmail.com",
+//   status: "Pending",
+//   user: "Nicolas Macenco",
+//   userID: 5,
+//   billing_address: "billingAddress",
+//   shipping_address: "shippingAdress",
+//   details: [
+//     {
+//       id: 15,
+//       amount: 253,
+//       quantity: 2,
+//       productName: "Mouse",
+//       productId: 254,
+//       image:
+//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
+//       price: 41,
+//     },
+//     {
+//       id: 15,
+//       amount: 253,
+//       quantity: 2,
+//       productName: "Mouse",
+//       productId: 254,
+//       image:
+//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
+//       price: 41,
+//     },
+//     {
+//       id: 15,
+//       amount: 253,
+//       quantity: 2,
+//       productName: "Mouse",
+//       productId: 254,
+//       image:
+//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
+//       price: 41,
+//     },
+//     {
+//       id: 15,
+//       amount: 253,
+//       quantity: 2,
+//       productName: "Mouse",
+//       productId: 254,
+//       image:
+//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
+//       price: 41,
+//     },
+//   ],
+// };
 export default function PayPalCheckoutButtons(props: any) {
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const activeOrder = useSelector((state: State) => state.ordersUser.activeOrder);
   const user = useSelector((state: State) => state.user);
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
   const { order } = props;
   const dispatch = useDispatch();
   const [paidFor, setPaidFor] = useState(false);
+
+
+
 
   function createOrder(data: any, actions: any) {
     return actions.order.create({
@@ -82,8 +88,8 @@ export default function PayPalCheckoutButtons(props: any) {
       // orderRouter.put("/auth/:id/pay", isLoggedIn, updatePaypalOrder);
       const info = {
         paymentMethod: "PayPal",
-        shippingPrice: 250,
-        taxPrice: 100,
+        shippingPrice: 0,
+        taxPrice: 0,
         orderIdPayment: orderID,
         email_address: activeOrder.email_address,
       };
@@ -91,7 +97,7 @@ export default function PayPalCheckoutButtons(props: any) {
       
       dispatch(updatePayPal(activeOrder.id, info, user!.token));
       //if response is success
-
+      
       setPaidFor(true);
     } catch (error) {
       // swal({

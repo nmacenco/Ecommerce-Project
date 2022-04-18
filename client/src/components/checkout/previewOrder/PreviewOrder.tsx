@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
+import { getcurrentOrder } from "../../../redux/actions/ordersUser";
+import { State } from "../../../redux/reducers";
 import PayPalCheckoutButtons from "../payPalButton/PayPalButton";
 import {
   Previewcontainer,
@@ -8,60 +12,67 @@ import {
   ItemsTaxShipp,
 } from "./PreviewOrderStyles";
 
-const activeOrder = {
-  id: 25,
-  total_amount: 1254,
-  email_address: "nico@gmail.com",
-  status: "Pending",
-  user: "Nicolas Macenco",
-  userID: 5,
-  billing_address: "billingAddress",
-  shipping_address: "la direccion mas cheta de todas ",
-  details: [
-    {
-      id: 15,
-      amount: 253,
-      quantity: 2,
-      productName: "Mouse",
-      productId: 254,
-      image:
-        "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-      price: 41,
-    },
-    {
-      id: 15,
-      amount: 253,
-      quantity: 2,
-      productName: "Mouse",
-      productId: 254,
-      image:
-        "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-      price: 41,
-    },
-    {
-      id: 15,
-      amount: 253,
-      quantity: 2,
-      productName: "Mouse",
-      productId: 254,
-      image:
-        "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-      price: 41,
-    },
-    // {
-    //   id: 15,
-    //   amount: 253,
-    //   quantity: 2,
-    //   productName: "Mouse",
-    //   productId: 254,
-    //   image:
-    //     "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-    //   price: 41,
-    // },
-  ],
-};
+// const activeOrder = {
+//   id: 25,
+//   total_amount: 1254,
+//   email_address: "nico@gmail.com",
+//   status: "Pending",
+//   user: "Nicolas Macenco",
+//   userID: 5,
+//   billing_address: "billingAddress",
+//   shipping_address: "la direccion mas cheta de todas ",
+//   details: [
+//     {
+//       id: 15,
+//       amount: 253,
+//       quantity: 2,
+//       productName: "Mouse",
+//       productId: 254,
+//       image:
+//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
+//       price: 41,
+//     },
+//     {
+//       id: 15,
+//       amount: 253,
+//       quantity: 2,
+//       productName: "Mouse",
+//       productId: 254,
+//       image:
+//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
+//       price: 41,
+//     },
+//     {
+//       id: 15,
+//       amount: 253,
+//       quantity: 2,
+//       productName: "Mouse",
+//       productId: 254,
+//       image:
+//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
+//       price: 41,
+//     },
+//     // {
+//     //   id: 15,
+//     //   amount: 253,
+//     //   quantity: 2,
+//     //   productName: "Mouse",
+//     //   productId: 254,
+//     //   image:
+//     //     "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
+//     //   price: 41,
+//     // },
+//   ],
+// };
 
 export default function PreviewOrder(): JSX.Element {
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const dispatch = useDispatch()
+  const activeOrder = useSelector((state: State) => state.ordersUser.activeOrder);
+
+  useEffect(() => {
+    dispatch(getcurrentOrder(userInStorage.token));
+  }, [dispatch]);
   return (
     <Previewcontainer>
       <h1>Preview Order</h1>
@@ -100,7 +111,7 @@ export default function PreviewOrder(): JSX.Element {
                 </tr>
               </thead>
               {activeOrder &&
-                activeOrder.details.map((product , i ) => {
+                activeOrder.details.map((product : any  , i : any ) => {
                   return (
                     <tbody key={i}>
                       <tr  className="table-light">
