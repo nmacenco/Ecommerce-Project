@@ -5,22 +5,23 @@ import { getOrdersUser } from "../../../redux/actions/ordersUser";
 import { Order } from "../../../redux/interface";
 import { State } from "../../../redux/reducers";
 import OrderRow from "./orderRow/OrderRow";
-import { Table } from "./OrdersHistoryStyle";
+import { Container, Table } from "./OrdersHistoryStyle";
 
 const OrdersHistory = (): JSX.Element => {
   const dispatch = useDispatch();
-  // const [userInStorage, setUserInStorage] = useLocalStorage("USER_LOGGED", "");
+  const [userInStorage, setUserInStorage] = useLocalStorage("USER_LOGGED", "");
   const Orders = useSelector((state: State) => state.ordersUser.userOrders);
   const User = useSelector((state: State) => state.user)
 
   useEffect(() => {
-    User && dispatch(getOrdersUser(User.token));
+    User && dispatch(getOrdersUser(userInStorage.token));
   }, []);
 
   const filteredOrders = Orders.filter(
     (order: Order) => order.status !== "PENDING"
   );
-
+    console.log(filteredOrders);
+    
   const objOrder = [
     {
       id: 1,
@@ -105,8 +106,11 @@ const OrdersHistory = (): JSX.Element => {
   ]
 
   return (
-    <div className="accordion" id="accordionExample">
-      <Table className="table table-hover mt-5">
+    <Container>
+
+    <div className="accordion w-75" id="accordionExample">
+    <h3 className="text-center mt-5">Orders History</h3>
+      <Table className="table table-hover mt-5 ">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -116,21 +120,22 @@ const OrdersHistory = (): JSX.Element => {
             <th scope="col">DETAIL</th>
           </tr>
         </thead>
-        {
-          objOrder.map(order => {
+        { filteredOrders &&
+          filteredOrders.map(order => {
             return <OrderRow
               key={order.id}
               id={order.id}
               totalAmount={order.total_amount}
               status={order.status}
               billing_address={order.billing_address}
-              detail={order.detail}
+              details={order.details}
             />
           })
         }
 
       </Table>
     </div >
+    </Container>
   );
 };
 

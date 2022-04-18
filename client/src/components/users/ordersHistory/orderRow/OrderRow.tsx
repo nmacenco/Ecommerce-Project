@@ -15,10 +15,10 @@ interface Props {
   totalAmount: number;
   status: string;
   billing_address: string;
-  detail: Detail_Props[];
+  details: Detail_Props[];
 }
 
-const OrderRow = ({ id, totalAmount, status, billing_address, detail }: Props): JSX.Element => {
+const OrderRow = ({ id, totalAmount, status, billing_address, details }: Props): JSX.Element => {
   return (
     <tbody>
       <tr>
@@ -29,7 +29,7 @@ const OrderRow = ({ id, totalAmount, status, billing_address, detail }: Props): 
         <td><button className="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapse">Detail</button></td>
       </tr>
       {
-        detail.map(product => {
+        details.map(product => {
           return <tr key={product.id} id={`collapse${id}`} className="accordion-collapse collapse align-items-center" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <td><Img src={product.image} /></td>
             <td><Link to={`/detail/${id}`}>{product.name}</Link></td>
