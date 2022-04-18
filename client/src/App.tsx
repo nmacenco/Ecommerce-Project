@@ -27,6 +27,10 @@ import ValidateAccount from "./components/users/ValidateAccount";
 import OrdersHistory from "./components/users/ordersHistory/OrdersHistory";
 import About from "./components/nav/about/About";
 import OrdersAdmin from "./components/admin/ordersAdmin/OrdersAdmin";
+import ShippingAddressForm from "./components/checkout/shippingAddress/shippingAddressForm";
+import PreviewOrder from "./components/checkout/previewOrder/PreviewOrder";
+
+
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -67,6 +71,8 @@ function App(): JSX.Element {
           <Route path="/validateAccount/:id" element={<ValidateAccount />} />
           <Route path="/about" element={<About />} />
           <Route path="/ordersAdmin" element={<OrdersAdmin />} />
+          <Route path="/shippingAddress" element={<ShippingAddressForm />} />
+          <Route path="/previewOrder" element={<PreviewOrder />} />
         </Routes>
       </BrowserRouter>
     </div>

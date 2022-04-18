@@ -28,10 +28,8 @@ export const CreateUser = (user: any, cb: any) => {
       const response = await axios.post(URL_USER + "/signUp", user);
       const data = response.data;
 
-      console.log(response.headers);
-      console.log("data: ", data);
       if (data.errorMsg) {
-        return alert("ALgo paso!");
+        return alert("Something happened");
       }
 
       // const newUser = {
@@ -79,7 +77,7 @@ export const CreateUser = (user: any, cb: any) => {
  * @returns promise<any>
  */
 
-export const GetUSer = (email: string, pass: string, cb: any) => {
+export const GetUSer = (email: string, pass: string, cb = defaultCb) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await axios.post(URL_USER + "/signIn", {
@@ -87,12 +85,8 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
         password: pass,
       });
       const TOKEN = response.headers["auth-token"];
-      // console.log('TOKEN: ',TOKEN);
-      // console.log(response.data.data);
-      console.log(response.data);
-      if (response.data.errorMsg) {
-        cb(); //Ejecutamos un callback wajajaj
-      } else {
+      
+      if (response.status == 200) {
         dispatch({
           type: TYPES_USER.GET_USER,
           payload: {
@@ -113,7 +107,9 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
             google: false,
           })
         );
-        cb();
+        cb(null); 
+      } else {
+        cb(response.data.errorMsg);
       }
     } catch (error) {
       swal({
@@ -127,7 +123,7 @@ export const GetUSer = (email: string, pass: string, cb: any) => {
         },
       });
     }
-  };
+  }
 };
 
 export const FindUSer = () => {
@@ -217,8 +213,6 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
       });
 
       if (response.data.errorMsg) {
-        // console.log(response.data.errorMsg);
-        // return alert("ERROR MESSAGE: ");
         cb(response.data.errorMsg);
         return null;
       }
@@ -231,7 +225,6 @@ export const LoginWithGoogle = (email: string, cb = defaultCb) => {
         email,
         google: true,
       };
-      // console.log(USER);
       dispatch({
         type: TYPES_USER.SIGNIN_GOOGLE,
         payload: USER,

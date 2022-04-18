@@ -214,7 +214,7 @@ export default function FromCreate(): JSX.Element {
               value={product.price}
               onChange={(e) => handleChange(e)}
             />
-            <p className="text-danger">{errorsList.price ? errorsList.price : "⠀"}</p>
+            <p className="text-danger">{errorsList.amount ? errorsList.amount : "⠀"}</p>
           </div>
           <div className="form-group mx-2 mx-md-3">
             <label htmlFor="exampleTextarea" className="form-label mt-4">

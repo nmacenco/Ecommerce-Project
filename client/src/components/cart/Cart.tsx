@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addProductCart, removeProductCart } from "../../redux/actions/cart";
-import { Product } from "../../redux/interface";
+import { addProductCart, addProductOrder, getPendingOrder, removeProductCart, removeProductOrder, restProductOrder } from "../../redux/actions/cart";
+import { ProductCart} from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import CartProduct from "./cartProduct/CartProduct";
 import { CartContainer } from "./CartStyles";
@@ -10,19 +10,30 @@ import { CartContainer } from "./CartStyles";
 const Cart = (): JSX.Element => {
   const dispatch = useDispatch();
   const productsCart = useSelector((state: State) => state.cart.cart);
+  const user = useSelector((state: State) => state.user)
 
-  async function updateCountHandler(
-    product: Product,
-    count: number
+  useEffect(() => {
+    user && dispatch(getPendingOrder(user.token));
+  },[])
+
+  async function updateQuantityHandler(
+    product: ProductCart,
+    quantity: number,
+    instruction:string
   ): Promise<void> {
-    if (count <= Number(product.stock) && count > 0) {
-      product.count = count;
+    if (quantity <= Number(product.stock) && quantity > 0) {
+      product.quantity = quantity;
       dispatch(addProductCart(product));
+      if (user && product.productId) {
+        instruction == "add" && dispatch(addProductOrder(user.token,product.productId))
+        instruction == "remove" && dispatch(restProductOrder(user.token,product.productId))
+      }
     }
   }
 
-  function removeProductHandler(product: Product): void {
+  function removeProductHandler(product: ProductCart): void {
     dispatch(removeProductCart(product));
+    user && product.productId && dispatch(removeProductOrder(user.token,product.productId))
   }
 
   return (
@@ -38,14 +49,14 @@ const Cart = (): JSX.Element => {
       ) : (
         <div>
           <div className="mt-5">
-            {productsCart.map((product: Product) => (
+            {productsCart.map((product: any) => (
               <CartProduct
-                id={product.id}
-                name={product.name}
+                productId={product.productId}
+                name={product.productName}
                 image={product.image}
-                count={product.count}
+                quantity={product.quantity}
                 price={product.price}
-                updateCountHandler={updateCountHandler}
+                updateQuantityHandler={updateQuantityHandler}
                 removeProductHandler={removeProductHandler}
                 product={product}
               />
@@ -54,14 +65,16 @@ const Cart = (): JSX.Element => {
           <div className="d-flex flex-column flex-md-row justify-content-between mt-4 align-items-center mb-5">
             <div className="d-flex flex-column">
               <h4 className="text-center">
-                total: ${productsCart.reduce((a: number, product: Product) =>a + product.price * product.count,0)}
+                total: ${productsCart.reduce((a: number, product: ProductCart) => a + product.price * product.quantity,0)}
               </h4>
               <h4 className="text-center mb-4 mb-md-0">
-                ({productsCart.reduce((a: number, product: Product) => a + product.count,0)} products)
+                ({productsCart.reduce((a: number, product: ProductCart) => a + product.quantity,0)} products)
               </h4>
             </div>
             <div>
-              <button className="btn btn-primary">Confirm order</button>
+              <Link to={'/shippingAddress'}>
+                <button className="btn btn-primary"> Confirm order </button>
+              </Link>
             </div>
           </div>
         </div>

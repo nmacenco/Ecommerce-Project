@@ -11,8 +11,8 @@ import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
 import NewQ from "./questions/NewQ";
-import { addProductCart } from "../../redux/actions/cart";
-import { Product } from "../../redux/interface";
+import { addProductCart, addProductOrder } from "../../redux/actions/cart";
+import { ProductCart } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import TrashIMG from "../../icons/white-trash.png"
 import EditIMG from "../../icons/edit.png"
@@ -28,7 +28,7 @@ export default function Detail() {
   const wishes = useSelector((state: State) => state.products.wishList);
   const productsCart = useSelector((state: State) => state.cart.cart);
   const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
-  const productInCart = productsCart.find((x: Product) => x.id === product.id);
+  const productInCart = productsCart.find((product: ProductCart) => product.productId == product.productId);
   const [isWish, setWish] = useState<boolean>(false);
 
   const wishEncountered = wishes.find((wish: any) => wish.id === Number(id));
@@ -37,7 +37,7 @@ export default function Detail() {
 
     if (user) {
 
-      dispatch(createWish(Number(id), user!.token, (error) => {
+      dispatch(createWish(Number(id), user!.token, (error:any) => {
         if (error) {
           swal({
             text: error,
@@ -70,10 +70,19 @@ export default function Detail() {
   }, [wishes]);
 
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
-    const count = productInCart ? productInCart.count + 1 : 1;
-    if (Number(count) <= Number(product.stock)) {
-      product.count = count;
-      dispatch(addProductCart(product));
+    const productToAdd = {
+      productId: product.id,
+      productName: product.name,
+      price: product.price,
+      image: product.image,
+      stock: product.stock,
+      quantity:0
+    }
+    const quantity = productInCart ? productInCart.quantity + 1 : 1;
+    if (Number(quantity) <= Number(product.stock)) {
+      productToAdd.quantity = quantity;
+      dispatch(addProductCart(productToAdd));
+      user && id && dispatch(addProductOrder(user.token,Number(id)))
     }
   }
 
@@ -125,7 +134,7 @@ export default function Detail() {
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
 
-                  {product.count === product.stock || productInCart && productInCart.count === product.stock ? (
+                  {product.quantity === product.stock || productInCart && productInCart.quantity === product.stock ? (
                     <button
                       type="button"
                       className="btn btn-primary btn"
@@ -143,14 +152,14 @@ export default function Detail() {
                     </button>
                   )}
                   {console.log('WISHESSS:  ', wishes)}
-                  {user !== null && (wishEncountered || isWish)
+                  {user != null && ((wishEncountered || isWish)
                     ?
                     null
                     :
                     <button className="btn btn-danger wish" onClick={AddWishList}>
                       Add to WishList
                     </button>
-
+)
                   }
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
