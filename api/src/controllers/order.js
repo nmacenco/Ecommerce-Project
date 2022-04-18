@@ -67,7 +67,7 @@ const getOrders = async (req, res) => {
 const getUserOrdersServer = async (req, res) => {
   try {
     const id = req.userID;
-    let Orders = await Order.findAll({
+    let Orders = await Order.findAll({  
       where: {
         UserId: id,
       },
@@ -89,7 +89,7 @@ const getUserOrdersServer = async (req, res) => {
       ],
     });
     if (!Orders.length) {
-      return res.status(404).send({ errorMsg: "You don't have orders." });
+      return res.status(200).send({ successMsg: "You don't have orders yet." });
     }
     Orders = Orders.map((Order) => {
       return {
@@ -100,7 +100,7 @@ const getUserOrdersServer = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
-        shipping_address: activeOrder.shipping_address,
+        shipping_address: Order.shipping_address,
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
@@ -120,6 +120,7 @@ const getUserOrdersServer = async (req, res) => {
 
     res.status(200).send({ successMsg: "Here are your orders.", data: Orders });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -128,6 +129,8 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 //Fine
 const createOrder = async (req, res) => {
+  // const { UserId } = req.params;
+
   const UserId = req.userID;
   try {
     let allProductsOrder = req.body;
@@ -155,7 +158,7 @@ const createOrder = async (req, res) => {
         await createOrderDetail(
           newOrder.id,
           product.ProductId,
-          product.count,
+          (queantity = product.count),
           amount
         );
       }
@@ -252,17 +255,17 @@ const getActiveOrder = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image", "price"],
+              attributes: ["name", "id", "image", "price", "stock"],
             },
           ],
         },
       ],
     });
-    if (!activeOrder) {
-      return res
-        .status(404)
-        .send({ errorMsg: "You don't have an active order." });
-    }
+    // if (!activeOrder) {
+    //   return res
+    //     .status(404)
+    //     .send({ errorMsg: "You don't have an active order." });
+    // }
     activeOrder = {
       id: activeOrder.id,
       total_amount: activeOrder.total_amount,
@@ -275,22 +278,24 @@ const getActiveOrder = async (req, res) => {
       details:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-            return {
-              id: detail.id,
-              amount: detail.amount,
-              quantity: detail.quantity,
-              productName: detail.Product.name,
-              productId: detail.Product.id,
-              image: detail.Product.image,
-              price: detail.Product.price,
-            };
-          })
+              return {
+                id: detail.id,
+                amount: detail.amount,
+                quantity: detail.quantity,
+                productName: detail.Product.name,
+                productId: detail.Product.id,
+                image: detail.Product.image,
+                price: detail.Product.price,
+                stock: detail.Product.stock,
+              };
+            })
           : [],
     };
     res
       .status(200)
       .send({ successMsg: "Here is your order.", data: activeOrder });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -357,6 +362,7 @@ const addProductsOrder = async (req, res) => {
       }
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -370,7 +376,7 @@ const removeProductsOrder = async (req, res) => {
         id: ProductId,
       },
     });
-    const activeUserOrder = await Order.findOne({
+    const activeUserOrder = await Order.findOne({ 
       where: {
         UserId: id,
         status: "PENDING",
@@ -413,7 +419,7 @@ const removeProductsOrder = async (req, res) => {
 const deleteProductsOrder = async (req, res) => {
   try {
     const id = req.userID;
-    const { ProductId } = req.body;
+    const { ProductId } = req.params;
     if (!ProductId) {
       return res.status(404).send({ errorMsg: "Missing product ID" });
     } else {
@@ -457,6 +463,7 @@ const deleteProductsOrder = async (req, res) => {
 
 //Fine
 const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
+  console.log(quantity);
   try {
     let product = await Product.findOne({
       where: {

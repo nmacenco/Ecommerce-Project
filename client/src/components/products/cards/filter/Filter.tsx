@@ -27,7 +27,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
     page(1)
     orders(`${e.target.value} order`);
     e.target.value = e.target[0].innerHTML
-
+    console.log('ejecuto')
   }
   return (
     <div className="card mt-3">
@@ -40,14 +40,13 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
           <option disabled hidden>Order by</option>
           <option value="asc-price">Higher price</option>
           <option value="des-price">Lower price</option>
-          {/* <div className="dropdown-divider"></div> */}
           <option value="asc-name">A - Z</option>
           <option value="des-name">Z - A</option>
         </Select>
         {
           location.pathname === "/productsAdminMode" ?
             <Select
-            defaultValue={"Active or Not"}
+              defaultValue={"Active or Not"}
               className="form-select"
               onChange={(e) => handleSort(e)}
             >
@@ -60,11 +59,11 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
 
         <p className="ms-auto m-3">{!allProducts.length ? '' : allProducts.map(product => {
           if (product.isActive) { counter.push(product.id) }
-        })} {counter.length}  
-        {
-          location.pathname === "/productsAdminMode" ? ' Active Products' : ' Products'
-        }
-         </p>
+        })} {counter.length}
+          {
+            location.pathname === "/productsAdminMode" ? ' Active Products' : ' Products'
+          }
+        </p>
         {/* <p className="ms-auto m-3">{!filteredProducts.length ? '' : filteredProducts.map(product => {
           if (product.isActive) { counter.push(product.id) }
         })} {counter.length}  products </p> */}

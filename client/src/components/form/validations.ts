@@ -54,17 +54,17 @@ export function errorsCheck(props: ProductForm): Errors | Boolean{
     errors.weight = "Weight required.";
   }
 
-  //PRICE
+  //price
   if (!props.price || props.price <= 0) {
     flag = true;
-    errors.price = "Price required.";
+    errors.price = "price required.";
   }
   if (props.price > 99999) {
     flag = true;
     errors.price = "Max price is $100.000.";
   }
 
-  //PRICE
+  //price
   if (!props.SubcategoryId) {
     flag = true;
     errors.subcategory = "Subcategory required.";

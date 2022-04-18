@@ -8,3 +8,7 @@ export const Table = styled.table`
   width: 100%;
   max-width: 1200px;
 `;
+
+export const Img = styled.img`
+  height: 70px;
+`;

@@ -1,3 +1,4 @@
+import swal from "sweetalert";
 import axios from "axios";
 import { Dispatch } from "redux";
 
@@ -6,6 +7,21 @@ import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 const URL = "http://localhost:3001/api";
 
 const URL_WISH = "http://localhost:3001/api/wishList";
+
+const defaultCallback = (error: any) => {
+  if (error) {
+    swal({
+      text: "Oops! An error has occurred",
+      content: error,
+      icon: "error",
+    });
+  } else {
+    swal({
+      title: "Successfully removed",
+      icon: "success",
+    });
+  }
+};
 
 export const getProducts = () => {
   try {
@@ -58,6 +74,45 @@ export const productNotFound = (data: boolean) => {
 };
 
 /**
+ *  Ceate a wish for the user wishList
+ * @param id is the product id
+ * @param token User token
+ * @param callback function (optional)  receives the response of the request
+ */
+export const createWish = (
+  id: number,
+  token: string,
+  callback = defaultCallback
+) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await fetch(URL_WISH + `/${id}`, {
+        method: "POST",
+        headers: {
+          "auth-token": token,
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+
+      if (data.errorMsg) {
+        console.log("error data: ", data.errorMsg);
+        callback(data.errorMsg);
+      } else {
+        dispatch({
+          type: TYPES_PRODUCT.CREATE_WISHE,
+          payload: Number(id),
+        });
+
+        callback(null);
+      }
+    } catch (error) {
+      console.log("ERROR EN POST WISHS: ", error);
+    }
+  };
+};
+
+/**
  * the get request for wishs
  * @param token User token "kmfoecmerhe..."
  */
@@ -95,8 +150,13 @@ export const getWish = (token: string) => {
  *
  * @param id User id: productId
  * @param token User token : "fgjoytnsis..."
+ * @param callback error handling to display a message
  */
-export const deleteWish = (id: number, token: string) => {
+export const deleteWish = (
+  id: number,
+  token: string,
+  callback = defaultCallback
+) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await fetch(URL_WISH + `/${id}`, {
@@ -109,11 +169,13 @@ export const deleteWish = (id: number, token: string) => {
 
       if (data.errorMsg) {
         console.log("error data: ", data.errorMsg);
+        callback(data.errorMsg);
       } else {
         dispatch({
           type: TYPES_PRODUCT.DELETE_WISHE,
           payload: id,
         });
+        callback(null);
       }
     } catch (error) {
       console.log("ERROR EN POST WISHS: ", error);

@@ -65,7 +65,6 @@ const AdminUserMode = (): JSX.Element => {
                 }
               })}
           </table>
-          );
         </div>
 
       </ListContainer>
