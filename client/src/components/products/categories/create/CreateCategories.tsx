@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import swal from 'sweetalert'
+import { useLocalStorage } from '../../../../helpers/useLocalStorage';
 import { createCategories, createSubcategories, getCategories, resetSubcategories } from '../../../../redux/actions/categories';
 import { Category } from '../../../../redux/interface';
 import { State } from '../../../../redux/reducers';
@@ -22,6 +23,7 @@ export default function CreateCategories(): JSX.Element {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const allCategories = useSelector((state: State) => state.categories.categories)
+    const [userInStorage, setUserInStorage] = useLocalStorage('USER_LOGGED', '')
     const [newCategory, setNewCategory] = useState<FORM_CAT>({
         name: "",
         id: 999
@@ -80,12 +82,11 @@ export default function CreateCategories(): JSX.Element {
         e.preventDefault()
         if (newCategory.name !== "") {
             const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
-            if (putId.length === 0) dispatch(createCategories(newCategory))
+            if (putId.length === 0) dispatch(createCategories(newCategory, userInStorage.token))
 
             if (newSubcategory.name.length !== 0) {
-                console.log(newSubcategory)
                 setTimeout(() => {
-                    dispatch(createSubcategories(newSubcategory))
+                    dispatch(createSubcategories(newSubcategory, userInStorage.token))
                     dispatch(resetSubcategories())
                 }, 300)
             }
@@ -96,6 +97,9 @@ export default function CreateCategories(): JSX.Element {
                     confirm: true,
                 },
             })
+            setTimeout(() => {
+                navigate('/productsAdminMode')
+            }, 1000)
         } else {
             swal({
                 title: "Form needs all fields",

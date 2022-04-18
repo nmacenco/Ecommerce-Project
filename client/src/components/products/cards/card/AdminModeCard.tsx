@@ -21,11 +21,12 @@ interface props {
   price: number;
   id?: number;
   isActive: boolean;
-  AdmOrders: (typeorder: string) => void;
+  orders: (typeorder: string) => void;
   page: (typeorder: number) => void;
+  eliminateFilters: () => void;
 }
 
-const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: props) => {
+const AdminModeCard = ({ name, image, price, id, orders, page, isActive, eliminateFilters }: props) => {
   const dispatch = useDispatch()
   const stringId = String(id)
   const navigate = useNavigate()
@@ -44,16 +45,17 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
       }
     }).then((value) => {
       if (value) {
-        const data = {isActive:false}
-        dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
-        // dispatch(resetPoducts())
-        // setTimeout(()=> {
-        // },300)
+        const data = { isActive: false }
+        dispatch(deleteProduct(stringId, data, userInStorage.token));
+        setTimeout(() => {
+          dispatch(getProducts())
+        }, 200)
         // let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
         // dispatch(chargeFilter(deleted))
         page(1)
         dispatch(setPage(1))
-        AdmOrders(stringId)
+        // orders(stringId)
+        eliminateFilters()
         swal({
           text: "Product not active",
           icon: "success"
@@ -62,10 +64,9 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
     })
 
   }
-  function activateHandler (e: React.MouseEvent<HTMLButtonElement>) : void {
+  function activateHandler(e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
-    const data = {isActive:true}
-    dispatch(deleteProduct(stringId, data ,  userInStorage.token ));
+
     swal({
       title: "Are you sure?",
       text: "This product is now going to be active!",
@@ -77,13 +78,15 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
       }
     }).then((value) => {
       if (value) {
-  
-        // dispatch(resetPoducts())
-        // setTimeout(()=> {
-        // },200)
+        const data = { isActive: true }
+        dispatch(deleteProduct(stringId, data, userInStorage.token));
+        setTimeout(() => {
+          dispatch(getProducts())
+        }, 200)
         dispatch(setPage(1))
         page(1)
-        AdmOrders(stringId)
+        // orders(stringId)
+        eliminateFilters()
         swal({
           text: "Product active",
           icon: "success"
