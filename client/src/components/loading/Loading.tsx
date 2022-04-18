@@ -1,6 +1,10 @@
-import React from "react";
-import {LoadingContainer} from './LoadingStyles';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { LoadingContainer } from './LoadingStyles';
 const Loading = () => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+    }, [])
 
     return (
         <LoadingContainer>
@@ -10,4 +14,4 @@ const Loading = () => {
 }
 
 
-export default Loading ; 
+export default Loading; 
