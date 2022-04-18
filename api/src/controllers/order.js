@@ -128,7 +128,8 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 //Fine
 const createOrder = async (req, res) => {
-  const UserId = req.userID;
+  // const UserId = req.userID;
+  const userID = req.params.userID;
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
