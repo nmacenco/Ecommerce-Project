@@ -18,6 +18,7 @@ import { CART, reducerCart } from "./cartReducer";
 import { COUNTRIES, countriesReducer } from "./countriesReducer";
 import { userDetailReducer, USER_STATE } from "./userDetailReducer";
 import { ORDERS , ordersAdminReducer } from "./adminOrdersReducer";
+import { ordersUserReducer, ORDERS_USER } from "./ordersUserReducer";
 
 interface GLOBAL_STATE {
   user: User | null;
@@ -33,6 +34,8 @@ interface GLOBAL_STATE {
   countries: COUNTRIES;
   userDetail: USER_STATE;
   ordersAdmin : ORDERS ; 
+  ordersUser : ORDERS_USER ; 
+  activeOrder: ORDERS_USER;
 }
 
 export const rootReducer = combineReducers<GLOBAL_STATE>({
@@ -48,7 +51,9 @@ export const rootReducer = combineReducers<GLOBAL_STATE>({
   countries: countriesReducer,
   adminUsers: adminUsersReducer,
   userDetail: userDetailReducer,
-  ordersAdmin : ordersAdminReducer, 
+  ordersAdmin : ordersAdminReducer,
+  ordersUser : ordersUserReducer,
+  activeOrder: ordersUserReducer
 });
 
 export type State = ReturnType<typeof rootReducer>;

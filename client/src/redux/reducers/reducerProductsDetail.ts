@@ -17,7 +17,7 @@ const INITIAL_PRODUCT = {
   category: 0,
   questions: [],
   reviews: [],
-  count: 0,
+  quantity: 0,
   isActive : true , 
 };
 

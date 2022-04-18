@@ -23,7 +23,8 @@ export enum TYPES_DETAIL {
 
 export enum TYPES_ADMIN {
   DELETE_PRODUCTS = "DELETE_PRODUCTS",
-  GET_ORDERS = 'GET_ORDERS'
+  GET_ORDERS = "GET_ORDERS",
+  RESET_ORDERS = 'RESET_ORDERS'
 }
 
 export enum TYPES_CATEGORIES {
@@ -60,10 +61,17 @@ export enum TYPES_PRODUCT {
 export enum TYPES_CART {
   ADD_PRODUCT = "ADD_PRODUCT",
   REMOVE_PRODUCT = "REMOVE_PRODUCT",
+  CLEAR_CART = "CLEAR_CART",
+  GET_ACTIVEORDER = "GET_ACTIVEORDER",
 }
 
 export enum TYPES_COUNTRIES {
   GET_COUNTRIES = "GET_COUNTRIES",
+}
+
+export enum TYPES_ORDERS_USER {
+  GET_ORDERS = "GET_ORDERS_USER",
+  GET_ORDER = 'GET_ORDER_USER'
 }
 
 //=======================
@@ -99,13 +107,22 @@ export interface Users {
   needsPasswordReset: boolean;
 }
 
+export interface ProductCart {
+  productId?: number;
+  productName: string;
+  price: number;
+  image: string;
+  stock: number;
+  quantity: number;
+}
+
 export interface ProductForm {
   id?: number;
   name: string;
   price: number;
   description: string;
   image: string;
-  weight: number;
+  weight:number;
   stock: number;
   soldCount: number;
   SubcategoryId: number;
@@ -132,19 +149,19 @@ export interface Product {
   subcategory: string;
   CategoryId: number;
   category: number;
-  count: number;
+  quantity: number;
   questions: any[];
   reviews: any[];
   isActive: boolean;
 }
 export interface Order {
-  id: number,
-  total_amount: number,
-  email_address: string,
-  status: string,
-  user: string,
-  billing_address: string,
-  detail: any[]
+  id: number;
+  total_amount: number;
+  email_address: string;
+  status: string;
+  user: string;
+  billing_address: string;
+  details: any[];
 }
 
 export interface Question {
@@ -286,12 +303,17 @@ export interface SET_PAGE {
 //Cart Actions
 export interface ADD_PRODUCT {
   type: TYPES_CART.ADD_PRODUCT;
-  payload: Product;
+  payload: ProductCart;
 }
 
 export interface REMOVE_PRODUCT {
   type: TYPES_CART.REMOVE_PRODUCT;
-  payload: Product;
+  payload: ProductCart;
+}
+
+export interface CLEAR_CART {
+  type: TYPES_CART.CLEAR_CART;
+  payload: null;
 }
 
 //=====================
@@ -349,7 +371,7 @@ export interface GET_WISHES {
 }
 export interface CREATE_WISHE {
   type: TYPES_PRODUCT.CREATE_WISHE;
-  payload: any;
+  payload: number;
 }
 export interface DELETE_WISHE {
   type: TYPES_PRODUCT.DELETE_WISHE;
@@ -403,7 +425,24 @@ export interface GET_ORDERS {
   type: TYPES_ADMIN.GET_ORDERS;
   payload: Order[];
 }
+export interface RESET_ORDERS {
+  type: TYPES_ADMIN.RESET_ORDERS;
+  payload: Order[];
+}
 
+export interface GET_ACTIVEORDER {
+  type: TYPES_CART.GET_ACTIVEORDER;
+  payload: Order;
+}
+
+export interface GET_ORDERS_USER {
+  type: TYPES_ORDERS_USER.GET_ORDERS;
+  payload: Order[];
+}
+export interface GET_ORDER_USER {
+  type: TYPES_ORDERS_USER.GET_ORDER;
+  payload: Order;
+}
 
 
 export interface AXIOSDATA {
@@ -457,10 +496,12 @@ export type CategoriesActions =
 
 export type BrandsActions = GET_BRANDS;
 
-export type AdminActions = DELETE_PRODUCT | GET_ORDERS;
+export type AdminActions = DELETE_PRODUCT | GET_ORDERS | RESET_ORDERS ;
 
 export type SetPage = SET_PAGE;
 
-export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT;
+export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART  | GET_ACTIVEORDER;
 
 export type CountriesActions = GET_COUNTRIES;
+
+export type UserOrdersActions = GET_ORDERS_USER |GET_ORDER_USER;

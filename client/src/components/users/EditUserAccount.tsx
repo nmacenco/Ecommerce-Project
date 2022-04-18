@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router'
+import { useParams } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import swal from 'sweetalert'
 import { useLocalStorage } from '../../helpers/useLocalStorage'
 import { getCountries } from '../../redux/actions/countries'
@@ -21,7 +22,6 @@ export interface EDIT_USER {
 export default function EditUserAccount(): JSX.Element {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { id } = useParams<string>()
     const allCountries = useSelector((state: State) => state.countries.countries)
     const user = useSelector((state: State) => state.userDetail.userDetail)
     const [userInStorage, setUserInStorage] = useLocalStorage('USER_LOGGED', '')
