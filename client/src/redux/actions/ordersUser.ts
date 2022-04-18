@@ -38,16 +38,16 @@ export const createOrderUser = (token: string, cart: ProductCart[]) => {
   }
 };
 
-export const getActiveOrder = (token: string) => {
+export const getcurrentOrder = (token: string) => {
   try {
     return async (dispatch: Dispatch) => {
-      const activeOrder = await axios.get(`${URL}/`+token,{
+      const activeOrder = await axios.get(`${URL}`,{
         headers: {
           "auth-token": token,
         },
       });
       return dispatch({
-        type: TYPES_CART.GET_ACTIVEORDER,
+        type: TYPES_ORDERS_USER.GET_ORDER,
         payload: activeOrder.data.data,
       });
     };

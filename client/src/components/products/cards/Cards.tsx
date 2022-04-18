@@ -20,6 +20,7 @@ import { getProducts, getWish } from "../../../redux/actions/products";
 import { setPage } from "../../../redux/actions/setPage";
 import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 import { getPendingOrder } from "../../../redux/actions/cart";
+import { getcurrentOrder } from "../../../redux/actions/ordersUser";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -56,6 +57,7 @@ const Cards = (): JSX.Element => {
     if (user) {
       dispatch(getWish(user.token))
       dispatch(getPendingOrder(user.token));
+
     }
 
   }, [])

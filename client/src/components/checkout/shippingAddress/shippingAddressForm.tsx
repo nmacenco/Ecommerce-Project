@@ -7,13 +7,15 @@ import { State } from "../../../redux/reducers";
 import { errorsCheck } from "./validations";
 import { Form, FormContainer } from "./shippingAdressFormStyles";
 import swal from "sweetalert";
-import { updateOrderUser } from "../../../redux/actions/ordersUser";
+import { getcurrentOrder, updateOrderUser } from "../../../redux/actions/ordersUser";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 export default function ShippingAddressForm(): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
   const userState = useSelector((state: State) => state.user);
-  const activeOrder = useSelector((state: State) => state.activeOrder);
+  const activeOrder = useSelector((state: State) => state.ordersUser.activeOrder);
   const countries = useSelector((state: State) => state.countries.countries);
 
 
@@ -28,7 +30,11 @@ export default function ShippingAddressForm(): JSX.Element {
     })
   useEffect(() => {
     dispatch(getCountries());
+    dispatch(getcurrentOrder(userInStorage.token));
   }, [dispatch]);
+
+  console.log(activeOrder);
+  
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -47,10 +53,10 @@ export default function ShippingAddressForm(): JSX.Element {
     setErrorsList(errors)
     if (errors === false) {
       const shipping_address = {shipping_address : `${address.address}-${address.city}-${address.postalCode}`}
-      console.log(address);
-      console.log(shipping_address);
-      // dispatch(updateOrderUser(activeOrder.id , shipping_address, userState.token )) falta el id cuando tengamos la active order 
-      dispatch(updateOrderUser( 1 , shipping_address, userState!.token )) 
+      if (activeOrder) {
+        dispatch(updateOrderUser(activeOrder.id , shipping_address, userState!.token )) 
+      }
+      // dispatch(updateOrderUser( 1 , shipping_address, userState!.token )) 
       swal({
         title: "Address correctly created",
         icon: "success",
