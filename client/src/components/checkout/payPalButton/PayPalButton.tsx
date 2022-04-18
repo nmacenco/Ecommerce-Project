@@ -6,59 +6,9 @@ import { State } from "../../../redux/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import { getcurrentOrder, updatePayPal } from "../../../redux/actions/ordersUser";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
+import { useNavigate } from "react-router";
 // import { getError } from '../helpers/utils';
-// const activeOrder = {
-//   id: 1,
-//   total_amount: 5000,
-//   email_address: "nicolasmacenco@gmail.com",
-//   status: "Pending",
-//   user: "Nicolas Macenco",
-//   userID: 5,
-//   billing_address: "billingAddress",
-//   shipping_address: "shippingAdress",
-//   details: [
-//     {
-//       id: 15,
-//       amount: 253,
-//       quantity: 2,
-//       productName: "Mouse",
-//       productId: 254,
-//       image:
-//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-//       price: 41,
-//     },
-//     {
-//       id: 15,
-//       amount: 253,
-//       quantity: 2,
-//       productName: "Mouse",
-//       productId: 254,
-//       image:
-//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-//       price: 41,
-//     },
-//     {
-//       id: 15,
-//       amount: 253,
-//       quantity: 2,
-//       productName: "Mouse",
-//       productId: 254,
-//       image:
-//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-//       price: 41,
-//     },
-//     {
-//       id: 15,
-//       amount: 253,
-//       quantity: 2,
-//       productName: "Mouse",
-//       productId: 254,
-//       image:
-//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-//       price: 41,
-//     },
-//   ],
-// };
+
 export default function PayPalCheckoutButtons(props: any) {
   const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
   const activeOrder = useSelector((state: State) => state.ordersUser.activeOrder);
@@ -67,9 +17,11 @@ export default function PayPalCheckoutButtons(props: any) {
   const { order } = props;
   const dispatch = useDispatch();
   const [paidFor, setPaidFor] = useState(false);
+  const navigate = useNavigate()
 
-
-
+  useEffect(() => {
+    loadPayPalScript(process.env.REACT_APP_PAYPAL_CLIENT_ID);
+  }, []);
 
   function createOrder(data: any, actions: any) {
     return actions.order.create({
@@ -80,6 +32,14 @@ export default function PayPalCheckoutButtons(props: any) {
       ],
     });
   }
+  const onApprove = async (data: any, actions: any) => {
+    try {
+      const order = await actions.order.capture();
+      handleAprove(data.orderID);
+    } catch (err) {
+      // toast.error(getError(err));
+    }
+  };
 
   function handleAprove(orderID: any) {
     try {
@@ -97,7 +57,11 @@ export default function PayPalCheckoutButtons(props: any) {
       
       dispatch(updatePayPal(activeOrder.id, info, user!.token));
       //if response is success
-      
+
+      navigate('/products')
+      // setTimeout(()=> {
+      //   dispatch(getcurrentOrder(userInStorage.token))
+      // } , 500)
       setPaidFor(true);
     } catch (error) {
       // swal({
@@ -123,14 +87,7 @@ export default function PayPalCheckoutButtons(props: any) {
   //     // display success message, modal or redirect to the succes pag
   //     alert("Thenk you for your purchase");
   // }
-  const onApprove = async (data: any, actions: any) => {
-    try {
-      const order = await actions.order.capture();
-      handleAprove(data.orderID);
-    } catch (err) {
-      // toast.error(getError(err));
-    }
-  };
+
 
   function onCancel() {
     swal({
@@ -167,9 +124,7 @@ export default function PayPalCheckoutButtons(props: any) {
     // paypalDispatch({ type: 'setLoadingStatus', value: 'Pending' }); ver que onda el value
   };
 
-  useEffect(() => {
-    loadPayPalScript(process.env.REACT_APP_PAYPAL_CLIENT_ID);
-  }, []);
+
 
   return (
     <PayPalButtons
