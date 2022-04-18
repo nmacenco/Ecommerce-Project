@@ -43,7 +43,7 @@ const Cart = (): JSX.Element => {
   }
 
   function removeProductHandler(product: ProductCart): void {
-    dispatch(removeProductCart(product));
+    dispatch(removeProductCart(product))
     user &&
       product.productId &&
       dispatch(removeProductOrder(user.token, product.productId));
