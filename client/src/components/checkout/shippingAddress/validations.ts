@@ -1,7 +1,7 @@
 // import { ProductForm } from "../../redux/interface";
 
 export interface Errors {
-  name : string,
+  // name : string,
   address : string,
   city : string,
   postalCode : string,
@@ -10,7 +10,7 @@ export interface Errors {
 
 export function errorsCheck(props: any): Errors | Boolean{
   let errors: Errors = {
-    name : '',
+    // name : '',
     address : '',
     city : '',
     postalCode : '',
@@ -19,10 +19,10 @@ export function errorsCheck(props: any): Errors | Boolean{
   let flag: boolean = false;
 
   //NAME
-  if (!props.name) {
-    flag = true;
-    errors.name = "Name required.";
-  }
+  // if (!props.name) {
+  //   flag = true;
+  //   errors.name = "Name required.";
+  // }
 
   //BRAND
   if (!props.address) {

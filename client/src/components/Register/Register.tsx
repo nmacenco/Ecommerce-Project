@@ -9,6 +9,8 @@ import { useNavigate } from "react-router";
 import { getCountries } from "../../redux/actions/countries";
 import swal from "sweetalert";
 import GoogleLogin from "react-google-login";
+import { getPendingOrder } from "../../redux/actions/cart";
+import { createOrderUser } from "../../redux/actions/ordersUser";
 
 interface Inputs {
   name: string;
@@ -23,6 +25,8 @@ interface Inputs {
 const Register = (): JSX.Element => {
   const dispatch = useDispatch();
   const user = useSelector((state: State) => state.user);
+  const productsCart = useSelector((state: State) => state.cart.cart);
+  const [userLoaded, setUserLoaded] = useState<boolean>(false);
   const countries = useSelector((state: State) => state.countries.countries);
   const navigate = useNavigate();
 
@@ -45,6 +49,10 @@ const Register = (): JSX.Element => {
     countryId: "",
   });
   // const [countries, setCountries] = useState<Array<any>>([])
+
+  useEffect(() => {
+    dispatch(getCountries());
+  }, []);
 
   const FormChange = (event: any) => {
     event.preventDefault();
@@ -82,7 +90,7 @@ const Register = (): JSX.Element => {
         })
       );
       swal({
-        text: "Please check your inbox to validate your account",
+        text: "Please check your inbox to validate your account.",
         icon: "success",
       })
       navigate("/login")
@@ -90,9 +98,7 @@ const Register = (): JSX.Element => {
   };
 
   const responseGoogle = (data: any) => {
-    // console.log(data);
     const { givenName, familyName, email } = data.profileObj;
-    // console.log({ givenName, familyName, email });
     let newUser = {
       name: givenName ? givenName : '',
       surname: familyName ? familyName : '',
@@ -111,23 +117,28 @@ const Register = (): JSX.Element => {
 
       } else {
         swal({
-          title: 'successfully registered user',
+          title: 'Succesfully registed.',
           icon: 'success'
         })
-        navigate('/products');
-
+        setUserLoaded(true);
       }
     }));
   }
+
+  if (user) {
+    navigate('/products');
+    dispatch(createOrderUser(user.token, productsCart));
+    dispatch(getPendingOrder(user.token));
+  }
+  
   const rejectGoogle = (error: any) => {
     console.log(error);
-    alert('ERROR en REGISTER WITH GOOGLE');
-
+    swal({
+      title: 'Oops! an error occurred',
+      text: error,
+      icon: 'error'
+    })
   }
-
-  useEffect(() => {
-    dispatch(getCountries());
-  }, []);
 
   return (
     <Form title="Register">
@@ -195,32 +206,7 @@ const Register = (): JSX.Element => {
             <b className="invalid-feedback">{error.passUser}</b>
           )}
         </div>
-      </div>
-
-      {/* <div>
-        <input
-          type="text"
-          placeholder="Shipping Address..."
-          name="billing_address"
-          onChange={FormChange}
-          className={checkError(error.billing_address)}
-        />
-        {error.billing_address && (
-          <b className="invalid-feedback">{error.billing_address}</b>
-        )}
-      </div> */}
-      {/* <div>
-        <input
-          type="text"
-          placeholder="Default shipping address..."
-          name="default_shipping_address"
-          onChange={FormChange}
-          className={checkError(error.default_shipping_address)}
-        />
-        {error.default_shipping_address && (
-          <b className="invalid-feedback">{error.default_shipping_address}</b>
-        )}
-      </div> */}
+      </div> 
       <div className="form-log" >
         <GoogleLogin
           clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
