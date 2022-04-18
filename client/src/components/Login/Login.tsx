@@ -80,7 +80,7 @@ const Login = (): JSX.Element => {
                     title: 'Successfully logged in',
                     icon: 'success'
                 })
-                setUserLoaded(true);
+                setUserLoaded(!userLoaded);
             }
         }))
     }
@@ -96,9 +96,9 @@ const Login = (): JSX.Element => {
     let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
 
   if (user) {
-    navigate("/products");
     dispatch(createOrderUser(user.token, productsCart));
     dispatch(getPendingOrder(user.token));
+    navigate("/products");
   }
 
   return (
