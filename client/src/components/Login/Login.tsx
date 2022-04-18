@@ -68,23 +68,13 @@ const Login = (): JSX.Element => {
 
         console.log(data.profileObj);
         const { email } = data.profileObj;
-        // console.log({ givenName, familyName, email })
-        // { name, surname, email, password, CountryId }
-        // let newUser = {
-        //     name: givenName ? givenName : '',
-        //     surname: familyName ? familyName : '',
-        //     email: email,
-        //     CountryId: 1,
-        //     password: null
-        // };
-
         dispatch(LoginWithGoogle(email, () => {
             navigate('/products');
         }))
     }
     const rejectGoogle = (error: any) => {
         console.log(error);
-        alert('Algo paso amigos mios')
+        alert('Algo paso amigos mios 🤦‍♂️😨')
 
     }
 
