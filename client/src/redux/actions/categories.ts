@@ -27,16 +27,23 @@ export function getSubcategories() {
   };
 }
 
-export function createCategories(category: Category) {
+export function createCategories(category: Category, token: string) {
   return async function (dispatch: Dispatch) {
-    await axios.post(URL + "/categories", category)
+    await axios.post(URL + "/admin/categories", category, {
+      headers: {
+        'auth-token': token
+      }
+    })
   }
 }
 
-export function createSubcategories(subcategory: FORM_SUB) {
+export function createSubcategories(subcategory: FORM_SUB, token: string) {
   return async function (dispatch: Dispatch) {
-    console.log(subcategory)
-    await axios.post(URL + "/subcategories", subcategory)
+    await axios.post(URL + "/admin/subcategories", subcategory, {
+      headers: {
+        'auth-token': token
+      }
+    })
   }
 }
 
@@ -51,20 +58,29 @@ export const resetSubcategories = () => {
   }
 };
 
-export const deleteCategory = (id: string) => {
+export const deleteCategory = (id: string, token: string) => {
   try {
     return async function (dispatch: Dispatch) {
-      await axios.delete(URL + `/categories/${id}`)
+      await axios.delete(URL + `/admin/categories/${id}`, {
+        headers: {
+          'auth-token': token
+        }
+      })
     }
   } catch (error) {
     console.log(error)
   }
 }
 
-export const deleteSubcategory = (id: string) => {
+export const deleteSubcategory = (id: string, token: string) => {
   try {
     return async function (dispatch: Dispatch) {
-      await axios.delete(URL + `/subcategories/${id}`)
+      console.log(id)
+      await axios.delete(URL + `/admin/subcategories/${id}`, {
+        headers: {
+          'auth-token': token
+        }
+      })
     }
   } catch (error) {
     console.log(error)
