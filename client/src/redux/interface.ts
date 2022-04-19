@@ -515,4 +515,5 @@ export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART | GET_ACTIVE
 
 export type CountriesActions = GET_COUNTRIES;
 
+
 export type UserOrdersActions = GET_ORDERS_USER | GET_ORDER_USER | RESET_ORDER;
