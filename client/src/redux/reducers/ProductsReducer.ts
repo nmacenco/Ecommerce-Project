@@ -31,21 +31,28 @@ export const reducerProduct = (
       });
       // console.log("La hastable es: ", newTable);
 
+      const active = action.payload.sort(function (
+        a: Product,
+        b: Product
+      ) {
+        if (a.isActive < b.isActive) return 1;
+        if (a.isActive > b.isActive) return -1;
+        return 0;
+      })
       return {
         ...state,
-        products: action.payload,
-        copyProducts: action.payload,
+        products: active,
+        copyProducts: active,
         productSearch: newTable,
       };
 
     case TYPES_PRODUCT.RESET_PRODUCTS:
       return {
         ...state,
-        products: action.payload,
-        copyProducts: action.payload,
+        products: state.copyProducts
       };
     case TYPES_PRODUCT.FILTERED_PRODUCTS:
-      let allProducts: Product[] = state.copyProducts;
+      let allProducts: Product[] = state.products;
       const filteredProducts = allProducts.filter(
         (product) => product.subcategory === action.payload
       );
@@ -54,7 +61,7 @@ export const reducerProduct = (
         products: filteredProducts,
       };
     case TYPES_PRODUCT.FILTER_BY_BRAND:
-      let allProduct: Product[] = state.copyProducts;
+      let allProduct: Product[] = state.products;
 
       const filteredByBrand = allProduct.filter(
         (product) => product.brand === action.payload

@@ -109,7 +109,7 @@ const Login = (): JSX.Element => {
           placeholder="Email"
           id="email"
           name="email"
-          className={emailStyle}
+          // className={emailStyle}
           onChange={RegisterChange}
         />
         {error.email && <b className="invalid-feedback">{error.email}</b>}
@@ -119,14 +119,14 @@ const Login = (): JSX.Element => {
           type="password"
           placeholder="Password"
           name="passUser"
-          className={passStyle}
+          // className={passStyle}
           onChange={RegisterChange}
         />
         {error.passUser && <b className="invalid-feedback">{error.passUser}</b>}
       </div>
       <Forgot
         className="btn btn-link p-0 m-2 text-decoration-none"
-        onClick={forgotPassword}
+        // onClick={forgotPassword}
       >
         Forgot Password?
       </Forgot>

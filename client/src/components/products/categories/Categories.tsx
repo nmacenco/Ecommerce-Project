@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CategoriesContainer } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
-import {  filterByBrand, filterProducts } from "../../../redux/actions/filterByCategory";
+import { filterByBrand, filterProducts } from "../../../redux/actions/filterByCategory";
 import { ORDER } from "../cards/Cards";
 import { getBrands } from "../../../redux/actions/brands";
 import { productNotFound } from "../../../redux/actions/products";
@@ -26,14 +26,14 @@ const Categories = ({ page, orders }: ORDER): JSX.Element => {
 
   function handleFilter(e: any): void {
     dispatch(productNotFound(false))
-    dispatch(filterProducts(e.target.value));
+    // dispatch(filterProducts(e.target.value));
     orders(e.target.value)
     page(1);
   }
 
   function handlerFIlterByBrand(e: any): void {
     dispatch(productNotFound(false))
-    dispatch(filterByBrand(e.target.innerHTML));
+    // dispatch(filterByBrand(e.target.innerHTML));
     orders(e.target.value)
     page(1);
   }

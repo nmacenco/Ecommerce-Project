@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import swal from 'sweetalert'
+import { useLocalStorage } from '../../../../helpers/useLocalStorage'
 import { deleteCategory, deleteSubcategory, getCategories, getSubcategories } from '../../../../redux/actions/categories'
 import { Category } from '../../../../redux/interface'
 import { State } from '../../../../redux/reducers'
@@ -17,6 +18,7 @@ export default function DeleteCateogires(): JSX.Element {
     const navigate = useNavigate()
     const allCategories = useSelector((state: State) => state.categories.categories)
     const allSubcategories = useSelector((state: State) => state.categories.subcategories)
+    const [userInStorage, setUserInStorage] = useLocalStorage('USER_LOGGED', '')
     const [categories, setCategories] = useState<CATEGORIES>({
         category: 0,
         subcategory: 0
@@ -58,20 +60,24 @@ export default function DeleteCateogires(): JSX.Element {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
         if (categories.subcategory !== 0) {
-            dispatch(deleteSubcategory(String(categories.subcategory)))
+            dispatch(deleteSubcategory(String(categories.subcategory), userInStorage.token))
             swal({
                 title: 'Deleted subcategorie',
                 icon: 'success'
             })
-            navigate('/products')
+            setTimeout(() => {
+                navigate('/productsAdminMode')
+            }, 1000)
         }
         else if (categories.category !== 0) {
-            dispatch(deleteCategory(String(categories.category)))
+            dispatch(deleteCategory(String(categories.category), userInStorage.token))
             swal({
                 title: 'Deleted categorie',
                 icon: 'success'
             })
-            navigate('/products')
+            setTimeout(() => {
+                navigate('/productsAdminMode')
+            }, 1000)
         } else {
             swal({
                 title: 'Not selected any categoriy or subcategory',
