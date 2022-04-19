@@ -87,7 +87,7 @@ const Login = (): JSX.Element => {
                     title: 'Successfully logged in',
                     icon: 'success'
                 })
-                setUserLoaded(true);
+                setUserLoaded(!userLoaded);
             }
         }))
     }

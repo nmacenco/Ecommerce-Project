@@ -32,29 +32,12 @@ export const CreateUser = (user: any, cb: any) => {
         return alert("Something happened");
       }
 
-      // const newUser = {
-      //   name: user.name,
-      //   email: user.email,
-      //   token: response.headers["auth-token"],
-      //   role: response.data.data.role,
-      // };
-      // console.log(response);
-
       dispatch({
         type: TYPES_USER.CREATE_USER,
         payload: {},
       });
-      // console.log('despachando el usuario');
       cb(user);
 
-      // window.localStorage.setItem(
-      //   USER_STORAGE,
-      //   JSON.stringify({
-      //     ...newUser,
-      //     name: response.data.data.name,
-      //     role: response.data.data.role,
-      //   })
-      // ); // Cambiar cuando exista un usuario
     } catch (error) {
       swal({
         title: "Wrong data",

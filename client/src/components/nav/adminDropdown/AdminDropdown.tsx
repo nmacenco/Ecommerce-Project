@@ -6,18 +6,24 @@ import { LogoutUser } from "../../../redux/actions/user";
 import { State } from "../../../redux/reducers";
 import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 import { clearCart } from "../../../redux/actions/cart";
+import swal from "sweetalert";
 
 const AdminDropdown = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userState = useSelector((state: State) => state.user);
+
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
     localStorage.removeItem('cart')
     dispatch(clearCart())
     navigate("/products");
+    swal({
+      title: "Logged out.",
+    });
   };
+
   const getOrders = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     setTimeout(()=> {
