@@ -29,6 +29,13 @@ const Login = (): JSX.Element => {
     dispatch(LogoutUser());
     return () => {
       dispatch(setPage(1));
+      console.log('se desmonto login ');
+      
+      //   if (user) {
+      // dispatch(createOrderUser(user.token, productsCart));
+      // // dispatch(getPendingOrder(user.token));
+
+      // }
     };
   }, []);
 
@@ -95,11 +102,12 @@ const Login = (): JSX.Element => {
     let emailStyle = error.email ? "form-control is-invalid" : "form-control";
     let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
 
-  if (user) {
-    navigate("/products");
-    dispatch(createOrderUser(user.token, productsCart));
-    dispatch(getPendingOrder(user.token));
-  }
+   if (user) {
+     dispatch(createOrderUser(user.token, productsCart));
+     //     // dispatch(getPendingOrder(user.token));
+     
+     navigate("/products");
+   }
 
   return (
     <Form title="Login">

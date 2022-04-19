@@ -153,17 +153,19 @@ const createOrder = async (req, res) => {
         });
       }
       for (let product of allProductsOrder) {
-        const amount = product.count * product.price;
+        const amount = product.quantity * product.price;
         await createOrderDetail(
           newOrder.id,
-          product.ProductId,
-          product.count,
+          product.productId,
+          product.quantity,
           amount
         );
       }
       let orderDetails = await Order_detail.findAll({
         where: { OrderId: newOrder.id },
       });
+      // console.log('orderDetails');
+      // console.log({orderDetails}); no llega aca 
       const totalAmount = orderDetails.reduce((a, detail) => {
         return a + detail.dataValues.amount;
       }, 0);
@@ -238,6 +240,7 @@ const updateOrder = async (req, res) => {
 const getActiveOrder = async (req, res) => {
   try {
     const id = req.userID;
+    // console.log(id); llega bien 
     let activeOrder = await Order.findOne({
       where: {
         UserId: id,
@@ -260,6 +263,7 @@ const getActiveOrder = async (req, res) => {
         },
       ],
     });
+    // console.log(activeOrder);
     // if (!activeOrder) {
     //   return res
     //     .status(404)
