@@ -5,20 +5,24 @@ import { useNavigate } from "react-router";
 import { getCountries } from "../../../redux/actions/countries";
 import { State } from "../../../redux/reducers";
 import { errorsCheck } from "./validations";
-import { FormContainer } from "./shippingAdressFormStyles";
+import { Form, FormContainer } from "./shippingAdressFormStyles";
 import swal from "sweetalert";
+import { getcurrentOrder, updateOrderUser } from "../../../redux/actions/ordersUser";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 export default function ShippingAddressForm(): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
   const userState = useSelector((state: State) => state.user);
-  const activeOrder = useSelector((state: State) => state.activeOrder);
+  const activeOrder = useSelector((state: State) => state.ordersUser.activeOrder);
   const countries = useSelector((state: State) => state.countries.countries);
+
 
   const [errorsList, setErrorsList] = useState<any>(false)
 
     const [address , setAdress] = useState({
-        name : '',
+        // name : '',
         address : '',
         city : '',
         postalCode : '',
@@ -26,7 +30,11 @@ export default function ShippingAddressForm(): JSX.Element {
     })
   useEffect(() => {
     dispatch(getCountries());
+    dispatch(getcurrentOrder(userInStorage.token));
   }, [dispatch]);
+
+  console.log(activeOrder);
+  
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -44,10 +52,11 @@ export default function ShippingAddressForm(): JSX.Element {
     let errors = errorsCheck(address);
     setErrorsList(errors)
     if (errors === false) {
-      const shipping_address = {shipping_address : `${address.name}-${address.address}-${address.city}-${address.postalCode}`}
-      console.log(address);
-      console.log(shipping_address);
-      // dispatch(updateOrderUser(activeOrder.id , shipping_address, userState.token )) falta el id cuando tengamos la active order 
+      const shipping_address = {shipping_address : `${address.address}-${address.city}-${address.postalCode}`}
+      if (activeOrder) {
+        dispatch(updateOrderUser(activeOrder.id , shipping_address, userState!.token )) 
+      }
+      // dispatch(updateOrderUser( 1 , shipping_address, userState!.token )) 
       swal({
         title: "Address correctly created",
         icon: "success",
@@ -70,9 +79,10 @@ export default function ShippingAddressForm(): JSX.Element {
 
   return (
     <FormContainer>
-      <form onSubmit={handleSubmit}>
+      {/* <Form className="w-25" onSubmit={handleSubmit}> */}
+      <form className="" onSubmit={handleSubmit}>
         <h3 className="text-center">Shipping Address</h3>
-        <div className="form-group mt-4">
+        {/* <div className="form-group">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             Name
           </label>
@@ -85,9 +95,9 @@ export default function ShippingAddressForm(): JSX.Element {
             placeholder="Enter name"
             onChange={(e) => handleChange(e)}
           />
-          {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
-        </div>
-        <div className="form-group mt-4">
+          <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p>
+        </div> */}
+        <div className="form-group">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             Address
           </label>

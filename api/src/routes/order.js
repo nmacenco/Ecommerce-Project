@@ -18,8 +18,8 @@ const { isLoggedIn, isAdmin } = require("../middleware/auth");
 const orderRouter = express.Router();
 
 //user
-// orderRouter.post("/auth/orders", isLoggedIn, createOrder); //a new product is added to the cart here
-orderRouter.post("/auth/orders/:UserId", createOrder); //a new product is added to the cart here
+orderRouter.post("/auth/orders", isLoggedIn, createOrder); //a new product is added to the cart here
+// orderRouter.post("/auth/orders/:UserId", createOrder); //a new product is added to the cart here
 
 orderRouter.put("/auth/orders/info/:id", isLoggedIn, updateOrder);
 orderRouter.get("/auth/orders/user", isLoggedIn, getUserOrdersServer);

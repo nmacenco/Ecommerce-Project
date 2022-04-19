@@ -4,7 +4,6 @@ import { getProductDetail, deleteProductDetail } from "../../redux/actions/produ
 import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Rewies from "./reviews/Review";
-import NewRewie from "./reviews/NewRewie";
 import Loading from "../loading/Loading";
 import { DetailContainer, Box, ImgPriceContainer, Price, DeleteEditButton, ImagesContainer, } from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
@@ -63,8 +62,8 @@ export default function Detail() {
 
     return () => {
       dispatch(deleteProductDetail());
-      dispatch(resetFilterProducts());
-      dispatch(resetPoducts());
+      // dispatch(resetFilterProducts());
+      // dispatch(resetPoducts());
 
     };
   }, [wishes]);
@@ -114,7 +113,6 @@ export default function Detail() {
 
   return (
     <DetailContainer>
-      {console.log('renderizado')}
       {product.name.length > 0 ? (
         <Box>
           <div>
@@ -214,13 +212,11 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            {user && user.role !== 'user' ? <NewRewie /> : null}
             {product.reviews &&
               product.reviews.map((rew, i) => {
-                // console.log(rew.review);
                 return (
                   <Rewies
-                    name={user!.name}
+                    name={rew.review.name}
                     title={rew.review.title}
                     stars={rew.review.stars}
                     key={i}

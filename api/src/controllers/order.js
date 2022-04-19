@@ -42,6 +42,7 @@ const getOrders = async (req, res) => {
         userID: Order.User.id,
         billing_address: Order.billing_address,
         shipping_address: Order.shipping_address,
+        paidAt:Order.paidAt,
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
@@ -88,9 +89,9 @@ const getUserOrdersServer = async (req, res) => {
         },
       ],
     });
-    if (!Orders.length) {
-      return res.status(200).send({ successMsg: "You don't have orders yet." });
-    }
+    // if (!Orders.length) {
+    //   return res.status(404).send({ errorMsg: "You don't have orders." });
+    // }
     Orders = Orders.map((Order) => {
       return {
         id: Order.id,
@@ -100,6 +101,7 @@ const getUserOrdersServer = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
+        paidAt:Order.paidAt,
         shipping_address: Order.shipping_address,
         details:
           Order.Order_details.length > 0
@@ -129,9 +131,14 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 //Fine
 const createOrder = async (req, res) => {
+<<<<<<< HEAD
   const { UserId } = req.params;
 
   // const UserId = req.userID;
+=======
+  // const UserId = req.userID;
+  const userID = req.params.userID;
+>>>>>>> bf03563f339e9c01f05a4bb2dd2af476f5430baf
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
@@ -154,18 +161,30 @@ const createOrder = async (req, res) => {
         });
       }
       for (let product of allProductsOrder) {
+<<<<<<< HEAD
         const amount = product.count * product.price;
 
         await createOrderDetail(
           newOrder.id,
           product.productId,
           (quantity = product.count),
+=======
+        console.log(product);
+        const amount = product.quantity * product.price;
+        await createOrderDetail(
+          newOrder.id,
+          product.productId,
+          product.quantity,
+          // (queantity = product.count),
+>>>>>>> bf03563f339e9c01f05a4bb2dd2af476f5430baf
           amount
         );
       }
       let orderDetails = await Order_detail.findAll({
         where: { OrderId: newOrder.id },
       });
+      // console.log('orderDetails');
+      // console.log({orderDetails}); no llega aca 
       const totalAmount = orderDetails.reduce((a, detail) => {
         return a + detail.dataValues.amount;
       }, 0);
@@ -241,6 +260,7 @@ const updateOrder = async (req, res) => {
 const getActiveOrder = async (req, res) => {
   try {
     const id = req.userID;
+    // console.log(id); llega bien 
     let activeOrder = await Order.findOne({
       where: {
         UserId: id,
@@ -263,11 +283,17 @@ const getActiveOrder = async (req, res) => {
         },
       ],
     });
+    // console.log(activeOrder);
     // if (!activeOrder) {
     //   return res
     //     .status(404)
     //     .send({ errorMsg: "You don't have an active order." });
     // }
+    if (!activeOrder) {
+      return res
+        .status(404)
+        .send({ errorMsg: "You don't have an active order." });
+    }
     activeOrder = {
       id: activeOrder.id,
       total_amount: activeOrder.total_amount,
@@ -552,6 +578,7 @@ const getUserOrders = async (id) => {
           billing_address: Order.billing_address,
           UserID: Order.User.id,
           status: Order.status,
+          paidAt:Order.paidAt,
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
@@ -587,6 +614,7 @@ const updatePaypalOrder = async (req, res) => {
   try {
     let orderPaypal = await Order.findOne({
       where: { id },
+<<<<<<< HEAD
       include: [
         {
           model: Order_detail,
@@ -599,6 +627,8 @@ const updatePaypalOrder = async (req, res) => {
           ],
         },
       ],
+=======
+>>>>>>> bf03563f339e9c01f05a4bb2dd2af476f5430baf
     });
     if (!orderPaypal) {
       res.status(401).send({ message: "Order Not Found" });

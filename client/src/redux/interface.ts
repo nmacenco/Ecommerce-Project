@@ -24,6 +24,8 @@ export enum TYPES_DETAIL {
 export enum TYPES_ADMIN {
   DELETE_PRODUCTS = "DELETE_PRODUCTS",
   GET_ORDERS = "GET_ORDERS",
+  RESET_ORDERS = 'RESET_ORDERS',
+  O_ORDERS = 'O_ORDERS'
 }
 
 export enum TYPES_CATEGORIES {
@@ -69,8 +71,9 @@ export enum TYPES_COUNTRIES {
 }
 
 export enum TYPES_ORDERS_USER {
-  GET_ORDERS = "GET_ORDER",
-
+  GET_ORDERS = "GET_ORDERS_USER",
+  GET_ORDER = 'GET_ORDER_USER',
+  RESET_ORDER = 'RESET_ORDER'
 }
 
 //=======================
@@ -121,7 +124,7 @@ export interface ProductForm {
   price: number;
   description: string;
   image: string;
-  weight:number;
+  weight: number;
   stock: number;
   soldCount: number;
   SubcategoryId: number;
@@ -161,6 +164,7 @@ export interface Order {
   user: string;
   billing_address: string;
   details: any[];
+  userID: number;
 }
 
 export interface Question {
@@ -424,6 +428,14 @@ export interface GET_ORDERS {
   type: TYPES_ADMIN.GET_ORDERS;
   payload: Order[];
 }
+export interface RESET_ORDERS {
+  type: TYPES_ADMIN.RESET_ORDERS;
+  payload: Order[];
+}
+export interface O_ORDERS {
+  type: TYPES_ADMIN.O_ORDERS;
+  payload: string
+}
 
 export interface GET_ACTIVEORDER {
   type: TYPES_CART.GET_ACTIVEORDER;
@@ -433,6 +445,14 @@ export interface GET_ACTIVEORDER {
 export interface GET_ORDERS_USER {
   type: TYPES_ORDERS_USER.GET_ORDERS;
   payload: Order[];
+}
+export interface GET_ORDER_USER {
+  type: TYPES_ORDERS_USER.GET_ORDER;
+  payload: Order;
+}
+export interface RESET_ORDER {
+  type: TYPES_ORDERS_USER.RESET_ORDER;
+  payload: {};
 }
 
 
@@ -487,12 +507,13 @@ export type CategoriesActions =
 
 export type BrandsActions = GET_BRANDS;
 
-export type AdminActions = DELETE_PRODUCT | GET_ORDERS;
+export type AdminActions = DELETE_PRODUCT | GET_ORDERS | RESET_ORDERS | O_ORDERS;
 
 export type SetPage = SET_PAGE;
 
-export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART  | GET_ACTIVEORDER;
+export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART | GET_ACTIVEORDER;
 
 export type CountriesActions = GET_COUNTRIES;
 
-export type UserOrdersActions = GET_ORDERS_USER;
+
+export type UserOrdersActions = GET_ORDERS_USER | GET_ORDER_USER | RESET_ORDER;

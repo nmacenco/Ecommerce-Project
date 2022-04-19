@@ -5,6 +5,7 @@ import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 import { updateOrderStatus } from "../../../../redux/actions/ordersAdmin";
 import { Img } from "../../../users/ordersHistory/OrdersHistoryStyle";
 import { Select } from "./OrderAdminRowStyles";
+import swal from "sweetalert";
 
 interface Detail_Props {
   id: number;
@@ -18,60 +19,52 @@ interface Props {
   id: number;
   status: string;
   total: number;
+  email_address: string;
+  // detail: any[];
   billing_address: string;
   detail: Detail_Props[];
 }
 
 export interface STATUS {
   status: string
+  email_address: string;
 }
 
-const statusArray: string[] = ['Corfirmed', 'Prosesing', 'Canceled', 'Dispatched', 'Completed']
-const OrderAdminRow = ({ id, status, total, billing_address, detail }: Props): JSX.Element => {
+const statusArray: string[] = ['BILLED', 'CANCELED', 'DISPATCHED', 'DELIVERED', 'FINISHED']
+// const OrderAdminRow = ({ id, status, total, detail }: Props): JSX.Element => {
+
+
+const OrderAdminRow = ({ id, status, total, billing_address, detail, email_address }: Props): JSX.Element => {
   const dispatch = useDispatch()
+  const [update, setUpdate] = useState<boolean>(false)
   const [userInStorage, setUserInStorage] = useLocalStorage('USER_LOGGED', '')
   const [statusOrder, setStatusOrder] = useState<STATUS>({
-    status: ""
+    status: "",
+    email_address: `${email_address}`,
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     e.preventDefault()
-    setStatusOrder({
-      ...statusOrder,
-      status: e.target.value
-    })
 
-    if (status.length > 0) {
-      console.log(statusOrder)
-      dispatch(updateOrderStatus(userInStorage.token, statusOrder, id.toString()))
+    statusOrder.status = e.target.value;
+
+    swal({
+      title: "Order status changed",
+      icon: "success",
+      buttons: {
+        confirm: true,
+      },
+    }).then((value) => {
+      if (value) {
+        dispatch(updateOrderStatus(userInStorage.token, statusOrder, id.toString()))
+        setUpdate(!update)
+      }
+    })
+    if (statusOrder.status.length > 0) {
     }
   }
   return (
-    // <tr>
-    //   <th scope="row"> {id} </th>
-    //   <td>
-    // <Select
-    //   defaultValue={`${status}`}
-    //   className="form-select"
-    //   onChange={(e) => handleChange(e)}
-    // >
-    //   {/* <option disabled hidden>
-    //   {`${status}`}
-    //   </option> */}
-    //   {
-    //     statusArray.map((s, i: number) => {
-    //       return <option key={i} value={`${s}`} > {s} </option>
-    //     })
-    //   }
 
-    // </Select>
-
-    //   </td>
-    //   <td> {total} </td>
-    //   <td>
-    //     <button className="btn btn-outline-primary">Detail</button>
-    //   </td>
-    // </tr>
     <tbody>
       <tr>
         <th scope="row">{id}</th>
@@ -96,8 +89,8 @@ const OrderAdminRow = ({ id, status, total, billing_address, detail }: Props): J
         <td><button className="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapse">Detail</button></td>
       </tr>
       {
-        detail.map(product => {
-          return <tr key={product.id} id={`collapse${id}`} className="accordion-collapse collapse align-items-center" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        detail.map((product: Detail_Props, i: number) => {
+          return <tr key={i} id={`collapse${id}`} className="accordion-collapse collapse align-items-center" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <td><Img src={product.image} /></td>
             <td><Link to={`/detail/${id}`}>{product.name}</Link></td>
             <td>${product.amount}</td>
