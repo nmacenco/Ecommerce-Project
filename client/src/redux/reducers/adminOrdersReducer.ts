@@ -2,9 +2,11 @@ import { TYPES_ADMIN, Order, AdminActions } from "../interface";
 
 export interface ORDERS {
     orders: Order[],
+    copyOrders : Order[],
 }
 const INITIAL_STATE = {
-    orders: []
+    orders: [] ,
+    copyOrders : [],
 };
 
 
@@ -13,7 +15,8 @@ export const ordersAdminReducer = (state: ORDERS = INITIAL_STATE, action: AdminA
         case TYPES_ADMIN.GET_ORDERS:
             return {
                 ...state,
-                orders: action.payload
+                orders: action.payload,
+                copyOrders : action.payload ,
             }
         case TYPES_ADMIN.RESET_ORDERS:
             return {
@@ -22,13 +25,11 @@ export const ordersAdminReducer = (state: ORDERS = INITIAL_STATE, action: AdminA
             }
         case TYPES_ADMIN.O_ORDERS:
             let newOrder: Order[] = []
-            let otherOrder: Order[] = []
-            newOrder = state.orders.filter((e: Order) => e.status.toLowerCase() === action.payload.toLowerCase())
-            otherOrder = state.orders.filter((e: Order) => e.status.toLowerCase() !== action.payload.toLowerCase())
+            newOrder = state.copyOrders.filter((e: Order) => e.status.toLowerCase() === action.payload.toLowerCase())
 
             return {
                 ...state,
-                orders: newOrder.concat(otherOrder)
+                orders: newOrder
             }
         default: {
             return {

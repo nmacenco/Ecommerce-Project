@@ -128,15 +128,17 @@ const OrdersAdmin = (): JSX.Element => {
           </thead>
           {orders.length > 0 &&
             orders.map(order => {
-              return <OrderAdminRow
-                key={order.id}
-                id={order.id}
-                total={order.total_amount}
-                email_address={order.email_address}
-                status={order.status}
-                detail={order.details}
-                billing_address={order.billing_address}
-              />
+              if (order.status !== 'PENDING'){
+                return <OrderAdminRow
+                  key={order.id}
+                  id={order.id}
+                  total={order.total_amount}
+                  email_address={order.email_address}
+                  status={order.status}
+                  detail={order.details}
+                  billing_address={order.billing_address}
+                />
+              }
             })
           }
         </Table>
