@@ -103,7 +103,7 @@ const OrdersAdmin = (): JSX.Element => {
     <Container>
       {/* <div className="container d-flex flex-column"> */}
       <div className="accordion w-75" id="accordionExample">
-        <h3 className="text-center mt-5">Orders History</h3>
+        <h3 className="text-center mt-5">Admin Orders</h3>
         <div className="d-flex">
           <label className="input-group-text">Status: </label>
           <select
@@ -134,7 +134,7 @@ const OrdersAdmin = (): JSX.Element => {
                 total={order.total_amount}
                 email_address={order.email_address}
                 status={order.status}
-                detail={order.details}
+                details={order.details}
                 billing_address={order.billing_address}
               />
             })
