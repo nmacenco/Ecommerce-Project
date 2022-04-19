@@ -66,16 +66,16 @@ import {
 // };
 
 export default function PreviewOrder(): JSX.Element {
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const dispatch = useDispatch()
   const activeOrder = useSelector((state: State) => state.ordersUser.activeOrder);
 
   useEffect(() => {
     dispatch(getcurrentOrder(userInStorage.token));
 
-    return ()=> {
+    return () => {
       dispatch(resetCurrentOrder())
-      dispatch(createOrderUser(userInStorage.token , [ {
+      dispatch(createOrderUser(userInStorage.token, [{
         productId: 0,
         productName: '',
         price: 0,
@@ -131,11 +131,11 @@ export default function PreviewOrder(): JSX.Element {
                   {/* <th scope="col">POr las  </th> */}
                 </tr>
               </thead>
-              { Object.keys(activeOrder).length > 0 &&
-                activeOrder.details.map((product : any  , i : any ) => {
+              {Object.keys(activeOrder).length > 0 &&
+                activeOrder.details.map((product: any, i: any) => {
                   return (
                     <tbody key={i}>
-                      <tr  className="table-light">
+                      <tr className="table-light">
                         <th scope="row">
                           <AdminProductIMG
                             src={product.image}
@@ -148,14 +148,14 @@ export default function PreviewOrder(): JSX.Element {
                             <p>
                               <Link
                                 className="text-decoration-none"
-                                to={`/detail/${product.id}`}
+                                to={`/detail/${product.productId}`}
                               >
                                 {product.productName.slice(0, 30)}...
                               </Link>
                             </p>
                           ) : (
                             <p className="card-title m-2 text-decoration-none">
-                              <Link to={`/detail/${product.id}`}>
+                              <Link to={`/detail/${product.productId}`}>
                                 {product.productName}
                               </Link>
                             </p>
@@ -176,21 +176,21 @@ export default function PreviewOrder(): JSX.Element {
           </div>
         </div>
         <div className="col-3 ms-3 h-25 border p-4">
-          <div className  ="card-body">
-            <h4 className  ="card-title mb-3 ">Order Summary</h4>
+          <div className="card-body">
+            <h4 className="card-title mb-3 ">Order Summary</h4>
             <ItemsTaxShipp>
-            <p className ="card-text"> Items  </p> <p>$ {activeOrder.total_amount}</p>
-            </ItemsTaxShipp>
-            <ItemsTaxShipp>
-            <p className ="card-text"> Tax  </p> <p>$ 0</p>
+              <p className="card-text"> Items  </p> <p>$ {activeOrder.total_amount}</p>
             </ItemsTaxShipp>
             <ItemsTaxShipp>
-            <p className ="card-text"> Shipping  </p> <p>$ 0</p>
+              <p className="card-text"> Tax  </p> <p>$ 0</p>
             </ItemsTaxShipp>
-            <ItemsTaxShipp className ="fw-bold" >
-            <p className ="fw-bold"> Total   </p> <p className ="fw-bold">$ {activeOrder.total_amount} </p>
+            <ItemsTaxShipp>
+              <p className="card-text"> Shipping  </p> <p>$ 0</p>
             </ItemsTaxShipp>
-          <PayPalCheckoutButtons></PayPalCheckoutButtons>
+            <ItemsTaxShipp className="fw-bold" >
+              <p className="fw-bold"> Total   </p> <p className="fw-bold">$ {activeOrder.total_amount} </p>
+            </ItemsTaxShipp>
+            <PayPalCheckoutButtons></PayPalCheckoutButtons>
           </div>
         </div>
       </ColumnsContainer>

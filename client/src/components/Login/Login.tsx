@@ -24,8 +24,8 @@ const Login = (): JSX.Element => {
   const [userLoaded, setUserLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
   const productsCart = useSelector((state: State) => state.cart.cart);
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
-  const [ productsCarrito , setproductsCarrito] = useLocalStorage('cart','')
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
+  const [productsCarrito, setproductsCarrito] = useLocalStorage('cart', '')
 
   useEffect(() => {
     dispatch(setPage(0));
@@ -65,7 +65,7 @@ const Login = (): JSX.Element => {
             icon: "success",
           });
           setUserLoaded(true);
-         
+
 
         }
       })
@@ -73,51 +73,51 @@ const Login = (): JSX.Element => {
 
   };
 
-    const responseGoogle = (data: any) => {
-        const { email } = data.profileObj;
-        dispatch(LoginWithGoogle(email, (error) => {
-            if (error) {
-                swal({
-                    title: 'Opps! an error ocurred',
-                    text: error,
-                    icon: 'error'
-                })
-            } else {
-                swal({
-                    title: 'Successfully logged in',
-                    icon: 'success'
-                })
-                setUserLoaded(!userLoaded);
-            }
-        }))
+  const responseGoogle = (data: any) => {
+    const { email } = data.profileObj;
+    dispatch(LoginWithGoogle(email, (error) => {
+      if (error) {
+        swal({
+          title: 'Opps! an error ocurred',
+          text: error,
+          icon: 'error'
+        })
+      } else {
+        swal({
+          title: 'Successfully logged in',
+          icon: 'success'
+        })
+        setUserLoaded(!userLoaded);
+      }
+    }))
+  }
+  const rejectGoogle = (error: any) => {
+    alert('Something happened.')
+  }
+
+  const forgotPassword = () => {
+    navigate("/emailReset");
+  };
+
+  let emailStyle = error.email ? "form-control is-invalid" : "form-control";
+  let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
+
+  const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
+    if (user) {
+      console.log(user);
+      dispatch(createOrderUser(user.token, productsCart));
     }
-    const rejectGoogle = (error: any) => {
-        alert('Something happened.')
-    }
+    setTimeout(() => {
+      navigate("/products");
 
-    const forgotPassword = () => {
-        navigate("/emailReset");
-    };
-
-    let emailStyle = error.email ? "form-control is-invalid" : "form-control";
-    let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
-
-    const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
-      if (user) {
-       console.log(user);
-        dispatch(createOrderUser(user.token, productsCart));
-      } 
-      setTimeout (()=>{
-        navigate("/products");
-        
-      },200)
-    }
+    }, 200)
+  }
 
 
-    // if (user) {
-//       navigate("/products");
-// //  //    dispatch(createOrderUser(user.token, productsCart));
-//  //    //     // dispatch(getPendingOrder(user.token));
+  // if (user) {
+  //       navigate("/products");
+  // //  //    dispatch(createOrderUser(user.token, productsCart));
+  //  //    //     // dispatch(getPendingOrder(user.token));
 
   return (
     <Form title="Login">
@@ -144,7 +144,7 @@ const Login = (): JSX.Element => {
       </div>
       <Forgot
         className="btn btn-link p-0 m-2 text-decoration-none"
-        // onClick={forgotPassword}
+      // onClick={forgotPassword}
       >
         Forgot Password?
       </Forgot>
@@ -186,8 +186,8 @@ const Login = (): JSX.Element => {
       <button
         className="btn btn-primary button-links link-Router mx-2"
         onClick={CreateOrder}
-        >
-        Keep Buying?
+      >
+        Keep Buying
       </button>
     </Form>
 
