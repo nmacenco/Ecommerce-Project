@@ -42,6 +42,7 @@ const getOrders = async (req, res) => {
         userID: Order.User.id,
         billing_address: Order.billing_address,
         shipping_address: Order.shipping_address,
+        paidAt:Order.paidAt,
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
@@ -100,7 +101,7 @@ const getUserOrdersServer = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
-        // shipping_address: activeOrder.shipping_address,
+        paidAt:Order.paidAt,
         shipping_address: Order.shipping_address,
         details:
           Order.Order_details.length > 0
@@ -562,6 +563,7 @@ const getUserOrders = async (id) => {
           billing_address: Order.billing_address,
           UserID: Order.User.id,
           status: Order.status,
+          paidAt:Order.paidAt,
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
