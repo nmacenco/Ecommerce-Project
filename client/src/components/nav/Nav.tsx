@@ -11,13 +11,16 @@ import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";
 import { setPage } from "../../redux/actions/setPage";
 import { NavBar } from "./NavStyles"
+import { useLocation } from "react-router";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
   const userState = useSelector((state: State) => state.user);
   const page = useSelector((state: State) => state.page);
   // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
-
+  const path = window.location.pathname;
+  // const path = useLocation()
+  console.log(path);
   function handleClickLogIn() {
     dispatch(setPage(1));
   }
@@ -32,6 +35,7 @@ const Nav = (): JSX.Element => {
   }
 
   return (
+    <>    { (path === "/login") ? null :  
     <NavBar className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
       <div className="flex-grow-1 d-lg-flex align-items-center">
         <Link className="navbar-brand " to="/home">
@@ -97,6 +101,8 @@ const Nav = (): JSX.Element => {
         </button>
       </div>
     </NavBar>
+  } </>
+
   );
 };
 

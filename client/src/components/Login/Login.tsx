@@ -11,6 +11,7 @@ import { GoogleLogin } from "react-google-login";
 import { createOrderUser } from "../../redux/actions/ordersUser";
 import swal from "sweetalert";
 import { getPendingOrder } from "../../redux/actions/cart";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 interface Inputs {
   email: string;
@@ -23,19 +24,24 @@ const Login = (): JSX.Element => {
   const [userLoaded, setUserLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
   const productsCart = useSelector((state: State) => state.cart.cart);
+  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [ productsCarrito , setproductsCarrito] = useLocalStorage('cart','')
 
   useEffect(() => {
     dispatch(setPage(0));
     dispatch(LogoutUser());
     return () => {
       dispatch(setPage(1));
-      console.log('se desmonto login ');
+      console.log(user);
       
-      //   if (user) {
-      // dispatch(createOrderUser(user.token, productsCart));
-      // // dispatch(getPendingOrder(user.token));
+      if (user) {
+          console.log('se desmonto login ');
+          console.log(productsCarrito);
+          
+      dispatch(createOrderUser(user.token, productsCarrito));
+      // dispatch(getPendingOrder(user.token));
 
-      // }
+      }
     };
   }, []);
 
@@ -68,9 +74,23 @@ const Login = (): JSX.Element => {
             icon: "success",
           });
           setUserLoaded(true);
+         
+
         }
       })
     );
+
+    // setTimeout( () => {
+    // dispatch(createOrderUser(userInStorage.token, productsCart));
+    // //     // dispatch(getPendingOrder(user.token));
+    
+    // navigate("/products")
+
+    // },400)
+    // console.log(user);
+    
+   
+
   };
 
     const responseGoogle = (data: any) => {
@@ -102,12 +122,36 @@ const Login = (): JSX.Element => {
     let emailStyle = error.email ? "form-control is-invalid" : "form-control";
     let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
 
-   if (user) {
-     dispatch(createOrderUser(user.token, productsCart));
-     //     // dispatch(getPendingOrder(user.token));
-     
-     navigate("/products");
-   }
+    const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
+      if (user) {
+       console.log(user);
+        dispatch(createOrderUser(user.token, productsCart));
+      } 
+      setTimeout (()=>{
+        navigate("/products");
+        
+      },200)
+    }
+    // const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
+    //   if (user) {
+    //    console.log(user);
+    //     dispatch(createOrderUser(user.token, productsCart));
+    //     setTimeout (()=>{
+    //       navigate("/products");
+          
+    //     },200)
+    //   } else {
+    //     swal({
+    //       title: "You need to Login to keep buying",
+    //       icon: "error",
+    //     });
+    //   }
+    // }
+
+    // if (user) {
+//       navigate("/products");
+// //  //    dispatch(createOrderUser(user.token, productsCart));
+//  //    //     // dispatch(getPendingOrder(user.token));
 
   return (
     <Form title="Login">
@@ -172,7 +216,16 @@ const Login = (): JSX.Element => {
           REGISTER
         </Link>
       </div>
+
+      <button
+        className="btn btn-primary button-links link-Router mx-2"
+        onClick={CreateOrder}
+        >
+        Go back to Products
+      </button>
     </Form>
+
+
   );
 };
 
