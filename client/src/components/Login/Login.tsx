@@ -33,15 +33,6 @@ const Login = (): JSX.Element => {
     return () => {
       dispatch(setPage(1));
       console.log(user);
-      
-      // if (user) {
-      //     console.log('se desmonto login ');
-      //     console.log(productsCarrito);
-          
-      // dispatch(createOrderUser(user.token, productsCarrito));
-      // // dispatch(getPendingOrder(user.token));
-
-      // }
     };
   }, []);
 
@@ -79,17 +70,6 @@ const Login = (): JSX.Element => {
         }
       })
     );
-
-    // setTimeout( () => {
-    // dispatch(createOrderUser(userInStorage.token, productsCart));
-    // //     // dispatch(getPendingOrder(user.token));
-    
-    // navigate("/products")
-
-    // },400)
-    // console.log(user);
-    
-   
 
   };
 
@@ -132,21 +112,7 @@ const Login = (): JSX.Element => {
         
       },200)
     }
-    // const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
-    //   if (user) {
-    //    console.log(user);
-    //     dispatch(createOrderUser(user.token, productsCart));
-    //     setTimeout (()=>{
-    //       navigate("/products");
-          
-    //     },200)
-    //   } else {
-    //     swal({
-    //       title: "You need to Login to keep buying",
-    //       icon: "error",
-    //     });
-    //   }
-    // }
+
 
     // if (user) {
 //       navigate("/products");
@@ -221,7 +187,7 @@ const Login = (): JSX.Element => {
         className="btn btn-primary button-links link-Router mx-2"
         onClick={CreateOrder}
         >
-        Go back to Products
+        Keep Buying?
       </button>
     </Form>
 

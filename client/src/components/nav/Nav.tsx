@@ -19,7 +19,6 @@ const Nav = (): JSX.Element => {
   const page = useSelector((state: State) => state.page);
   // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
   const path = window.location.pathname;
-  // const path = useLocation()
   console.log(path);
   function handleClickLogIn() {
     dispatch(setPage(1));
@@ -37,7 +36,7 @@ const Nav = (): JSX.Element => {
   }
 
   return (
-    <>    { (path === ("/login" || "/register")) ? null : (path === ( "/register")) ? null :
+    <>    { (path === ("/login")) ? null : (path === ( "/register")) ? null :
           // this makes nav only render out of login an register so that the only way to go to products is by making click on the button. The button creates a new order for the user
     <NavBar className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
       <div className="flex-grow-1 d-lg-flex align-items-center">
