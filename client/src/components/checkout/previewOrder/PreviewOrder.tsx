@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
-import { getcurrentOrder } from "../../../redux/actions/ordersUser";
+import { createOrderUser, getcurrentOrder, resetCurrentOrder } from "../../../redux/actions/ordersUser";
 import { State } from "../../../redux/reducers";
 import PayPalCheckoutButtons from "../payPalButton/PayPalButton";
 import {
@@ -72,6 +72,19 @@ export default function PreviewOrder(): JSX.Element {
 
   useEffect(() => {
     dispatch(getcurrentOrder(userInStorage.token));
+
+    return ()=> {
+      dispatch(resetCurrentOrder())
+      dispatch(createOrderUser(userInStorage.token , [ {
+        productId: 0,
+        productName: '',
+        price: 0,
+        image: '',
+        stock: 0,
+        quantity: 0,
+      }]))
+
+    }
   }, [dispatch]);
   return (
     <Previewcontainer>
@@ -118,7 +131,7 @@ export default function PreviewOrder(): JSX.Element {
                   {/* <th scope="col">POr las  </th> */}
                 </tr>
               </thead>
-              {activeOrder &&
+              { Object.keys(activeOrder).length > 0 &&
                 activeOrder.details.map((product : any  , i : any ) => {
                   return (
                     <tbody key={i}>

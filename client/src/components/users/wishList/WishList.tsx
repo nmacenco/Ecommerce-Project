@@ -7,16 +7,16 @@ import { deleteWish, getWish } from '../../../redux/actions/products';
 import { State } from '../../../redux/reducers';
 import { WishContainer, WishGrid } from './whis';
 
-let nombres = ['dikson', 'yampier', 'other nombre'];
 
 const WishList = (): JSX.Element => {
     const dispatch = useDispatch();
     const user = useSelector((state: State) => state.user);
     const wishes = useSelector((state: State) => state.products.wishList);
-    const products = useSelector((state: State) => state.products.products);
+    const products = useSelector((state: State) => state.products.copyProducts);
 
     useEffect(() => {
         if (user && !wishes.length) {
+            alert('Traendo los wishes')
             dispatch(getWish(user!.token));
         }
     }, [])
@@ -29,7 +29,11 @@ const WishList = (): JSX.Element => {
 
     const addProductToCart = (event: any) => {
         let index = event.target.id;
+        console.log('ID_PRODUCT: ', index);
+        console.log('ALL PRODUCTS: ', products);
+
         const encountered = products.find(product => product.id === Number(index));
+        console.log('PRODUCTO ENCONTRADO?: ', encountered);
         if (encountered) {
             const productToAdd = {
                 productId: encountered.id,
@@ -37,12 +41,11 @@ const WishList = (): JSX.Element => {
                 price: encountered.price,
                 image: encountered.image,
                 stock: encountered.stock,
-                quantity:1
+                quantity: 1
             }
             productToAdd.quantity = 1;
             dispatch(addProductCart(productToAdd));
-            productToAdd.productId && dispatch(addProductOrder(user!.token,productToAdd.productId))
-
+            user && productToAdd.productId && dispatch(addProductOrder(user!.token, productToAdd.productId))
             dispatch(deleteWish(Number(index), user!.token, (error) => {
                 if (error) {
                     swal({
