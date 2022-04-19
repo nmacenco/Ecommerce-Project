@@ -171,7 +171,7 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
       console.log("Error en sign in google: ", error);
       swal({
         title: "Wrong data",
-        text: "It seems you didn't register yet",
+        text: "Some datais wrong",
         icon: "warning",
         dangerMode: true,
         buttons: {
