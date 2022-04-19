@@ -32,6 +32,7 @@ orderRouter.delete(
 );
 orderRouter.get("/auth/orders", isLoggedIn, getActiveOrder);
 orderRouter.put("/auth/orders/pay/:id", isLoggedIn, updatePaypalOrder);
+//  orderRouter.put("/auth/orders/pay/:id", updatePaypalOrder);
 
 //admin
 orderRouter.put(

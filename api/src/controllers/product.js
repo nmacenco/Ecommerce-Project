@@ -5,7 +5,9 @@ const {
   Subcategory,
   Question,
   Review,
+  User,
 } = require("../db");
+const { Sequelize } = require('sequelize');
 
 const createProduct = async (req, res) => {
   try {
@@ -147,6 +149,12 @@ const getSingleProduct = async (req, res) => {
           {
             model: Review,
             attributes: ["title", "description", "stars", "id"],
+            include: [
+              {
+                model: User,
+                attributes: ['name','surname'],
+              },
+            ],
           },
         ],
       });
@@ -221,6 +229,12 @@ const getProducts = async (req, res) => {
         {
           model: Review,
           attributes: ["title", "description", "stars", "id"],
+          include: [
+            {
+              model: User,
+              attributes: ['name','surname'],
+            },
+          ],
         },
       ],
     });
