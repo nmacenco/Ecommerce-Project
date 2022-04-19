@@ -131,14 +131,8 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 //Fine
 const createOrder = async (req, res) => {
-<<<<<<< HEAD
-  const { UserId } = req.params;
-
-  // const UserId = req.userID;
-=======
   // const UserId = req.userID;
   const userID = req.params.userID;
->>>>>>> bf03563f339e9c01f05a4bb2dd2af476f5430baf
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
@@ -161,14 +155,6 @@ const createOrder = async (req, res) => {
         });
       }
       for (let product of allProductsOrder) {
-<<<<<<< HEAD
-        const amount = product.count * product.price;
-
-        await createOrderDetail(
-          newOrder.id,
-          product.productId,
-          (quantity = product.count),
-=======
         console.log(product);
         const amount = product.quantity * product.price;
         await createOrderDetail(
@@ -176,7 +162,6 @@ const createOrder = async (req, res) => {
           product.productId,
           product.quantity,
           // (queantity = product.count),
->>>>>>> bf03563f339e9c01f05a4bb2dd2af476f5430baf
           amount
         );
       }
@@ -614,21 +599,6 @@ const updatePaypalOrder = async (req, res) => {
   try {
     let orderPaypal = await Order.findOne({
       where: { id },
-<<<<<<< HEAD
-      include: [
-        {
-          model: Order_detail,
-          attributes: ["amount", "quantity"],
-          include: [
-            {
-              model: Product,
-              attributes: ["name", "id", "stock", "price"],
-            },
-          ],
-        },
-      ],
-=======
->>>>>>> bf03563f339e9c01f05a4bb2dd2af476f5430baf
     });
     if (!orderPaypal) {
       res.status(401).send({ message: "Order Not Found" });
