@@ -34,14 +34,14 @@ const Login = (): JSX.Element => {
       dispatch(setPage(1));
       console.log(user);
       
-      if (user) {
-          console.log('se desmonto login ');
-          console.log(productsCarrito);
+      // if (user) {
+      //     console.log('se desmonto login ');
+      //     console.log(productsCarrito);
           
-      dispatch(createOrderUser(user.token, productsCarrito));
-      // dispatch(getPendingOrder(user.token));
+      // dispatch(createOrderUser(user.token, productsCarrito));
+      // // dispatch(getPendingOrder(user.token));
 
-      }
+      // }
     };
   }, []);
 
