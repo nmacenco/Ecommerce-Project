@@ -100,10 +100,6 @@ const getUserOrdersServer = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
-<<<<<<< HEAD
-        // shipping_address: activeOrder.shipping_address,
-=======
->>>>>>> 379651a2e37045dfdbad5297ebb217d12749562a
         shipping_address: Order.shipping_address,
         details:
           Order.Order_details.length > 0
@@ -133,14 +129,8 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 //Fine
 const createOrder = async (req, res) => {
-<<<<<<< HEAD
   // const UserId = req.userID;
   const userID = req.params.userID;
-=======
-  // const { UserId } = req.params;
-
-  const UserId = req.userID;
->>>>>>> 379651a2e37045dfdbad5297ebb217d12749562a
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
@@ -590,7 +580,6 @@ const updatePaypalOrder = async (req, res) => {
     let orderPaypal = await Order.findOne({
       where: { id },
     });
-    console.log(orderPaypal);
     if (!orderPaypal) {
       res.status(401).send({ message: "Order Not Found" });
     } else {

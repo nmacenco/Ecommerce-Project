@@ -1,4 +1,4 @@
-const { Review } = require("../db");
+const { Review, User } = require("../db");
 
 const createReview = async (req, res) => {
   try {
@@ -40,6 +40,11 @@ const getReviews = async (req, res) => {
         "description",
         "stars",
       ],
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },      
     });
     if (!dataReviews) {
       res.status(404).send({ errorMsg: "There are no reviews available." });
