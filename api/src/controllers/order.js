@@ -89,7 +89,7 @@ const getUserOrdersServer = async (req, res) => {
       ],
     });
     if (!Orders.length) {
-      return res.status(404).send({ errorMsg: "You don't have orders." });
+      return res.status(200).send({ successMsg: "You don't have orders yet." });
     }
     Orders = Orders.map((Order) => {
       return {
@@ -100,7 +100,8 @@ const getUserOrdersServer = async (req, res) => {
         user: Order.User.name + " " + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
-        shipping_address: activeOrder.shipping_address,
+        // shipping_address: activeOrder.shipping_address,
+        shipping_address: Order.shipping_address,
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
@@ -120,6 +121,7 @@ const getUserOrdersServer = async (req, res) => {
 
     res.status(200).send({ successMsg: "Here are your orders.", data: Orders });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -253,17 +255,17 @@ const getActiveOrder = async (req, res) => {
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image", "price"],
+              attributes: ["name", "id", "image", "price","stock"],
             },
           ],
         },
       ],
     });
-    if (!activeOrder) {
-      return res
-        .status(404)
-        .send({ errorMsg: "You don't have an active order." });
-    }
+    // if (!activeOrder) {
+    //   return res
+    //     .status(404)
+    //     .send({ errorMsg: "You don't have an active order." });
+    // }
     activeOrder = {
       id: activeOrder.id,
       total_amount: activeOrder.total_amount,
@@ -276,22 +278,24 @@ const getActiveOrder = async (req, res) => {
       details:
         activeOrder.Order_details.length > 0
           ? activeOrder.Order_details.map((detail) => {
-            return {
-              id: detail.id,
-              amount: detail.amount,
-              quantity: detail.quantity,
-              productName: detail.Product.name,
-              productId: detail.Product.id,
-              image: detail.Product.image,
-              price: detail.Product.price,
-            };
-          })
+              return {
+                id: detail.id,
+                amount: detail.amount,
+                quantity: detail.quantity,
+                productName: detail.Product.name,
+                productId: detail.Product.id,
+                image: detail.Product.image,
+                price: detail.Product.price,
+                stock: detail.Product.stock
+              };
+            })
           : [],
     };
     res
       .status(200)
       .send({ successMsg: "Here is your order.", data: activeOrder });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -302,7 +306,7 @@ const getActiveOrder = async (req, res) => {
 const addProductsOrder = async (req, res) => {
   const id = req.userID;
   try {
-    const { ProductId } = req.body;
+    const {ProductId}  = req.body;
     if (!ProductId) {
       return res.status(404).send({ errorMsg: "Missing product ID." });
     } else {
@@ -358,6 +362,7 @@ const addProductsOrder = async (req, res) => {
       }
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send({ errorMsg: error.message });
   }
 };
@@ -414,7 +419,7 @@ const removeProductsOrder = async (req, res) => {
 const deleteProductsOrder = async (req, res) => {
   try {
     const id = req.userID;
-    const { ProductId } = req.body;
+    const {ProductId}  = req.params;
     if (!ProductId) {
       return res.status(404).send({ errorMsg: "Missing product ID" });
     } else {
@@ -573,8 +578,9 @@ const updatePaypalOrder = async (req, res) => {
   let { paymentMethod, shippingPrice, taxPrice, orderIdPayment, email_address } = req.body;
   try {
     let orderPaypal = await Order.findOne({
-      where: { id, },
+      where: { id },
     });
+    console.log(orderPaypal);
     if (!orderPaypal) {
       res.status(401).send({ message: "Order Not Found" });
     } else {

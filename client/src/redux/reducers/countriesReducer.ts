@@ -11,7 +11,6 @@ const INITIAL_STATE = {
 export const countriesReducer = (state: COUNTRIES = INITIAL_STATE, action: CountriesActions): COUNTRIES => {
     switch (action.type) {
         case TYPES_COUNTRIES.GET_COUNTRIES:
-            console.log(action.payload)
             let ordedCountries: ICountries[] = action.payload.sort((
                 a: ICountries,
                 b: ICountries

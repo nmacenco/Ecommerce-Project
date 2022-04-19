@@ -18,6 +18,7 @@ const UserProfile = () => {
   useEffect(() => {
     dispatch(getSingleUser(userInStorage.token));
   }, []);
+  console.log(userInStorage.google)
 
   return (
     <Container>
@@ -33,9 +34,11 @@ const UserProfile = () => {
             {/* <p className="card-text">Billing adress : {userDetail.billing_address}</p> */}
             {/* <p className="card-text mb-5">Shipping Adress: {userDetail.default_shipping_address}</p> */}
             <ButtonBox className="d-flex flex-column flex-lg-row justify-content-around ">
-              <Link to={"/resetpwd"} className="btn btn-primary">
-                Edit Password
-              </Link>
+              {
+                !userInStorage.google && <Link to={"/resetpwd"} className="btn btn-primary">
+                  Edit Password
+                </Link>
+              }
               <Link
                 to={`/editUser/${userInStorage.token}`}
                 className="btn btn-primary mt-2 mt-lg-0"
