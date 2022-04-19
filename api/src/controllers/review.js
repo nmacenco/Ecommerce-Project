@@ -25,6 +25,7 @@ const createReview = async (req, res) => {
             .json({ errorMsg: "An error happend adding the question" });
     }
   } catch (error) {
+    console.log(error)
     res.status(500).send({ errorMsg: error.message });
   }
 };

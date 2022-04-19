@@ -24,10 +24,10 @@ export const getOrdersUser = (token: string) => {
   }
 };
 
-export const createOrderUser = (token: string, cart: ProductCart[]) => {
+export const createOrderUser = (token: string, allProductsOrder: ProductCart[]) => {
   try {
     return async (dispatch: Dispatch) => {
-      await axios.post(URL, cart, {
+      await axios.post(URL, allProductsOrder, {
         headers: {
           "auth-token": token,
         },

@@ -1,6 +1,10 @@
 
 import styled from 'styled-components';
 
+export const Container = styled.div`
+max-width: 700px;
+`
+
 export const FormRewie = styled.form`
   display: flex;
   flex-direction: column;

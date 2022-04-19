@@ -88,9 +88,9 @@ const getUserOrdersServer = async (req, res) => {
         },
       ],
     });
-    if (!Orders.length) {
-      return res.status(200).send({ successMsg: "You don't have orders yet." });
-    }
+    // if (!Orders.length) {
+    //   return res.status(404).send({ errorMsg: "You don't have orders." });
+    // }
     Orders = Orders.map((Order) => {
       return {
         id: Order.id,
@@ -260,11 +260,11 @@ const getActiveOrder = async (req, res) => {
         },
       ],
     });
-    // if (!activeOrder) {
-    //   return res
-    //     .status(404)
-    //     .send({ errorMsg: "You don't have an active order." });
-    // }
+    if (!activeOrder) {
+      return res
+        .status(404)
+        .send({ errorMsg: "You don't have an active order." });
+    }
     activeOrder = {
       id: activeOrder.id,
       total_amount: activeOrder.total_amount,

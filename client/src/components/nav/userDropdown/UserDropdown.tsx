@@ -5,6 +5,7 @@ import { State } from "../../../redux/reducers";
 import { Link, useNavigate } from "react-router-dom";
 import { LogoutUser } from "../../../redux/actions/user";
 import { clearCart } from "../../../redux/actions/cart";
+import swal from "sweetalert";
 
 const UserDropdown = () => {
   const dispatch = useDispatch()
@@ -17,6 +18,9 @@ const UserDropdown = () => {
     dispatch(clearCart());
     localStorage.removeItem('cart')
     navigate('/products')
+    swal({
+      title: "Logged out.",
+    });
   };
 
   return (

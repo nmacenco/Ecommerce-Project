@@ -29,6 +29,7 @@ import About from "./components/nav/about/About";
 import OrdersAdmin from "./components/admin/ordersAdmin/OrdersAdmin";
 import ShippingAddressForm from "./components/checkout/shippingAddress/shippingAddressForm";
 import PreviewOrder from "./components/checkout/previewOrder/PreviewOrder";
+import NewReview from "./components/users/ordersHistory/orderRow/newReview/NewReview";
 
 
 
@@ -73,6 +74,7 @@ function App(): JSX.Element {
           <Route path="/ordersAdmin" element={<OrdersAdmin />} />
           <Route path="/shippingAddress" element={<ShippingAddressForm />} />
           <Route path="/previewOrder" element={<PreviewOrder />} />
+          <Route path="/newReview/:userId/:productId" element={<NewReview />} />
         </Routes>
       </BrowserRouter>
     </div>
