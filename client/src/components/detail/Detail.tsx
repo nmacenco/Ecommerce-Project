@@ -63,8 +63,8 @@ export default function Detail() {
 
     return () => {
       dispatch(deleteProductDetail());
-      dispatch(resetFilterProducts());
-      dispatch(resetPoducts());
+      // dispatch(resetFilterProducts());
+      // dispatch(resetPoducts());
 
     };
   }, [wishes]);
@@ -114,7 +114,7 @@ export default function Detail() {
 
   return (
     <DetailContainer>
-      {console.log('renderizado')}
+      {/* {alert('renderizado')} */}
       {product.name.length > 0 ? (
         <Box>
           <div>
