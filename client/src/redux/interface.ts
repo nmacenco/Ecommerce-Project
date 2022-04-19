@@ -162,6 +162,7 @@ export interface Order {
   user: string;
   billing_address: string;
   details: any[];
+  userID: number;
 }
 
 export interface Question {
