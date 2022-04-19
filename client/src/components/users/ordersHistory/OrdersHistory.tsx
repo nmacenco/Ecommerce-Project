@@ -19,91 +19,7 @@ const OrdersHistory = (): JSX.Element => {
 
   const filteredOrders = Orders.filter(
     (order: Order) => order.status !== "PENDING"
-  );
-    console.log(filteredOrders);
-    
-  const objOrder = [
-    {
-      id: 1,
-      total_amount: 125,
-      email_address: 'prueba@hotmail.com',
-      status: 'Confirmed',
-      user: 'Prueba Pruebita',
-      billing_address: 'Una calle me separa',
-      detail: [{
-        id: 2,
-        name: "Notebook",
-        quantity: 3,
-        amount: 500,
-        image: "https://thotcomputacion.com.uy/wp-content/uploads/2015/07/ath.jpg"
-      }, {
-        id: 4,
-        name: "PC",
-        quantity: 1,
-        amount: 2900,
-        image: "https://thotcomputacion.com.uy/wp-content/uploads/2015/07/ath.jpg"
-      }]
-
-    },
-    {
-      id: 2,
-      total_amount: 125,
-      email_address: 'prueba@hotmail.com',
-      status: 'Confirmed',
-      user: 'Prueba Pruebita',
-      billing_address: 'Una calle me separa',
-      detail: [
-
-      ]
-
-    },
-    {
-      id: 3,
-      total_amount: 125,
-      email_address: 'prueba@hotmail.com',
-      status: 'Confirmed',
-      user: 'Prueba Pruebita',
-      billing_address: 'Una calle me separa',
-      detail: [
-
-      ]
-
-    },
-    {
-      id: 4,
-      total_amount: 125,
-      email_address: 'prueba@hotmail.com',
-      status: 'Confirmed',
-      user: 'Prueba Pruebita',
-      billing_address: 'Una calle me separa',
-      detail: [
-
-      ]
-
-    },
-    {
-      id: 5,
-      total_amount: 125,
-      email_address: 'prueba@hotmail.com',
-      status: 'Confirmed',
-      user: 'Prueba Pruebita',
-      billing_address: 'Una calle me separa',
-      detail: [{
-        id: 2,
-        name: "Notebook",
-        quantity: 3,
-        amount: 500,
-        image: "https://thotcomputacion.com.uy/wp-content/uploads/2015/07/ath.jpg"
-      }, {
-        id: 4,
-        name: "PC",
-        quantity: 1,
-        amount: 2900,
-        image: "https://thotcomputacion.com.uy/wp-content/uploads/2015/07/ath.jpg"
-      }]
-
-    },
-  ]
+  );   
 
   return (
     <Container>
@@ -125,6 +41,7 @@ const OrdersHistory = (): JSX.Element => {
             return <OrderRow
               key={order.id}
               id={order.id}
+              userId={order.userID}
               totalAmount={order.total_amount}
               status={order.status}
               billing_address={order.billing_address}

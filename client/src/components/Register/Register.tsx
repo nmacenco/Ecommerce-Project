@@ -11,6 +11,7 @@ import swal from "sweetalert";
 import GoogleLogin from "react-google-login";
 import { getPendingOrder } from "../../redux/actions/cart";
 import { createOrderUser } from "../../redux/actions/ordersUser";
+import { setPage } from "../../redux/actions/setPage";
 
 interface Inputs {
   name: string;
@@ -52,7 +53,13 @@ const Register = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(getCountries());
+    dispatch(setPage(0));
+    return () => {
+      dispatch(setPage(1));
+    };
+
   }, []);
+
 
   const FormChange = (event: any) => {
     event.preventDefault();
@@ -125,10 +132,20 @@ const Register = (): JSX.Element => {
     }));
   }
 
-  if (user) {
-    navigate('/products');
-    dispatch(createOrderUser(user.token, productsCart));
-    dispatch(getPendingOrder(user.token));
+  // if (user) {
+  //   navigate('/products');
+  //   dispatch(createOrderUser(user.token, productsCart));
+  //   dispatch(getPendingOrder(user.token));
+  // }
+  const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
+    if (user) {
+     console.log(user);
+      dispatch(createOrderUser(user.token, productsCart));
+    } 
+    setTimeout (()=>{
+      navigate("/products");
+      
+    },200)
   }
   
   const rejectGoogle = (error: any) => {
@@ -237,6 +254,13 @@ const Register = (): JSX.Element => {
           Login
         </Link>
       </div>
+
+      <button
+        className="btn btn-primary button-links link-Router mx-2"
+        onClick={CreateOrder}
+        >
+        Go back to Products
+      </button>
     </Form>
   );
 };

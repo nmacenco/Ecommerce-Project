@@ -24,10 +24,10 @@ export const getOrdersUser = (token: string) => {
   }
 };
 
-export const createOrderUser = (token: string, cart: ProductCart[]) => {
+export const createOrderUser = (token: string, allProductsOrder: ProductCart[]) => {
   try {
     return async (dispatch: Dispatch) => {
-      await axios.post(URL, cart, {
+      await axios.post(URL, allProductsOrder, {
         headers: {
           "auth-token": token,
         },
@@ -55,6 +55,21 @@ export const getcurrentOrder = (token: string) => {
     console.log(error);
   }
 };
+export const resetCurrentOrder = () => {
+  try {
+    return async (dispatch: Dispatch) => {
+
+      return dispatch({
+        type: TYPES_ORDERS_USER.RESET_ORDER,
+        payload: {},
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 
 export const updateOrderUser = (
   id: any,

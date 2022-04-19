@@ -90,6 +90,7 @@ export const reducerProduct = (
       const newWish = state.products.find(
         (product) => product.id == action.payload
       );
+      console.log("PRODUCTS");
       return {
         ...state,
         wishList: state.wishList.concat(newWish),

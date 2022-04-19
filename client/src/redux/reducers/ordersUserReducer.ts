@@ -21,6 +21,11 @@ export const ordersUserReducer = (state: ORDERS_USER = INITIAL_STATE, action: Us
                 ...state , 
                 activeOrder : action.payload 
             }
+        case TYPES_ORDERS_USER.RESET_ORDER:
+            return {
+                ...state , 
+                activeOrder : action.payload 
+            }
         default: {
             return {
                 ...state
