@@ -1,5 +1,5 @@
 const { Order, User, Order_detail, Product } = require("../db");
-const { sendMailOrder,sendMailState } = require("./mailer");
+const { sendMailOrder, sendMailState } = require("./mailer");
 require("dotenv").config();
 const {
   ORDER_STATUS_PENDING,
@@ -45,16 +45,16 @@ const getOrders = async (req, res) => {
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-              return {
-                id: detail.id,
-                amount: detail.amount,
-                quantity: detail.quantity,
-                productName: detail.Product.name,
-                productId: detail.Product.id,
-                image: detail.Product.image,
-                price: detail.Product.price,
-              };
-            })
+                return {
+                  id: detail.id,
+                  amount: detail.amount,
+                  quantity: detail.quantity,
+                  productName: detail.Product.name,
+                  productId: detail.Product.id,
+                  image: detail.Product.image,
+                  price: detail.Product.price,
+                };
+              })
             : [],
       };
     });
@@ -67,7 +67,7 @@ const getOrders = async (req, res) => {
 const getUserOrdersServer = async (req, res) => {
   try {
     const id = req.userID;
-    let Orders = await Order.findAll({  
+    let Orders = await Order.findAll({
       where: {
         UserId: id,
       },
@@ -104,16 +104,16 @@ const getUserOrdersServer = async (req, res) => {
         details:
           Order.Order_details.length > 0
             ? Order.Order_details.map((detail) => {
-              return {
-                id: detail.id,
-                amount: detail.amount,
-                quantity: detail.quantity,
-                productName: detail.Product.name,
-                productId: detail.Product.id,
-                image: detail.Product.image,
-                price: detail.Product.price,
-              };
-            })
+                return {
+                  id: detail.id,
+                  amount: detail.amount,
+                  quantity: detail.quantity,
+                  productName: detail.Product.name,
+                  productId: detail.Product.id,
+                  image: detail.Product.image,
+                  price: detail.Product.price,
+                };
+              })
             : [],
       };
     });
@@ -129,9 +129,9 @@ const getUserOrdersServer = async (req, res) => {
 //Possible status: PENDING BILLED DELIVERED COMPLETED
 //Fine
 const createOrder = async (req, res) => {
-  // const { UserId } = req.params;
+  const { UserId } = req.params;
 
-  const UserId = req.userID;
+  // const UserId = req.userID;
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
@@ -155,10 +155,11 @@ const createOrder = async (req, res) => {
       }
       for (let product of allProductsOrder) {
         const amount = product.count * product.price;
+
         await createOrderDetail(
           newOrder.id,
-          product.ProductId,
-          (queantity = product.count),
+          product.productId,
+          (quantity = product.count),
           amount
         );
       }
@@ -174,6 +175,7 @@ const createOrder = async (req, res) => {
       res.status(201).send({
         successMsg: "Order successfully created/updated.",
         data: newOrder,
+        orderDetails,
       });
     }
   } catch (error) {
@@ -183,7 +185,7 @@ const createOrder = async (req, res) => {
 
 const updateOrderState = async (req, res) => {
   const id = req.params.id;
-  let { status,email_address } = req.body;
+  let { status, email_address } = req.body;
   try {
     if (!id) {
       res.status(404).send({ errorMsg: "Missing id." });
@@ -195,8 +197,8 @@ const updateOrderState = async (req, res) => {
       if (!orderState) {
         res.status(404).send({ errorMsg: "order not found" });
       } else {
-        if (status === ORDER_STATUS_DISPATCHED){
-         await sendMailState(
+        if (status === ORDER_STATUS_DISPATCHED) {
+          await sendMailState(
             email_address,
             "Dispatch Order advice",
             `<p>Your order number ${id} has been dispatched. </p>`
@@ -376,7 +378,7 @@ const removeProductsOrder = async (req, res) => {
         id: ProductId,
       },
     });
-    const activeUserOrder = await Order.findOne({ 
+    const activeUserOrder = await Order.findOne({
       where: {
         UserId: id,
         status: "PENDING",
@@ -463,7 +465,6 @@ const deleteProductsOrder = async (req, res) => {
 
 //Fine
 const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
-  console.log(quantity);
   try {
     let product = await Product.findOne({
       where: {
@@ -554,16 +555,16 @@ const getUserOrders = async (id) => {
           detail:
             Order.Order_details.length > 0
               ? Order.Order_details.map((detail) => {
-                return {
-                  id: detail.id,
-                  amount: detail.amount,
-                  quantity: detail.quantity,
-                  productName: detail.Product.name,
-                  productId: detail.Product.id,
-                  image: detail.Product.image,
-                  price: detail.Product.price,
-                };
-              })
+                  return {
+                    id: detail.id,
+                    amount: detail.amount,
+                    quantity: detail.quantity,
+                    productName: detail.Product.name,
+                    productId: detail.Product.id,
+                    image: detail.Product.image,
+                    price: detail.Product.price,
+                  };
+                })
               : [],
         };
       });
@@ -576,10 +577,28 @@ const getUserOrders = async (id) => {
 
 const updatePaypalOrder = async (req, res) => {
   let id = req.params.id;
-  let { paymentMethod, shippingPrice, taxPrice, orderIdPayment, email_address } = req.body;
+  let {
+    paymentMethod,
+    shippingPrice,
+    taxPrice,
+    orderIdPayment,
+    email_address,
+  } = req.body;
   try {
     let orderPaypal = await Order.findOne({
-      where: { id, },
+      where: { id },
+      include: [
+        {
+          model: Order_detail,
+          attributes: ["amount", "quantity"],
+          include: [
+            {
+              model: Product,
+              attributes: ["name", "id", "stock", "price"],
+            },
+          ],
+        },
+      ],
     });
     if (!orderPaypal) {
       res.status(401).send({ message: "Order Not Found" });
@@ -594,6 +613,17 @@ const updatePaypalOrder = async (req, res) => {
         orderIdPayment: orderIdPayment,
         isDelivered: false,
       });
+      // console.log(orderPaypal.Order_details)
+      orderPaypal.Order_details.forEach(async (detail) => {
+        let orderDetail = {
+              productId: detail.Product.id,
+              stock: detail.Product.stock,
+        };
+        await updateStockproducts(
+          orderDetail.productId,
+          orderDetail.stock
+        );
+      });
 
       await sendMailOrder(
         email_address,
@@ -605,6 +635,31 @@ const updatePaypalOrder = async (req, res) => {
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
+  }
+};
+
+const updateStockproducts = async (productId, quantity) => {
+  const productupdate = await Product.findOne({
+    where: {
+      id: productId,
+    },
+  });
+  if (!productupdate) {
+    throw new Error("Product not found");
+  }
+  if (productupdate.stock < quantity) {
+    await productupdate.update({
+      stock: productupdate.stock - productupdate.stock,
+    });
+  } else {
+    await productupdate.update({
+      stock: productupdate.stock - quantity,
+    });
+  }
+  if (productupdate.stock <= 0) {
+    await productupdate.update({
+      isActive: false,
+    });
   }
 };
 module.exports = {
