@@ -71,7 +71,9 @@ export enum TYPES_COUNTRIES {
 
 export enum TYPES_ORDERS_USER {
   GET_ORDERS = "GET_ORDERS_USER",
-  GET_ORDER = 'GET_ORDER_USER'
+  GET_ORDER = 'GET_ORDER_USER',
+  RESET_ORDER = 'RESET_ORDER'
+
 }
 
 //=======================
@@ -444,6 +446,10 @@ export interface GET_ORDER_USER {
   type: TYPES_ORDERS_USER.GET_ORDER;
   payload: Order;
 }
+export interface RESET_ORDER {
+  type: TYPES_ORDERS_USER.RESET_ORDER;
+  payload: {};
+}
 
 
 export interface AXIOSDATA {
@@ -505,4 +511,4 @@ export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART  | GET_ACTIV
 
 export type CountriesActions = GET_COUNTRIES;
 
-export type UserOrdersActions = GET_ORDERS_USER |GET_ORDER_USER;
+export type UserOrdersActions = GET_ORDERS_USER |GET_ORDER_USER | RESET_ORDER;

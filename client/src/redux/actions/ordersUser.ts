@@ -55,6 +55,21 @@ export const getcurrentOrder = (token: string) => {
     console.log(error);
   }
 };
+export const resetCurrentOrder = () => {
+  try {
+    return async (dispatch: Dispatch) => {
+
+      return dispatch({
+        type: TYPES_ORDERS_USER.RESET_ORDER,
+        payload: {},
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 
 export const updateOrderUser = (
   id: any,
