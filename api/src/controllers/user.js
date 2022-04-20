@@ -5,6 +5,8 @@ const sequelize = require("sequelize");
 const { sendMailPassword } = require("./mailer");
 require("dotenv").config();
 
+const URL_PWD = process.env.USER_PWD_CHANGE_URL || "http://localhost:3000";
+
 const createUser = async (req, res) => {
   try {
     let { name, surname, email, password, CountryId } = req.body;
@@ -36,7 +38,7 @@ const createUser = async (req, res) => {
         await sendMailPassword(
           email,
           "Please activate your account to continue.",
-          `<p>Click <a href="http://localhost:3000/validateAccount/${token}">here</a> to activate your account.</p>`
+          `<p>Click <a href="${URL_PWD}/validateAccount/${token}">here</a> to activate your account.</p>`
         );
         res.status(201).send({
           successMsg: "User activation email sent.",
@@ -350,7 +352,7 @@ const sendPasswordResetMail = async (req, res) => {
     await sendMailPassword(
       email,
       "Required password reset",
-      `<p>Click <a href='http://localhost:3000/sessions/recover/${token}>here</a> to reset your password</p>`
+      `<p>Click <a href='${URL_PWD}/sessions/recover/${token}>here</a> to reset your password</p>`
     );
     res.status(200).send({ successMsg: "Password reset sent." });
   } catch (error) {
@@ -377,7 +379,7 @@ const sendForcedPasswordResetMail = async (req, res) => {
     await sendMailPassword(
       email,
       "Required password reset",
-      `<p>Click <a href="http://localhost:3000/sessions/recover/${token}">here</a> to reset your password</p>`
+      `<p>Click <a href="${URL_PWD}/sessions/recover/${token}">here</a> to reset your password</p>`
     );
     res.status(200).send({ successMsg: "Password reset sent." });
   } catch (error) {
