@@ -8,6 +8,8 @@ import { getcurrentOrder, updatePayPal } from "../../../redux/actions/ordersUser
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { useNavigate } from "react-router";
 import { clearCart } from "../../../redux/actions/cart";
+import { resetPoducts } from "../../../redux/actions/products";
+import { CheckStock } from "../../cart/CheckStock";
 // import { getError } from '../helpers/utils';
 
 export default function PayPalCheckoutButtons(props: any) {
@@ -20,9 +22,45 @@ export default function PayPalCheckoutButtons(props: any) {
   const [paidFor, setPaidFor] = useState(false);
   const navigate = useNavigate()
 
+
+  const productsCart = useSelector((state: State) => state.cart.cart);
+  const allProducts = useSelector((state: State) => state.products.products);
+
   useEffect(() => {
     loadPayPalScript(process.env.REACT_APP_PAYPAL_CLIENT_ID);
   }, []);
+
+
+
+  // function createOrder(data: any, actions: any) {
+  //   let currentStock = CheckStock(productsCart , allProducts) ;
+  //   if(currentStock.length) {
+  //     return  swal({
+  //           title: "These products are out of stock",
+  //           text: `${currentStock.map( prodName => prodName + ', ')}` ,
+  //           icon: "error",
+  //           buttons: {
+    
+  //             confirm: {
+  //               text: "OK",
+  //               value: true,
+  //               visible: true,
+  //               closeModal: true,
+  //             },
+  //           },
+  //         })
+  //   } else {
+  //     return actions.order.create({
+  //       purchase_units: [
+  //         {
+  //           amount: { value: activeOrder.total_amount }, // agregar el monto correspondiente
+  //         },
+  //       ],
+  //     });
+
+  //   }
+  // }
+
 
   function createOrder(data: any, actions: any) {
     return actions.order.create({
@@ -33,6 +71,8 @@ export default function PayPalCheckoutButtons(props: any) {
       ],
     });
   }
+
+
   const onApprove = async (data: any, actions: any) => {
     try {
       const order = await actions.order.capture();
@@ -61,6 +101,7 @@ export default function PayPalCheckoutButtons(props: any) {
       setTimeout(()=> {
         dispatch(clearCart());
         localStorage.removeItem('cart')
+        dispatch(resetPoducts());
         navigate('/products')
       } , 500)
       setPaidFor(true);
@@ -136,6 +177,7 @@ export default function PayPalCheckoutButtons(props: any) {
           tagline: false,
           shape: "pill"
       }}
+      // onClick={CheckStock}
       createOrder={createOrder}
       onApprove={onApprove}
       onCancel={onCancel}

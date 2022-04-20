@@ -3,8 +3,8 @@ import { Dispatch } from "redux";
 import { TYPES_DETAIL } from "../interface";
 import swal from "sweetalert";
 
-const URL = "http://localhost:3001/api/products/";
-const URL_BLOCKS = "http://localhost:3001/api/";
+const URL = "/api/products/";
+const URL_BLOCKS = "/api/";
 
 export const getProductDetail = (id: string | undefined) => {
   return async (dispatch: Dispatch) => {
@@ -70,7 +70,6 @@ export const createAnswer = (
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-
       const response = await axios.put(URL_BLOCKS + "questions", {
         id,
         ProductId,
@@ -100,7 +99,8 @@ export const createReview = (
   description: string,
   ProductId: number,
   UserId: number,
-  stars: number
+  stars: number,
+  cb = () => {}
 ) => {
   return async (dispatch: Dispatch) => {
     try {
@@ -112,21 +112,11 @@ export const createReview = (
         stars,
       });
       if (response.status == 200 || response.status == 201) {
-        dispatch({
-          type: TYPES_DETAIL.CREATE_REWIE,
-          payload: {
-            review: {
-              name: "",
-              stars,
-              description,
-              title,
-            },
-          },
-        });
         swal({
           title: "Thanks for your review!",
           icon: "success",
         });
+        cb();
       } else {
         console.log("ERROR: ", response.data);
       }

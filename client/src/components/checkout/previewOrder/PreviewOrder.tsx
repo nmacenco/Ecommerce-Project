@@ -12,59 +12,6 @@ import {
   ItemsTaxShipp,
 } from "./PreviewOrderStyles";
 
-// const activeOrder = {
-//   id: 25,
-//   total_amount: 1254,
-//   email_address: "nico@gmail.com",
-//   status: "Pending",
-//   user: "Nicolas Macenco",
-//   userID: 5,
-//   billing_address: "billingAddress",
-//   shipping_address: "la direccion mas cheta de todas ",
-//   details: [
-//     {
-//       id: 15,
-//       amount: 253,
-//       quantity: 2,
-//       productName: "Mouse",
-//       productId: 254,
-//       image:
-//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-//       price: 41,
-//     },
-//     {
-//       id: 15,
-//       amount: 253,
-//       quantity: 2,
-//       productName: "Mouse",
-//       productId: 254,
-//       image:
-//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-//       price: 41,
-//     },
-//     {
-//       id: 15,
-//       amount: 253,
-//       quantity: 2,
-//       productName: "Mouse",
-//       productId: 254,
-//       image:
-//         "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-//       price: 41,
-//     },
-//     // {
-//     //   id: 15,
-//     //   amount: 253,
-//     //   quantity: 2,
-//     //   productName: "Mouse",
-//     //   productId: 254,
-//     //   image:
-//     //     "https://compragamer.net/pga/imagenes_publicadas/compragamer_Imganen_general_17898_Procesador_AMD_Ryzen_5_1600_AF_Zen__12nm_AM4_Wraith_Stealth_Cooler_187bb9ab-grn.jpg",
-//     //   price: 41,
-//     // },
-//   ],
-// };
-
 export default function PreviewOrder(): JSX.Element {
   const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
   const dispatch = useDispatch()
@@ -88,7 +35,7 @@ export default function PreviewOrder(): JSX.Element {
   }, [dispatch]);
   return (
     <Previewcontainer>
-      <h1>Preview Order</h1>
+      <h3 className="mt-3 mb-5">Preview Order</h3>
       {/* <ColumnsContainer className="row justify-content-center w-100"> */}
       <ColumnsContainer>
         <div className=" col-6">
@@ -103,21 +50,6 @@ export default function PreviewOrder(): JSX.Element {
               </Link>
             </div>
           </div>
-          <div className="card bg-secondary mb-3 ">
-            <div className="card-header">Status</div>
-            <div className="card-body">
-              {/* <h4 className="card-title">Secondary card title</h4> */}
-              <p className="card-text"> {activeOrder.status} </p>
-
-            </div>
-          </div>
-          {/* <div className="card bg-secondary mb-3 w-50">
-        <div className="card-header">Payment</div>
-        <div className="card-body">
-          <p className="card-text"> {activeOrder.user} </p>
-          <p className="card-text"> {activeOrder.shipping_address} </p>
-        </div>
-      </div> */}
           <div className="card bg-secondary mb-3 ">
             <div className="card-header">Items</div>
             <table className="table table-hover ">

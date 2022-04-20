@@ -65,8 +65,6 @@ const Login = (): JSX.Element => {
             icon: "success",
           });
           setUserLoaded(true);
-
-
         }
       })
     );
@@ -144,7 +142,7 @@ const Login = (): JSX.Element => {
       </div>
       <Forgot
         className="btn btn-link p-0 m-2 text-decoration-none"
-      // onClick={forgotPassword}
+      onClick={forgotPassword}
       >
         Forgot Password?
       </Forgot>

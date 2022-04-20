@@ -6,85 +6,11 @@ import { Container, Table } from "./OrderAdminStyles";
 import { State } from "../../../redux/reducers";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
-// const ordenes = [
-//   {
-//     id: 1,
-//     total_amount: 125,
-//     email_address: 'prueba@hotmail.com',
-//     status: 'Confirmed',
-//     user: 'Prueba Pruebita',
-//     billing_address: 'Una calle me separa',
-//     detail: [{
-//       id: 2,
-//       name: "Notebook",
-//       quantity: 3,
-//       amount: 500,
-//       image: "https://thotcomputacion.com.uy/wp-content/uploads/2015/07/ath.jpg"
-//     }, {
-//       id: 4,
-//       name: "PC",
-//       quantity: 1,
-//       amount: 2900,
-//       image: "https://thotcomputacion.com.uy/wp-content/uploads/2015/07/ath.jpg"
-//     }]
-
-//   },
-//   {
-//     id: 2,
-//     total_amount: 125,
-//     email_address: 'prueba@hotmail.com',
-//     status: 'Confirmed',
-//     user: 'Prueba Pruebita',
-//     billing_address: 'Una calle me separa',
-//     detail: [
-
-//     ]
-
-//   },
-//   {
-//     id: 3,
-//     total_amount: 125,
-//     email_address: 'prueba@hotmail.com',
-//     status: 'Confirmed',
-//     user: 'Prueba Pruebita',
-//     billing_address: 'Una calle me separa',
-//     detail: [
-
-//     ]
-
-//   },
-//   {
-//     id: 4,
-//     total_amount: 125,
-//     email_address: 'prueba@hotmail.com',
-//     status: 'Confirmed',
-//     user: 'Prueba Pruebita',
-//     billing_address: 'Una calle me separa',
-//     detail: [
-
-//     ]
-
-//   },
-//   {
-//     id: 5,
-//     total_amount: 125,
-//     email_address: 'prueba@hotmail.com',
-//     status: 'Confirmed',
-//     user: 'Prueba Pruebita',
-//     billing_address: 'Una calle me separa',
-//     detail: [
-
-//     ]
-
-//   },
-// ]
-const statusArray: string[] = ['BILLED', 'CANCELED', 'DISPATCHED', 'FINISHED']
-
-
 const OrdersAdmin = (): JSX.Element => {
   const dispatch = useDispatch()
   const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
-  const orders = useSelector((state: State) => state.ordersAdmin.orders);
+  const allOrders = useSelector((state: State) => state.ordersAdmin.orders);
+  const orders = allOrders.filter(order => order.status !== "PENDING")
 
   useEffect(() => {
     dispatch(getOrdersAdmin(userInStorage!.token))
@@ -99,11 +25,13 @@ const OrdersAdmin = (): JSX.Element => {
     dispatch(orderHistoryStatus(e.target.value))
   }
 
+  const statusArray: string[] = ['BILLED', 'CANCELED', 'DISPATCHED', 'FINISHED']
+
   return (
     <Container>
-      {/* <div className="container d-flex flex-column"> */}
       <div className="accordion w-75" id="accordionExample">
         <h3 className="text-center mt-5">Admin Orders</h3>
+          {orders.length > 0 ? <>
         <div className="d-flex">
           <label className="input-group-text">Status: </label>
           <select
@@ -126,20 +54,19 @@ const OrdersAdmin = (): JSX.Element => {
               <th scope="col">DETAIL</th>
             </tr>
           </thead>
-          {orders.length > 0 &&
-            orders.map(order => {
-              return <OrderAdminRow
+            {orders.map(order => {
+                return <OrderAdminRow
                 key={order.id}
                 id={order.id}
                 total={order.total_amount}
                 email_address={order.email_address}
                 status={order.status}
                 details={order.details}
-                billing_address={order.billing_address}
-              />
-            })
-          }
+                billing_address={order.shipping_address}
+                />
+            })}
         </Table>
+        </> : <h5 className="text-center mt-5 pt-5">Not orders done yet.</h5>}
       </div>
 
     </Container>

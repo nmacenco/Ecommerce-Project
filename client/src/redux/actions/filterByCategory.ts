@@ -1,27 +1,7 @@
 
 import { Product, TYPES_PRODUCT } from "../interface";
 
-// export const chargeFilter = (value: Product[]) => {
-//   try {
-//     return ({
-//       type: TYPES_PRODUCT.CHARGE_FILTERS,
-//       payload: value
-//     })
-//   } catch (error) {
-//     alert(error);
-//   }
-// }
 
-// export const removeFilter = (event: string) => {
-//   try {
-//     return ({
-//       type: TYPES_PRODUCT.REMOVE_FILTER,
-//       payload: event
-//     })
-//   } catch (error) {
-//     alert(error);
-//   }
-// }
 
 export const filterProducts = (value: string) => {
   try {

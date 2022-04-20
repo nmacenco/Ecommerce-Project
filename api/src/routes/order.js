@@ -19,7 +19,6 @@ const orderRouter = express.Router();
 
 //user
 orderRouter.post("/auth/orders", isLoggedIn, createOrder); //a new product is added to the cart here
-// orderRouter.post("/auth/orders/:UserId", createOrder); //a new product is added to the cart here
 
 orderRouter.put("/auth/orders/info/:id", isLoggedIn, updateOrder);
 orderRouter.get("/auth/orders/user", isLoggedIn, getUserOrdersServer);
@@ -32,6 +31,7 @@ orderRouter.delete(
 );
 orderRouter.get("/auth/orders", isLoggedIn, getActiveOrder);
 orderRouter.put("/auth/orders/pay/:id", isLoggedIn, updatePaypalOrder);
+
 
 //admin
 orderRouter.put(

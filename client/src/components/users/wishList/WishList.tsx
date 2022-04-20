@@ -16,7 +16,6 @@ const WishList = (): JSX.Element => {
 
     useEffect(() => {
         if (user && !wishes.length) {
-            alert('Traendo los wishes')
             dispatch(getWish(user!.token));
         }
     }, [])
