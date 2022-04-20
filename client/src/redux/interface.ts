@@ -160,7 +160,7 @@ export interface Order {
   email_address: string;
   status: string;
   user: string;
-  billing_address: string;
+  shipping_address: string;
   details: any[];
   userID: number;
 }

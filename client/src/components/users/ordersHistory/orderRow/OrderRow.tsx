@@ -21,6 +21,7 @@ interface Props {
 }
 
 const OrderRow = ({ id, userId,totalAmount, status, billing_address, details }: Props): JSX.Element => {
+  console.log(status)
   return (
     <tbody>
       <tr>
@@ -37,10 +38,11 @@ const OrderRow = ({ id, userId,totalAmount, status, billing_address, details }: 
             <td><Link to={`/detail/${product.productId}`} className="text-decoration-none">{product.productName}</Link></td>
             <td>${product.amount}</td>
             <td>Quantity: {product.quantity}</td>
+            {status == "FINISHED" &&
             <td><Link to={`/newReview/${userId}/${product.productId}`} className="btn btn-primary btn-sm">
               Review
             </Link>
-            </td>
+            </td>}  
           </tr>
         })
       }

@@ -33,7 +33,6 @@ const OrdersHistory = (): JSX.Element => {
             <th scope="col">STATUS</th>
             <th scope="col">TOTAL</th>
             <th scope="col">ADDRESS</th>
-            <th scope="col">DETAIL</th>
           </tr>
         </thead>
         { filteredOrders &&
@@ -44,7 +43,7 @@ const OrdersHistory = (): JSX.Element => {
               userId={order.userID}
               totalAmount={order.total_amount}
               status={order.status}
-              billing_address={order.billing_address}
+              billing_address={order.shipping_address}
               details={order.details}
             />
           })
