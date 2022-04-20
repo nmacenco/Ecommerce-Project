@@ -17,7 +17,7 @@ import { getProducts, getWish, productNotFound, resetPoducts } from "../../../re
 import { setPage } from "../../../redux/actions/setPage";
 import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 import { getPendingOrder } from "../../../redux/actions/cart";
-import { getcurrentOrder } from "../../../redux/actions/ordersUser";
+import { createOrderUser, getcurrentOrder } from "../../../redux/actions/ordersUser";
 
 export interface ORDER {
   page: (numberOfPage: number) => void;
@@ -38,7 +38,7 @@ const Cards = (): JSX.Element => {
   const notFound = useSelector((state: State) => state.products.not_found);
   const user = useSelector((state: State) => state.user);
   const allSubcategories = useSelector((state: State) => state.categories.subcategories);
-
+  const productsCart = useSelector((state: State) => state.cart.cart);
   const page = (numberOfPage: number): void => {
     // setCurrentPage(numberOfPage);
     dispatch(setPage(numberOfPage))
@@ -71,8 +71,12 @@ const Cards = (): JSX.Element => {
     dispatch(getProducts());
 
     if (user) {
+      // dispatch(createOrderUser(user.token, productsCart));
       dispatch(getWish(user.token))
-      dispatch(getPendingOrder(user.token));
+      setTimeout( () => {
+        dispatch(getPendingOrder(user.token));
+
+      },300)
 
     }
 

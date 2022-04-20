@@ -11,6 +11,7 @@ import { GoogleLogin } from "react-google-login";
 import { createOrderUser } from "../../redux/actions/ordersUser";
 import swal from "sweetalert";
 import { getPendingOrder } from "../../redux/actions/cart";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 interface Inputs {
   email: string;
@@ -23,12 +24,15 @@ const Login = (): JSX.Element => {
   const [userLoaded, setUserLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
   const productsCart = useSelector((state: State) => state.cart.cart);
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
+  const [productsCarrito, setproductsCarrito] = useLocalStorage('cart', '')
 
   useEffect(() => {
     dispatch(setPage(0));
     dispatch(LogoutUser());
     return () => {
       dispatch(setPage(1));
+      console.log(user);
     };
   }, []);
 
@@ -61,45 +65,59 @@ const Login = (): JSX.Element => {
             icon: "success",
           });
           setUserLoaded(true);
+
+
         }
       })
     );
+
   };
 
-    const responseGoogle = (data: any) => {
-        const { email } = data.profileObj;
-        dispatch(LoginWithGoogle(email, (error) => {
-            if (error) {
-                swal({
-                    title: 'Opps! an error ocurred',
-                    text: error,
-                    icon: 'error'
-                })
-            } else {
-                swal({
-                    title: 'Successfully logged in',
-                    icon: 'success'
-                })
-                setUserLoaded(!userLoaded);
-            }
-        }))
-    }
-    const rejectGoogle = (error: any) => {
-        alert('Something happened.')
-    }
-
-    const forgotPassword = () => {
-        navigate("/emailReset");
-    };
-
-    let emailStyle = error.email ? "form-control is-invalid" : "form-control";
-    let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
-
-  if (user) {
-    dispatch(createOrderUser(user.token, productsCart));
-    dispatch(getPendingOrder(user.token));
-    navigate("/products");
+  const responseGoogle = (data: any) => {
+    const { email } = data.profileObj;
+    dispatch(LoginWithGoogle(email, (error) => {
+      if (error) {
+        swal({
+          title: 'Opps! an error ocurred',
+          text: error,
+          icon: 'error'
+        })
+      } else {
+        swal({
+          title: 'Successfully logged in',
+          icon: 'success'
+        })
+        setUserLoaded(!userLoaded);
+      }
+    }))
   }
+  const rejectGoogle = (error: any) => {
+    alert('Something happened.')
+  }
+
+  const forgotPassword = () => {
+    navigate("/emailReset");
+  };
+
+  let emailStyle = error.email ? "form-control is-invalid" : "form-control";
+  let passStyle = error.passUser ? "form-control is-invalid" : "form-control";
+
+  const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
+    if (user) {
+      console.log(user);
+      dispatch(createOrderUser(user.token, productsCart));
+    }
+    setTimeout(() => {
+      navigate("/products");
+
+    }, 200)
+  }
+
+
+  // if (user) {
+  //       navigate("/products");
+  // //  //    dispatch(createOrderUser(user.token, productsCart));
+  //  //    //     // dispatch(getPendingOrder(user.token));
 
   return (
     <Form title="Login">
@@ -126,7 +144,7 @@ const Login = (): JSX.Element => {
       </div>
       <Forgot
         className="btn btn-link p-0 m-2 text-decoration-none"
-        // onClick={forgotPassword}
+      // onClick={forgotPassword}
       >
         Forgot Password?
       </Forgot>
@@ -164,7 +182,16 @@ const Login = (): JSX.Element => {
           REGISTER
         </Link>
       </div>
+
+      <button
+        className="btn btn-primary button-links link-Router mx-2"
+        onClick={CreateOrder}
+      >
+        Keep Buying
+      </button>
     </Form>
+
+
   );
 };
 

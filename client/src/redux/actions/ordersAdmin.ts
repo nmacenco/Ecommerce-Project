@@ -6,7 +6,7 @@ import { TYPES_ADMIN } from "../interface";
 // import interfaces from '....'
 const URL = "http://localhost:3001/api";
 
-export const getOrdersAdmin = (token : string) => {
+export const getOrdersAdmin = (token: string) => {
   try {
     return async (dispatch: Dispatch) => {
       const allOrders = await axios.get(`${URL}/admin/orders`, {
@@ -50,4 +50,17 @@ export const updateOrderStatus = (token: string, status: STATUS, id: string) => 
     alert(error);
   }
 };
+
+export const orderHistoryStatus = (value: string) => {
+  try {
+    return async (dispatch: Dispatch) => {
+      return dispatch({
+        type: TYPES_ADMIN.O_ORDERS,
+        payload: value
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 

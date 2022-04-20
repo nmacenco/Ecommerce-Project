@@ -35,6 +35,7 @@ import NewReview from "./components/users/ordersHistory/orderRow/newReview/NewRe
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(FindUSer());
   }, []);
@@ -45,7 +46,7 @@ function App(): JSX.Element {
     <div className="App">
 
       <BrowserRouter>
-
+        
         <Nav />
         <Routes>
           <Route path="*" element={<Home />} />
