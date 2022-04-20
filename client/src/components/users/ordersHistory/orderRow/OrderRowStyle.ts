@@ -15,3 +15,8 @@ width:30px;
 export const Fourth = styled.td`
 width:10px;
 `
+
+export const Fifth = styled.td`
+width:10px;
+padding: 0 !important;
+`

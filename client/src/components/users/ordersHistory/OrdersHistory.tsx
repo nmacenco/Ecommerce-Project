@@ -32,6 +32,7 @@ const OrdersHistory = (): JSX.Element => {
           <tr>
             <th scope="col">DATE</th>
             <th scope="col">STATUS</th>
+            <th scope="col"></th>
             <th scope="col">TOTAL</th>
           </tr>
         </thead>
