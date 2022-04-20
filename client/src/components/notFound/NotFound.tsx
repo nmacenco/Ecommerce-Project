@@ -6,9 +6,10 @@ export interface NOT_FOUND {
     eliminateFilters: () => void;
 }
 
-const NotFound = () => {
+const NotFound = ({ eliminateFilters }: any) => {
     const dispatch = useDispatch()
     useEffect(() => {
+        eliminateFilters()
         // dispatch(productNotFound(true))
         setTimeout(function () {
             dispatch(productNotFound(false))

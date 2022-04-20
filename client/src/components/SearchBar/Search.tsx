@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import searchIcon from "../../icons/search-symbol.png";
-import { filterByBrand } from "../../redux/actions/filterByCategory";
 import { productNotFound, resetPoducts, selectProducts } from "../../redux/actions/products";
 import { setPage } from "../../redux/actions/setPage";
 import { Product } from "../../redux/interface";
@@ -32,11 +31,10 @@ const Search = (): JSX.Element => {
       dispatch(setPage(1));
       // dispatch(resetPoducts())
     } else {
-      dispatch(filterByBrand("nada"))
-      // dispatch(productNotFound(true));
-      // setTimeout(function () {
-      //   dispatch(productNotFound(false));
-      // }, 3000);
+      dispatch(productNotFound(true));
+      setTimeout(function () {
+        dispatch(productNotFound(false));
+      }, 3000);
     }
     setValue("");
   };
