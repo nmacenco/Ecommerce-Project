@@ -27,7 +27,7 @@ const OrdersHistory = (): JSX.Element => {
     <div className="accordion w-75" id="accordionExample">
     <h3 className="text-center mt-5">Orders History</h3>
       <Table className="table table-hover mt-5 ">
-        <thead>
+        <thead className="w-100">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">STATUS</th>

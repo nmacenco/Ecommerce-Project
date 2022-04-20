@@ -5,10 +5,10 @@ import { RESET_PASSWORD } from "../../components/users/ResetForgotPasswords";
 import { PWD } from "../../components/users/ResetPwd";
 import { TYPES_USER, User } from "../interface";
 import swal from "sweetalert";
-const URL_USER = "http://localhost:3001/api";
-const URLRESET = "http://localhost:3001/api/forgotPasswordReset";
-const URLRESET2 = "http://localhost:3001/api/submitPasswordReset";
-const URLVALIDATE = "http://localhost:3001/api/activateAccount/";
+const URL_USER = "/api";
+const URLRESET = "/api/forgotPasswordReset";
+const URLRESET2 = "/api/submitPasswordReset";
+const URLVALIDATE = "/api/activateAccount/";
 
 const USER_STORAGE = "USER_LOGGED";
 
@@ -171,7 +171,7 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
       console.log("Error en sign in google: ", error);
       swal({
         title: "Wrong data",
-        text: "It seems you didn't register yet",
+        text: "Some datais wrong",
         icon: "warning",
         dangerMode: true,
         buttons: {

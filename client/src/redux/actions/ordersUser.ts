@@ -4,7 +4,7 @@ import swal from "sweetalert";
 
 import { Product, ProductCart, TYPES_ORDERS_USER , TYPES_CART} from "../interface";
 // import { ProductCart, TYPES_ORDERS_USER } from "../interface";
-const URL = "http://localhost:3001/api/auth/orders";
+const URL = "/api/auth/orders";
 
 export const getOrdersUser = (token: string) => {
   try {
@@ -46,6 +46,8 @@ export const getcurrentOrder = (token: string) => {
           "auth-token": token,
         },
       });
+      console.log(activeOrder.data.data);
+      
       return dispatch({
         type: TYPES_ORDERS_USER.GET_ORDER,
         payload: activeOrder.data.data,

@@ -36,7 +36,7 @@ export default function Detail() {
 
     if (user) {
 
-      dispatch(createWish(Number(id), user!.token, (error:any) => {
+      dispatch(createWish(Number(id), user!.token, (error: any) => {
         if (error) {
           swal({
             text: error,
@@ -75,13 +75,13 @@ export default function Detail() {
       price: product.price,
       image: product.image,
       stock: product.stock,
-      quantity:0
+      quantity: 0
     }
     const quantity = productInCart ? productInCart.quantity + 1 : 1;
     if (Number(quantity) <= Number(product.stock)) {
       productToAdd.quantity = quantity;
       dispatch(addProductCart(productToAdd));
-      user && id && dispatch(addProductOrder(user.token,Number(id)))
+      user && id && dispatch(addProductOrder(user.token, Number(id)))
     }
   }
 
@@ -157,7 +157,7 @@ export default function Detail() {
                     <button className="btn btn-danger wish" onClick={AddWishList}>
                       Add to WishList
                     </button>
-)
+                  )
                   }
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
@@ -216,7 +216,7 @@ export default function Detail() {
               product.reviews.map((rew, i) => {
                 return (
                   <Rewies
-                    name={rew.review.name}
+                    name={rew.review.User.name + " " + (rew.review.User.surname ? rew.review.User.surname : " ")}
                     title={rew.review.title}
                     stars={rew.review.stars}
                     key={i}
