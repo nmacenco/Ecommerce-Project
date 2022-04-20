@@ -22,11 +22,9 @@ export default function ShippingAddressForm(): JSX.Element {
   const [errorsList, setErrorsList] = useState<any>(false)
 
     const [address , setAdress] = useState({
-        // name : '',
         address : '',
         city : '',
         postalCode : '',
-        // country : ''
     })
   useEffect(() => {
     dispatch(getCountries());
@@ -58,7 +56,7 @@ export default function ShippingAddressForm(): JSX.Element {
       }
       // dispatch(updateOrderUser( 1 , shipping_address, userState!.token )) 
       swal({
-        title: "Address correctly created",
+        title: "Correct adress.",
         icon: "success",
         buttons: {
           confirm: true,
@@ -79,24 +77,8 @@ export default function ShippingAddressForm(): JSX.Element {
 
   return (
     <FormContainer>
-      {/* <Form className="w-25" onSubmit={handleSubmit}> */}
       <form className="" onSubmit={handleSubmit}>
-        <h3 className="text-center">Shipping Address</h3>
-        {/* <div className="form-group">
-          <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
-            Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="staticEmail"
-            name="name"
-            //   value={product.name}
-            placeholder="Enter name"
-            onChange={(e) => handleChange(e)}
-          />
-          <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p>
-        </div> */}
+        <h3 className="text-center mt-3 mb-5">Shipping Address</h3>
         <div className="form-group">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             Address
@@ -110,7 +92,6 @@ export default function ShippingAddressForm(): JSX.Element {
             placeholder="Enter address"
             onChange={(e) => handleChange(e)}
           />
-          {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
         </div>
         <div className="form-group mt-4">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
@@ -125,7 +106,6 @@ export default function ShippingAddressForm(): JSX.Element {
             placeholder="Enter city"
             onChange={(e) => handleChange(e)}
           />
-          {/* <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p> */}
         </div>
         <div className="form-group mt-4">
           <label htmlFor="staticEmail" className="col-form-label">

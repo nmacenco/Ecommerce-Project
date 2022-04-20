@@ -65,8 +65,6 @@ const Login = (): JSX.Element => {
             icon: "success",
           });
           setUserLoaded(true);
-
-
         }
       })
     );
@@ -154,7 +152,7 @@ const Login = (): JSX.Element => {
           clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
           buttonText="Login"
           onSuccess={responseGoogle}
-          onFailure={rejectGoogle}
+          // onFailure={rejectGoogle}
           cookiePolicy={"single_host_origin"}
         />
       </div>

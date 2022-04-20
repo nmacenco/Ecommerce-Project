@@ -13,17 +13,6 @@ export default function ValidateAccount(): JSX.Element {
   const navigate = useNavigate();
   function handleSubmit() {
     dispatch(validateAccount(id));
-    // swal({
-    //   text: "Your account was validated, please login",
-    //   icon: "success",
-    //   buttons: {
-    //     confirm: true,
-    //   },
-    // }).then((value) => {
-    //   if (value) {
-    //     navigate("/login");
-    //   }
-    // });
     navigate("/login");
   }
   function handleOnClick() {

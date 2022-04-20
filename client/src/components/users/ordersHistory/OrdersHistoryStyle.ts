@@ -1,14 +1,17 @@
 import styled from "styled-components";
 
+export const Accordion = styled.div`
+ width: 100%;
+`;
+
 export const Container = styled.div`
- width: 100vw;
- display: flex;
- justify-content: center;
+display:flex;
+margin:0 400px;
+
 `;
 
 export const Table = styled.table`
-  width: 100%;
-  max-width: 1200px;
+
 `;
 
 export const Img = styled.img`

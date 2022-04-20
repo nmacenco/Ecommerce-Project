@@ -95,10 +95,6 @@ const OrderAdminRow = ({ id, status, total, billing_address, details, email_addr
             <td><Link to={`/detail/${id}`}>{product.productName}</Link></td>
             <td>${product.amount}</td>
             <td>Quantity: {product.quantity}</td>
-            <td><Link to='/products' className="btn btn-primary btn-sm">
-              Review
-            </Link>
-            </td>
           </tr>
         })
       }

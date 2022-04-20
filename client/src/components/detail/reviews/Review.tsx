@@ -19,9 +19,6 @@ const Rewies = ({ texto, stars, title, name }: Prop): JSX.Element => {
         <RewiewContainer className="card border-secondary mb-3" >
             <RewieHeader className="card-header">
                 <div className='d-img-rewiew'>
-                    {/* <div>
-                        <img src='https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-de-un-hombre-en-una-camisa-avatar-y-cara-solo-icono-en-estilo-de-dibujos-animados-vector-s%C3%ADmb.jpg' />
-                    </div> */}
                     <div>
                         {name ? name : 'anonymous'}
                     </div>
