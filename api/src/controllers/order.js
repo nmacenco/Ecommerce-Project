@@ -603,7 +603,7 @@ const updatePaypalOrder = async (req, res) => {
     });
 
     orderPaypal.Order_details.forEach(async (detail) => {
-      await updateStockproducts(detail.Product.id, detail.Product.stock);
+      await updateStockproducts(detail.Product.id, detail.quantity);
     });
 
     if (!orderPaypal) {
@@ -634,19 +634,26 @@ const updatePaypalOrder = async (req, res) => {
 };
 
 const updateStockproducts = async (productId, quantity) => {
-  const productUpdate = await Product.findOne({ where: { id: productId } });
-  let newStock = 0;
-  let actualStock = productUpdate.stock;
-  if (actualStock < quantity) {
-    newStock = 0;
+  const productupdate = await Product.findOne({
+    where: {
+      id: productId,
+    },
+  });
+  
+  if (productupdate.stock < quantity) {
+    await productupdate.update({
+      stock: 0, isActive: false
+    });
   } else {
-    newStock = actualStock - quantity;
+    await productupdate.update({
+      stock: productupdate.stock - quantity,
+    });
   }
-  if ((newStock = 0)) {
-    await productUpdate.update({ stock: newStock, isActive: false });
-  } else {
-    await productUpdate.update({ stock: newStock });
-  }
+  // if (productupdate.stock <= 0) {
+  //   await productupdate.update({
+  //     isActive: false,
+  //   });
+  // }
 };
 
 module.exports = {
@@ -662,3 +669,4 @@ module.exports = {
   updatePaypalOrder,
   updateOrder,
 };
+
