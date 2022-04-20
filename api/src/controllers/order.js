@@ -1,6 +1,6 @@
-const { Order, User, Order_detail, Product } = require("../db");
-const { sendMailOrder, sendMailState } = require("./mailer");
-require("dotenv").config();
+const { Order, User, Order_detail, Product } = require('../db');
+const { sendMailOrder, sendMailState } = require('./mailer');
+require('dotenv').config();
 const {
   ORDER_STATUS_PENDING,
   ORDER_STATUS_BILLED,
@@ -15,22 +15,22 @@ const getOrders = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["id", "name", "surname", "email"],
+          attributes: ['id', 'name', 'surname', 'email'],
         },
         {
           model: Order_detail,
-          attributes: ["amount", "quantity"],
+          attributes: ['amount', 'quantity'],
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image", "price"],
+              attributes: ['name', 'id', 'image', 'price'],
             },
           ],
         },
       ],
     });
     if (Orders.length <= 0) {
-      return res.status(404).send({ errorMsg: "Orders not found." });
+      return res.status(404).send({ errorMsg: 'Orders not found.' });
     }
     Orders = Orders.map((Order) => {
       return {
@@ -38,7 +38,7 @@ const getOrders = async (req, res) => {
         total_amount: Order.total_amount,
         email_address: Order.email_address,
         status: Order.status,
-        user: Order.User.name + " " + Order.User.surname,
+        user: Order.User.name + ' ' + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
         shipping_address: Order.shipping_address,
@@ -59,7 +59,7 @@ const getOrders = async (req, res) => {
             : [],
       };
     });
-    res.status(200).send({ successMsg: "Here are your Orders.", data: Orders });
+    res.status(200).send({ successMsg: 'Here are your Orders.', data: Orders });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
@@ -75,15 +75,15 @@ const getUserOrdersServer = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["id", "name", "surname", "email"],
+          attributes: ['id', 'name', 'surname', 'email'],
         },
         {
           model: Order_detail,
-          attributes: ["amount", "quantity", "id"],
+          attributes: ['amount', 'quantity', 'id'],
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image", "price"],
+              attributes: ['name', 'id', 'image', 'price'],
             },
           ],
         },
@@ -98,7 +98,7 @@ const getUserOrdersServer = async (req, res) => {
         total_amount: Order.total_amount,
         email_address: Order.email_address,
         status: Order.status,
-        user: Order.User.name + " " + Order.User.surname,
+        user: Order.User.name + ' ' + Order.User.surname,
         userID: Order.User.id,
         billing_address: Order.billing_address,
         paidAt: Order.paidAt,
@@ -120,7 +120,7 @@ const getUserOrdersServer = async (req, res) => {
       };
     });
 
-    res.status(200).send({ successMsg: "Here are your orders.", data: Orders });
+    res.status(200).send({ successMsg: 'Here are your orders.', data: Orders });
   } catch (error) {
     console.log(error);
     res.status(500).send({ errorMsg: error.message });
@@ -135,11 +135,11 @@ const createOrder = async (req, res) => {
   try {
     let allProductsOrder = req.body;
     if (!UserId) {
-      res.status(400).send({ errorMsg: "Missing data." });
+      res.status(400).send({ errorMsg: 'Missing data.' });
     } else {
       let user = await User.findOne({ where: { id: UserId } });
       let [newOrder, created] = await Order.findOrCreate({
-        where: { UserId, status: "PENDING" },
+        where: { UserId, status: 'PENDING' },
       });
       if (created) {
         await newOrder.update({
@@ -149,26 +149,23 @@ const createOrder = async (req, res) => {
       }
       if (!allProductsOrder.length) {
         return res.status(200).send({
-          successMsg: "Order successfully created/updated.",
+          successMsg: 'Order successfully created/updated.',
           data: newOrder,
         });
       }
       for (let product of allProductsOrder) {
-        console.log(product);
         const amount = product.quantity * product.price;
         await createOrderDetail(
           newOrder.id,
           product.productId,
           product.quantity,
-          // (queantity = product.count),
           amount
         );
       }
       let orderDetails = await Order_detail.findAll({
         where: { OrderId: newOrder.id },
       });
-      // console.log('orderDetails');
-      // console.log({orderDetails}); no llega aca
+
       const totalAmount = orderDetails.reduce((a, detail) => {
         return a + detail.dataValues.amount;
       }, 0);
@@ -176,7 +173,7 @@ const createOrder = async (req, res) => {
         total_amount: totalAmount,
       });
       res.status(201).send({
-        successMsg: "Order successfully created/updated.",
+        successMsg: 'Order successfully created/updated.',
         data: newOrder,
         orderDetails,
       });
@@ -191,25 +188,25 @@ const updateOrderState = async (req, res) => {
   let { status, email_address } = req.body;
   try {
     if (!id) {
-      res.status(404).send({ errorMsg: "Missing id." });
+      res.status(404).send({ errorMsg: 'Missing id.' });
     } else {
       let orderState = await Order.update(
         { status: status },
         { where: { id } }
       );
       if (!orderState) {
-        res.status(404).send({ errorMsg: "order not found" });
+        res.status(404).send({ errorMsg: 'order not found' });
       } else {
         if (status === ORDER_STATUS_DISPATCHED) {
           await sendMailState(
             email_address,
-            "Dispatch Order advice",
+            'Dispatch Order advice',
             `<p>Your order number ${id} has been dispatched. </p>`
           );
         }
         res
           .status(201)
-          .send({ successMsg: "Order has been updated", data: orderState });
+          .send({ successMsg: 'Order has been updated', data: orderState });
       }
     }
   } catch (error) {
@@ -222,18 +219,18 @@ const updateOrder = async (req, res) => {
   let { shipping_address } = req.body;
   try {
     if (!id) {
-      res.status(404).send({ errorMsg: "Missing id." });
+      res.status(404).send({ errorMsg: 'Missing id.' });
     } else {
       let orderShipping = await Order.update(
         { shipping_address: shipping_address },
         { where: { id } }
       );
       if (!orderShipping) {
-        res.status(404).send({ errorMsg: "order not found" });
+        res.status(404).send({ errorMsg: 'order not found' });
       } else {
         res
           .status(201)
-          .send({ successMsg: "Order has been updated", data: orderShipping });
+          .send({ successMsg: 'Order has been updated', data: orderShipping });
       }
     }
   } catch (error) {
@@ -244,35 +241,28 @@ const updateOrder = async (req, res) => {
 const getActiveOrder = async (req, res) => {
   try {
     const id = req.userID;
-    // console.log(id); llega bien
     let activeOrder = await Order.findOne({
       where: {
         UserId: id,
-        status: "PENDING",
+        status: 'PENDING',
       },
       include: [
         {
           model: User,
-          attributes: ["id", "name", "surname", "email"],
+          attributes: ['id', 'name', 'surname', 'email'],
         },
         {
           model: Order_detail,
-          attributes: ["amount", "quantity"],
+          attributes: ['amount', 'quantity'],
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "image", "price", "stock"],
+              attributes: ['name', 'id', 'image', 'price', 'stock'],
             },
           ],
         },
       ],
     });
-    // console.log(activeOrder);
-    // if (!activeOrder) {
-    //   return res
-    //     .status(404)
-    //     .send({ errorMsg: "You don't have an active order." });
-    // }
     if (!activeOrder) {
       return res
         .status(404)
@@ -283,7 +273,7 @@ const getActiveOrder = async (req, res) => {
       total_amount: activeOrder.total_amount,
       email_address: activeOrder.email_address,
       status: activeOrder.status,
-      user: activeOrder.User.name + " " + activeOrder.User.surname,
+      user: activeOrder.User.name + ' ' + activeOrder.User.surname,
       userID: activeOrder.User.id,
       billing_address: activeOrder.billing_address,
       shipping_address: activeOrder.shipping_address,
@@ -305,7 +295,7 @@ const getActiveOrder = async (req, res) => {
     };
     res
       .status(200)
-      .send({ successMsg: "Here is your order.", data: activeOrder });
+      .send({ successMsg: 'Here is your order.', data: activeOrder });
   } catch (error) {
     console.log(error);
     res.status(500).send({ errorMsg: error.message });
@@ -320,7 +310,7 @@ const addProductsOrder = async (req, res) => {
   try {
     const { ProductId } = req.body;
     if (!ProductId) {
-      return res.status(404).send({ errorMsg: "Missing product ID." });
+      return res.status(404).send({ errorMsg: 'Missing product ID.' });
     } else {
       let product = await Product.findOne({
         where: {
@@ -330,7 +320,7 @@ const addProductsOrder = async (req, res) => {
       const activeUserOrder = await Order.findOne({
         where: {
           UserId: id,
-          status: "PENDING",
+          status: 'PENDING',
         },
       });
       let orderDetail = await Order_detail.findOne({
@@ -350,14 +340,14 @@ const addProductsOrder = async (req, res) => {
           total_amount: activeUserOrder.total_amount + product.price,
         });
         res.status(201).send({
-          successMsg: "Product has been successfully added.",
+          successMsg: 'Product has been successfully added.',
           data: newOrderDetail,
         });
       } else {
         if (product.stock === orderDetail.quantity) {
           return res
             .status(400)
-            .send({ errorMsg: "Exceeded available stock." });
+            .send({ errorMsg: 'Exceeded available stock.' });
         }
         const amount = product.price * (orderDetail.quantity + 1);
         let UpdatedOrderDetail = await orderDetail.update({
@@ -368,7 +358,7 @@ const addProductsOrder = async (req, res) => {
           total_amount: activeUserOrder.total_amount + product.price,
         });
         res.status(200).send({
-          successMsg: "Product has been successfully added.",
+          successMsg: 'Product has been successfully added.',
           data: UpdatedOrderDetail,
         });
       }
@@ -391,7 +381,7 @@ const removeProductsOrder = async (req, res) => {
     const activeUserOrder = await Order.findOne({
       where: {
         UserId: id,
-        status: "PENDING",
+        status: 'PENDING',
       },
     });
     let orderDetail = await Order_detail.findOne({
@@ -403,7 +393,7 @@ const removeProductsOrder = async (req, res) => {
     if (orderDetail.quantity === 1) {
       return res
         .status(400)
-        .send({ errorMsg: "Cannot have less than one product." });
+        .send({ errorMsg: 'Cannot have less than one product.' });
     }
     const amount = product.price * (orderDetail.quantity - 1);
     let UpdatedOrderDetail = await orderDetail.update({
@@ -420,7 +410,7 @@ const removeProductsOrder = async (req, res) => {
       total_amount: totalAmount,
     });
     res.status(201).send({
-      successMsg: "Order has been updated",
+      successMsg: 'Order has been updated',
       data: UpdatedOrderDetail,
     });
   } catch (error) {
@@ -433,12 +423,12 @@ const deleteProductsOrder = async (req, res) => {
     const id = req.userID;
     const { ProductId } = req.params;
     if (!ProductId) {
-      return res.status(404).send({ errorMsg: "Missing product ID" });
+      return res.status(404).send({ errorMsg: 'Missing product ID' });
     } else {
       const activeUserOrder = await Order.findOne({
         where: {
           UserId: id,
-          status: "PENDING",
+          status: 'PENDING',
         },
       });
       let orderDetail = await Order_detail.findOne({
@@ -448,7 +438,7 @@ const deleteProductsOrder = async (req, res) => {
         },
       });
       if (!orderDetail) {
-        return res.status(404).send({ errorMsg: "Order detail not found." });
+        return res.status(404).send({ errorMsg: 'Order detail not found.' });
       }
       await Order_detail.destroy({
         where: {
@@ -465,7 +455,7 @@ const deleteProductsOrder = async (req, res) => {
         total_amount: totalAmount,
       });
       res.status(201).send({
-        successMsg: "Order detail has been deleted",
+        successMsg: 'Order detail has been deleted',
       });
     }
   } catch (error) {
@@ -482,7 +472,7 @@ const createOrderDetail = async (OrderId, ProductId, quantity, amount) => {
       },
     });
     if (!product) {
-      throw new Error("Product not found");
+      throw new Error('Product not found');
     }
     let isOrderDetailCreated = await Order_detail.findOne({
       where: { OrderId, ProductId },
@@ -537,22 +527,22 @@ const getUserOrders = async (id) => {
         include: [
           {
             model: User,
-            attributes: ["id", "name", "surname", "email"],
+            attributes: ['id', 'name', 'surname', 'email'],
           },
           {
             model: Order_detail,
-            attributes: ["amount", "quantity"],
+            attributes: ['amount', 'quantity'],
             include: [
               {
                 model: Product,
-                attributes: ["name", "id", "image", "price"],
+                attributes: ['name', 'id', 'image', 'price'],
               },
             ],
           },
         ],
       });
       if (dataOrders.length <= 0) {
-        return "This user has no orders.";
+        return 'This user has no orders.';
       }
       dataOrders = dataOrders.map((Order) => {
         return {
@@ -601,18 +591,23 @@ const updatePaypalOrder = async (req, res) => {
       include: [
         {
           model: Order_detail,
-          attributes: ["amount", "quantity"],
+          attributes: ['amount', 'quantity'],
           include: [
             {
               model: Product,
-              attributes: ["name", "id", "stock", "price"],
+              attributes: ['name', 'id', 'stock', 'price'],
             },
           ],
         },
       ],
     });
+
+    orderPaypal.Order_details.forEach(async (detail) => {
+      await updateStockproducts(detail.Product.id, detail.Product.stock);
+    });
+
     if (!orderPaypal) {
-      res.status(401).send({ message: "Order Not Found" });
+      res.status(401).send({ message: 'Order Not Found' });
     } else {
       let updatedOrder = await orderPaypal.update({
         status: ORDER_STATUS_BILLED,
@@ -624,22 +619,14 @@ const updatePaypalOrder = async (req, res) => {
         orderIdPayment: orderIdPayment,
         isDelivered: false,
       });
-      // console.log(orderPaypal.Order_details)
-      orderPaypal.Order_details.forEach(async (detail) => {
-        let orderDetail = {
-          productId: detail.Product.id,
-          stock: detail.Product.stock,
-        };
-        await updateStockproducts(orderDetail.productId, orderDetail.stock);
-      });
 
       await sendMailOrder(
         email_address,
-        "Confirmation Order Advice",
+        'Confirmation Order Advice',
         `<p>Your purchase order number ${id} has been canceled with the Paypal order ${orderIdPayment}. </p>`
       );
 
-      res.status(201).send({ successMsg: "Order Paid", data: updatedOrder });
+      res.status(201).send({ successMsg: 'Order Paid', data: updatedOrder });
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
@@ -647,29 +634,21 @@ const updatePaypalOrder = async (req, res) => {
 };
 
 const updateStockproducts = async (productId, quantity) => {
-  const productupdate = await Product.findOne({
-    where: {
-      id: productId,
-    },
-  });
-  if (!productupdate) {
-    throw new Error("Product not found");
-  }
-  if (productupdate.stock < quantity) {
-    await productupdate.update({
-      stock: productupdate.stock - productupdate.stock,
-    });
+  const productUpdate = await Product.findOne({ where: { id: productId } });
+  let newStock = 0;
+  let actualStock = productUpdate.stock;
+  if (actualStock < quantity) {
+    newStock = 0;
   } else {
-    await productupdate.update({
-      stock: productupdate.stock - quantity,
-    });
+    newStock = actualStock - quantity;
   }
-  if (productupdate.stock <= 0) {
-    await productupdate.update({
-      isActive: false,
-    });
+  if ((newStock = 0)) {
+    await productUpdate.update({ stock: newStock, isActive: false });
+  } else {
+    await productUpdate.update({ stock: newStock });
   }
 };
+
 module.exports = {
   getOrders,
   createOrder,
@@ -683,27 +662,3 @@ module.exports = {
   updatePaypalOrder,
   updateOrder,
 };
-
-function fixMe(my_list) {
-  if (my_list.length % 2) {
-    // imperative code
-    var new_list = [];
-    for (item of my_list) {
-      if (my_list.isArray(item)) {
-        for (element of item) {
-          new_list = new_list.push(element);
-        }
-      } else {
-        new_list = new_list.push(element);
-      }
-    }
-  } else {
-    // functional code
-    var new_list = my_list.flat(0);
-  }
-
-  new_list.sort(function (x, y) {
-    return x - y;
-  });
-  return new_list;
-}
