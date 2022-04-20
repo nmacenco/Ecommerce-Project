@@ -94,7 +94,8 @@ const Cards = (): JSX.Element => {
   const finalProduct = currentPage * 32;
   const firstProduct = finalProduct - 32;
   let newProductsList: Product[] = [];
-  (newProductsList = productsList.slice(firstProduct, finalProduct));
+  (newProductsList = productsList.filter((product: Product) => product.isActive === true));
+  (newProductsList = newProductsList.slice(firstProduct, finalProduct));
   // if (filteredProductList.length > 0) {
   //   newProductsList = filteredProductList.filter(product => product.isActive)
   //   activeProductsList = newProductsList.slice(firstProduct, finalProduct)
@@ -135,7 +136,7 @@ const Cards = (): JSX.Element => {
     else setFilterBox({ ...filterBox, subcategory: "" })
   }
 
-  const eliminateFilters = (): void => {
+  function eliminateFilters(): void {
     setFilterBox({
       ...filterBox,
       subcategory: "",
@@ -161,20 +162,18 @@ const Cards = (): JSX.Element => {
                   {filterBox.brand.length !== 0 ? <span><button onClick={() => resetFilter(filterBox.brand)} className="btn btn-primary mt-2 mr-2">{`${filterBox.brand} X`}</button></span> : ""}
                   <div className="mt-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4 d-flex justify-content-center">
                     {newProductsList.map((e: Product) => {
-                      if (e.isActive === true) {
-                        if (e.stock > 0) {
-                          return (
-                            <div className="col" key={e.id}>
-                              <Card
-                                stock={e.stock}
-                                name={e.name}
-                                image={e.image}
-                                price={e.price}
-                                id={e.id}
-                              />
-                            </div>
-                          );
-                        }
+                      if (e.stock > 0) {
+                        return (
+                          <div className="col" key={e.id}>
+                            <Card
+                              stock={e.stock}
+                              name={e.name}
+                              image={e.image}
+                              price={e.price}
+                              id={e.id}
+                            />
+                          </div>
+                        );
                       }
                     })}
                   </div>
@@ -185,7 +184,9 @@ const Cards = (): JSX.Element => {
                     ></Pagination>
                   </ReactPaginateContainer>
                 </> : (
-                  <NotFound></NotFound>
+                  <NotFound
+                    eliminateFilters={eliminateFilters}
+                  />
                 )
           }
         </CardsContainer>
