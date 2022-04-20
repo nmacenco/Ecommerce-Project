@@ -46,6 +46,8 @@ export const getcurrentOrder = (token: string) => {
           "auth-token": token,
         },
       });
+      console.log(activeOrder.data.data);
+      
       return dispatch({
         type: TYPES_ORDERS_USER.GET_ORDER,
         payload: activeOrder.data.data,

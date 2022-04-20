@@ -34,3 +34,6 @@ margin: 10px 0;
 export const AdminProductIMG = styled.img`
     width: 70px;
 `;
+export const Table = styled.table`
+    width: 70px;
+`;

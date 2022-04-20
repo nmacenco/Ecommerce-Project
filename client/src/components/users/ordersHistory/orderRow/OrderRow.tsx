@@ -23,7 +23,7 @@ interface Props {
 const OrderRow = ({ id, userId,totalAmount, status, billing_address, details }: Props): JSX.Element => {
   console.log(status)
   return (
-    <tbody>
+    <tbody >
       <tr>
         <th scope="row">{id}</th>
         <td>{status}</td>

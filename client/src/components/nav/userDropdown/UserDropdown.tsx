@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { LogoutUser } from "../../../redux/actions/user";
 import { clearCart } from "../../../redux/actions/cart";
 import swal from "sweetalert";
+import { setPage } from "../../../redux/actions/setPage";
 
 const UserDropdown = () => {
   const dispatch = useDispatch()
@@ -16,6 +17,7 @@ const UserDropdown = () => {
     event.preventDefault();
     dispatch(LogoutUser());
     dispatch(clearCart());
+    dispatch(setPage(1))
     localStorage.removeItem('cart')
     navigate('/products')
     swal({
