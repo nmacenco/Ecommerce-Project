@@ -149,7 +149,8 @@ const Login = (): JSX.Element => {
 
       <div className="form-log">
         <GoogleLogin
-          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+          // clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+          clientId="1061640396754-j64d97uf6i4hbuhbs73vkpa79bcrilsg.apps.googleusercontent.com"
           buttonText="Login"
           onSuccess={responseGoogle}
           onFailure={rejectGoogle}
