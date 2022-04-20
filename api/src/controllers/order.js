@@ -588,18 +588,18 @@ const updatePaypalOrder = async (req, res) => {
   try {
     let orderPaypal = await Order.findOne({
       where: { id },
-      // include: [
-      //   {
-      //     model: Order_detail,
-      //     attributes: ['amount', 'quantity'],
-      //     include: [
-      //       {
-      //         model: Product,
-      //         attributes: ['name', 'id', 'stock', 'price'],
-      //       },
-      //     ],
-      //   },
-      // ],
+      include: [
+        {
+          model: Order_detail,
+          attributes: ['amount', 'quantity'],
+          include: [
+            {
+              model: Product,
+              attributes: ['name', 'id', 'stock', 'price'],
+            },
+          ],
+        },
+      ],
     });
 
     orderPaypal.Order_details.forEach(async (detail) => {
