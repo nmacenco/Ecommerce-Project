@@ -13,7 +13,7 @@ const {
 
 
 const PORT = process.env.PORT || 3001;
-conn.sync({ force: true }).then(() => {
+conn.sync({ force: false }).then(() => {
   server.listen(PORT, async () => {
     console.log(`Listening at port ${PORT}`);
 

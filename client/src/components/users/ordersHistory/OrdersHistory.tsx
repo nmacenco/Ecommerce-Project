@@ -26,6 +26,7 @@ const OrdersHistory = (): JSX.Element => {
 
     <div className="accordion w-75" id="accordionExample">
     <h3 className="text-center mt-5">Orders History</h3>
+    { filteredOrders.length ?
       <Table className="table table-hover mt-5 ">
         <thead className="w-100">
           <tr>
@@ -35,8 +36,7 @@ const OrdersHistory = (): JSX.Element => {
             <th scope="col">ADDRESS</th>
           </tr>
         </thead>
-        { filteredOrders &&
-          filteredOrders.map(order => {
+        {filteredOrders.map(order => {
             return <OrderRow
               key={order.id}
               id={order.id}
@@ -46,10 +46,10 @@ const OrdersHistory = (): JSX.Element => {
               billing_address={order.shipping_address}
               details={order.details}
             />
-          })
-        }
+          }) }
 
-      </Table>
+        </Table>
+                : <h5 className="text-center mt-5 pt-5">Not orders done yet.</h5> }
     </div >
     </Container>
   );
