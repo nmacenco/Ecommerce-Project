@@ -1,5 +1,5 @@
 const { Review, User } = require('../db');
-const { Sequelize } = require('sequelize');
+const { fn, col } = require('sequelize');
 
 const createReview = async (req, res) => {
   try {
@@ -44,18 +44,11 @@ const getReviews = async (req, res) => {
         {
           model: User,
           attributes: [
-            [
-              Sequelize.fn(
-                'CONCAT',
-                Sequelize.col('name'),
-                ' ',
-                Sequelize.col('surname')
-              ),
-              'fullname',
-            ],
+            [fn('CONCAT', col('name'), ' ', col('surname')), 'fullname'],
           ],
         },
       ],
+
     });
     if (!dataReviews) {
       res.status(404).send({ errorMsg: 'There are no reviews available.' });
@@ -88,18 +81,11 @@ const getSingleReview = async (req, res) => {
           {
             model: User,
             attributes: [
-              [
-                Sequelize.fn(
-                  'CONCAT',
-                  Sequelize.col('name'),
-                  ' ',
-                  Sequelize.col('surname')
-                ),
-                'fullname',
-              ],
+              [fn('CONCAT', col('name'), ' ', col('surname')), 'fullname'],
             ],
           },
         ],
+  
         where: {
           id,
         },

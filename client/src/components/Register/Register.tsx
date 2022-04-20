@@ -139,15 +139,15 @@ const Register = (): JSX.Element => {
   // }
   const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
     if (user) {
-     console.log(user);
+      console.log(user);
       dispatch(createOrderUser(user.token, productsCart));
-    } 
-    setTimeout (()=>{
+    }
+    setTimeout(() => {
       navigate("/products");
-      
-    },200)
+
+    }, 200)
   }
-  
+
   const rejectGoogle = (error: any) => {
     console.log(error);
     swal({
@@ -223,7 +223,7 @@ const Register = (): JSX.Element => {
             <b className="invalid-feedback">{error.passUser}</b>
           )}
         </div>
-      </div> 
+      </div>
       <div className="form-log" >
         <GoogleLogin
           clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
@@ -258,8 +258,8 @@ const Register = (): JSX.Element => {
       <button
         className="btn btn-primary button-links link-Router mx-2"
         onClick={CreateOrder}
-        >
-        Go back to Products
+      >
+        Keep buying
       </button>
     </Form>
   );

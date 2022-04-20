@@ -9,7 +9,7 @@ import swal from "sweetalert";
 
 interface Detail_Props {
   id: number;
-  name: string;
+  productName: string;
   quantity: number;
   amount: number;
   image: string;
@@ -22,7 +22,7 @@ interface Props {
   email_address: string;
   // detail: any[];
   billing_address: string;
-  detail: Detail_Props[];
+  details: Detail_Props[];
 }
 
 export interface STATUS {
@@ -34,7 +34,7 @@ const statusArray: string[] = ['BILLED', 'CANCELED', 'DISPATCHED', 'DELIVERED', 
 // const OrderAdminRow = ({ id, status, total, detail }: Props): JSX.Element => {
 
 
-const OrderAdminRow = ({ id, status, total, billing_address, detail, email_address }: Props): JSX.Element => {
+const OrderAdminRow = ({ id, status, total, billing_address, details, email_address }: Props): JSX.Element => {
   const dispatch = useDispatch()
   const [update, setUpdate] = useState<boolean>(false)
   const [userInStorage, setUserInStorage] = useLocalStorage('USER_LOGGED', '')
@@ -89,10 +89,10 @@ const OrderAdminRow = ({ id, status, total, billing_address, detail, email_addre
         <td><button className="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapse">Detail</button></td>
       </tr>
       {
-        detail.map((product: Detail_Props, i: number) => {
+        details.map((product: Detail_Props, i: number) => {
           return <tr key={i} id={`collapse${id}`} className="accordion-collapse collapse align-items-center" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <td><Img src={product.image} /></td>
-            <td><Link to={`/detail/${id}`}>{product.name}</Link></td>
+            <td><Link to={`/detail/${id}`}>{product.productName}</Link></td>
             <td>${product.amount}</td>
             <td>Quantity: {product.quantity}</td>
             <td><Link to='/products' className="btn btn-primary btn-sm">

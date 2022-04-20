@@ -21,6 +21,7 @@ const createUser = async (req, res) => {
         res.status(400).send({ errorMsg: "Email already exists." });
       } else {
         password = await bcrypt.hash(password, 8);
+
         const isActive = false;
         const newUser = await User.create({
           name,
