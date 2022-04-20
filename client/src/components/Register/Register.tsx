@@ -231,8 +231,10 @@ const Register = (): JSX.Element => {
       <div className=" d-flex justify-content-between text-center mb-3  w-50" >
         <GoogleLogin
          className=" d-flex justify-content-center    w-100"
-          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
-          buttonText=""
+
+          // clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+          clientId="1061640396754-j64d97uf6i4hbuhbs73vkpa79bcrilsg.apps.googleusercontent.com"
+          buttonText="Register"
           onSuccess={responseGoogle}
           onFailure={rejectGoogle}
           cookiePolicy={'single_host_origin'}
