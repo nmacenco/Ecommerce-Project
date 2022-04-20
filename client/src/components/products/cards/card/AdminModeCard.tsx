@@ -49,13 +49,12 @@ const AdminModeCard = ({ name, image, price, id, orders, page, isActive, elimina
         dispatch(deleteProduct(stringId, data, userInStorage.token));
         setTimeout(() => {
           dispatch(getProducts())
-        }, 200)
-        // let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
-        // dispatch(chargeFilter(deleted))
+        }, 300)
         page(1)
+        dispatch(resetPoducts())
+        eliminateFilters()
         dispatch(setPage(1))
         // orders(stringId)
-        eliminateFilters()
         swal({
           text: "Product not active",
           icon: "success"

@@ -73,10 +73,10 @@ const Cards = (): JSX.Element => {
     if (user) {
       // dispatch(createOrderUser(user.token, productsCart));
       dispatch(getWish(user.token))
-      setTimeout( () => {
+      setTimeout(() => {
         dispatch(getPendingOrder(user.token));
 
-      },300)
+      }, 300)
 
     }
 

@@ -62,7 +62,7 @@ export default function DeleteCateogires(): JSX.Element {
         if (categories.subcategory !== 0) {
             dispatch(deleteSubcategory(String(categories.subcategory), userInStorage.token))
             swal({
-                title: 'Deleted subcategorie',
+                title: 'Deleted subcategory',
                 icon: 'success'
             })
             setTimeout(() => {
@@ -72,7 +72,7 @@ export default function DeleteCateogires(): JSX.Element {
         else if (categories.category !== 0) {
             dispatch(deleteCategory(String(categories.category), userInStorage.token))
             swal({
-                title: 'Deleted categorie',
+                title: 'Deleted category',
                 icon: 'success'
             })
             setTimeout(() => {
@@ -90,9 +90,12 @@ export default function DeleteCateogires(): JSX.Element {
     return (
         <FormContainer>
             <form onSubmit={handleSubmit}>
-                <h3>Delete category</h3>
+                <h3 className='text-center'>Delete category</h3>
+                <small className='form-text text-muted'>Only categories and subcategories without any connected product will be removed</small><br />
+                <small className='form-text text-muted'>If there are no categories it is because they are all connected to a subcategory</small>
+
                 <div className='form-group flex-fill ms-2'>
-                    <label className="form-label mt-4">Existing Categories</label>
+                    <label className="form-label mt-4">Delete Categories</label>
 
                     <select
                         onChange={(e) => handleChange(e)}
@@ -107,11 +110,10 @@ export default function DeleteCateogires(): JSX.Element {
                                 : <option>Not categories without any connected</option>
                         }
                     </select>
-                    <small>If there are no categories it is because they are all connected to a subcategory</small>
 
                 </div>
                 <div className='form-group flex-fill ms-2'>
-                    <label className="form-label mt-4">Existing Subcategories</label>
+                    <label className="form-label mt-4">Delete Subcategories</label>
                     <select
                         onChange={(e) => handleChange(e)}
                         className="form-select"
@@ -126,7 +128,6 @@ export default function DeleteCateogires(): JSX.Element {
                         }
                     </select>
                 </div>
-                <small className='form-text text-muted'>Only cateogires and subcategories without any connected product will be removed</small>
                 <div className='text-center'>
                     <button type='submit' className='btn btn-outline-primary mt-5'>Submit</button>
                 </div>
