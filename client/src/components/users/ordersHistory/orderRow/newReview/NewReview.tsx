@@ -44,16 +44,17 @@ const NewReview = (props: any): JSX.Element => {
     let body = event.target.body.value;
 
     if (!title || !body || !data) {
-        swal({
-            title: 'Complete all the fields.',
-            icon: 'error'
-        })
+      swal({
+        title: 'Complete all the fields.',
+        icon: 'error'
+      })
     } else {
       User &&
         dispatch(
-          createReview(title, body, Number(productId), Number(userId), data)
+          createReview(title, body, Number(productId), Number(userId), data, () => {
+            navigate("/ordersHistory");
+          })
         );
-      navigate("/ordersHistory");
     }
   };
 
