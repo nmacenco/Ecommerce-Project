@@ -6,7 +6,7 @@ import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 // import interfaces from '....'
 const URL = "/api";
 
-const URL_WISH = "/api/wishList";
+const URL_WISH = "/api/wishlist";
 
 const defaultCallback = (error: any) => {
   if (error) {
@@ -85,15 +85,24 @@ export const createWish = (
   callback = defaultCallback
 ) => {
   return async (dispatch: Dispatch) => {
+    const options = {
+      url: URL_WISH + `/${id}`,
+      method: "POST",
+
+      data: { id },
+    };
+
     try {
-      const response = await fetch(URL_WISH + `/${id}`, {
-        method: "POST",
-        headers: {
-          "auth-token": token,
-        },
-      });
-      const data = await response.json();
-      console.log(data);
+      const { data } = await axios.post(
+        URL_WISH + `/${id}`,
+        { id },
+        {
+          headers: {
+            "auth-token": token,
+          },
+        }
+      );
+      console.log("DATA DE WISH: ", data);
 
       if (data.errorMsg) {
         console.log("error data: ", data.errorMsg);
@@ -119,17 +128,13 @@ export const createWish = (
 export const getWish = (token: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await fetch(URL_WISH, {
-        method: "GET",
+      const { data } = await axios(URL_WISH, {
         headers: {
           "auth-token": token,
         },
       });
-      // console.log(response);
 
-      const data = await response.json();
-
-      // console.log(data);
+      console.log(data);
 
       if (data.errorMsg) {
         console.log("error data: ", data.errorMsg);
@@ -159,13 +164,11 @@ export const deleteWish = (
 ) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await fetch(URL_WISH + `/${id}`, {
-        method: "DELETE",
+      const { data } = await axios.delete(URL_WISH + `/${id}`, {
         headers: {
           "auth-token": token,
         },
       });
-      const data = await response.json();
 
       if (data.errorMsg) {
         console.log("error data: ", data.errorMsg);

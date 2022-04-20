@@ -28,11 +28,10 @@ const WishList = (): JSX.Element => {
 
     const addProductToCart = (event: any) => {
         let index = event.target.id;
-        console.log('ID_PRODUCT: ', index);
-        console.log('ALL PRODUCTS: ', products);
+        // console.log('ID_PRODUCT: ', index);
+        // console.log('ALL PRODUCTS: ', products);
 
         const encountered = products.find(product => product.id === Number(index));
-        console.log('PRODUCTO ENCONTRADO?: ', encountered);
         if (encountered) {
             const productToAdd = {
                 productId: encountered.id,
