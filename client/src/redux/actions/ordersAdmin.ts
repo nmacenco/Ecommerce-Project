@@ -4,7 +4,7 @@ import { STATUS } from "../../components/admin/ordersAdmin/orderAdminRow/OrderAd
 
 import { TYPES_ADMIN } from "../interface";
 // import interfaces from '....'
-const URL = "http://localhost:3001/api";
+const URL = "/api";
 
 export const getOrdersAdmin = (token: string) => {
   try {

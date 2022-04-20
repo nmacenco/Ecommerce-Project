@@ -2,7 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { TYPES_ADMIN, TYPES_COUNTRIES } from "../interface";
 
-const URL = "http://localhost:3001/api";
+const URL = "/api";
 
 export function getCountries() {
     try {
