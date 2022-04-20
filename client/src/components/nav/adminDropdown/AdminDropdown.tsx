@@ -7,6 +7,7 @@ import { State } from "../../../redux/reducers";
 import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 import { clearCart } from "../../../redux/actions/cart";
 import swal from "sweetalert";
+import { setPage } from "../../../redux/actions/setPage";
 
 const AdminDropdown = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const AdminDropdown = (): JSX.Element => {
     dispatch(LogoutUser());
     localStorage.removeItem('cart')
     dispatch(clearCart())
+    dispatch(setPage(1))
     navigate("/products");
     swal({
       title: "Logged out.",

@@ -14,11 +14,13 @@ import { ProductCart } from "../../redux/interface";
 import { State } from "../../redux/reducers";
 import CartProduct from "./cartProduct/CartProduct";
 import { CartContainer } from "./CartStyles";
+import { CheckStock } from "./CheckStock";
 
 const Cart = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const productsCart = useSelector((state: State) => state.cart.cart);
+  const allProducts = useSelector((state: State) => state.products.products);
   const user = useSelector((state: State) => state.user);
 
   useEffect(() => {
@@ -50,6 +52,24 @@ const Cart = (): JSX.Element => {
   }
 
   function confirmHandler(e: React.MouseEvent<HTMLElement>): void {
+    // CheckStock()
+    // console.log(CheckStock(productsCart , allProducts ));
+    let currentStock = CheckStock(productsCart , allProducts) ;
+    currentStock.length ? 
+      swal({
+        title: "These products are out of stock",
+        text: `${currentStock.map( prodName => prodName + ', ')}` ,
+        icon: "error",
+        buttons: {
+
+          confirm: {
+            text: "OK",
+            value: true,
+            visible: true,
+            closeModal: true,
+          },
+        },
+      }) :
     !user
       ? swal({
           title: "You have to be logged first.",

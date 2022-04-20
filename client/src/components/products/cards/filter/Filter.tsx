@@ -58,7 +58,7 @@ const Filter = ({ page, orders }: ORDER): JSX.Element => {
         }
 
         <p className="ms-auto m-3">{!allProducts.length ? '' : allProducts.map(product => {
-          if (product.isActive) { counter.push(product.id) }
+          if (product.stock > 0) { counter.push(product.id) }
         })} {counter.length}
           {
             location.pathname === "/productsAdminMode" ? ' Active Products' : ' Products'

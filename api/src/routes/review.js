@@ -5,7 +5,7 @@ const {
   getReviews,
   getSingleReview,
   deleteReview,
-} = require("../controllers/Review.js");
+} = require("../controllers/review.js");
 
 //Creating routes and adding the controllers.
 

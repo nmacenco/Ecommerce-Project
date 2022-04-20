@@ -2,7 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { ProductForm, TYPES_ADMIN } from '../interface';
 
-const URL = "http://localhost:3001/api/admin/products/";
+const URL = "/api/admin/products/";
 
 export const postProduct = (product: ProductForm, theToken: string) => {
   try {

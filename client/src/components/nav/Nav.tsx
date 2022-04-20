@@ -19,7 +19,6 @@ const Nav = (): JSX.Element => {
   const page = useSelector((state: State) => state.page);
   // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
   const path = window.location.pathname;
-  console.log(path);
   function handleClickLogIn() {
     dispatch(setPage(1));
   }
