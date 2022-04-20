@@ -91,7 +91,7 @@ export default function CreateCategories(): JSX.Element {
                 }, 300)
             }
             swal({
-                title: "Create successfully",
+                title: "Created successfully",
                 icon: "success",
                 buttons: {
                     confirm: true,
@@ -140,7 +140,7 @@ export default function CreateCategories(): JSX.Element {
                             {
                                 allCategories.length > 0
                                     ? allCategories.map((e: Category) => { return <option key={e.id} >{e.name}</option> })
-                                    : <option>No hay ninguna categoria creada</option>
+                                    : <option>Not categories created</option>
                             }
                         </select>
                     </div>
