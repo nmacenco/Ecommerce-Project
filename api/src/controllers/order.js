@@ -639,21 +639,12 @@ const updateStockproducts = async (productId, quantity) => {
       id: productId,
     },
   });
-  
+
   if (productupdate.stock < quantity) {
-    await productupdate.update({
-      stock: 0, isActive: false
-    });
+    await productupdate.update({ stock: 0, isActive: false });
   } else {
-    await productupdate.update({
-      stock: productupdate.stock - quantity,
-    });
+    await productupdate.update({ stock: productupdate.stock - quantity });
   }
-  // if (productupdate.stock <= 0) {
-  //   await productupdate.update({
-  //     isActive: false,
-  //   });
-  // }
 };
 
 module.exports = {
@@ -669,4 +660,3 @@ module.exports = {
   updatePaypalOrder,
   updateOrder,
 };
-
