@@ -7,6 +7,13 @@ const createReview = async (req, res) => {
     if (!ProductId || !UserId || !title || !description) {
       res.status(402).send({ errorMsg: 'Missing data.' });
     } else {
+      const reviewUpdate = await Review.destroy({
+        where: {
+          UserId: Number(UserId),
+          ProductId: Number(ProductId),
+        },
+      });
+
       let newReview = await Review.create({
         ProductId: ProductId,
         UserId: UserId,
@@ -48,7 +55,6 @@ const getReviews = async (req, res) => {
           ],
         },
       ],
-
     });
     if (!dataReviews) {
       res.status(404).send({ errorMsg: 'There are no reviews available.' });
@@ -85,7 +91,7 @@ const getSingleReview = async (req, res) => {
             ],
           },
         ],
-  
+
         where: {
           id,
         },
