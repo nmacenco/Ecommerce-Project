@@ -37,17 +37,26 @@
 // discountQty(pin):0
 // isActive(pin):true
 
-export function CheckStock ( activeOrder : any , products :any  ) {
-        
-    for (let i = 0; i < activeOrder.details.length; i++) {
-        for (let j = 0; j < products.length; j++) {
-            
-            if (activeOrder.details[i].productId === products[j].id) {
-                
-            }
-            
-        }
-        
-    }
 
+// 0:
+// image: "https://thotcomputacion.com.uy/wp-content/uploads/2015/01/3-1.jpg"
+// price: 375
+// productId: 2
+// productName: "Equipo AMD Athlon 3000G Gamer – Radeon™ Vega 3 Graphics"
+// quantity: 2
+// stock: 5
+
+export function CheckStock ( productsCart : any , products :any  ) {
+  
+    let noStockProducts = [];
+    for (let i = 0; i < productsCart.length; i++) {
+        for (let j = 0; j < products.length; j++) {
+            if (productsCart[i].productId === products[j].id) {
+                if ( productsCart[i].quantity > products[j].stock ){
+                    noStockProducts.push(productsCart[i].productName)
+                }
+            }
+        }
+    }
+    return noStockProducts ; 
 }

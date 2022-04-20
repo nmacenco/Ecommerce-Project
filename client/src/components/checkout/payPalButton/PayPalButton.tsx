@@ -8,6 +8,7 @@ import { getcurrentOrder, updatePayPal } from "../../../redux/actions/ordersUser
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { useNavigate } from "react-router";
 import { clearCart } from "../../../redux/actions/cart";
+import { resetPoducts } from "../../../redux/actions/products";
 // import { getError } from '../helpers/utils';
 
 export default function PayPalCheckoutButtons(props: any) {
@@ -61,6 +62,7 @@ export default function PayPalCheckoutButtons(props: any) {
       setTimeout(()=> {
         dispatch(clearCart());
         localStorage.removeItem('cart')
+        dispatch(resetPoducts());
         navigate('/products')
       } , 500)
       setPaidFor(true);
