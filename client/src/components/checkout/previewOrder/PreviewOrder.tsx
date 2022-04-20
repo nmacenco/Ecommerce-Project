@@ -51,21 +51,6 @@ export default function PreviewOrder(): JSX.Element {
             </div>
           </div>
           <div className="card bg-secondary mb-3 ">
-            <div className="card-header">Status</div>
-            <div className="card-body">
-              {/* <h4 className="card-title">Secondary card title</h4> */}
-              <p className="card-text"> {activeOrder.status} </p>
-
-            </div>
-          </div>
-          {/* <div className="card bg-secondary mb-3 w-50">
-        <div className="card-header">Payment</div>
-        <div className="card-body">
-          <p className="card-text"> {activeOrder.user} </p>
-          <p className="card-text"> {activeOrder.shipping_address} </p>
-        </div>
-      </div> */}
-          <div className="card bg-secondary mb-3 ">
             <div className="card-header">Items</div>
             <table className="table table-hover ">
               <thead>

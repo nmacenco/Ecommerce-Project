@@ -142,7 +142,7 @@ const Login = (): JSX.Element => {
       </div>
       <Forgot
         className="btn btn-link p-0 m-2 text-decoration-none"
-      // onClick={forgotPassword}
+      onClick={forgotPassword}
       >
         Forgot Password?
       </Forgot>
@@ -152,7 +152,7 @@ const Login = (): JSX.Element => {
           clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
           buttonText="Login"
           onSuccess={responseGoogle}
-          // onFailure={rejectGoogle}
+          onFailure={rejectGoogle}
           cookiePolicy={"single_host_origin"}
         />
       </div>
