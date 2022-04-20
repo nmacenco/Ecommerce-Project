@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetail, deleteProductDetail } from "../../redux/actions/productDetail";
+import {
+  getProductDetail,
+  deleteProductDetail,
+} from "../../redux/actions/productDetail";
 import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import Rewies from "./reviews/Review";
+import Review from "./reviews/Review";
 import Loading from "../loading/Loading";
-import { DetailContainer, Box, ImgPriceContainer, Price, DeleteEditButton, ImagesContainer, } from "./DetailStyles";
+import {
+  DetailContainer,
+  Box,
+  ImgPriceContainer,
+  Price,
+  DeleteEditButton,
+  ImagesContainer,
+} from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
@@ -13,8 +23,8 @@ import NewQ from "./questions/NewQ";
 import { addProductCart, addProductOrder } from "../../redux/actions/cart";
 import { ProductCart } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
-import TrashIMG from "../../icons/white-trash.png"
-import EditIMG from "../../icons/edit.png"
+import TrashIMG from "../../icons/white-trash.png";
+import EditIMG from "../../icons/edit.png";
 import { createWish, resetPoducts } from "../../redux/actions/products";
 import { deleteProduct } from "../../redux/actions/admin";
 
@@ -26,36 +36,35 @@ export default function Detail() {
   const user = useSelector((state: State) => state.user);
   const wishes = useSelector((state: State) => state.products.wishList);
   const productsCart = useSelector((state: State) => state.cart.cart);
-  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
-  const productInCart = productsCart.find((product: ProductCart) => product.productId == product.productId);
+  const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
+  const productInCart = productsCart.find(
+    (product: ProductCart) => product.productId == product.productId
+  );
   const [isWish, setWish] = useState<boolean>(false);
 
   const wishEncountered = wishes.find((wish: any) => wish.id === Number(id));
 
   const AddWishList = () => {
-
     if (user) {
-
-      dispatch(createWish(Number(id), user!.token, (error: any) => {
-        if (error) {
-          swal({
-            text: error,
-            icon: "error",
-          })
-          setWish(!isWish);
-
-        } else {
-          setWish(!isWish);
-          swal({
-            text: "Product added to your wishlist",
-            icon: "success",
-          })
-        }
-      }))
-
-
+      dispatch(
+        createWish(Number(id), user!.token, (error: any) => {
+          if (error) {
+            swal({
+              text: error,
+              icon: "error",
+            });
+            setWish(!isWish);
+          } else {
+            setWish(!isWish);
+            swal({
+              text: "Product added to your wishlist",
+              icon: "success",
+            });
+          }
+        })
+      );
     }
-  }
+  };
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -64,7 +73,6 @@ export default function Detail() {
       dispatch(deleteProductDetail());
       // dispatch(resetFilterProducts());
       // dispatch(resetPoducts());
-
     };
   }, [wishes]);
 
@@ -75,13 +83,13 @@ export default function Detail() {
       price: product.price,
       image: product.image,
       stock: product.stock,
-      quantity: 0
-    }
+      quantity: 0,
+    };
     const quantity = productInCart ? productInCart.quantity + 1 : 1;
     if (Number(quantity) <= Number(product.stock)) {
       productToAdd.quantity = quantity;
       dispatch(addProductCart(productToAdd));
-      user && id && dispatch(addProductOrder(user.token, Number(id)))
+      user && id && dispatch(addProductOrder(user.token, Number(id)));
     }
   }
 
@@ -98,10 +106,10 @@ export default function Detail() {
       },
     }).then((value) => {
       if (value) {
-        const data = { isActive: false }
+        const data = { isActive: false };
         dispatch(deleteProduct(id, data, userInStorage.token));
         // dispatch(resetFilterProducts())
-        dispatch(resetPoducts())
+        dispatch(resetPoducts());
         navigate("/products");
         swal({
           text: "Product deleted",
@@ -132,7 +140,9 @@ export default function Detail() {
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
 
-                  {product.quantity === product.stock || productInCart && productInCart.quantity === product.stock ? (
+                  {product.quantity === product.stock ||
+                  (productInCart &&
+                    productInCart.quantity === product.stock || product.stock == 0) ? (
                     <button
                       type="button"
                       className="btn btn-primary btn"
@@ -149,16 +159,15 @@ export default function Detail() {
                       Add to cart
                     </button>
                   )}
-                  {console.log('WISHESSS:  ', wishes)}
-                  {user != null && ((wishEncountered || isWish)
-                    ?
-                    null
-                    :
-                    <button className="btn btn-danger wish" onClick={AddWishList}>
-                      Add to WishList
-                    </button>
-                  )
-                  }
+                  {user != null &&
+                    (wishEncountered || isWish ? null : (
+                      <button
+                        className="btn btn-danger wish"
+                        onClick={AddWishList}
+                      >
+                        Add to WishList
+                      </button>
+                    ))}
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
                       <button
@@ -214,8 +223,8 @@ export default function Detail() {
             {product.reviews &&
               product.reviews.map((rew, i) => {
                 return (
-                  <Rewies
-                    name={rew.review.User.name + " " + (rew.review.User.surname ? rew.review.User.surname : " ")}
+                  <Review
+                    name={rew.review.User.name}
                     title={rew.review.title}
                     stars={rew.review.stars}
                     key={i}

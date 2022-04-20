@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { getProductDetail } from "../../../../redux/actions/productDetail";
 import { Img } from "../OrdersHistoryStyle";
 import { First, Fourth, Second, Third } from "./OrderRowStyle";
 
@@ -21,7 +23,8 @@ interface Props {
   details: Detail_Props[];
 }
 
-const OrderRow = ({ id, userId,totalAmount, status, paidAt, details }: Props): JSX.Element => {
+const OrderRow = ({ id, userId,totalAmount, status, paidAt, details }: Props): JSX.Element => { 
+
   return (
     <tbody >
       <tr>
