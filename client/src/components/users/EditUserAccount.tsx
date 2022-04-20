@@ -81,11 +81,16 @@ export default function EditUserAccount(): JSX.Element {
                 dispatch(updateUser(userInStorage.token, editUser))
                 dispatch(LogoutUser())
             }, 200)
+            swal({
+                title: "User edited.",
+                text: "Log in again.",
+                icon: "success"
+            })
             navigate('/login')
         } else {
             showError(editUser)
             swal({
-                title: "Filds missing",
+                title: "Fields missing",
                 icon: "error"
             })
         }
@@ -112,17 +117,6 @@ export default function EditUserAccount(): JSX.Element {
                     <small id="error-email" className='text-danger'></small>
                 </div>
 
-                {/* <div className="form-group">
-                    <label className="form-label mt-4">Billing address</label>
-                    <input className="form-control" type="text" placeholder="Enter address" name="billing_address" onChange={(e) => handleChange(e)} />
-                    <small id="error-billing" className='text-danger'></small>
-                </div> */}
-
-                {/* <div className="form-group">
-                    <label className="form-label mt-4">Email</label>
-                    <input className="form-control" type="email" placeholder="Enter email" name="email" onChange={(e) => handleChange(e)} />
-                </div> */}
-
                 <div className="form-group">
                     <label className="form-label mt-4">Select your country</label>
                     <select className="form-select" name="CountryId" onChange={(e) => handleChange(e)}>
@@ -132,10 +126,10 @@ export default function EditUserAccount(): JSX.Element {
                                 ? allCountries.map((e: ICountries) => {
                                     return <option key={e.id} value={e.id}>{e.name}</option>
                                 })
-                                : <option>Not countries for you...</option>
+                                : <option>No countries for you...</option>
                         }
                     </select>
-                    <small>{editUser.billing_address} is your country</small>
+                    <small>{user.country} is your country</small>
                     <small id="error-country" className='text-danger'></small>
                 </div>
 

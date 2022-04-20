@@ -41,7 +41,7 @@ export const CreateUser = (user: any, cb: any) => {
     } catch (error) {
       swal({
         title: "Wrong data",
-        text: "This email ir already taken!",
+        text: "This email ir already taken.",
         icon: "warning",
         dangerMode: true,
         buttons: {
@@ -145,7 +145,6 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
       }
 
       const TOKEN = response.headers["auth-token"];
-      console.log(response.data.data);
 
       if (response.status < 300) {
         const newUser = {
@@ -171,7 +170,6 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
       console.log("Error en sign in google: ", error);
       swal({
         title: "Wrong data",
-        text: "Some datais wrong",
         icon: "warning",
         dangerMode: true,
         buttons: {
@@ -296,12 +294,15 @@ export const resetForgotPassword = (id: any, password: RESET_PASSWORD) => {
   }
 };
 export const validateAccount = (id: any) => {
-  // console.log(id);
-
   try {
     return async (dispatch: Dispatch) => {
       await axios.get(`${URLVALIDATE}${id}`);
+      swal({
+        icon: "success",
+        text: "Account validated."
+      });
     };
+    
   } catch (error) {
     alert(error);
   }

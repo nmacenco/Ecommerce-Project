@@ -25,14 +25,14 @@ export function ResetPwd(): JSX.Element {
     const showError = (resetPwd: PWD): boolean => {
         let bool: boolean = false
 
-        if (resetPwd.actualPassword.length === 0) { bool = true; (document.getElementById("actualPassword") as HTMLInputElement).textContent = "Old password missing" }
+        if (resetPwd.actualPassword.length === 0) { bool = true; (document.getElementById("actualPassword") as HTMLInputElement).textContent = "Actual password missing." }
         else (document.getElementById("actualPassword") as HTMLInputElement).textContent = ""
 
-        if (resetPwd.password.length === 0) { bool = true; (document.getElementById("password") as HTMLInputElement).textContent = "New password missing" }
+        if (resetPwd.password.length === 0) { bool = true; (document.getElementById("password") as HTMLInputElement).textContent = "New password missing." }
         else (document.getElementById("password") as HTMLInputElement).textContent = ""
 
-        if (resetPwd.passwordConfirm.length === 0) { bool = true; (document.getElementById("passwordConfirm") as HTMLInputElement).textContent = "Confirm password missing" }
-        else if (resetPwd.passwordConfirm !== resetPwd.password) { bool = true; (document.getElementById("passwordConfirm") as HTMLInputElement).textContent = "Don't match passwords" }
+        if (resetPwd.passwordConfirm.length === 0) { bool = true; (document.getElementById("passwordConfirm") as HTMLInputElement).textContent = "Confirm password missing." }
+        else if (resetPwd.passwordConfirm !== resetPwd.password) { bool = true; (document.getElementById("passwordConfirm") as HTMLInputElement).textContent = "Passwords do not match." }
         else (document.getElementById("passwordConfirm") as HTMLInputElement).textContent = ""
         return bool
     }
@@ -68,20 +68,20 @@ export function ResetPwd(): JSX.Element {
     return (
         <FormContainer>
             <form onSubmit={handleSubmit}>
-                <h3 className="text-center">Forgot password</h3>
+                <h3 className="text-center mt-4 mb-5">Change password</h3>
                 <div className="form-group">
-                    <label className="col-sm-2 col-form-label">Actual password</label>
-                    <input type="password" className="form-control" placeholder='Password' name="actualPassword" onChange={(e) => changePassword(e)} />
+                    <label className="col-form-label">Actual password</label>
+                    <input type="password" className="form-control" placeholder='Actual password' name="actualPassword" onChange={(e) => changePassword(e)} />
                     <small id="actualPassword" className="text-danger"></small>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-2 col-form-label">New password</label>
-                    <input type="password" className="form-control" placeholder='Password' name="password" onChange={(e) => changePassword(e)} />
+                    <label className="col-form-label">New password</label>
+                    <input type="password" className="form-control" placeholder='New password' name="password" onChange={(e) => changePassword(e)} />
                     <small id="password" className="text-danger"></small>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-2 col-form-label">Repeat password</label>
-                    <input type="password" className="form-control" placeholder='Repeat password' name="passwordConfirm" onChange={(e) => changePassword(e)} />
+                    <label className="col-form-label">Repeat new password</label>
+                    <input type="password" className="form-control" placeholder='Repeat new password' name="passwordConfirm" onChange={(e) => changePassword(e)} />
                     <small id="passwordConfirm" className="text-danger"></small>
                 </div>
                 <div className="text-center">
