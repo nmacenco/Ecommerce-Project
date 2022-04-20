@@ -36,7 +36,7 @@ const createUser = async (req, res) => {
         await sendMailPassword(
           email,
           "Please activate your account to continue.",
-          `<p>Click <a href="http://localhost:3000/validateAccount/${token}">here</a> to activate your account.</p>`
+          `<p>Click <a href="https://pcshop-ecommerce-project-fgwggeqos-nmacenco.vercel.app/validateAccount/${token}">here</a> to activate your account.</p>`
         );
         res.status(201).send({
           successMsg: "User activation email sent.",
@@ -350,7 +350,7 @@ const sendPasswordResetMail = async (req, res) => {
     await sendMailPassword(
       email,
       "Required password reset",
-      `<p>Click <a href='http://localhost:3000/sessions/recover/${token}>here</a> to reset your password</p>`
+      `<p>Click <a href='https://pcshop-ecommerce-project-fgwggeqos-nmacenco.vercel.app/sessions/recover/${token}>here</a> to reset your password</p>`
     );
     res.status(200).send({ successMsg: "Password reset sent." });
   } catch (error) {
@@ -377,7 +377,7 @@ const sendForcedPasswordResetMail = async (req, res) => {
     await sendMailPassword(
       email,
       "Required password reset",
-      `<p>Click <a href="http://localhost:3000/sessions/recover/${token}">here</a> to reset your password</p>`
+      `<p>Click <a href="https://pcshop-ecommerce-project-fgwggeqos-nmacenco.vercel.app//sessions/recover/${token}">here</a> to reset your password</p>`
     );
     res.status(200).send({ successMsg: "Password reset sent." });
   } catch (error) {
