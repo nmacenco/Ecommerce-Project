@@ -4,7 +4,7 @@ import swal from "sweetalert";
 
 import { Product, ProductCart, TYPES_ORDERS_USER , TYPES_CART} from "../interface";
 // import { ProductCart, TYPES_ORDERS_USER } from "../interface";
-const URL = "http://localhost:3001/api/auth/orders";
+const URL = "/api/auth/orders";
 
 export const getOrdersUser = (token: string) => {
   try {

@@ -4,9 +4,9 @@ import { Dispatch } from "redux";
 
 import { AXIOSDATA, Product, TYPES_PRODUCT } from "../interface";
 // import interfaces from '....'
-const URL = "http://localhost:3001/api";
+const URL = "/api";
 
-const URL_WISH = "http://localhost:3001/api/wishList";
+const URL_WISH = "/api/wishList";
 
 const defaultCallback = (error: any) => {
   if (error) {

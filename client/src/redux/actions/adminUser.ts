@@ -2,8 +2,8 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { TYPES_ADMIN_USER } from "../interface";
 
-const URL = "http://localhost:3001/api/admin/users";
-const URLRESET = "http://localhost:3001/api/forcedPasswordReset"
+const URL = "/api/admin/users";
+const URLRESET = "/api/forcedPasswordReset"
 
 export const adminGetUsers = (theToken:any) => {
   try {
