@@ -53,7 +53,7 @@ const Cart = (): JSX.Element => {
 
   function confirmHandler(e: React.MouseEvent<HTMLElement>): void {
     // CheckStock()
-    console.log(CheckStock(productsCart , allProducts ));
+    // console.log(CheckStock(productsCart , allProducts ));
     let currentStock = CheckStock(productsCart , allProducts) ;
     currentStock.length ? 
       swal({
