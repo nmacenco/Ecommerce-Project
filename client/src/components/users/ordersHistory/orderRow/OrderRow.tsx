@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Img } from "../OrdersHistoryStyle";
+import { First, Fourth, Second, Third } from "./OrderRowStyle";
 
 interface Detail_Props {
   id: number;
@@ -16,20 +17,18 @@ interface Props {
   userId: number;
   totalAmount: number;
   status: string;
-  billing_address: string;
+  paidAt: string;
   details: Detail_Props[];
 }
 
-const OrderRow = ({ id, userId,totalAmount, status, billing_address, details }: Props): JSX.Element => {
-  console.log(status)
+const OrderRow = ({ id, userId,totalAmount, status, paidAt, details }: Props): JSX.Element => {
   return (
     <tbody >
       <tr>
-        <th scope="row">{id}</th>
-        <td>{status}</td>
-        <td>${totalAmount}</td>
-        <td>{billing_address}</td>
-        <td><button className="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapse">Detail</button></td>
+        <First scope="row">{paidAt.substr(5, 5)}</First>
+        <Second>{status}</Second>
+        <Third>${totalAmount}</Third>
+        <Fourth><button className="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapse">Detail</button></Fourth>
       </tr>
       {
         details.map(product => {
@@ -38,7 +37,7 @@ const OrderRow = ({ id, userId,totalAmount, status, billing_address, details }: 
             <td><Link to={`/detail/${product.productId}`} className="text-decoration-none">{product.productName}</Link></td>
             <td>${product.amount}</td>
             <td>Quantity: {product.quantity}</td>
-            {status == "FINISHED" &&
+            {status === "FINISHED" &&
             <td><Link to={`/newReview/${userId}/${product.productId}`} className="btn btn-primary btn-sm">
               Review
             </Link>

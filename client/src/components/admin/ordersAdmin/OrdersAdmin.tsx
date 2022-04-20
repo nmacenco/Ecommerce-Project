@@ -9,7 +9,8 @@ import { useLocalStorage } from "../../../helpers/useLocalStorage";
 const OrdersAdmin = (): JSX.Element => {
   const dispatch = useDispatch()
   const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
-  const orders = useSelector((state: State) => state.ordersAdmin.orders);
+  const allOrders = useSelector((state: State) => state.ordersAdmin.orders);
+  const orders = allOrders.filter(order => order.status !== "PENDING")
 
   useEffect(() => {
     dispatch(getOrdersAdmin(userInStorage!.token))
@@ -28,9 +29,9 @@ const OrdersAdmin = (): JSX.Element => {
 
   return (
     <Container>
-      {/* <div className="container d-flex flex-column"> */}
       <div className="accordion w-75" id="accordionExample">
         <h3 className="text-center mt-5">Admin Orders</h3>
+          {orders.length > 0 ? <>
         <div className="d-flex">
           <label className="input-group-text">Status: </label>
           <select
@@ -53,9 +54,8 @@ const OrdersAdmin = (): JSX.Element => {
               <th scope="col">DETAIL</th>
             </tr>
           </thead>
-          {orders.length > 0 &&
-            orders.map(order => {
-              return <OrderAdminRow
+            {orders.map(order => {
+                return <OrderAdminRow
                 key={order.id}
                 id={order.id}
                 total={order.total_amount}
@@ -63,10 +63,10 @@ const OrdersAdmin = (): JSX.Element => {
                 status={order.status}
                 details={order.details}
                 billing_address={order.shipping_address}
-              />
-            })
-          }
+                />
+            })}
         </Table>
+        </> : <h5 className="text-center mt-5 pt-5">Not orders done yet.</h5>}
       </div>
 
     </Container>
