@@ -27,7 +27,9 @@ export const reducerProduct = (
 
       action.payload.forEach((product) => {
         // console.log("ADD ITEM",product.name);
-        newTable.addItem(product.name);
+        if (product.isActive === true) {
+          newTable.addItem(product.name);
+        }
       });
       // console.log("La hastable es: ", newTable);
 

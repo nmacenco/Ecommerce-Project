@@ -12,6 +12,7 @@ import GoogleLogin from "react-google-login";
 import { getPendingOrder } from "../../redux/actions/cart";
 import { createOrderUser } from "../../redux/actions/ordersUser";
 import { setPage } from "../../redux/actions/setPage";
+import { ButtonsContainer } from "../form/SLogin";
 
 interface Inputs {
   name: string;
@@ -224,9 +225,15 @@ const Register = (): JSX.Element => {
           )}
         </div>
       </div>
-      <div className="form-log" >
+      <ButtonsContainer>
+        
+      
+      <div className=" d-flex justify-content-between text-center mb-3  w-50" >
         <GoogleLogin
-          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+         className=" d-flex justify-content-center    w-100"
+
+          // clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+          clientId="1061640396754-j64d97uf6i4hbuhbs73vkpa79bcrilsg.apps.googleusercontent.com"
           buttonText="Register"
           onSuccess={responseGoogle}
           onFailure={rejectGoogle}
@@ -234,14 +241,14 @@ const Register = (): JSX.Element => {
           style={{ width: '100% !important' }}
         />
       </div>
-      <div className="text-center m-3">
+      <div className="d-flex justify-content-between text-center mb-3  w-50">
         {validateForms(error, inputs).length ? (
-          <button className="btn btn-primary button-links link-Router mx-2" disabled>
+          <button className="btn btn-primary button-links link-Router mb-2  w-50" disabled>
             Submit
           </button>
         ) : (
           <button
-            className="btn btn-primary button-links link-Router mx-2"
+            className="btn btn-primary button-links link-Router mb-2  w-50"
             onClick={RegisterFetch}
           >
             Submit
@@ -249,18 +256,19 @@ const Register = (): JSX.Element => {
         )}
         <Link
           to="/login"
-          className="btn btn-secondary link-Router button-links mx-2"
+          className="btn btn-secondary link-Router button-links mb-2  w-50"
         >
           Login
         </Link>
       </div>
 
       <button
-        className="btn btn-primary button-links link-Router mx-2"
+        className="btn btn-primary button-links link-Router mb-5 mx-2 w-50"
         onClick={CreateOrder}
       >
         Keep buying
       </button>
+      </ButtonsContainer>
     </Form>
   );
 };

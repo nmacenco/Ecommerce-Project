@@ -5,7 +5,7 @@ import validator, { validateForms } from "../../helpers/validateForm";
 import { GetUSer, LoginWithGoogle, LogoutUser } from "../../redux/actions/user";
 import { State } from "../../redux/reducers";
 import Form from "../form/Form";
-import { Forgot } from "../form/SLogin";
+import { ButtonsContainer, Forgot } from "../form/SLogin";
 import { setPage } from "../../redux/actions/setPage";
 import { GoogleLogin } from "react-google-login";
 import { createOrderUser } from "../../redux/actions/ordersUser";
@@ -142,32 +142,71 @@ const Login = (): JSX.Element => {
       </div>
       <Forgot
         className="btn btn-link p-0 m-2 text-decoration-none"
-      // onClick={forgotPassword}
+      onClick={forgotPassword}
       >
         Forgot Password?
       </Forgot>
+      <ButtonsContainer>
 
-      <div className="form-log">
-        <GoogleLogin
-          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={responseGoogle}
-          // onFailure={rejectGoogle}
-          cookiePolicy={"single_host_origin"}
-        />
-      </div>
 
-      <div className="text-center m-3">
-        {validateForms(error, inputs).length ? (
+      {/* <div className="w-75">
+      {validateForms(error, inputs).length ? (
           <button
-            className="btn btn-primary button-links link-Router mx-2"
+            className="btn btn-primary button-links link-Router mb-2  w-100"
             disabled
           >
             SUBMIT
           </button>
         ) : (
           <button
-            className="btn btn-primary button-links link-Router mx-2"
+            className="btn btn-primary button-links link-Router mb-2  w-100"
+            onClick={LoginFetch}
+          >
+            SUBMIT
+          </button>
+        )}
+
+      </div>
+
+      <div className=" border d-flex justify-content-between text-center mb-3  w-75">
+      <GoogleLogin
+          className=" d-flex justify-content-center    w-50"
+          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+          buttonText=""
+          onSuccess={responseGoogle}
+          onFailure={rejectGoogle}
+          cookiePolicy={"single_host_origin"}
+        />
+        <Link
+          to="/register"
+          className="btn btn-secondary link-Router button-links   w-50"
+        >
+          REGISTER
+        </Link>
+      </div> */}
+
+
+      <div className="  d-flex justify-content-between text-center mb-3  w-75">
+      <GoogleLogin
+          className=" d-flex justify-content-center    w-100"
+          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
+          buttonText=""
+          onSuccess={responseGoogle}
+          onFailure={rejectGoogle}
+          cookiePolicy={"single_host_origin"}
+        />
+        </div>
+      <div className=" d-flex justify-content-between text-center mb-3  w-75">
+        {validateForms(error, inputs).length ? (
+          <button
+            className="btn btn-primary button-links link-Router mb-2  w-50"
+            disabled
+          >
+            SUBMIT
+          </button>
+        ) : (
+          <button
+            className="btn btn-primary button-links link-Router mb-2  w-50"
             onClick={LoginFetch}
           >
             SUBMIT
@@ -175,18 +214,19 @@ const Login = (): JSX.Element => {
         )}
         <Link
           to="/register"
-          className="btn btn-secondary link-Router button-links mx-2"
+          className="btn btn-secondary link-Router button-links mb-2  w-50"
         >
           REGISTER
         </Link>
       </div>
 
       <button
-        className="btn btn-primary button-links link-Router mx-2"
+        className="btn btn-primary button-links link-Router mb-5 mx-2 w-75"
         onClick={CreateOrder}
       >
         Keep Buying
       </button>
+      </ButtonsContainer>
     </Form>
 
 
