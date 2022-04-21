@@ -48,7 +48,7 @@ export default function FromCreate(): JSX.Element {
   const [subcategoriesFiltered, setSubcategoriesFiltered] = useState<
     Subcategory[]
   >([]);
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
 
 
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function FromCreate(): JSX.Element {
     let errors = errorsCheck(product);
     setErrorsList(errors)
     if (errors === false) {
-      dispatch(postProduct(product , userInStorage.token));
+      dispatch(postProduct(product, userInStorage.token));
       swal({
         title: "Product created successfully",
         icon: "success",
