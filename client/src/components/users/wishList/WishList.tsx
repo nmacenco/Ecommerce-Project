@@ -5,7 +5,9 @@ import swal from 'sweetalert';
 import { addProductCart, addProductOrder } from '../../../redux/actions/cart';
 import { deleteWish, getWish } from '../../../redux/actions/products';
 import { State } from '../../../redux/reducers';
-import { WishContainer, WishGrid } from './whis';
+import { WishContainer, WishGrid, WishImg } from './whis';
+import  CartIMG  from '../../../icons/cart-icon.png';
+import  DeleteIMG  from '../../../icons/white-trash.png';
 
 
 const WishList = (): JSX.Element => {
@@ -28,8 +30,6 @@ const WishList = (): JSX.Element => {
 
     const addProductToCart = (event: any) => {
         let index = event.target.id;
-        // console.log('ID_PRODUCT: ', index);
-        // console.log('ALL PRODUCTS: ', products);
 
         const encountered = products.find(product => product.id === Number(index));
         if (encountered) {
@@ -47,14 +47,14 @@ const WishList = (): JSX.Element => {
             dispatch(deleteWish(Number(index), user!.token, (error) => {
                 if (error) {
                     swal({
-                        text: "Oops! An error has occurred",
+                        text: "Error.",
                         content: error,
                         icon: "error",
                     });
                 } else {
                     swal({
                         title: "Success",
-                        text: 'added to cart',
+                        text: 'Added to cart.',
                         icon: "success",
                     });
                 }
@@ -66,36 +66,34 @@ const WishList = (): JSX.Element => {
 
     return (
         <WishContainer>
-            <header>WishList</header>
+            <h3 className="mt-4 pb-5">WishList</h3>
             <WishGrid className={wishes.length ? '' : ''}>
                 <tbody>
-                    <tr>
-                        <th className='title'><i>Product</i></th>
-                        <th className='title'><i>Product name</i></th>
-                        <th className='title'><i>Price</i></th>
-                        <th className='title'><i>Status stock</i></th>
-                        <th className='title'><i>Actions</i></th>
-                    </tr>
-                    {
-                        wishes.map((wish, i) => {
-                            // console.log(wish)
+                    {wishes.length ? <tr>
+                        <th className='title'>Product</th>
+                        <th className='title'>Name</th>
+                        <th className='title'>Price</th>
+                        <th className='title'>Stock Status</th>
+                        <th className='title'>Actions</th>
+                    </tr> : <h5 className="text-center mt-5 pt-5">Wishlist empty.</h5>}
+                    {wishes.map((wish, i) => {
                             return (
                                 <tr key={wish.id.toString()}>
-                                    <td className='item-borders'>
-                                        <Link to={`/detail/${wish.id}`} className='anchor-wish'>
-                                            <img src={wish.image} />
+                                    <td className=''>
+                                        <Link to={`/detail/${wish.id}`} >
+                                            <WishImg src={wish.image} alt=""/>
                                         </Link>
                                     </td>
-                                    <td className='item-borders'><i>{wish.name.slice(0, 30)}</i></td>
-                                    <td className='item-borders'><i>{wish.price}</i></td>
-                                    <td className='item-borders'><i>{wish.stock ? 'In Stock' : 'Not stock'}</i></td>
+                                    <td className='item-borders'>{wish.name.slice(0, 30)}...</td>
+                                    <td className='item-borders'>${wish.price}</td>
+                                    <td className='item-borders'>{wish.stock ? 'In Stock' : 'Not stock'}</td>
                                     <td >
-                                        <div className='items-buttons'>
-                                            <button id={wish.id} onClick={addProductToCart}>
-                                                ADD CART
+                                        <div className='d-flex'>
+                                            <button className="btn btn-sm btn-primary me-1" id={wish.id} onClick={addProductToCart}>
+                                                <img src={CartIMG} alt="add cart"></img>
                                             </button>
-                                            <button onClick={WishDelete} id={wish.id.toString()}>
-                                                REMOVE
+                                            <button className="btn btn-sm btn-danger ms-1" onClick={WishDelete} id={wish.id.toString()}>
+                                            <img src={DeleteIMG} alt="delete"></img>
                                             </button>
                                         </div>
 
@@ -104,6 +102,7 @@ const WishList = (): JSX.Element => {
                             )
                         })
                     }
+                    
                 </tbody>
             </WishGrid>
         </WishContainer >
