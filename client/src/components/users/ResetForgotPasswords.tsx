@@ -44,8 +44,6 @@ export default function ResetForcePassword(): JSX.Element {
         if (reset.password !== "" && reset.passwordConfirm !== "") {
             handleShow(reset.password, reset.passwordConfirm)
             if (reset.password === reset.passwordConfirm && reset.password.length >= 8 && reset.password.length <= 20) {
-                console.log(token);
-
                 dispatch(resetForgotPassword(token, reset))
                 swal({
                     title: "Reset password",
@@ -70,14 +68,14 @@ export default function ResetForcePassword(): JSX.Element {
     return (
         <FormContainer>
             <form onSubmit={handleSubmit}>
-                <h3 className="text-center">Forgot password</h3>
-                <div className="form-group">
-                    <label className="col-sm-2 col-form-label">New password</label>
+                <h3 className="text-center mb-5 mt-5">Forgot password</h3>
+                <div className="form-group mt-3">
+                    <label className="col-form-label">New password</label>
                     <input type="password" className="form-control" placeholder='Password' name="password" onChange={(e) => changePassword(e)} />
                     <small id="password" className="text-danger"></small>
                 </div>
-                <div className="form-group">
-                    <label className="col-sm-2 col-form-label">Repeat password</label>
+                <div className="form-group mt-3">
+                    <label className="col-form-label">Repeat password</label>
                     <input type="password" className="form-control" placeholder='Repeat password' name="passwordConfirm" onChange={(e) => changePassword(e)} />
                     <small id="passwordConfirm" className="text-danger"></small>
                 </div>

@@ -1,9 +1,8 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { EDIT_USER } from "../../components/users/EditUserAccount";
 import { RESET_PASSWORD } from "../../components/users/ResetForgotPasswords";
 import { PWD } from "../../components/users/ResetPwd";
-import { TYPES_USER, User } from "../interface";
+import { TYPES_USER} from "../interface";
 import swal from "sweetalert";
 const URL_USER = "/api";
 const URLRESET = "/api/forgotPasswordReset";
@@ -154,7 +153,6 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
           role: response.data.data.role,
           google: true,
         };
-        console.log(newUser);
         dispatch({
           type: TYPES_USER.GET_USER,
           payload: newUser,
@@ -167,7 +165,6 @@ export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
         cb(response.data.errorMsg);
       }
     } catch (error) {
-      console.log("Error en sign in google: ", error);
       swal({
         title: "Wrong data",
         icon: "warning",

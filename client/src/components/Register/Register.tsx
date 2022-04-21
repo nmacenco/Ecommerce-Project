@@ -9,18 +9,16 @@ import { useNavigate } from "react-router";
 import { getCountries } from "../../redux/actions/countries";
 import swal from "sweetalert";
 import GoogleLogin from "react-google-login";
-import { getPendingOrder } from "../../redux/actions/cart";
 import { createOrderUser } from "../../redux/actions/ordersUser";
 import { setPage } from "../../redux/actions/setPage";
 import { ButtonsContainer } from "../form/SLogin";
+import { SelectCountry } from "./SRegister";
 
 interface Inputs {
   name: string;
   lastname: string;
   email: string;
   passUser: string;
-  // billing_address: string;
-  // default_shipping_address: string;
   countryId: string;
 }
 
@@ -37,8 +35,6 @@ const Register = (): JSX.Element => {
     lastname: "",
     name: "",
     passUser: "",
-    // billing_address: "",
-    // default_shipping_address: "",
     countryId: "",
   });
   const [error, setError] = useState<Inputs>({
@@ -46,11 +42,8 @@ const Register = (): JSX.Element => {
     lastname: "",
     name: "",
     passUser: "",
-    // billing_address: "",
-    // default_shipping_address: "",
     countryId: "",
   });
-  // const [countries, setCountries] = useState<Array<any>>([])
 
   useEffect(() => {
     dispatch(getCountries());
@@ -58,7 +51,6 @@ const Register = (): JSX.Element => {
     return () => {
       dispatch(setPage(1));
     };
-
   }, []);
 
 
@@ -88,8 +80,6 @@ const Register = (): JSX.Element => {
       surname: inputs.lastname,
       email: inputs.email,
       password: inputs.passUser,
-      // billing_address: inputs.billing_address,
-      // default_shipping_address: inputs.default_shipping_address,
       CountryId: Number(inputs.countryId),
     };
     if (!user) {
@@ -138,30 +128,28 @@ const Register = (): JSX.Element => {
   //   dispatch(createOrderUser(user.token, productsCart));
   //   dispatch(getPendingOrder(user.token));
   // }
+  
   const CreateOrder = () => { // FUNCIONA PERFECTO, TESTEADO HASTA LA COMPRA 
     if (user) {
-      console.log(user);
       dispatch(createOrderUser(user.token, productsCart));
     }
     setTimeout(() => {
       navigate("/products");
-
     }, 200)
   }
 
   const rejectGoogle = (error: any) => {
-    console.log(error);
     swal({
-      title: 'Oops! an error occurred',
-      text: error,
+      title: 'Error',
+      // text: error,
       icon: 'error'
     })
   }
 
   return (
     <Form title="Register">
-      <div className="div-data">
-        <div>
+      <div className="d-flex justify-content-evenly">
+        <div className=" me-1">
           <input
             type="text"
             placeholder="Name..."
@@ -171,7 +159,7 @@ const Register = (): JSX.Element => {
           />
           {error.name && <b className="invalid-feedback">{error.name}</b>}
         </div>
-        <div>
+        <div className="ms-1">
           <input
             type="text"
             placeholder="LastName..."
@@ -183,26 +171,10 @@ const Register = (): JSX.Element => {
             <b className="invalid-feedback">{error.lastname}</b>
           )}
         </div>
-        <div>
-          <select
-            className="form-select"
-            id="select"
-            name="countryId"
-            onChange={FormChange}
-          >
-            {countries.length &&
-              countries.map((country: any, i: number) => {
-                return (
-                  <option value={country.id} key={country.id}>
-                    {country.name}
-                  </option>
-                );
-              })}
-          </select>
-        </div>
       </div>
-      <div className="div-inputs">
-        <div>
+
+      <div className="d-flex justify-content-evenly">
+        <div className=" me-1">
           <input
             type="email"
             placeholder="Email..."
@@ -212,7 +184,7 @@ const Register = (): JSX.Element => {
           />
           {error.email && <b className="invalid-feedback">{error.email}</b>}
         </div>
-        <div>
+        <div  className="ms-1">
           <input
             type="password"
             placeholder="Password..."
@@ -225,12 +197,28 @@ const Register = (): JSX.Element => {
           )}
         </div>
       </div>
+      <SelectCountry>
+          <select
+            className="form-select"
+            id="select"
+            name="countryId"
+            onChange={FormChange}
+          >
+            <option hidden>Select country</option>
+            {countries.length &&
+              countries.map((country: any, i: number) => {
+                return (
+                  <option value={country.id} key={country.id}>
+                    {country.name}
+                  </option>
+                );
+              })}
+          </select>
+      </SelectCountry>
       <ButtonsContainer>
-        
-      
-      <div className=" d-flex justify-content-between text-center mb-3  w-50" >
+      <div className=" d-flex justify-content-between text-center mb-3 w-75" >
         <GoogleLogin
-         className=" d-flex justify-content-center    w-100"
+         className=" d-flex justify-content-center  w-100"
 
           // clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
           clientId="1061640396754-j64d97uf6i4hbuhbs73vkpa79bcrilsg.apps.googleusercontent.com"
@@ -241,25 +229,27 @@ const Register = (): JSX.Element => {
           style={{ width: '100% !important' }}
         />
       </div>
-      <div className="d-flex justify-content-between text-center mb-3  w-50">
+      
+      <div className="d-flex justify-content-between text-center mb-3  w-75">
+      <Link
+          to="/login"
+          className="btn btn-secondary link-Router button-links mb-3  w-50"
+        >
+          Login
+        </Link>
         {validateForms(error, inputs).length ? (
-          <button className="btn btn-primary button-links link-Router mb-2  w-50" disabled>
+          <button className="btn btn-primary button-links link-Router mb-3  w-50" disabled>
             Submit
           </button>
         ) : (
           <button
-            className="btn btn-primary button-links link-Router mb-2  w-50"
+            className="btn btn-primary button-links link-Router mb-3  w-50"
             onClick={RegisterFetch}
           >
             Submit
           </button>
         )}
-        <Link
-          to="/login"
-          className="btn btn-secondary link-Router button-links mb-2  w-50"
-        >
-          Login
-        </Link>
+        
       </div>
 
       <button

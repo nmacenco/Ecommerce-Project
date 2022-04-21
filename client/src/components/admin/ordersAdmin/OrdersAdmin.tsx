@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrdersAdmin, orderHistoryStatus, resetOrdersAdmin } from "../../../redux/actions/ordersAdmin";
 import OrderAdminRow from "./orderAdminRow/OrderAdminRow";
-import { Container, Table } from "./OrderAdminStyles";
+import { Accordion, Container, Overflow, Table } from "./OrderAdminStyles";
 import { State } from "../../../redux/reducers";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
@@ -19,7 +19,6 @@ const OrdersAdmin = (): JSX.Element => {
     }
   }, [])
 
-
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     e.preventDefault()
     dispatch(orderHistoryStatus(e.target.value))
@@ -29,10 +28,9 @@ const OrdersAdmin = (): JSX.Element => {
 
   return (
     <Container>
-      <div className="accordion w-75" id="accordionExample">
+      <Accordion className="accordion" id="accordionExample">
         <h3 className="text-center mt-5">Admin Orders</h3>
-          {orders.length > 0 ? <>
-        <div className="d-flex">
+        <div className="d-flex mt-5">
           <label className="input-group-text">Status: </label>
           <select
             className="custom-select"
@@ -45,13 +43,15 @@ const OrdersAdmin = (): JSX.Element => {
             }
           </select>
         </div>
+          {orders.length > 0 ? <>
+        <Overflow>
         <Table className="table table-hover mt-5">
           <thead>
             <tr>
-              <th scope="col">ID</th>
               <th scope="col">STATUS</th>
+              <th scope="col">EMAIL</th>
+              <th scope="col">ADRESS</th> 
               <th scope="col">TOTAL</th>
-              <th scope="col">DETAIL</th>
             </tr>
           </thead>
             {orders.map(order => {
@@ -66,8 +66,10 @@ const OrdersAdmin = (): JSX.Element => {
                 />
             })}
         </Table>
+        </Overflow>
         </> : <h5 className="text-center mt-5 pt-5">Not orders done yet.</h5>}
-      </div>
+        
+      </Accordion>
 
     </Container>
   );
