@@ -25,7 +25,7 @@ const Nav = (): JSX.Element => {
 
 
 
-  function handleClickProducts() {
+  function handleClickProducts(): void {
     dispatch(productNotFound(false));
     dispatch(resetFilterProducts());
     dispatch(resetPoducts());
@@ -35,74 +35,74 @@ const Nav = (): JSX.Element => {
   }
 
   return (
-    <>    { (path === ("/login")) ? null : (path === ( "/register")) ? null :
-          // this makes nav only render out of login an register so that the only way to go to products is by making click on the button. The button creates a new order for the user
-    <NavBar className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
-      <div className="flex-grow-1 d-lg-flex align-items-center">
-        <Link className="navbar-brand " to="/home">
-          PCSHOP
-        </Link>
-        <div className="collapse navbar-collapse" id="navbarColor01">
-          <div className="navbar-nav me-auto">
-            <div className="nav-item">
-              <Link
-                onClick={() => {
-                  handleClickProducts();
-                }}
-                className="nav-link"
-                to={"/products"}
-              >
-                Products
-              </Link>
+    <>    {(path === ("/login")) ? null : (path === ("/register")) ? null :
+      // this makes nav only render out of login an register so that the only way to go to products is by making click on the button. The button creates a new order for the user
+      <NavBar className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
+        <div className="flex-grow-1 d-lg-flex align-items-center">
+          <Link className="navbar-brand " to="/home">
+            PCSHOP
+          </Link>
+          <div className="collapse navbar-collapse" id="navbarColor01">
+            <div className="navbar-nav me-auto">
+              <div className="nav-item">
+                <Link
+                  onClick={() => {
+                    handleClickProducts();
+                  }}
+                  className="nav-link"
+                  to={"/products"}
+                >
+                  Products
+                </Link>
+              </div>
+              <div className="nav-item">
+                <Link className="nav-link" to={"/about"}>
+                  About
+                </Link>
+              </div>
             </div>
-            <div className="nav-item">
-              <Link className="nav-link" to={"/about"}>
-                About
-              </Link>
+            <Routes>
+              <Route path="/products" element={<Search />} />
+              <Route path="/productsAdminMode" element={<Search />} />
+            </Routes>
+            <div className="me-5">
+              {userState && userState.role === "admin" && <AdminDropdown />}
+              {userState && userState.role === "user" && <UserDropdown />}
+              {!userState && page === 1 ? (
+                <Link
+                  to="/login"
+                  className="nav-item btn btn-secondary my-2 link-Router"
+                  onClick={() => {
+                    handleClickLogIn();
+                  }}
+                >
+                  Login
+                </Link>
+              ) : null}
             </div>
-          </div>
-          <Routes>
-            <Route path="/products" element={<Search />} />
-            <Route path="/productsAdminMode" element={<Search />} />
-          </Routes>
-          <div className="me-5">
-            {userState && userState.role === "admin" && <AdminDropdown />}
-            {userState && userState.role === "user" && <UserDropdown />}
-            {!userState && page === 1 ? (
-              <Link
-                to="/login"
-                className="nav-item btn btn-secondary my-2 link-Router"
-                onClick={() => {
-                  handleClickLogIn();
-                }}
-              >
-                Login
-              </Link>
-            ) : null}
           </div>
         </div>
-      </div>
 
-      <div className="ms-auto mb-auto py-lg-3">
-        <Routes>
-          <Route path="/products" element={<CartIcon />} />
-          <Route path="/cart" element={<CartIcon />} />
-          <Route path="/detail/:id" element={<CartIcon />} />
-        </Routes>
-        <button
-          className="navbar-toggler nav-item"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarColor01"
-          aria-controls="navbarColor01"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-      </div>
-    </NavBar>
-  } </>
+        <div className="ms-auto mb-auto py-lg-3">
+          <Routes>
+            <Route path="/products" element={<CartIcon />} />
+            <Route path="/cart" element={<CartIcon />} />
+            <Route path="/detail/:id" element={<CartIcon />} />
+          </Routes>
+          <button
+            className="navbar-toggler nav-item"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarColor01"
+            aria-controls="navbarColor01"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </NavBar>
+    } </>
 
   );
 };
