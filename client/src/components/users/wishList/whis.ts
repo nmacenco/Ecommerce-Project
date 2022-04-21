@@ -2,10 +2,6 @@ import styled from "styled-components";
 
 export const WishContainer = styled.article`
   width: 100%;
-  /* height: calc(100vh - 130px); */
-  /* min-height: 100%; */
-  /* border: 2px solid red; */
-  /* display: ; */
   padding: 10px;
   display: grid;
   grid-template-rows: 60px 1fr;
@@ -18,29 +14,13 @@ export const WishContainer = styled.article`
     }
   }
 
-  th,
-  td {
-    /* width: 86px; */
-    /* border-left: 2px solid gray; */
-  }
   td {
     height: 50px;
   }
   tr {
-    border-top: 2px solid gray;
-  }
-  tr:nth-last-child(1) {
-    border-bottom: 2px solid gray;
+    border-bottom: 1px solid gray;
   }
 
-  td:nth-child(1),
-  th:nth-child(1) {
-    border-left: 2px solid gray;
-  }
-  td:nth-child(5),
-  th:nth-child(5) {
-    border-right: 2px solid gray;
-  }
 
   header {
     width: 100%;
@@ -95,28 +75,12 @@ export const WishGrid = styled.table`
     justify-content: center;
     align-items: center;
 
-    button {
-      border: none;
-      border-radius: 3px;
-      text-align: center;
-      padding: 5px 10px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: white;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-    button:nth-child(1) {
-      background-color: #66a09c;
-    }
-    button:nth-child(2) {
-      background-color: #d17d7d;
-    }
-    button:nth-child(1):focus {
-      box-shadow: 0px 0px 0px 4px #b3dcd982;
-    }
-    button:nth-child(2):focus {
-      box-shadow: 0px 0px 0px 4px #dea7a770;
-    }
   }
 `;
+
+export const WishImg = styled.img`
+height:100px !important;
+width:120px !important;
+margin: 10px 0;
+`
+

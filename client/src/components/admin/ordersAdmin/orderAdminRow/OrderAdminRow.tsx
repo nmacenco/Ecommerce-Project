@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 import { updateOrderStatus } from "../../../../redux/actions/ordersAdmin";
 import { Img } from "../../../users/ordersHistory/OrdersHistoryStyle";
-import { Select } from "./OrderAdminRowStyles";
+import { First, Fourth, Second, Select, Third } from "./OrderAdminRowStyles";
 import swal from "sweetalert";
 
 interface Detail_Props {
@@ -67,32 +67,28 @@ const OrderAdminRow = ({ id, status, total, billing_address, details, email_addr
 
     <tbody>
       <tr>
-        <th scope="row">{id}</th>
-        <td>
-          <Select
+        <Second scope="row"><Select
             defaultValue={`${status}`}
             className="form-select"
             onChange={(e) => handleChange(e)}
           >
-            {/* <option disabled hidden>
-          {`${status}`}
-          </option> */}
             {
               statusArray.map((s, i: number) => {
                 return <option key={i} value={`${s}`} > {s} </option>
               })
-            }
+            } 
 
-          </Select></td>
-        <td>${total}</td>
-        <td>{billing_address}</td>
-        <td><button className="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapse">Detail</button></td>
+          </Select></Second>
+        <First>{email_address}</First>
+        <First>{billing_address}</First>
+        <Third>${total}</Third>
+        <Fourth><button className="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${id}`} aria-expanded="false" aria-controls="collapse">Detail</button></Fourth>
       </tr>
       {
         details.map((product: Detail_Props, i: number) => {
           return <tr key={i} id={`collapse${id}`} className="accordion-collapse collapse align-items-center" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <td><Img src={product.image} /></td>
-            <td><Link to={`/detail/${id}`}>{product.productName}</Link></td>
+            <td><Link className="text-decoration-none" to={`/detail/${id}`}>{product.productName}</Link></td>
             <td>${product.amount}</td>
             <td>Quantity: {product.quantity}</td>
           </tr>

@@ -17,7 +17,7 @@ flex-direction: row;
 justify-content: center;
 width: 80%;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1100px) {
   /* border: solid red ; */
     flex-direction: column;
     align-items: center;
@@ -56,8 +56,8 @@ export const ItemsTaxShipp = styled.div `
 
   @media (max-width: 900px) {
   /* border: solid red ; */
-    flex-direction: column;
-    align-items: center;
+    /* flex-direction: column;
+    align-items: center; */
   }
 
 

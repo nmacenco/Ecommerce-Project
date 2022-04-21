@@ -35,13 +35,13 @@ const Nav = (): JSX.Element => {
   }
 
   return (
-    <>    {(path === ("/login")) ? null : (path === ("/register")) ? null :
-      // this makes nav only render out of login an register so that the only way to go to products is by making click on the button. The button creates a new order for the user
-      <NavBar className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
-        <div className="flex-grow-1 d-lg-flex align-items-center">
-          <Link className="navbar-brand " to="/home">
-            PCSHOP
-          </Link>
+    // this makes nav only render out of login an register so that the only way to go to products is by making click on the button. The button creates a new order for the user
+    <NavBar className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
+      <div className="flex-grow-1 d-lg-flex align-items-center">
+        <Link className="navbar-brand " to="/home">
+          PCSHOP
+        </Link>
+        {(path === ("/login")) ? null : (path === ("/register")) ? null :
           <div className="collapse navbar-collapse" id="navbarColor01">
             <div className="navbar-nav me-auto">
               <div className="nav-item">
@@ -80,9 +80,9 @@ const Nav = (): JSX.Element => {
                 </Link>
               ) : null}
             </div>
-          </div>
-        </div>
-
+          </div>}
+      </div>
+      {(path === ("/login")) ? null : (path === ("/register")) ? null :
         <div className="ms-auto mb-auto py-lg-3">
           <Routes>
             <Route path="/products" element={<CartIcon />} />
@@ -101,9 +101,8 @@ const Nav = (): JSX.Element => {
             <span className="navbar-toggler-icon"></span>
           </button>
         </div>
-      </NavBar>
-    } </>
-
+      }
+    </NavBar>
   );
 };
 

@@ -75,8 +75,8 @@ export default function EmailResetPassword(): JSX.Element {
       <FormContainer1>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-            <h3 className="text-center">Reset password</h3>
-            <div className="form-group">
+            <h3 className="text-center">Forgot password</h3>
+            <div className="form-group mt-5">
               <label htmlFor="staticEmail" className=" col-form-label">
                 Email
               </label>
@@ -85,7 +85,6 @@ export default function EmailResetPassword(): JSX.Element {
                 className="form-control"
                 id="staticEmail"
                 name="email"
-                // value={}
                 placeholder="Type your email"
                 onChange={(e) => handleOnChange(e)}
                 onBlur={(e) => handleOnBlur(e)}
@@ -96,7 +95,7 @@ export default function EmailResetPassword(): JSX.Element {
             </div>
 
             <div className="text-center">
-              <button onClick={(e) => { handleSubmit(e) }} type="submit" className="btn btn-outline-primary mt-5 ">
+              <button onClick={(e) => { handleSubmit(e) }} type="submit" className="btn btn-outline-primary mt-1 ">
                 Submit
               </button>
             </div>

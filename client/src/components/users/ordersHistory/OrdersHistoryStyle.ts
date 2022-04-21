@@ -2,16 +2,18 @@ import styled from "styled-components";
 
 export const Accordion = styled.div`
  width: 100%;
-`;
+ `;
 
-export const Container = styled.div`
-display:flex;
-margin:0 400px;
-
-`;
-
-export const Table = styled.table`
-
+ export const Overflow = styled.div`
+ overflow-x:auto;
+ `;
+ 
+ export const Container = styled.div`
+ display:flex;
+ `;
+ 
+ export const Table = styled.table`
+min-width:600px;
 `;
 
 export const Img = styled.img`
