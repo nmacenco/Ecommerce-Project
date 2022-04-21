@@ -40,7 +40,7 @@ export default function PreviewOrder(): JSX.Element {
     <Previewcontainer>
       <h3 className="mt-3 mb-5">Preview Order</h3>
       {/* <ColumnsContainer className="row justify-content-center w-100"> */}
-      <ColumnsContainer>
+      {/* <ColumnsContainer>
         <TableContainer>
           
           <div className="card bg-secondary mb-3 col-xs-4 " >
@@ -133,11 +133,11 @@ export default function PreviewOrder(): JSX.Element {
           </OrderSumarySmallerContainer>
         </OrderSumaryContainer>
 
-      </ColumnsContainer>
+      </ColumnsContainer> */}
 
       
-      {/* <ColumnsContainer>
-        <div className=" col-lg-6 sm-10  "  >
+      <ColumnsContainer>
+        <div className=" col-11 col-md-6  "  >
           <div className="card bg-secondary mb-3 ">
             <div className="card-header">Shipping</div>
             <div className="card-body">
@@ -206,7 +206,7 @@ export default function PreviewOrder(): JSX.Element {
             </div>
           </div>
         </div>
-        <div className="col-3 ms-3 h-25 border p-4 col-sm-4 "  >
+        <div className="col-11 col-md-4 ms-3 h-25 border p-4  "  >
           <div className="card-body">
             <h4 className="card-title mb-3 ">Order Summary</h4>
             <ItemsTaxShipp>
@@ -224,7 +224,7 @@ export default function PreviewOrder(): JSX.Element {
             <PayPalCheckoutButtons></PayPalCheckoutButtons>
           </div>
         </div>
-      </ColumnsContainer> */}
+      </ColumnsContainer>
     </Previewcontainer>
   );
 }
