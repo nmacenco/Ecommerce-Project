@@ -117,7 +117,7 @@ const AdminModeCard = ({ name, image, price, id, orders, page, isActive, elimina
           {name.length > 30 ? (
             <p ><Link className="text-decoration-none" to={`/detail/${id}`}>{name.slice(0, 30)}...</Link></p>
           ) : (
-            <p className="card-title m-2"><Link to={`s/detail/${id}`}>{name}</Link></p>
+            <p className="card-title m-2"><Link to={`/detail/${id}`}>{name}</Link></p>
           )}
         </td>
         <td > $ {price} </td>

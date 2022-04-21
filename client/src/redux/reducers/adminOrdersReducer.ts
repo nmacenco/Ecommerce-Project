@@ -26,6 +26,10 @@ export const ordersAdminReducer = (state: ORDERS = INITIAL_STATE, action: AdminA
         case TYPES_ADMIN.O_ORDERS:
             let newOrder: Order[] = []
             newOrder = state.copyOrders.filter((e: Order) => e.status.toLowerCase() === action.payload.toLowerCase())
+            if (action.payload.toUpperCase() === 'ALL ORDERS') {
+                newOrder = state.copyOrders
+            }
+
 
             return {
                 ...state,
