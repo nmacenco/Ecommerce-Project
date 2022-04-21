@@ -10,6 +10,9 @@ import {
   AdminProductIMG,
   ColumnsContainer,
   ItemsTaxShipp,
+  TableContainer,
+  OrderSumaryContainer,
+  OrderSumarySmallerContainer,
 } from "./PreviewOrderStyles";
 
 export default function PreviewOrder(): JSX.Element {
@@ -36,13 +39,11 @@ export default function PreviewOrder(): JSX.Element {
   return (
     <Previewcontainer>
       <h3 className="mt-3 mb-5">Preview Order</h3>
-      {/* <ColumnsContainer className="row justify-content-center w-100"> */}
       <ColumnsContainer>
-        <div className=" col-6">
+        <div className=" col-11 col-md-8 col-lg-8  "  >
           <div className="card bg-secondary mb-3 ">
             <div className="card-header">Shipping</div>
             <div className="card-body">
-              {/* <h4 className="card-title">Secondary card title</h4> */}
               <p className="card-text"> {activeOrder.user} </p>
               <p className="card-text"> {activeOrder.shipping_address} </p>
               <Link className="text-decoration-none" to={"/shippingAddress"}>
@@ -52,6 +53,7 @@ export default function PreviewOrder(): JSX.Element {
           </div>
           <div className="card bg-secondary mb-3 ">
             <div className="card-header">Items</div>
+            <div className="table-responsive">
             <table className="table table-hover ">
               <thead>
                 <tr>
@@ -60,7 +62,6 @@ export default function PreviewOrder(): JSX.Element {
                   <th scope=" col ">Quantity</th>
                   <th scope="col">Price</th>
                   <th scope="col">Total</th>
-                  {/* <th scope="col">POr las  </th> */}
                 </tr>
               </thead>
               {Object.keys(activeOrder).length > 0 &&
@@ -99,15 +100,16 @@ export default function PreviewOrder(): JSX.Element {
 
                         <td>$ {product.quantity * product.price} </td>
 
-                        {/* <td>{}</td> */}
                       </tr>
                     </tbody>
                   );
                 })}
             </table>
+
+            </div>
           </div>
         </div>
-        <div className="col-3 ms-3 h-25 border p-4">
+        <div className="col-11 col-md-5 col-lg-3 ms-3 h-25 border p-4  "  >
           <div className="card-body">
             <h4 className="card-title mb-3 ">Order Summary</h4>
             <ItemsTaxShipp>
