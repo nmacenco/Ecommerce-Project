@@ -1,22 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetail, deleteProductDetail } from "../../redux/actions/productDetail";
+import {
+  getProductDetail,
+  deleteProductDetail,
+} from "../../redux/actions/productDetail";
 import { State } from "../../redux/reducers/index";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import Rewies from "./reviews/Review";
-import NewRewie from "./reviews/NewRewie";
+import Review from "./reviews/Review";
 import Loading from "../loading/Loading";
-import { DetailContainer, Box, ImgPriceContainer, Price, DeleteEditButton, ImagesContainer, } from "./DetailStyles";
+import {
+  DetailContainer,
+  Box,
+  ImgPriceContainer,
+  Price,
+  DeleteEditButton,
+  ImagesContainer,
+} from "./DetailStyles";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import swal from "sweetalert";
 import Question from "./questions/Question";
 import NewQ from "./questions/NewQ";
-import { addProductCart } from "../../redux/actions/cart";
-import { Product } from "../../redux/interface";
+import { addProductCart, addProductOrder } from "../../redux/actions/cart";
+import { ProductCart } from "../../redux/interface";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
-import TrashIMG from "../../icons/white-trash.png"
-import EditIMG from "../../icons/edit.png"
-import { resetPoducts } from "../../redux/actions/products";
+import TrashIMG from "../../icons/white-trash.png";
+import EditIMG from "../../icons/edit.png";
+import { createWish, resetPoducts } from "../../redux/actions/products";
 import { deleteProduct } from "../../redux/actions/admin";
 
 export default function Detail() {
@@ -25,24 +34,62 @@ export default function Detail() {
   const { id } = useParams<{ id?: string }>();
   const product = useSelector((state: State) => state.productDetail);
   const user = useSelector((state: State) => state.user);
+  const wishes = useSelector((state: State) => state.products.wishList);
   const productsCart = useSelector((state: State) => state.cart.cart);
-  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
-  const productInCart = productsCart.find((x: Product) => x.id === product.id);
+  const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
+  const productInCart = productsCart.find(
+    (product: ProductCart) => product.productId == product.productId
+  );
+  const [isWish, setWish] = useState<boolean>(false);
+
+  const wishEncountered = wishes.find((wish: any) => wish.id === Number(id));
+
+  const AddWishList = () => {
+    if (user) {
+      dispatch(
+        createWish(Number(id), user!.token, (error: any) => {
+          if (error) {
+            swal({
+              text: error,
+              icon: "error",
+            });
+            setWish(!isWish);
+          } else {
+            setWish(!isWish);
+            swal({
+              text: "Product added to your wishlist",
+              icon: "success",
+            });
+          }
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     dispatch(getProductDetail(id));
+
     return () => {
       dispatch(deleteProductDetail());
-      dispatch(resetFilterProducts());
-      dispatch(resetPoducts());
+      // dispatch(resetFilterProducts());
+      // dispatch(resetPoducts());
     };
-  }, []);
+  }, [wishes]);
 
   function addCartHandler(e: React.MouseEvent<HTMLButtonElement>): void {
-    const count = productInCart ? productInCart.count + 1 : 1;
-    if (Number(count) <= Number(product.stock)) {
-      product.count = count;
-      dispatch(addProductCart(product));
+    const productToAdd = {
+      productId: product.id,
+      productName: product.name,
+      price: product.price,
+      image: product.image,
+      stock: product.stock,
+      quantity: 0,
+    };
+    const quantity = productInCart ? productInCart.quantity + 1 : 1;
+    if (Number(quantity) <= Number(product.stock)) {
+      productToAdd.quantity = quantity;
+      dispatch(addProductCart(productToAdd));
+      user && id && dispatch(addProductOrder(user.token, Number(id)));
     }
   }
 
@@ -50,7 +97,7 @@ export default function Detail() {
     e.preventDefault();
     swal({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this product!",
+      text: "This product is now going to be inactive!",
       icon: "warning",
       dangerMode: true,
       buttons: {
@@ -59,9 +106,10 @@ export default function Detail() {
       },
     }).then((value) => {
       if (value) {
-        dispatch(deleteProduct(id, userInStorage.token));
-        dispatch(resetFilterProducts())
-        dispatch(resetPoducts())
+        const data = { isActive: false };
+        dispatch(deleteProduct(id, data, userInStorage.token));
+        // dispatch(resetFilterProducts())
+        dispatch(resetPoducts());
         navigate("/products");
         swal({
           text: "Product deleted",
@@ -92,7 +140,9 @@ export default function Detail() {
                   <h3>$ {product.price}</h3>
                   <p>Current stock: {product.stock}</p>
 
-                  {product.count === product.stock || productInCart && productInCart.count === product.stock ? (
+                  {product.quantity === product.stock ||
+                  (productInCart &&
+                    productInCart.quantity === product.stock || product.stock == 0) ? (
                     <button
                       type="button"
                       className="btn btn-primary btn"
@@ -109,6 +159,15 @@ export default function Detail() {
                       Add to cart
                     </button>
                   )}
+                  {user != null &&
+                    (wishEncountered || isWish ? null : (
+                      <button
+                        className="btn btn-danger wish"
+                        onClick={AddWishList}
+                      >
+                        Add to WishList
+                      </button>
+                    ))}
                   {userInStorage && userInStorage.role === "admin" ? (
                     <DeleteEditButton>
                       <button
@@ -134,7 +193,6 @@ export default function Detail() {
               </ImgPriceContainer>
             </div>
           </div>
-          <div></div>
         </Box>
       ) : (
         <Loading></Loading>
@@ -162,13 +220,11 @@ export default function Detail() {
             <p>{product.description}</p>
           </div>
           <div className="tab-pane fade m-2" id="profile">
-            {user && user.role !== 'user' ? <NewRewie /> : null}
             {product.reviews &&
               product.reviews.map((rew, i) => {
-                // console.log(rew.review);
                 return (
-                  <Rewies
-                    name={user!.name}
+                  <Review
+                    name={rew.review.User.name}
                     title={rew.review.title}
                     stars={rew.review.stars}
                     key={i}

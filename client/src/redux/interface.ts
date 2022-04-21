@@ -3,12 +3,14 @@ export enum TYPES_USER {
   GET_USER,
   LOGOUT_USER,
   FIND_USER,
-  GET_SINGLE_USER = "GET_SINGLE_USER"
+  SIGNIN_GOOGLE = "SIGNIN_GOOGLE",
+  SIGNUP_GOOGLE = "SIGNUP_GOOGLE=",
+  GET_SINGLE_USER = "GET_SINGLE_USER",
 }
 export enum TYPES_ADMIN_USER {
-  GET_USERS = 'GET_USERS',
-  RESET_USERS = 'RESET_USERS',
-  UPDATE_USER = 'UPDATE_USER'
+  GET_USERS = "GET_USERS",
+  RESET_USERS = "RESET_USERS",
+  UPDATE_USER = "UPDATE_USER",
 }
 
 export enum TYPES_DETAIL {
@@ -21,12 +23,15 @@ export enum TYPES_DETAIL {
 
 export enum TYPES_ADMIN {
   DELETE_PRODUCTS = "DELETE_PRODUCTS",
+  GET_ORDERS = "GET_ORDERS",
+  RESET_ORDERS = 'RESET_ORDERS',
+  O_ORDERS = 'O_ORDERS'
 }
 
 export enum TYPES_CATEGORIES {
   GET_CATEGORIES = "GET_CATEGORIES",
   GET_SUBCATEGORIES = "GET_SUBCATEGORIES",
-  RESET_SUBCATEGORIES = 'RESET_SUBCATEGORIES'
+  RESET_SUBCATEGORIES = "RESET_SUBCATEGORIES",
 }
 
 export enum TYPES_BRANDS {
@@ -37,26 +42,38 @@ export enum TYPES_PAGE {
 }
 
 export enum TYPES_PRODUCT {
+  DELETE_WISHE = "DELETE_WISHE",
+  CREATE_WISHE = "CREATE_WISHE",
+  GET_WISHES = "GET_WISHES",
   SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
   GET_PRODUCTS = "GET_PRODUCTS",
   ORDER_PRODUCTS = "ORDER_PRODUCTS",
-  CHARGE_FILTERS = "CHARGE_FILTERS",
-  REMOVE_FILTER = "REMOVE_FILTER",
-  FILTERED_CAT_PRODUCTS = "FILTERED_CAT_PRODUCTS",
-  FILTERED_BRAND_PRODUCTS = "FILTERED_BRAND_PRODUCTS",
+  // CHARGE_FILTERS = "CHARGE_FILTERS",
+  // REMOVE_FILTER = "REMOVE_FILTER",
+  // FILTERED_CAT_PRODUCTS = "FILTERED_CAT_PRODUCTS",
+  // FILTERED_BRAND_PRODUCTS = "FILTERED_BRAND_PRODUCTS",
   RESET_FILTERED_PRODUCTS = "RESET_FILTERED_PRODUCTS",
   RESET_PRODUCTS = "RESET_PRODUCTS",
-  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND',
+  PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
   FILTER_BY_BRAND = "FILTER_BY_BRAND",
+  FILTERED_PRODUCTS = "FILTERED_PRODUCTS",
 }
 
 export enum TYPES_CART {
   ADD_PRODUCT = "ADD_PRODUCT",
   REMOVE_PRODUCT = "REMOVE_PRODUCT",
+  CLEAR_CART = "CLEAR_CART",
+  GET_ACTIVEORDER = "GET_ACTIVEORDER",
 }
 
 export enum TYPES_COUNTRIES {
-  GET_COUNTRIES = "GET_COUNTRIES"
+  GET_COUNTRIES = "GET_COUNTRIES",
+}
+
+export enum TYPES_ORDERS_USER {
+  GET_ORDERS = "GET_ORDERS_USER",
+  GET_ORDER = 'GET_ORDER_USER',
+  RESET_ORDER = 'RESET_ORDER'
 }
 
 //=======================
@@ -64,7 +81,7 @@ export enum TYPES_COUNTRIES {
 
 export type Page = number;
 
-// dicson fijate si este User te sirve si no borralo por fa, se usa en una action por eso no lo borro 
+// dicson fijate si este User te sirve si no borralo por fa, se usa en una action por eso no lo borro
 
 export interface User {
   name: string;
@@ -72,11 +89,11 @@ export interface User {
   password: string;
   email: string;
   token: string;
-  role : string
+  role: string;
 }
 
 export interface Users {
-  CountryId: number
+  CountryId: number;
   countryCode: string;
   country: string;
   email: string;
@@ -90,6 +107,15 @@ export interface Users {
   isActive: boolean;
   tokens: string[];
   needsPasswordReset: boolean;
+}
+
+export interface ProductCart {
+  productId?: number;
+  productName: string;
+  price: number;
+  image: string;
+  stock: number;
+  quantity: number;
 }
 
 export interface ProductForm {
@@ -110,7 +136,6 @@ export interface Brand {
   id: number;
 }
 
-
 export interface Product {
   SubcategoryId: number;
   id?: number;
@@ -126,23 +151,34 @@ export interface Product {
   subcategory: string;
   CategoryId: number;
   category: number;
-  count: number;
+  quantity: number;
   questions: any[];
   reviews: any[];
-  isActive : boolean ; 
+  isActive: boolean;
+}
+export interface Order {
+  id: number;
+  total_amount: number;
+  email_address: string;
+  status: string;
+  user: string;
+  shipping_address: string;
+  paidAt:string;
+  details: any[];
+  userID: number;
 }
 
 export interface Question {
-  id?: number,
-  title: string,
-  description: string,
-  answer: string
+  id?: number;
+  title: string;
+  description: string;
+  answer: string;
 }
 export interface Rewie {
   id?: number;
   title: string;
   description: string;
-  ProductId: number
+  ProductId: number;
 }
 
 export interface Category {
@@ -156,12 +192,12 @@ export interface Subcategory {
 }
 
 export interface Data_Paginate {
-  selected: number
+  selected: number;
 }
 
 export interface FILTER_BOX {
-  subcategory: string,
-  brand: string
+  subcategory: string;
+  brand: string;
 }
 
 export interface IData {
@@ -170,21 +206,20 @@ export interface IData {
 }
 
 export interface ICountries {
-  name: string,
-  code: string,
-  id: number
+  name: string;
+  code: string;
+  id: number;
 }
 
 export interface IUser_Detail {
-  name: string,
-  surname: string,
-  email: string,
-  billing_address: string,
-  default_shipping_address: string,
-  country: string,
-  countryCode: number
+  name: string;
+  surname: string;
+  email: string;
+  billing_address: string;
+  default_shipping_address: string;
+  country: string;
+  countryCode: number;
 }
-
 
 //=======================
 // User Actions
@@ -206,8 +241,17 @@ export interface FIND_USER {
   payload: User;
 }
 export interface GET_SINGLE_USER {
-  type: TYPES_USER.GET_SINGLE_USER,
-  payload: any
+  type: TYPES_USER.GET_SINGLE_USER;
+  payload: any;
+}
+export interface SIGNUP_GOOGLE {
+  type: TYPES_USER.SIGNUP_GOOGLE;
+  payload: User;
+}
+
+export interface SIGNIN_GOOGLE {
+  type: TYPES_USER.SIGNIN_GOOGLE;
+  payload: User;
 }
 
 //=======================
@@ -215,17 +259,17 @@ export interface GET_SINGLE_USER {
 
 export interface GET_COUNTRIES {
   type: TYPES_COUNTRIES.GET_COUNTRIES;
-  payload: ICountries[]
+  payload: ICountries[];
 }
 // Admin User Actions
 
 export interface ADMIN_USER {
-  type: TYPES_ADMIN_USER.GET_USERS,
-  payload: Users[]
+  type: TYPES_ADMIN_USER.GET_USERS;
+  payload: Users[];
 }
 export interface ADMIN_RESET_USER {
-  type: TYPES_ADMIN_USER.RESET_USERS,
-  payload: []
+  type: TYPES_ADMIN_USER.RESET_USERS;
+  payload: [];
 }
 
 //=======================
@@ -263,12 +307,17 @@ export interface SET_PAGE {
 //Cart Actions
 export interface ADD_PRODUCT {
   type: TYPES_CART.ADD_PRODUCT;
-  payload: Product;
+  payload: ProductCart;
 }
 
 export interface REMOVE_PRODUCT {
   type: TYPES_CART.REMOVE_PRODUCT;
-  payload: Product;
+  payload: ProductCart;
+}
+
+export interface CLEAR_CART {
+  type: TYPES_CART.CLEAR_CART;
+  payload: null;
 }
 
 //=====================
@@ -283,23 +332,28 @@ export interface ORDER_PRODUCTS {
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
   payload: any;
 }
-export interface CHARGE_FILTERS {
-  type: TYPES_PRODUCT.CHARGE_FILTERS;
-  payload: Product[];
-}
-export interface REMOVE_FILTER {
-  type: TYPES_PRODUCT.REMOVE_FILTER;
-  payload: Product[];
-}
-export interface FILTERED_CAT_PRODUCTS {
-  type: TYPES_PRODUCT.FILTERED_CAT_PRODUCTS;
+export interface FILTER_PRODUCTS {
+  type: TYPES_PRODUCT.FILTERED_PRODUCTS;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
-  payload: Product[];
+  payload: any;
 }
-export interface FILTERED_BRAND_PRODUCTS {
-  type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS;
-  payload: Product[];
-}
+// export interface CHARGE_FILTERS {
+//   type: TYPES_PRODUCT.CHARGE_FILTERS;
+//   payload: Product[];
+// }
+// export interface REMOVE_FILTER {
+//   type: TYPES_PRODUCT.REMOVE_FILTER;
+//   payload: Product[];
+// }
+// export interface FILTERED_CAT_PRODUCTS {
+//   type: TYPES_PRODUCT.FILTERED_CAT_PRODUCTS;
+//   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
+//   payload: Product[];
+// }
+// export interface FILTERED_BRAND_PRODUCTS {
+//   type: TYPES_PRODUCT.FILTERED_BRAND_PRODUCTS;
+//   payload: Product[];
+// }
 export interface RESET_FILTERED_PRODUCTS {
   type: TYPES_PRODUCT.RESET_FILTERED_PRODUCTS;
   //aca deberia ir un objeto con value(strinfg) y products(array de productos)
@@ -314,6 +368,20 @@ export interface GET_PRODUCTS {
   type: TYPES_PRODUCT.GET_PRODUCTS;
   payload: Product[];
 }
+
+export interface GET_WISHES {
+  type: TYPES_PRODUCT.GET_WISHES;
+  payload: any[];
+}
+export interface CREATE_WISHE {
+  type: TYPES_PRODUCT.CREATE_WISHE;
+  payload: number;
+}
+export interface DELETE_WISHE {
+  type: TYPES_PRODUCT.DELETE_WISHE;
+  payload: number;
+}
+
 export interface RESET_PRODUCTS {
   type: TYPES_PRODUCT.RESET_PRODUCTS;
   payload: [];
@@ -344,11 +412,11 @@ export interface CREATE_REWIE {
 }
 
 export interface UPDATE_QUESTION {
-  type: TYPES_DETAIL.UPDATE_QUESTION,
+  type: TYPES_DETAIL.UPDATE_QUESTION;
   payload: {
-    id: number,
-    answer: string
-  }
+    id: number;
+    answer: string;
+  };
 }
 
 //======================
@@ -357,6 +425,37 @@ export interface DELETE_PRODUCT {
   type: TYPES_ADMIN.DELETE_PRODUCTS;
   payload: number;
 }
+export interface GET_ORDERS {
+  type: TYPES_ADMIN.GET_ORDERS;
+  payload: Order[];
+}
+export interface RESET_ORDERS {
+  type: TYPES_ADMIN.RESET_ORDERS;
+  payload: Order[];
+}
+export interface O_ORDERS {
+  type: TYPES_ADMIN.O_ORDERS;
+  payload: string
+}
+
+export interface GET_ACTIVEORDER {
+  type: TYPES_CART.GET_ACTIVEORDER;
+  payload: Order;
+}
+
+export interface GET_ORDERS_USER {
+  type: TYPES_ORDERS_USER.GET_ORDERS;
+  payload: Order[];
+}
+export interface GET_ORDER_USER {
+  type: TYPES_ORDERS_USER.GET_ORDER;
+  payload: Order;
+}
+export interface RESET_ORDER {
+  type: TYPES_ORDERS_USER.RESET_ORDER;
+  payload: {};
+}
+
 
 export interface AXIOSDATA {
   successMsg: string;
@@ -374,20 +473,48 @@ export type Actions =
   | CREATE_REWIE
   | UPDATE_QUESTION;
 
-export type UserActions = CREATE_USER | GET_USER | LOGOUT_USER | FIND_USER | GET_SINGLE_USER;
+export type UserActions =
+  | SIGNIN_GOOGLE
+  | SIGNUP_GOOGLE
+  | CREATE_USER
+  | GET_USER
+  | LOGOUT_USER
+  | FIND_USER
+  | GET_SINGLE_USER;
 
 export type AdminUserActions = ADMIN_USER | ADMIN_RESET_USER;
 
-export type ProductActions = GET_PRODUCTS | ORDER_PRODUCTS | CHARGE_FILTERS | REMOVE_FILTER | FILTERED_CAT_PRODUCTS | FILTERED_BRAND_PRODUCTS | RESET_FILTERED_PRODUCTS | SEARCH_PRODUCTS | RESET_PRODUCTS | PRODUCT_NOT_FOUND | FILTER_BY_BRAND;
+export type ProductActions =
+  | GET_PRODUCTS
+  | ORDER_PRODUCTS
+  | FILTER_PRODUCTS
+  // | CHARGE_FILTERS
+  // | REMOVE_FILTER
+  // | FILTERED_CAT_PRODUCTS
+  // | FILTERED_BRAND_PRODUCTS
+  | RESET_FILTERED_PRODUCTS
+  | SEARCH_PRODUCTS
+  | RESET_PRODUCTS
+  | PRODUCT_NOT_FOUND
+  | FILTER_BY_BRAND
+  | GET_WISHES
+  | CREATE_WISHE
+  | DELETE_WISHE;
 
-export type CategoriesActions = GET_CATEGORIES | GET_SUBCATEGORIES | RESET_SUBCATEGORIES;
+export type CategoriesActions =
+  | GET_CATEGORIES
+  | GET_SUBCATEGORIES
+  | RESET_SUBCATEGORIES;
 
 export type BrandsActions = GET_BRANDS;
 
-export type AdminActions = DELETE_PRODUCT;
+export type AdminActions = DELETE_PRODUCT | GET_ORDERS | RESET_ORDERS | O_ORDERS;
 
 export type SetPage = SET_PAGE;
 
-export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT;
+export type CartActions = ADD_PRODUCT | REMOVE_PRODUCT | CLEAR_CART | GET_ACTIVEORDER;
 
-export type CountriesActions = GET_COUNTRIES
+export type CountriesActions = GET_COUNTRIES;
+
+
+export type UserOrdersActions = GET_ORDERS_USER | GET_ORDER_USER | RESET_ORDER;

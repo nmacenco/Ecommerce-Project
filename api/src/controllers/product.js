@@ -5,7 +5,8 @@ const {
   Subcategory,
   Question,
   Review,
-} = require("../db");
+  User,
+} = require('../db');
 
 const createProduct = async (req, res) => {
   try {
@@ -30,7 +31,7 @@ const createProduct = async (req, res) => {
       !weight ||
       !stock
     ) {
-      res.status(402).send({ errorMsg: "Missing data." });
+      res.status(402).send({ errorMsg: 'Missing data.' });
     } else {
       let [newProduct, created] = await Product.findOrCreate({
         where: {
@@ -47,10 +48,10 @@ const createProduct = async (req, res) => {
       });
       created
         ? res.status(201).json({
-            successMsg: "The Product has been created.",
+            successMsg: 'The Product has been created.',
             data: newProduct,
           })
-        : res.status(401).json({ errorMsg: "Product already exists." });
+        : res.status(401).json({ errorMsg: 'Product already exists.' });
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
@@ -83,7 +84,7 @@ const updateProduct = async (req, res) => {
       !SubcategoryId ||
       !id
     ) {
-      res.status(402).send({ errorMsg: "Missing data." });
+      res.status(402).send({ errorMsg: 'Missing data.' });
     } else {
       let productToUpdate = await Product.findOne({
         where: {
@@ -91,7 +92,7 @@ const updateProduct = async (req, res) => {
         },
       });
       if (!productToUpdate) {
-        res.status(401).send({ errorMsg: "Product not found." });
+        res.status(401).send({ errorMsg: 'Product not found.' });
       } else {
         let productUpdated = await productToUpdate.update({
           name,
@@ -105,7 +106,7 @@ const updateProduct = async (req, res) => {
           SubcategoryId,
         });
         res.status(200).send({
-          successMsg: "Product successfully updated.",
+          successMsg: 'Product successfully updated.',
           data: productUpdated,
         });
       }
@@ -119,7 +120,7 @@ const getSingleProduct = async (req, res) => {
   try {
     const id = req.params.id;
     if (!id) {
-      res.status(400).send({ errorMsg: "Missing data." });
+      res.status(400).send({ errorMsg: 'Missing data.' });
     } else {
       let singleProduct = await Product.findOne({
         where: {
@@ -128,30 +129,36 @@ const getSingleProduct = async (req, res) => {
         include: [
           {
             model: Brand,
-            attributes: ["name"],
+            attributes: ['name'],
           },
           {
             model: Subcategory,
-            attributes: ["name"],
+            attributes: ['name'],
             include: [
               {
                 model: Category,
-                attributes: ["name", "id"],
+                attributes: ['name', 'id'],
               },
             ],
           },
           {
             model: Question,
-            attributes: ["title", "description", "answer", "id"],
+            attributes: ['title', 'description', 'answer', 'id'],
           },
           {
             model: Review,
-            attributes: ["title", "description", "stars", "id"],
+            attributes: ['title', 'description', 'stars', 'id'],
+            include: [
+              {
+                model: User,
+                attributes: ['name','surname'],
+              },
+            ],
           },
         ],
       });
       if (!singleProduct) {
-        res.status(404).send({ errorMsg: "Product not found." });
+        res.status(404).send({ errorMsg: 'Product not found.' });
       } else {
         singleProduct = {
           id: singleProduct.id,
@@ -185,10 +192,10 @@ const getSingleProduct = async (req, res) => {
                 })
               : [],
         };
-        console.log("producto solo: ", singleProduct);
+        console.log('producto solo: ', singleProduct);
         res
           .status(200)
-          .send({ successMsg: "Here is your product.", data: singleProduct });
+          .send({ successMsg: 'Here is your product.', data: singleProduct });
       }
     }
   } catch (error) {
@@ -202,30 +209,36 @@ const getProducts = async (req, res) => {
       include: [
         {
           model: Brand,
-          attributes: ["name"],
+          attributes: ['name'],
         },
         {
           model: Subcategory,
-          attributes: ["name"],
+          attributes: ['name'],
           include: [
             {
               model: Category,
-              attributes: ["name", "id"],
+              attributes: ['name', 'id'],
             },
           ],
         },
         {
           model: Question,
-          attributes: ["title", "description", "answer", "id"],
+          attributes: ['title', 'description', 'answer', 'id'],
         },
         {
           model: Review,
-          attributes: ["title", "description", "stars", "id"],
+          attributes: ['title', 'description', 'stars', 'id'],
+          include: [
+            {
+              model: User,
+              attributes: ['name','surname'],
+            },
+          ],
         },
       ],
     });
     if (!dataProduct) {
-      res.status(404).send({ errorMsg: "There are no products available." });
+      res.status(404).send({ errorMsg: 'There are no products available.' });
     } else {
       // totalreviews = dataProduct[0].reviews.length >0 ? dataProduct[0].reviews.map((review) => {return { review }}) : [],
       dataProduct = dataProduct.map((product) => {
@@ -265,7 +278,7 @@ const getProducts = async (req, res) => {
 
       res
         .status(200)
-        .send({ successMsg: "Here are your products.", data: dataProduct });
+        .send({ successMsg: 'Here are your products.', data: dataProduct });
     }
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
@@ -275,12 +288,15 @@ const getProducts = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const id = req.params.id;
+
+    const { isActive } = req.body;
+
     if (!id) {
-      res.status(400).send({ errorMsg: "Missing data." });
+      res.status(400).send({ errorMsg: 'Missing data.' });
     } else {
-      Product.update({ isActive: false }, { where: { id: id } });
+      Product.update({ isActive: isActive }, { where: { id: id } });
       res.status(200).send({
-        successMsg: "Product deleted in Database",
+        successMsg: 'Product deleted in Database',
         data: `Product id: ${id}`,
       });
     }

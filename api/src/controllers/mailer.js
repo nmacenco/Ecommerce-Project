@@ -5,7 +5,7 @@ const sendMail = async (req, res) => {
 
   try {
     let info = await mailer.sendMail({
-      from: 'E-commerce Henry PF" <najupasa@gmail.com>',
+      from: 'E-commerce Henry PF" <pcshop.ecommerce@gmail.com>',
       to: emailToAddress,
       subject: emailToSubject,
       html: emailToBody,
@@ -13,21 +13,40 @@ const sendMail = async (req, res) => {
 
     info
       ? res.status(200).send({
-          successMsg: "Mail successfully sent.",
-        })
+        successMsg: "Mail successfully sent.",
+      })
       : res.status(401).send({ errorMsg: "User doesn't" });
   } catch (error) {
     res.status(500).send({ errorMsg: error.message });
   }
 };
 
-const sendMailPassword = async (emailToAddress,emailToSubject,emailToBody) => {
-    let info = await mailer.sendMail({
-      from: 'E-commerce Henry PF" <najupasa@gmail.com>',
-      to: emailToAddress,
-      subject: emailToSubject,
-      html: emailToBody,
-    });
+const sendMailPassword = async (emailToAddress, emailToSubject, emailToBody) => {
+  let info = await mailer.sendMail({
+    from: 'E-commerce Henry PF" <pcshop.ecommerce@gmail.com>',
+    to: emailToAddress,
+    subject: emailToSubject,
+    html: emailToBody,
+  });
 };
 
-module.exports = { sendMail, sendMailPassword };
+const sendMailOrder = async (emailToAddress, emailToSubject, emailToBody) => {
+  let info = await mailer.sendMail({
+    from: 'E-commerce Henry PF" <pcshop.ecommerce@gmail.com>',
+    to: emailToAddress,
+    subject: emailToSubject,
+    html: emailToBody,
+  });
+};
+
+const sendMailState = async (emailToAddress, emailToSubject, emailToBody) => {
+  let info = await mailer.sendMail({
+    from: 'E-commerce Henry PF" <pcshop.ecommerce@gmail.com>',
+    to: emailToAddress,
+    subject: emailToSubject,
+    html: emailToBody,
+  });
+};
+
+
+module.exports = { sendMail, sendMailPassword, sendMailOrder, sendMailState };

@@ -1,105 +1,112 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { EDIT_USER } from "../../components/users/EditUserAccount";
 import { RESET_PASSWORD } from "../../components/users/ResetForgotPasswords";
 import { PWD } from "../../components/users/ResetPwd";
-import { TYPES_USER, User } from "../interface";
+import { TYPES_USER} from "../interface";
 import swal from "sweetalert";
-const URL_USER = "http://localhost:3001/api";
-const URLRESET = "http://localhost:3001/api/forgotPasswordReset"
-const URLRESET2 = "http://localhost:3001/api/submitPasswordReset"
+const URL_USER = "/api";
+const URLRESET = "/api/forgotPasswordReset";
+const URLRESET2 = "/api/submitPasswordReset";
+const URLVALIDATE = "/api/activateAccount/";
+
 const USER_STORAGE = "USER_LOGGED";
+
+const defaultCb = (error: any) => {
+  alert(error);
+};
+
+/**
+ *
+ * @param user  ,{ name, surname, email, password, CountryId }
+ * @param cb function callback
+ * @returns promise<any>
+ */
 export const CreateUser = (user: any, cb: any) => {
-    return async (dispatch: Dispatch) => {
-        try {
-            // console.log(URL_USER + "/signUp");
-            const response = await axios.post(URL_USER + "/signUp", user);
-            // if(data.error){
-            //     throw new Error("Error "+data.error);
-            // }
-            const data = response.data;
-            // console.log(response.headers);
-            // console.log('data: ',data);
-            if (data.errorMsg) {
-                return alert('ALgo paso!');
-            }
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.post(URL_USER + "/signUp", user);
+      const data = response.data;
 
-            const newUser = {
-                name: user.name,
-                email: user.email,
-                token: response.headers['auth-token'],
-                role: response.data.data.role
-            }
-            console.log(response);
+      if (data.errorMsg) {
+        return alert("Something happened");
+      }
 
-            dispatch({
-                type: TYPES_USER.CREATE_USER,
-                payload: newUser
-            })
-            // console.log('despachando el usuario');
-            cb();
+      dispatch({
+        type: TYPES_USER.CREATE_USER,
+        payload: {},
+      });
+      cb(user);
 
-            window.localStorage.setItem(USER_STORAGE, JSON.stringify({ ...newUser, name: response.data.data.name, role: response.data.data.role }));// Cambiar cuando exista un usuario
-
-
-        } catch (error) {
-            swal({
-                title: "Wrong data",
-                text: "This email ir already taken!",
-                icon: "warning",
-                dangerMode: true,
-                buttons: {
-                    cancel: true,
-                    confirm: true,
-                },
-            })
-
-        }
+    } catch (error) {
+      swal({
+        title: "Wrong data",
+        text: "This email ir already taken.",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          confirm: true,
+        },
+      });
     }
   };
+};
 
-export const GetUSer = (email: string, pass: string, cb: any) => {
-    return async (dispatch: Dispatch) => {
+/**
+ *
+ * @param email email of user
+ * @param pass  password of user
+ * @param cb callback
+ * @returns promise<any>
+ */
 
-        try {
-            const response = await axios.post(URL_USER + "/signIn", {
-                email,
-                password: pass,
-            });
-            const TOKEN = response.headers["auth-token"];
-            // console.log('TOKEN: ',TOKEN);
-            console.log(response.data.data);
-            if (response.status == 200) {
-                dispatch({
-                    type: TYPES_USER.GET_USER,
-                    payload: {
-                        email,
-                        token: TOKEN,
-                        name: response.data.data.name,
-                        role: response.data.data.role
-                    }
-                })
-                window.localStorage.setItem(
-                    USER_STORAGE,
-                    JSON.stringify({ email, token: TOKEN, name: response.data.data.name, role: response.data.data.role })
-                );
-                cb();//Ejecutamos un callback wajajaj
-            }
-        } catch (error) {
-            swal({
-                title: "Wrong data",
-                text: "The email is not in data base!",
-                icon: "warning",
-                dangerMode: true,
-                buttons: {
-                    cancel: true,
-                    confirm: true,
-                },
-            })
-        }
+export const GetUSer = (email: string, pass: string, cb = defaultCb) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.post(URL_USER + "/signIn", {
+        email,
+        password: pass,
+      });
+      const TOKEN = response.headers["auth-token"];
+      
+      if (response.status == 200) {
+        dispatch({
+          type: TYPES_USER.GET_USER,
+          payload: {
+            email,
+            token: TOKEN,
+            name: response.data.data.name,
+            role: response.data.data.role,
+            google: false,
+          },
+        });
+        window.localStorage.setItem(
+          USER_STORAGE,
+          JSON.stringify({
+            email,
+            token: TOKEN,
+            name: response.data.data.name,
+            role: response.data.data.role,
+            google: false,
+          })
+        );
+        cb(null); 
+      } else {
+        cb(response.data.errorMsg);
+      }
+    } catch (error) {
+      swal({
+        title: "Wrong data",
+        text: "Please try with a diferent email or password",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          cancel: true,
+          confirm: true,
+        },
+      });
     }
-  };
-
+  }
+};
 
 export const FindUSer = () => {
   const user = window.localStorage.getItem(USER_STORAGE);
@@ -112,7 +119,6 @@ export const FindUSer = () => {
 };
 
 export const LogoutUser = () => {
-  console.log(window.localStorage.getItem(USER_STORAGE));
   window.localStorage.removeItem(USER_STORAGE);
 
   return {
@@ -121,26 +127,99 @@ export const LogoutUser = () => {
   };
 };
 
-let url = "/signInWithGoogle";
-export const IdentGoogle = (url: string, cb: any) => {
+/**
+ * Receive the email, name, surname and callback
+ * @param user email,name,surname
+ * @param cb callback
+ * @returns
+ */
+
+export const RegisterWithGoogle = (user: any, cb = defaultCb) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.get(URL_USER + url);
-      
+      const response = await axios.post(URL_USER + "/signUpWithGoogle", user);
+
       if (response.data.errorMsg) {
         throw new Error("Error in google: ", response.data.errorMsg);
       }
 
       const TOKEN = response.headers["auth-token"];
-      
-      dispatch({
-        type: TYPES_USER.GET_USER,
-        payload: response.data.data,
+
+      if (response.status < 300) {
+        const newUser = {
+          name: user.name,
+          email: user.email,
+          token: TOKEN,
+          role: response.data.data.role,
+          google: true,
+        };
+        dispatch({
+          type: TYPES_USER.GET_USER,
+          payload: newUser,
+        });
+        //LO GUARADAMOS EN EL LOCAL STORAGE:
+        window.localStorage.setItem(USER_STORAGE, JSON.stringify(newUser));
+
+        cb(null); //ejecutamos el callback
+      } else {
+        cb(response.data.errorMsg);
+      }
+    } catch (error) {
+      swal({
+        title: "Wrong data",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          confirm: true,
+        },
+      });
+    }
+  };
+};
+
+/**
+ * The function receive the user email for login with google
+ * @param email string
+ * @param cb callback
+ */
+
+export const LoginWithGoogle = (email: string, cb = defaultCb) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.post(URL_USER + "/signInWithGoogle", {
+        email,
       });
 
-      cb(); //ejecutamos el callback
+      if (response.data.errorMsg) {
+        cb(response.data.errorMsg);
+        return null;
+      }
+
+      const TOKEN = response.headers["auth-token"];
+      const USER = {
+        name: response.data.data.name,
+        role: response.data.data.role,
+        token: TOKEN,
+        email,
+        google: true,
+      };
+      dispatch({
+        type: TYPES_USER.SIGNIN_GOOGLE,
+        payload: USER,
+      });
+      cb(null);
+      //GUARDAR EN EL LOCAL STORAGE:
+      window.localStorage.setItem(USER_STORAGE, JSON.stringify(USER));
     } catch (error) {
-      console.log("Error en sign in google: ", error);
+      swal({
+        title: "Wrong data",
+        text: "It seems you didn't register yet",
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          confirm: true,
+        },
+      });
     }
   };
 };
@@ -160,55 +239,68 @@ export const updateUser = (token: string, editUser: any) => {
 };
 
 export const getSingleUser = (token: string) => {
-    try {
-        return async function (dispatch: Dispatch) {
-            const user = await axios.get(URL_USER + "/auth/users", {
-                headers: {
-                    "auth-token": token
-                }
-            })
+  try {
+    return async function (dispatch: Dispatch) {
+      const user = await axios.get(URL_USER + "/auth/users", {
+        headers: {
+          "auth-token": token,
+        },
+      });
 
-            return dispatch({
-                type: TYPES_USER.GET_SINGLE_USER,
-                payload: user.data.data
-            })
-        }
-    } catch (error) {
-        console.log(error)
-    }
-}
+      return dispatch({
+        type: TYPES_USER.GET_SINGLE_USER,
+        payload: user.data.data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const resetPassword = (password: PWD, token: string | any) => {
-    try {
-        return async (dispatch: Dispatch) => {
-            await axios.put(URL_USER + "/auth/users/passwordReset", password,
-                {
-                    headers: {
-                        "auth-token": token
-                    }
-                })
-        }
-    } catch (error) {
-        console.log(error)
-    }
-}
+  try {
+    return async (dispatch: Dispatch) => {
+      await axios.put(URL_USER + "/auth/users/passwordReset", password, {
+        headers: {
+          "auth-token": token,
+        },
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const forgotPasswordReset = (email: any) => {
-    try {
-        return async (dispatch: Dispatch) => {
-            await axios.post(`${URLRESET}`, email);
-        };
-    } catch (error) {
-        alert(error);
-    }
+  try {
+    return async (dispatch: Dispatch) => {
+      await axios.post(`${URLRESET}`, email);
+    };
+  } catch (error) {
+    alert(error);
+  }
 };
 
 export const resetForgotPassword = (id: any, password: RESET_PASSWORD) => {
-    try {
-        return async (dispatch: Dispatch) => {
-            await axios.put(`${URLRESET2}/${id}`, password);
-        };
-    } catch (error) {
-        alert(error);
-    }
+  try {
+    return async (dispatch: Dispatch) => {
+      await axios.put(`${URLRESET2}/${id}`, password);
+    };
+  } catch (error) {
+    alert(error);
+  }
+};
+export const validateAccount = (id: any) => {
+  try {
+    return async (dispatch: Dispatch) => {
+      await axios.get(`${URLVALIDATE}${id}`);
+      swal({
+        icon: "success",
+        text: "Account validated."
+      });
+    };
+    
+  } catch (error) {
+    alert(error);
+  }
 };

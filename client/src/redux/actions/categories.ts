@@ -4,7 +4,7 @@ import { FORM_SUB } from "../../components/products/categories/create/CreateCate
 
 import { Category, TYPES_CATEGORIES } from "../interface";
 
-const URL = "http://localhost:3001/api";
+const URL = "/api";
 
 export function getCategories() {
   return async function (dispatch: Dispatch) {
@@ -27,16 +27,23 @@ export function getSubcategories() {
   };
 }
 
-export function createCategories(category: Category) {
+export function createCategories(category: Category, token: string) {
   return async function (dispatch: Dispatch) {
-    await axios.post(URL + "/categories", category)
+    await axios.post(URL + "/admin/categories", category, {
+      headers: {
+        'auth-token': token
+      }
+    })
   }
 }
 
-export function createSubcategories(subcategory: FORM_SUB) {
+export function createSubcategories(subcategory: FORM_SUB, token: string) {
   return async function (dispatch: Dispatch) {
-    console.log(subcategory)
-    await axios.post(URL + "/subcategories", subcategory)
+    await axios.post(URL + "/admin/subcategories", subcategory, {
+      headers: {
+        'auth-token': token
+      }
+    })
   }
 }
 
@@ -50,3 +57,32 @@ export const resetSubcategories = () => {
     alert(error);
   }
 };
+
+export const deleteCategory = (id: string, token: string) => {
+  try {
+    return async function (dispatch: Dispatch) {
+      await axios.delete(URL + `/admin/categories/${id}`, {
+        headers: {
+          'auth-token': token
+        }
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteSubcategory = (id: string, token: string) => {
+  try {
+    return async function (dispatch: Dispatch) {
+      console.log(id)
+      await axios.delete(URL + `/admin/subcategories/${id}`, {
+        headers: {
+          'auth-token': token
+        }
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}

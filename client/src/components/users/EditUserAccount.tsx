@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router'
+import { useParams } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import swal from 'sweetalert'
 import { useLocalStorage } from '../../helpers/useLocalStorage'
 import { getCountries } from '../../redux/actions/countries'
@@ -15,22 +16,22 @@ export interface EDIT_USER {
     email: string,
     billing_address: string,
     default_shipping_address: string,
-    CountryId: number,
+    CountryId: number | string,
 }
 
 export default function EditUserAccount(): JSX.Element {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { id } = useParams<string>()
     const allCountries = useSelector((state: State) => state.countries.countries)
+    const user = useSelector((state: State) => state.userDetail.userDetail)
     const [userInStorage, setUserInStorage] = useLocalStorage('USER_LOGGED', '')
     const [editUser, setEditUser] = useState<EDIT_USER>({
-        name: "",
-        surname: "",
-        email: "",
-        billing_address: "",
-        default_shipping_address: "",
-        CountryId: 0,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        billing_address: user.billing_address,
+        default_shipping_address: user.default_shipping_address,
+        CountryId: user.countryCode,
     })
 
     useEffect(() => {
@@ -55,7 +56,10 @@ export default function EditUserAccount(): JSX.Element {
             [e.target.name]: e.target.value
         })
 
-        if (e.target.name === "CountryId") {
+        const idCountry = allCountries.find((country) => country.code === editUser.CountryId)
+        if (idCountry) {
+            setEditUser({ ...editUser, CountryId: idCountry.id })
+        } else if (e.target.name === "CountryId") {
             let CountryName = allCountries.find((s: ICountries) => String(s.id) === e.target.value)
             if (CountryName) {
                 setEditUser({
@@ -70,19 +74,27 @@ export default function EditUserAccount(): JSX.Element {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
+
         if (editUser.name !== "" && editUser.surname !== "" && editUser.email !== "" && editUser.CountryId !== 0) {
-            dispatch(updateUser(userInStorage.token, editUser))
-            dispatch(LogoutUser())
+            console.log(editUser)
+            setTimeout(() => {
+                dispatch(updateUser(userInStorage.token, editUser))
+                dispatch(LogoutUser())
+            }, 200)
+            swal({
+                title: "User edited.",
+                text: "Log in again.",
+                icon: "success"
+            })
             navigate('/login')
         } else {
             showError(editUser)
             swal({
-                title: "Filds missing",
+                title: "Fields missing",
                 icon: "error"
             })
         }
     }
-
     return (
         <FormContainer>
             <form onSubmit={handleSubmit}>
@@ -95,26 +107,15 @@ export default function EditUserAccount(): JSX.Element {
 
                 <div className="form-group me-1">
                     <label className="form-label mt-4">Surname</label>
-                    <input className="form-control" type="text" placeholder="Enter surname" name="surname" onChange={(e) => handleChange(e)} />
+                    <input className="form-control" type="text" placeholder="Enter surname" name="surname" value={editUser.surname} onChange={(e) => handleChange(e)} />
                     <small id="error-surname" className='text-danger'></small>
                 </div>
 
                 <div className="form-group">
                     <label className="form-label mt-4">Email</label>
-                    <input className="form-control" type="email" placeholder="Enter email" name="email" onChange={(e) => handleChange(e)} />
+                    <input className="form-control" type="email" placeholder="Enter email" name="email" value={editUser.email} onChange={(e) => handleChange(e)} />
                     <small id="error-email" className='text-danger'></small>
                 </div>
-
-                {/* <div className="form-group">
-                    <label className="form-label mt-4">Billing address</label>
-                    <input className="form-control" type="text" placeholder="Enter address" name="billing_address" onChange={(e) => handleChange(e)} />
-                    <small id="error-billing" className='text-danger'></small>
-                </div> */}
-
-                {/* <div className="form-group">
-                    <label className="form-label mt-4">Email</label>
-                    <input className="form-control" type="email" placeholder="Enter email" name="email" onChange={(e) => handleChange(e)} />
-                </div> */}
 
                 <div className="form-group">
                     <label className="form-label mt-4">Select your country</label>
@@ -125,9 +126,10 @@ export default function EditUserAccount(): JSX.Element {
                                 ? allCountries.map((e: ICountries) => {
                                     return <option key={e.id} value={e.id}>{e.name}</option>
                                 })
-                                : <option>Not countries for you...</option>
+                                : <option>No countries for you...</option>
                         }
                     </select>
+                    <small>{user.country} is your country</small>
                     <small id="error-country" className='text-danger'></small>
                 </div>
 

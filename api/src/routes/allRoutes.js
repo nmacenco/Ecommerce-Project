@@ -8,8 +8,7 @@ const orderRouter = require("./order.js");
 const reviewsRouter = require("./review");
 const questionsRouter = require("./question");
 const mailRouter = require("./mailer");
-
-
+const wishlistRouter = require("./wishlist");
 
 module.exports = {
   productRouter,
@@ -22,4 +21,5 @@ module.exports = {
   reviewsRouter,
   questionsRouter,
   mailRouter,
+  wishlistRouter,
 };

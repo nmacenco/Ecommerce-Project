@@ -60,6 +60,18 @@
     "needsPasswordReset": false
   },
   {
+    "name": "Nico",
+    "surname": "Macenco",
+    "password": "123456",
+    "email": "nico@gmail.com",
+    "billing_address": "Mendoza",
+    "default_shipping_address": "Mendoza",
+    "role": "user",
+    "isActive": true,
+    "CountryId": 28,
+    "needsPasswordReset": false
+  },
+  {
     "name": "Francisco",
     "surname": "Lubo",
     "password": "admin123",

@@ -1,23 +1,20 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { TYPES_DETAIL } from '../interface';
+import { TYPES_DETAIL } from "../interface";
+import swal from "sweetalert";
 
-const URL = "http://localhost:3001/api/products/";
-const URL_BLOCKS = "http://localhost:3001/api/";
+const URL = "/api/products/";
+const URL_BLOCKS = "/api/";
 
 export const getProductDetail = (id: string | undefined) => {
   return async (dispatch: Dispatch) => {
     const product = await axios.get(URL + id);
 
-    return dispatch(
-      {
-        type: TYPES_DETAIL.PRODUCT_DETAIL,
-        payload: product.data.data
-      }
-    )
-
+    return dispatch({
+      type: TYPES_DETAIL.PRODUCT_DETAIL,
+      payload: product.data.data,
+    });
   };
-
 };
 export const deleteProductDetail = () => {
   return {
@@ -25,116 +22,85 @@ export const deleteProductDetail = () => {
     payload: {
       id: 0,
       subcategory_id: [],
-      name: '',
-      brand: '',
-      image: '',
+      name: "",
+      brand: "",
+      image: "",
       price: 0,
-      description: '',
+      description: "",
       weigth: 0,
-      stock: 0
-    }
-  }
+      stock: 0,
+    },
+  };
 };
 
-
-export const createQuestion=(title:string,description:string,ProductId:number)=>{
-
-  return async(dispatch:Dispatch)=>{
-
+export const createQuestion = (
+  title: string,
+  description: string,
+  ProductId: number
+) => {
+  return async (dispatch: Dispatch) => {
     try {
-
       const response = await axios.post(URL_BLOCKS + "questions", {
         title,
         description,
         ProductId,
-        UserId:1
+        UserId: 1,
       });
 
-      if(response.data.errorMsg){
-
+      if (response.data.errorMsg) {
         throw new Error("ERROR EN CREATE QUESTION");
-      
-
       }
-        console.log(response.data);
-        dispatch({
-          type: TYPES_DETAIL.CREATE_QUESTION,
-          payload: { question: response.data.data },
-        });
-
-      
-
+      dispatch({
+        type: TYPES_DETAIL.CREATE_QUESTION,
+        payload: { question: response.data.data },
+      });
     } catch (error) {
       console.log("error en create Question!");
     }
+  };
+};
 
-  }
-
-}
-
-
-export const createAnswer=( id:number, ProductId:number, UserId:number, title:string, description:string, answer:string )=>{
-
-
-  return async(dispatch:Dispatch)=>{
-
-    try{
-
-      // console.log('PARAMETROS: ',{id,ProductId,UserId,title,description,answer})
-      // dispatch({
-      //   type: TYPES_DETAIL.UPDATE_QUESTION,
-      //   payload: {
-      //     id: id,
-      //     answer: answer,
-      //   },
-      // });
-      // console.log('se despacho')
-      // return null;
-
-
-      const response = await axios.put(URL_BLOCKS + "questions",{
+export const createAnswer = (
+  id: number,
+  ProductId: number,
+  UserId: number,
+  title: string,
+  description: string,
+  answer: string
+) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.put(URL_BLOCKS + "questions", {
         id,
         ProductId,
         UserId,
         title,
         description,
-        answer
+        answer,
       });
-      console.log(response)
 
-      if(response.status===200){
-
+      if (response.status === 200) {
         dispatch({
-          type:TYPES_DETAIL.UPDATE_QUESTION,
-          payload:{
-            id:id,
-            answer:answer
-          }
-        })
-        
-        console.log('RES: ',response.data);
-        
-
-
+          type: TYPES_DETAIL.UPDATE_QUESTION,
+          payload: {
+            id: id,
+            answer: answer,
+          },
+        });
       }
-
-
-    }catch(error){
-      console.log('Error en create Answer: ',error);
+    } catch (error) {
+      console.log("Error en create Answer: ", error);
     }
+  };
+};
 
-  }
-
-
-
-}
-
-export const createRewie = (
+export const createReview = (
   title: string,
   description: string,
   ProductId: number,
-  UserId:number,
-  stars:number
+  UserId: number,
+  stars: number,
+  cb = () => {}
 ) => {
   return async (dispatch: Dispatch) => {
     try {
@@ -145,18 +111,12 @@ export const createRewie = (
         description,
         stars,
       });
-      if (response.status == 200 || response.status==201) {
-        dispatch({
-          type: TYPES_DETAIL.CREATE_REWIE,
-          payload: {
-            review:{
-              name: "",
-            stars,
-            description,
-            title
-            }
-          },
+      if (response.status == 200 || response.status == 201) {
+        swal({
+          title: "Thanks for your review!",
+          icon: "success",
         });
+        cb();
       } else {
         console.log("ERROR: ", response.data);
       }

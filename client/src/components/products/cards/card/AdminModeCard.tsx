@@ -5,7 +5,7 @@ import { deleteProduct } from "../../../../redux/actions/admin";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, resetPoducts } from "../../../../redux/actions/products";
 import { ORDER } from "../Cards";
-import { chargeFilter, resetFilterProducts } from "../../../../redux/actions/filterByCategory";
+// import { chargeFilter, resetFilterProducts } from "../../../../redux/actions/filterByCategory";
 import { getProductDetail } from "../../../../redux/actions/productDetail";
 import swal from "sweetalert";
 import { State } from "../../../../redux/reducers";
@@ -13,17 +13,20 @@ import { Product } from "../../../../redux/interface";
 import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 import TrashIMG from "../../../../icons/white-trash.png"
 import EditIMG from "../../../../icons/edit.png"
+import CheckIMG from "../../../../icons/check.png"
+import { setPage } from "../../../../redux/actions/setPage";
 interface props {
   name: string;
   image: string;
   price: number;
   id?: number;
   isActive: boolean;
-  AdmOrders: (typeorder: string) => void;
+  orders: (typeorder: string) => void;
   page: (typeorder: number) => void;
+  eliminateFilters: () => void;
 }
 
-const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: props) => {
+const AdminModeCard = ({ name, image, price, id, orders, page, isActive, eliminateFilters }: props) => {
   const dispatch = useDispatch()
   const stringId = String(id)
   const navigate = useNavigate()
@@ -33,7 +36,7 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
     e.preventDefault();
     swal({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this product!",
+      text: "This product is now going to be inactive!",
       icon: "warning",
       dangerMode: true,
       buttons: {
@@ -41,17 +44,50 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
         confirm: true
       }
     }).then((value) => {
-
       if (value) {
-        dispatch(deleteProduct(stringId, userInStorage.token));
-        dispatch(resetFilterProducts())
-        dispatch(resetPoducts())
-        let deleted = allProducts.filter((e: Product) => String(e.id) !== stringId)
-        dispatch(chargeFilter(deleted))
+        const data = { isActive: false }
+        dispatch(deleteProduct(stringId, data, userInStorage.token));
+        setTimeout(() => {
+          dispatch(getProducts())
+        }, 300)
         page(1)
-        AdmOrders(stringId)
+        dispatch(resetPoducts())
+        eliminateFilters()
+        dispatch(setPage(1))
+        // orders(stringId)
         swal({
-          text: "Product deleted",
+          text: "Product not active",
+          icon: "success"
+        })
+      }
+    })
+
+  }
+  function activateHandler(e: React.MouseEvent<HTMLButtonElement>): void {
+    e.preventDefault();
+
+    swal({
+      title: "Are you sure?",
+      text: "This product is now going to be active!",
+      icon: "success",
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: true
+      }
+    }).then((value) => {
+      if (value) {
+        const data = { isActive: true }
+        dispatch(deleteProduct(stringId, data, userInStorage.token));
+        setTimeout(() => {
+          dispatch(getProducts())
+        }, 200)
+        dispatch(setPage(1))
+        page(1)
+        // orders(stringId)
+        eliminateFilters()
+        swal({
+          text: "Product active",
           icon: "success"
         })
       }
@@ -104,12 +140,12 @@ const AdminModeCard = ({ name, image, price, id, AdmOrders, page, isActive }: pr
               </button>
               :
               <button
-                disabled
-                onClick={(e) => { deleteHandler(e) }}
+                // disabled
+                onClick={(e) => { activateHandler(e) }}
                 type="button"
-                className="btn btn-danger btn-sm  "
+                className="btn btn-success btn-sm  "
               >
-                <img src={TrashIMG} alt="delete"></img>
+                <img src={CheckIMG} alt="delete" width={'100%'}></img>
               </button>
 
           }

@@ -3,11 +3,13 @@ import { DropdownMenu } from "./AdminDropdownStyle";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../../redux/actions/user";
-import { adminresetUsers } from "../../../redux/actions/adminUser";
-import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import { State } from "../../../redux/reducers";
+import { getOrdersAdmin } from "../../../redux/actions/ordersAdmin";
+import { clearCart } from "../../../redux/actions/cart";
+import swal from "sweetalert";
+import { setPage } from "../../../redux/actions/setPage";
 
-const AdminDropdown = () => {
+const AdminDropdown = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userState = useSelector((state: State) => state.user);
@@ -15,7 +17,21 @@ const AdminDropdown = () => {
   const logout = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     dispatch(LogoutUser());
+    localStorage.removeItem('cart')
+    dispatch(clearCart())
+    dispatch(setPage(1))
     navigate("/products");
+    swal({
+      title: "Logged out.",
+    });
+  };
+
+  const getOrders = (event: React.MouseEvent<HTMLSpanElement>) => {
+    event.preventDefault();
+    setTimeout(()=> {
+      navigate("/ordersAdmin");
+
+    } , 200 )
   };
 
   return (
@@ -36,6 +52,12 @@ const AdminDropdown = () => {
         <Link className="dropdown-item" to="/createCategory">
           Create category
         </Link>
+        <Link className="dropdown-item" to="/deleteCategory">
+          Delete category
+        </Link>
+        <Link onClick={getOrders} to={""} className="dropdown-item">
+          Admin orders
+        </Link>
         <Link to={"/productsAdminMode"} className="dropdown-item">
           Admin products
         </Link>
@@ -52,3 +74,5 @@ const AdminDropdown = () => {
 };
 
 export default AdminDropdown;
+
+

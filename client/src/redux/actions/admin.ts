@@ -2,9 +2,9 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { ProductForm, TYPES_ADMIN } from '../interface';
 
-const URL = "http://localhost:3001/api/admin/products/";
+const URL = "/api/admin/products/";
 
-export const postProduct = (product: ProductForm, theToken: any) => {
+export const postProduct = (product: ProductForm, theToken: string) => {
   try {
     return async (dispatch: Dispatch) => {
       await axios.post(URL, product, {
@@ -19,10 +19,10 @@ export const postProduct = (product: ProductForm, theToken: any) => {
   }
 };
 
-export const deleteProduct = (id: string | undefined, theToken: any) => {
+export const deleteProduct = (id: string | undefined, data: any, theToken: string) => {
   try {
     return async (dispatch: Dispatch) => {
-      await axios.delete(URL + id, {
+      await axios.put(`${URL}del/${id}`, data, {
         headers: {
           "auth-token":
             theToken,
@@ -38,7 +38,7 @@ export const deleteProduct = (id: string | undefined, theToken: any) => {
   }
 };
 
-export const putProducts = (editProduct: ProductForm, id: string | undefined, theToken: any) => {
+export const putProducts = (editProduct: ProductForm, id: string | undefined, theToken: string) => {
   try {
     return async (dispatch: Dispatch) => {
       await axios.put(`${URL}${id}`, editProduct, {

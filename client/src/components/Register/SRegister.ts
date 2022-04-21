@@ -7,3 +7,10 @@ export const Content = styled.div`
     color:red;
   }
 `;
+
+export const SelectCountry = styled.div`
+margin-top: 10px;
+margin-bottom: 20px;
+padding: 0 45px;
+text-align:center !important;
+`;

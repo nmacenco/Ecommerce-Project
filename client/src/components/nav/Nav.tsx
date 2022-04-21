@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "../SearchBar/Search";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Routes, Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
 import { State } from "../../redux/reducers";
-import {getProducts,productNotFound,resetPoducts} from "../../redux/actions/products";
+import { getProducts, productNotFound, resetPoducts, } from "../../redux/actions/products";
 import { deleteProductDetail } from "../../redux/actions/productDetail";
 import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";
+import { setPage } from "../../redux/actions/setPage";
+import { NavBar } from "./NavStyles"
+import { useLocation } from "react-router";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();
   const userState = useSelector((state: State) => state.user);
+  const page = useSelector((state: State) => state.page);
   // const [userInStorage, setuserInStorage] = useLocalStorage("USER_LOGGED", "");
+  const path = window.location.pathname;
+  function handleClickLogIn() {
+    dispatch(setPage(1));
+  }
+
+
 
   function handleClickProducts() {
     dispatch(productNotFound(false));
@@ -25,11 +35,13 @@ const Nav = (): JSX.Element => {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
-      <div className="flex-grow-1 d-lg-flex">
-        <Link className="navbar-brand pt-3" to="/home">
+    // this makes nav only render out of login an register so that the only way to go to products is by making click on the button. The button creates a new order for the user
+    <NavBar className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-3">
+      <div className="flex-grow-1 d-lg-flex align-items-center">
+        <Link className="navbar-brand " to="/home">
           PCSHOP
         </Link>
+    {(path === ("/login")) ? null : (path === ( "/register")) ? null :
         <div className="collapse navbar-collapse" id="navbarColor01">
           <div className="navbar-nav me-auto">
             <div className="nav-item">
@@ -44,29 +56,33 @@ const Nav = (): JSX.Element => {
               </Link>
             </div>
             <div className="nav-item">
-              <Link className="nav-link" to={"/products"}>
+              <Link className="nav-link" to={"/about"}>
                 About
               </Link>
             </div>
           </div>
           <Routes>
             <Route path="/products" element={<Search />} />
-            <Route path="/adminMode" element={<Search />} />
+            <Route path="/productsAdminMode" element={<Search />} />
           </Routes>
-
-          {userState && userState.role === "admin" && <AdminDropdown />}
-          {userState && userState.role === "user" && <UserDropdown />}
-          {!userState && (
-            <Link
-              to="/login"
-              className="nav-item btn btn-secondary my-2 link-Router"
-            >
-              Login
-            </Link>
-          )}
-        </div>
+          <div className="me-5">
+            {userState && userState.role === "admin" && <AdminDropdown />}
+            {userState && userState.role === "user" && <UserDropdown />}
+            {!userState && page === 1 ? (
+              <Link
+                to="/login"
+                className="nav-item btn btn-secondary my-2 link-Router"
+                onClick={() => {
+                  handleClickLogIn();
+                }}
+              >
+                Login
+              </Link>
+            ) : null}
+          </div>
+        </div> }
       </div>
-
+      {(path === ("/login")) ? null : (path === ( "/register")) ? null :
       <div className="ms-auto mb-auto py-lg-3">
         <Routes>
           <Route path="/products" element={<CartIcon />} />
@@ -85,7 +101,9 @@ const Nav = (): JSX.Element => {
           <span className="navbar-toggler-icon"></span>
         </button>
       </div>
-    </nav>
+  } 
+    </NavBar>
+
   );
 };
 

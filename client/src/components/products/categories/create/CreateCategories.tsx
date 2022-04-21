@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import swal from 'sweetalert'
+import { useLocalStorage } from '../../../../helpers/useLocalStorage';
 import { createCategories, createSubcategories, getCategories, resetSubcategories } from '../../../../redux/actions/categories';
 import { Category } from '../../../../redux/interface';
 import { State } from '../../../../redux/reducers';
@@ -22,6 +23,7 @@ export default function CreateCategories(): JSX.Element {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const allCategories = useSelector((state: State) => state.categories.categories)
+    const [userInStorage, setUserInStorage] = useLocalStorage('USER_LOGGED', '')
     const [newCategory, setNewCategory] = useState<FORM_CAT>({
         name: "",
         id: 999
@@ -80,27 +82,24 @@ export default function CreateCategories(): JSX.Element {
         e.preventDefault()
         if (newCategory.name !== "") {
             const putId = allCategories.filter((e: Category) => newCategory.name === e.name)
-            if (putId.length === 0) dispatch(createCategories(newCategory))
+            if (putId.length === 0) dispatch(createCategories(newCategory, userInStorage.token))
 
             if (newSubcategory.name.length !== 0) {
-                console.log(newSubcategory)
-                setTimeout(()=> {
-
-                    dispatch(createSubcategories(newSubcategory))
+                setTimeout(() => {
+                    dispatch(createSubcategories(newSubcategory, userInStorage.token))
                     dispatch(resetSubcategories())
                 }, 300)
             }
             swal({
-                title: "Create successfully",
+                title: "Created successfully",
                 icon: "success",
                 buttons: {
                     confirm: true,
-                  },
-            }).then((value) => {
-                if (value) {
-                    navigate('/products')
-                }
-              });
+                },
+            })
+            setTimeout(() => {
+                navigate('/productsAdminMode')
+            }, 1000)
         } else {
             swal({
                 title: "Form needs all fields",
@@ -141,7 +140,7 @@ export default function CreateCategories(): JSX.Element {
                             {
                                 allCategories.length > 0
                                     ? allCategories.map((e: Category) => { return <option key={e.id} >{e.name}</option> })
-                                    : <option>No hay ninguna categoria creada</option>
+                                    : <option>Not categories created</option>
                             }
                         </select>
                     </div>
@@ -150,7 +149,7 @@ export default function CreateCategories(): JSX.Element {
                 <h3 className="text-center mt-5 pt-5">Create subcategory</h3>
                 <div className="form-group mr-1 mr-md-2">
                     <label htmlFor="exampleTextarea" className="form-label mt-4">
-                        New Subcategory 
+                        New Subcategory
                     </label>
                     <input
                         type="text"
