@@ -90,7 +90,7 @@ const Login = (): JSX.Element => {
     }))
   }
   const rejectGoogle = (error: any) => {
-    alert('Something happened.')
+    // alert('Something happened.')
   }
 
   const forgotPassword = () => {
@@ -142,90 +142,53 @@ const Login = (): JSX.Element => {
       </div>
       <Forgot
         className="btn btn-link p-0 m-2 text-decoration-none"
-      onClick={forgotPassword}
+        onClick={forgotPassword}
       >
         Forgot Password?
       </Forgot>
       <ButtonsContainer>
 
-
-      {/* <div className="w-75">
-      {validateForms(error, inputs).length ? (
-          <button
-            className="btn btn-primary button-links link-Router mb-2  w-100"
-            disabled
-          >
-            SUBMIT
-          </button>
-        ) : (
-          <button
-            className="btn btn-primary button-links link-Router mb-2  w-100"
-            onClick={LoginFetch}
-          >
-            SUBMIT
-          </button>
-        )}
-
-      </div>
-
-      <div className=" border d-flex justify-content-between text-center mb-3  w-75">
-      <GoogleLogin
-          className=" d-flex justify-content-center    w-50"
-          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
-          buttonText=""
-          onSuccess={responseGoogle}
-          onFailure={rejectGoogle}
-          cookiePolicy={"single_host_origin"}
-        />
-        <Link
-          to="/register"
-          className="btn btn-secondary link-Router button-links   w-50"
-        >
-          REGISTER
-        </Link>
-      </div> */}
-
-
-      <div className="  d-flex justify-content-between text-center mb-3  w-75">
-      <GoogleLogin
-          className=" d-flex justify-content-center    w-100"
-          clientId="1023767179189-ja36amq223qs81bf8m8ph3rucekvajoi.apps.googleusercontent.com"
-          buttonText=""
-          onSuccess={responseGoogle}
-          onFailure={rejectGoogle}
-          cookiePolicy={"single_host_origin"}
-        />
+        <div className="d-flex justify-content-between text-center mb-3  w-75">
+          <GoogleLogin
+            className=" d-flex justify-content-center w-100"
+            clientId="1061640396754-6oqjbo125vri3r5rnjam7dck74gq74ej.apps.googleusercontent.com"
+            // clientId="656183286700-q0h3p8uah8e0gojogim9ev13b2jb89g2.apps.googleusercontent.com"
+            buttonText=""
+            onSuccess={responseGoogle}
+            onFailure={rejectGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
         </div>
-      <div className=" d-flex justify-content-between text-center mb-3  w-75">
-        {validateForms(error, inputs).length ? (
-          <button
-            className="btn btn-primary button-links link-Router mb-2  w-50"
-            disabled
+        <div className=" d-flex justify-content-between text-center mb-3  w-75">
+          {validateForms(error, inputs).length ? (
+            <button
+              className="btn btn-primary button-links link-Router mb-2  w-50"
+              disabled
+            >
+              SUBMIT
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary button-links link-Router mb-2  w-50"
+              onClick={LoginFetch}
+            >
+              SUBMIT
+            </button>
+          )}
+          <Link
+            to="/register"
+            className="btn btn-secondary link-Router button-links mb-2  w-50"
           >
-            SUBMIT
-          </button>
-        ) : (
-          <button
-            className="btn btn-primary button-links link-Router mb-2  w-50"
-            onClick={LoginFetch}
-          >
-            SUBMIT
-          </button>
-        )}
-        <Link
-          to="/register"
-          className="btn btn-secondary link-Router button-links mb-2  w-50"
-        >
-          REGISTER
-        </Link>
-      </div>
+            REGISTER
+          </Link>
+        </div>
 
-      <button
-        className="btn btn-primary button-links link-Router mb-5 mx-2 w-75"
-        onClick={CreateOrder}
-      >
-        Keep Buying
-      </button>
+        <button
+          className="btn btn-primary button-links link-Router mb-5 mx-2 w-75"
+          onClick={CreateOrder}
+        >
+          Keep Buying
+        </button>
       </ButtonsContainer>
     </Form>
 
