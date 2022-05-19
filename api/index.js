@@ -14,7 +14,7 @@ const {
 const PORT = process.env.PORT || 3001;
 conn.sync({ force: true }).then(() => {
   server.listen(PORT, async () => {
-    console.log(`Listening at port ${PORT}!`);
+    console.log(`Listening at port ${PORT}`);
 
     // Fill database from here. Disable the second time if force: false is activated
     await bulkCreateCategories();
