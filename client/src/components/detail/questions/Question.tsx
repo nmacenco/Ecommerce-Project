@@ -26,15 +26,12 @@ const Question = ({ title, body, answer, user, idA }: Prop): JSX.Element => {
 
     const SendReply = (event: any) => {
         event.preventDefault();
-        console.log(event.target.reply.value)
         let reply = event.target.reply.value;
 
         if (reply) {
             let userId = 1;
-            console.log(idA);
 
             dispatch(createAnswer(idA, Number(id), userId, title, body, reply));
-            console.log('despatch')
 
         } else {
             alert('FALTAN CAMPOS!');
@@ -56,7 +53,6 @@ const Question = ({ title, body, answer, user, idA }: Prop): JSX.Element => {
                     <div>
                         {body ? body : ''}
                     </div>
-                    {console.log(user && !answer)}
                     {
                         user && user.role !== 'user' && !answer ?
                             <>

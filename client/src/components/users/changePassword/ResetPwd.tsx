@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router';
 import swal from 'sweetalert';
-import { useLocalStorage } from '../../helpers/useLocalStorage';
-import { LogoutUser, resetPassword } from '../../redux/actions/user';
-import { FormContainer } from '../form/FormCreateStyles'
+import { useLocalStorage } from '../../../helpers/useLocalStorage';
+import { LogoutUser, resetPassword } from '../../../redux/actions/user';
+import { FormContainer } from '../../admin/createProduct/FormCreateStyles'
 
 export interface PWD {
     actualPassword: string;

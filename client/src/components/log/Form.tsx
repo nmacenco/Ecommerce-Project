@@ -1,5 +1,5 @@
 import React from "react";
-import { ContainerLog, Content, LogForm } from "./SLogin";
+import { ContainerLog, Content, LogForm } from "./FormStyles";
 
 interface Prop {
   title: string;

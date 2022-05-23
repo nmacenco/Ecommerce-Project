@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router-dom'
 import swal from 'sweetalert'
-import { useLocalStorage } from '../../helpers/useLocalStorage'
-import { getCountries } from '../../redux/actions/countries'
-import { getSingleUser, GetUSer, LogoutUser, updateUser } from '../../redux/actions/user'
-import { ICountries, IUser_Detail } from '../../redux/interface'
-import { State } from '../../redux/reducers'
-import { FormContainer } from '../form/FormCreateStyles'
+import { useLocalStorage } from '../../../helpers/useLocalStorage'
+import { getCountries } from '../../../redux/actions/countries'
+import { getSingleUser, GetUSer, LogoutUser, updateUser } from '../../../redux/actions/user'
+import { ICountries, IUser_Detail } from '../../../redux/interface'
+import { State } from '../../../redux/reducers'
+import { FormContainer } from '../../admin/createProduct/FormCreateStyles'
 
 export interface EDIT_USER {
     name: string,

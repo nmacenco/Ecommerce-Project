@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../../../redux/actions/admin";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, resetPoducts } from "../../../../redux/actions/products";
-import { ORDER } from "../Cards";
+import { ORDER } from "../../../products/Cards";
 // import { chargeFilter, resetFilterProducts } from "../../../../redux/actions/filterByCategory";
 import { getProductDetail } from "../../../../redux/actions/productDetail";
 import swal from "sweetalert";

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { errorMonitor } from "stream";
-import { useLocalStorage } from "../../helpers/useLocalStorage";
-import { forgotPasswordReset } from "../../redux/actions/user";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
+import { forgotPasswordReset } from "../../../redux/actions/user";
 import swal from "sweetalert";
 
 import { Container, FormContainer1 } from "./EmailResetPasswordStyles";

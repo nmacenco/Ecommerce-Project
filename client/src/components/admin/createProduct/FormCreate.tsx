@@ -1,89 +1,89 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import swal from "sweetalert";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
-import { putProducts } from "../../../redux/actions/admin";
+import { postProduct } from "../../../redux/actions/admin";
 import { getBrands } from "../../../redux/actions/brands";
 import {
   getCategories,
   getSubcategories,
 } from "../../../redux/actions/categories";
 import { resetFilterProducts } from "../../../redux/actions/filterByCategory";
-import { getProductDetail } from "../../../redux/actions/productDetail";
 import { resetPoducts } from "../../../redux/actions/products";
-import { ProductForm, Subcategory } from "../../../redux/interface";
+import {
+  Brand,
+  Category,
+  ProductForm,
+  Subcategory,
+} from "../../../redux/interface";
 import { State } from "../../../redux/reducers";
-import { errorsCheck } from "../../form/validations";
-import { EditContainer, Textarea } from "./EditProductStyles";
+import { Textarea } from "../editProduct/EditProductStyles";
+import { FormContainer } from "./FormCreateStyles";
+import { errorsCheck } from "./validations";
 
-export default function EditProduct(): JSX.Element {
+export default function FromCreate(): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const productDetail = useSelector((state: State) => state.productDetail);
-  const brands = useSelector((state: State) => state.brands.brands);
-  const categories = useSelector((state: State) => state.categories.categories);
-  const subcategories = useSelector(
+  const [product, setProduct] = useState<ProductForm>({
+    name: "",
+    image: "",
+    price: 0,
+    description: "",
+    weight: 0,
+    stock: 0,
+    soldCount: 0,
+    BrandId: 0,
+    SubcategoryId: 0,
+  });
+  const [errorsList, setErrorsList] = useState<any>(false)
+  const categoriesList = useSelector((state: State) => state.categories);
+  const brandsList = useSelector((state: State) => state.brands);
+  const subcategoriesList = useSelector(
     (state: State) => state.categories.subcategories
   );
-  const { id } = useParams<string>();
-  const [brandSelected, setBrandSelected] = useState<Boolean>(false);
-  const [subcategorySelected, setSubcategorySelected] = useState<Boolean>(
+  const [subcategoriesLoaded, setSubcategoriesLoaded] = useState<Boolean>(
     false
   );
   const [subcategoriesFiltered, setSubcategoriesFiltered] = useState<
     Subcategory[]
   >([]);
-  const [editProduct, setEditProduct] = useState<ProductForm>({
-    name: productDetail.name,
-    image: productDetail.image,
-    price: productDetail.price,
-    description: productDetail.description,
-    weight: productDetail.weight,
-    stock: productDetail.stock,
-    soldCount: productDetail.soldCount,
-    BrandId: productDetail.BrandId,
-    SubcategoryId: productDetail.SubcategoryId,
-  });
-  const [errorsList, setErrorsList] = useState<any>(false)
-  const [userInStorage , setuserInStorage] = useLocalStorage('USER_LOGGED','')
+  const [userInStorage, setuserInStorage] = useLocalStorage('USER_LOGGED', '')
+
 
   useEffect(() => {
-    dispatch(getProductDetail(id));
-    dispatch(getBrands());
     dispatch(getCategories());
     dispatch(getSubcategories());
-  }, []);
+    dispatch(getBrands());
+  }, [dispatch]);
+
+  const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    const subcategoriesFiltered = subcategoriesList.filter(
+      (s: Subcategory) => Number(s.CategoryId) == Number(e.target.value)
+    );
+    setSubcategoriesLoaded(true);
+    setSubcategoriesFiltered(subcategoriesFiltered);
+  };
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ): void => {
-    if (e.target.name == "BrandId") setBrandSelected(true);
-    if (e.target.name == "SubcategoryId") setSubcategorySelected(true);
-    setEditProduct({
-      ...editProduct,
+    setProduct({
+      ...product,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    e.preventDefault();
-    const subcategoriesFiltered = subcategories.filter(
-      (s: Subcategory) => Number(s.CategoryId) == Number(e.target.value)
-    );
-    setSubcategoriesFiltered(subcategoriesFiltered);
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    let errors = errorsCheck(editProduct);
+    let errors = errorsCheck(product);
     setErrorsList(errors)
     if (errors === false) {
-      dispatch(putProducts(editProduct, id , userInStorage.token));
+      dispatch(postProduct(product, userInStorage.token));
       swal({
-        title: "Product edited successfully.",
+        title: "Product created successfully",
         icon: "success",
         buttons: {
           confirm: true,
@@ -104,10 +104,9 @@ export default function EditProduct(): JSX.Element {
   };
 
   return (
-    <EditContainer>
+    <FormContainer>
       <form onSubmit={handleSubmit}>
-        <h3 className="text-center">Edit Product</h3>
-        <p className="text-center mt-4">{productDetail.name}</p>
+        <h3 className="text-center">Create Product</h3>
         <div className="form-group">
           <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
             Name
@@ -117,48 +116,39 @@ export default function EditProduct(): JSX.Element {
             className="form-control"
             id="staticEmail"
             name="name"
+            value={product.name}
             placeholder="Enter name"
             onChange={(e) => handleChange(e)}
-            value={editProduct.name}
           />
           <p className="text-danger">{errorsList.name ? errorsList.name : "⠀"}</p>
         </div>
         <div className="form-group me-1">
           <label className="form-label mt-4">Brand</label>
           <select
-            className="form-select"
-            name="BrandId"
             onChange={(e) => handleChange(e)}
+            className="form-select"
+            id="exampleSelect1"
+            name="BrandId"
           >
             <option hidden>Select brand</option>
-            {brands.map((brand) => {
-              return (
-                <option key={brand.id} value={brand.id}>
-                  {brand.name}
-                </option>
-              );
+            {brandsList.brands.map((brand: Brand) => {
+              return <option value={brand.id}>{brand.name}</option>;
             })}
           </select>
-          {!brandSelected ? (
-            <p className=" mt-2 fs-5">
-              Current brand: {productDetail.brand}
-            </p>
-          ) : (
-            ""
-          )}
+          <p className="text-danger">{errorsList.BrandId ? errorsList.BrandId : "⠀"}</p>
         </div>
         <div className="form-group">
           <label htmlFor="exampleInputPassword1" className="form-label mt-4">
             Image
           </label>
           <input
-            type="text"
             className="form-control"
-            id="exampleInputPassword1"
+            type="text"
+            id="formFile"
             name="image"
             placeholder="Enter image URL"
+            value={product.image}
             onChange={(e) => handleChange(e)}
-            value={editProduct.image}
           />
           <p className="text-danger">{errorsList.image ? errorsList.image : "⠀"}</p>
         </div>
@@ -171,52 +161,45 @@ export default function EditProduct(): JSX.Element {
             id="exampleTextarea"
             name="description"
             placeholder="Enter description"
+            value={product.description}
             onChange={(e) => handleChange(e)}
-            value={editProduct.description}
           />
           <p className="text-danger">{errorsList.description ? errorsList.description : "⠀"}</p>
         </div>
         <div className="d-flex">
           <div className="form-group flex-fill">
             <label className="form-label mt-4">Category</label>
-            <select className="form-select" onChange={(e) => handleCategory(e)}>
-              <option>Select category</option>
-              {categories.map((e) => {
-                return (
-                  <option key={e.id} value={e.id}>
-                    {e.name}
-                  </option>
-                );
+            <select
+              onChange={(e) => handleCategory(e)}
+              className="form-select"
+              id="exampleSelect1"
+            >
+              <option hidden>Select category</option>
+              {categoriesList.categories.map((category: Category) => {
+                return <option value={category.id}>{category.name}</option>;
               })}
             </select>
-          </div>
 
+          </div>
           <div className="form-group flex-fill ms-2">
             <label className="form-label mt-4">Subcategory</label>
             <select
               className="form-select"
-              onChange={(e) => handleChange(e)}
+              id="exampleSelect1"
               name="SubcategoryId"
+              onChange={(e) => handleChange(e)}
             >
-              <option>Select subcategory</option>
-              {subcategoriesFiltered.map((e) => {
-                return (
-                  <option key={e.id} value={e.id}>
-                    {e.name}
-                  </option>
-                );
-              })}
+              <option hidden>Select subcategory</option>
+              {subcategoriesLoaded &&
+                subcategoriesFiltered.map((subcategory: Subcategory) => {
+                  return (
+                    <option value={subcategory.id}>{subcategory.name}</option>
+                  );
+                })}
             </select>
-            {!subcategorySelected ? (
-              <p className=" mt-2 fs-5">
-                Current subcategory: {productDetail.subcategory}
-              </p>
-            ) : (
-              ""
-            )}
+            <p className="text-danger">{errorsList.subcategory ? errorsList.subcategory : "⠀"}</p>
           </div>
         </div>
-
         <div className="d-flex justify-content-center">
           <div className="form-group mr-1 mr-md-2">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
@@ -224,14 +207,14 @@ export default function EditProduct(): JSX.Element {
             </label>
             <input
               type="number"
-              className="form-control"
+              className="form-control "
               id="exampleTextarea"
               name="price"
-              placeholder="Enter price"
+              placeholder="Price"
+              value={product.price}
               onChange={(e) => handleChange(e)}
-              value={editProduct.price}
             />
-            <p className="text-danger">{errorsList.price ? errorsList.price : "⠀"}</p>
+            <p className="text-danger">{errorsList.amount ? errorsList.amount : "⠀"}</p>
           </div>
           <div className="form-group mx-2 mx-md-3">
             <label htmlFor="exampleTextarea" className="form-label mt-4">
@@ -242,9 +225,9 @@ export default function EditProduct(): JSX.Element {
               className="form-control"
               id="exampleTextarea"
               name="weight"
-              placeholder="Enter weight"
+              placeholder="Weight"
+              value={product.weight}
               onChange={(e) => handleChange(e)}
-              value={editProduct.weight}
             />
             <p className="text-danger">{errorsList.weight ? errorsList.weight : "⠀"}</p>
           </div>
@@ -257,9 +240,9 @@ export default function EditProduct(): JSX.Element {
               className="form-control"
               id="exampleTextarea"
               name="stock"
-              placeholder="Enter stock number"
+              placeholder="Stock"
+              value={product.stock}
               onChange={(e) => handleChange(e)}
-              value={editProduct.stock}
             />
             <p className="text-danger">{errorsList.stock ? errorsList.stock : "⠀"}</p>
           </div>
@@ -270,6 +253,6 @@ export default function EditProduct(): JSX.Element {
           </button>
         </div>
       </form>
-    </EditContainer>
+    </FormContainer>
   );
 }

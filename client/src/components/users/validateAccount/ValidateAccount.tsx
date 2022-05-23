@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import { Container } from "./EmailResetPasswordStyles";
+import { Container } from "../forgotPassword/EmailResetPasswordStyles";
 import swal from "sweetalert";
 import { useDispatch } from "react-redux";
-import { validateAccount } from "../../redux/actions/user";
+import { validateAccount } from "../../../redux/actions/user";
 import { useParams } from "react-router";
 
 export default function ValidateAccount(): JSX.Element {

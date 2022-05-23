@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Search from "../SearchBar/Search";
+import Search from "./SearchBar/Search";
 import AdminDropdown from "./adminDropdown/AdminDropdown";
 import { Routes, Link, Route } from "react-router-dom";
 import { resetFilterProducts } from "../../redux/actions/filterByCategory";
@@ -11,7 +11,6 @@ import UserDropdown from "./userDropdown/UserDropdown";
 import CartIcon from "./cartIcon/CartIcon";
 import { setPage } from "../../redux/actions/setPage";
 import { NavBar } from "./NavStyles"
-import { useLocation } from "react-router";
 
 const Nav = (): JSX.Element => {
   const dispatch = useDispatch();

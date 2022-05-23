@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router';
 import swal from 'sweetalert'
-import { forgotPasswordReset, resetForgotPassword, resetPassword } from '../../redux/actions/user';
-import { FormContainer } from '../form/FormCreateStyles'
+import { forgotPasswordReset, resetForgotPassword, resetPassword } from '../../../redux/actions/user';
+import { FormContainer } from '../../admin/createProduct/FormCreateStyles'
 
 export interface RESET_PASSWORD {
     password: string;

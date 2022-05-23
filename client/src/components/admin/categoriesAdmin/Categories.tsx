@@ -4,7 +4,7 @@ import { CategoriesContainer } from "./CategoriesStyles";
 import { State } from "../../../redux/reducers/index";
 import { getCategories, getSubcategories } from "../../../redux/actions/categories";
 import { filterByBrand, filterProducts } from "../../../redux/actions/filterByCategory";
-import { ORDER } from "../cards/Cards";
+import { ORDER } from "../../products/Cards";
 import { getBrands } from "../../../redux/actions/brands";
 import { productNotFound } from "../../../redux/actions/products";
 
