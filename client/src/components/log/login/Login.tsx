@@ -10,7 +10,6 @@ import { setPage } from "../../../redux/actions/setPage";
 import { GoogleLogin } from "react-google-login";
 import { createOrderUser } from "../../../redux/actions/ordersUser";
 import swal from "sweetalert";
-import { getPendingOrder } from "../../../redux/actions/cart";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 interface Inputs {
